@@ -30,6 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -57,6 +58,44 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tema\css\Style.css" />
+    <Content Include="Tema\imagenes\accept.png" />
+    <Content Include="Tema\imagenes\add.png" />
+    <Content Include="Tema\imagenes\application_search.png" />
+    <Content Include="Tema\imagenes\block.png" />
+    <Content Include="Tema\imagenes\chart.png" />
+    <Content Include="Tema\imagenes\copy_paste.png" />
+    <Content Include="Tema\imagenes\delete.png" />
+    <Content Include="Tema\imagenes\dollar_coin.png" />
+    <Content Include="Tema\imagenes\edit.png" />
+    <Content Include="Tema\imagenes\excel.png" />
+    <Content Include="Tema\imagenes\fondo_menucon.png" />
+    <Content Include="Tema\imagenes\fondo_menugen.png" />
+    <Content Include="Tema\imagenes\fondo_menureg.png" />
+    <Content Include="Tema\imagenes\fondo_menuregM.png" />
+    <Content Include="Tema\imagenes\fondo_menuseg.png" />
+    <Content Include="Tema\imagenes\globe_search.png" />
+    <Content Include="Tema\imagenes\help.png" />
+    <Content Include="Tema\imagenes\home.png" />
+    <Content Include="Tema\imagenes\home_search.png" />
+    <Content Include="Tema\imagenes\lock.png" />
+    <Content Include="Tema\imagenes\logo_ico.jpg" />
+    <Content Include="Tema\imagenes\new_page.png" />
+    <Content Include="Tema\imagenes\notebook_search.png" />
+    <Content Include="Tema\imagenes\pencil.png" />
+    <Content Include="Tema\imagenes\plus_mobile.jpg" />
+    <Content Include="Tema\imagenes\pq.jpg" />
+    <Content Include="Tema\imagenes\print.png" />
+    <Content Include="Tema\imagenes\printer.png" />
+    <Content Include="Tema\imagenes\process.png" />
+    <Content Include="Tema\imagenes\repeat.png" />
+    <Content Include="Tema\imagenes\search.png" />
+    <Content Include="Tema\imagenes\Seguridad.png" />
+    <Content Include="Tema\imagenes\Titulo_Superior.png" />
+    <Content Include="Tema\imagenes\unlock.png" />
+    <Content Include="Tema\imagenes\user.png" />
+    <Content Include="Tema\imagenes\version.png" />
+    <Content Include="Tema\imagenes\version_print.png" />
+    <Content Include="Tema\imagenes\xls.png" />
     <Content Include="Web.config" />
     <Content Include="WebForms\Inicio.aspx" />
   </ItemGroup>
@@ -69,19 +108,37 @@
     <Compile Include="WebForms\Inicio.aspx.designer.cs">
       <DependentUpon>Inicio.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\Prueba.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="WebForms\Site.Master" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tema\fonts\" />
-    <Folder Include="Tema\imagenes\" />
     <Folder Include="Tema\js\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CapaDatos\CapaDatos.csproj">
+      <Project>{8fcd494d-446d-4dd5-839e-5336e2907055}</Project>
+      <Name>CapaDatos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CapaProceso\CapaProceso.csproj">
+      <Project>{7394b022-408a-41b9-8890-bf67d3d9e862}</Project>
+      <Name>CapaProceso</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
