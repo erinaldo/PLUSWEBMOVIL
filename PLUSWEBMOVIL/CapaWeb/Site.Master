@@ -104,7 +104,9 @@
             </td>
 
         </tr>
-
+        
+                        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                        </asp:ContentPlaceHolder>
 
     <tr>
         <td>
