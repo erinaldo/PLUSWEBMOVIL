@@ -2,16 +2,29 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.IO;
 using System.Text;
 
 namespace CapaDatos
 {
-    public class conexion
+    public class Conexion
     {
-        public void genearConexion()
+        public SqlConnection genearConexion()
         {
-            SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["conexion"].ConnectionString);
-            cn.Open();
+            try
+            {
+                SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cn"].ConnectionString);
+                cn.Open();
+                return cn;
+            }
+            catch (IOException e)
+            {
+
+                return null;
+                
+            }
+            
+           
         }
 
     }

@@ -97,17 +97,18 @@
     <Content Include="Tema\imagenes\version_print.png" />
     <Content Include="Tema\imagenes\xls.png" />
     <Content Include="Web.config" />
-    <Content Include="WebForms\Formulario.aspx" />
+    <Content Include="WebForms\FPagoPos.aspx" />
     <Content Include="WebForms\Inicio.aspx" />
+    <Content Include="WebForms\prueba.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebForms\Formulario.aspx.cs">
-      <DependentUpon>Formulario.aspx</DependentUpon>
+    <Compile Include="WebForms\FPagoPos.aspx.cs">
+      <DependentUpon>FPagoPos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WebForms\Formulario.aspx.designer.cs">
-      <DependentUpon>Formulario.aspx</DependentUpon>
+    <Compile Include="WebForms\FPagoPos.aspx.designer.cs">
+      <DependentUpon>FPagoPos.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\Inicio.aspx.cs">
       <DependentUpon>Inicio.aspx</DependentUpon>
@@ -122,6 +123,13 @@
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\prueba.aspx.cs">
+      <DependentUpon>prueba.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\prueba.aspx.designer.cs">
+      <DependentUpon>prueba.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

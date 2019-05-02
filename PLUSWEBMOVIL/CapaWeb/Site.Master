@@ -5,8 +5,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="shortcut icon" href="../Tema/imagenes/logo_ico.jpg" />
- <link rel="stylesheet" href="../../Tema/css/Style.css" />
+<link rel="shortcut icon" href="~/Tema/imagenes/logo_ico.jpg" />
+ <link rel="stylesheet" href="~/Tema/css/Style.css" />
     <title>PlusWebMobile</title>
    
 </head>
@@ -37,7 +37,7 @@
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td><a href="Tablero_Control.asp">
-                                        <img src="../Tema/imagenes/32X32/application_search.png" alt="Tablero Control" width="32" height="32" border="0" /></a></td>
+                                        <img src="../Tema/imagenes/application_search.png" alt="Tablero Control" width="32" height="32" border="0" /></a></td>
                                     <td><a href="Tablero_Control.asp">TABLERO DE CONTROL</a></td>
                                 </tr>
                             </table>
@@ -47,7 +47,7 @@
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td><a href="MenuAdmin.asp">
-                                        <img src="../Tema/imagenes/32X32/lock.png" alt="Administracion" width="32" height="32" border="0" /></a></td>
+                                        <img src="../Tema/imagenes/lock.png" alt="Administracion" width="32" height="32" border="0" /></a></td>
                                     <td><a href="MenuAdmin.asp">ADMINISTRACION</a></td>
                                 </tr>
                             </table>
@@ -56,7 +56,7 @@
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td><a href="Menu_Ppal.asp">
-                                        <img src="../Tema/imagenes/32X32/home.png" alt="Home" width="32" height="32" border="0" /></a></td>
+                                        <img src="../Tema/imagenes/home.png" alt="Home" width="32" height="32" border="0" /></a></td>
                                     <td><a href="Menu_Ppal.asp">MENU PRINCIPAL</a></td>
                                 </tr>
                             </table>
@@ -65,7 +65,7 @@
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td><a href="Menu_Ppal.asp">
-                                        <img src="../Tema/imagenes/32X32/block.png" alt="Log Off" width="32" height="32" border="0" /></a></td>
+                                        <img src="../Tema/imagenes/block.png" alt="Log Off" width="32" height="32" border="0" /></a></td>
                                     <td><a href="Menu_Ppal.asp">SALIR</a></td>
                                 </tr>
                             </table>
@@ -74,7 +74,7 @@
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td>
-                                        <img src="../Tema/imagenes/32X32/user.png" alt="Usuario" width="32" height="32" border="0" title="Usuario Activo" /></td>
+                                        <img src="../Tema/imagenes/user.png" alt="Usuario" width="32" height="32" border="0" title="Usuario Activo" /></td>
 
                                 </tr>
                             </table>

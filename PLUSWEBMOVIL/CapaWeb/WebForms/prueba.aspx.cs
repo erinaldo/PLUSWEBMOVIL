@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace CapaWeb.WebForms
 {
-    public partial class Formulario : System.Web.UI.Page
+    public partial class prueba : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

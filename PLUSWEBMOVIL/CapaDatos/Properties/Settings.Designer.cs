@@ -22,5 +22,16 @@ namespace CapaDatos.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.1.55\\DEVELOP2017;Initial Catalog=ClientesCO701_PWM;User ID=ge" +
+            "nexus;Password=gx2019")]
+        public string ClientesCO701_PWMConnectionString {
+            get {
+                return ((string)(this["ClientesCO701_PWMConnectionString"]));
+            }
+        }
     }
 }
