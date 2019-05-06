@@ -37,10 +37,10 @@ namespace CapaProceso.RestCliente
         public string anulado { get; set; }
         public string comentarios { get; set; }
         public Decimal descuento { get; set; }
-        public DateTime fecha { get; set; }
+        public string fecha { get; set; }
         public int idsuc { get; set; }
         public int idvendedor { get; set; }
-        public int iva { get; set; }
+        public Decimal iva { get; set; }
         public int nit { get; set; }
         public int numero { get; set; }
         public string ordencompra { get; set; }

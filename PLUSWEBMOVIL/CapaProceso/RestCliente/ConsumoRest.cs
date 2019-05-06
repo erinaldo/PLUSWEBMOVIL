@@ -84,7 +84,10 @@ namespace CapaProceso.RestCliente
                 encabezado.anulado = "N";
                 encabezado.comentarios = Convert.ToString(dr["observaciones"]);
                 encabezado.descuento = Convert.ToDecimal(dr["descuento"]);
-                encabezado.fecha = Convert.ToDateTime(dr["fec_doc"]);
+                encabezado.fecha = Convert.ToDateTime(dr["fec_doc"]).ToString("yyyy-MM-dd");
+                //encabezado.idsuc = Convert.ToInt32(dr["descuento"]);
+                encabezado.idvendedor = Convert.ToInt32(dr["cod_vendedor"]);
+                encabezado.iva = Convert.ToDecimal(dr["iva"]);
 
             }
                 return encabezado;
