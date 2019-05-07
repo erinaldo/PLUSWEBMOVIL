@@ -94,6 +94,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="RestCliente\consumorest.aspx" />
+    <Content Include="Tema\css\modal.css" />
+    <Content Include="Tema\css\reset.min.css" />
     <Content Include="Tema\css\Style.css" />
     <Content Include="Tema\imagenes\accept.png" />
     <Content Include="Tema\imagenes\add.png" />
@@ -134,6 +136,7 @@
     <Content Include="Tema\imagenes\version_print.png" />
     <Content Include="Tema\imagenes\xls.png" />
     <Content Include="Web.config" />
+    <Content Include="WebForms\Factura.aspx" />
     <Content Include="WebForms\FPagoPos.aspx" />
     <Content Include="WebForms\Inicio.aspx" />
     <Content Include="WebForms\prueba.aspx" />
@@ -148,6 +151,13 @@
       <DependentUpon>consumorest.aspx</DependentUpon>
     </Compile>
     <Compile Include="RestCliente\prueba.cs" />
+    <Compile Include="WebForms\Factura.aspx.cs">
+      <DependentUpon>Factura.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\Factura.aspx.designer.cs">
+      <DependentUpon>Factura.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\FPagoPos.aspx.cs">
       <DependentUpon>FPagoPos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

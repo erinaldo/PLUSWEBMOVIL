@@ -50,6 +50,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Sql\Empresa.cs" />
     <Compile Include="Sql\FacturACab.cs" />
     <Compile Include="Sql\FPagosPos.cs" />
   </ItemGroup>
