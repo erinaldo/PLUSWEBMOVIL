@@ -81,8 +81,10 @@ namespace CapaProceso.RestCliente
 
             while (dr.Read())
             {
+                encabezado.codmoneda = "COP";
                 encabezado.anulado = "N";
                 encabezado.comentarios = Convert.ToString(dr["observaciones"]);
+                encabezado.emisor = 830106032;
                 encabezado.descuento = Convert.ToDecimal(dr["descuento"]);
                 encabezado.fecha = Convert.ToDateTime(dr["fec_doc"]).ToString("yyyy-MM-dd");
                 //encabezado.idsuc = Convert.ToInt32(dr["descuento"]);
