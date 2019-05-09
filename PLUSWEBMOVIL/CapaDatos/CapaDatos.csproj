@@ -50,9 +50,16 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Sql\Articulos.cs" />
+    <Compile Include="Sql\CCostos.cs" />
+    <Compile Include="Sql\CMonedas.cs" />
+    <Compile Include="Sql\Documento.cs" />
     <Compile Include="Sql\Empresa.cs" />
     <Compile Include="Sql\FacturACab.cs" />
+    <Compile Include="Sql\Fpagos.cs" />
     <Compile Include="Sql\FPagosPos.cs" />
+    <Compile Include="Sql\SerieDocumento.cs" />
+    <Compile Include="Sql\Vendedores.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

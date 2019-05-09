@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using CapaDatos.Sql;
 
 namespace CapaWeb.WebForms
 {
@@ -11,7 +12,8 @@ namespace CapaWeb.WebForms
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+           
         }
-    }
+   
+        }
 }
