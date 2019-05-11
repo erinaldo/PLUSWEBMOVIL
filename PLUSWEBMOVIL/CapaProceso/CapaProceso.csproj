@@ -76,7 +76,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Consultas\CabezeraFactura.cs" />
     <Compile Include="Consultas\ConsultafpagoPos.cs" />
+    <Compile Include="Consultas\ConsultaNumerador.cs" />
     <Compile Include="Consultas\Consultavendedores.cs" />
     <Compile Include="Consultas\Consultawmspccostos.cs" />
     <Compile Include="Consultas\Consultawmspcformaspag.cs" />
@@ -84,6 +86,7 @@
     <Compile Include="Consultas\Consultawmspcresfact.cs" />
     <Compile Include="Consultas\Consultawmsptitulares.cs" />
     <Compile Include="Consultas\Cosnsultawmspcarticulos.cs" />
+    <Compile Include="Modelos\modelonumerador.cs" />
     <Compile Include="Modelos\modelovendedores.cs" />
     <Compile Include="Modelos\modelowmmfpagoPOS.cs" />
     <Compile Include="Modelos\modelowmspcarticulos.cs" />

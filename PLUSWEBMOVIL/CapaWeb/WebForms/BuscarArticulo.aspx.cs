@@ -12,7 +12,8 @@ namespace CapaWeb.WebForms
     public partial class BuscarArticulo : System.Web.UI.Page
     {
         Cosnsultawmspcarticulos ConsultaArticulo = new Cosnsultawmspcarticulos();
-        List<modelowmspcarticulos> listaArticulos = null;
+       public List<modelowmspcarticulos> listaArticulos = null;
+        modelowmspcarticulos articulo = new modelowmspcarticulos();
         public string ArtB__usuario = "desarrollo";
         public string ArtB__cod_emp = "04";
         public string ArtB__articulo = " ";
@@ -23,9 +24,9 @@ namespace CapaWeb.WebForms
         {
             if (!IsPostBack)
             {
-                CargarGrilla();
 
 
+                Session.Remove("articulo");
 
 
 
@@ -36,32 +37,59 @@ namespace CapaWeb.WebForms
                 }
             }
         }
-
-        public void CargarGrilla()
-        {
-            listaArticulos = ConsultaArticulo.ConsultaArticulos(ArtB__usuario, ArtB__cod_emp, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
-            Grid.DataSource = listaArticulos;
-            Grid.DataBind();
-            Grid.Height = 100;
-
-        }
-        protected void Grid_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
-        {
-            // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
-            Grid.CurrentPageIndex = 0;
-            Grid.CurrentPageIndex = e.NewPageIndex;
-            CargarGrilla();
-        }
         protected void TxtBuscarProducto_TextChanged(object sender, EventArgs e)
         {
-            //listar todos los articulos
-            string ArtB_articulo = TxtBuscarProducto.Text;
+            CargarGrilla(TxtBuscarProducto.Text);
+        }
 
+
+        public void CargarGrilla(string ArtB__articulo)
+        {
             listaArticulos = ConsultaArticulo.ConsultaArticulos(ArtB__usuario, ArtB__cod_emp, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
+            Session["listaArticulos"] = listaArticulos;
+            gvProducto.DataSource = listaArticulos;
+            gvProducto.DataBind();
+           
 
-            Grid.DataSource = listaArticulos;
-            Grid.DataBind();
-            Grid.Height = 100;
+        }
+        protected void gvProducto_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvProducto.PageIndex = 0;
+            gvProducto.PageIndex = e.NewPageIndex;
+
+            CargarGrilla(TxtBuscarProducto.Text);
+        }
+        protected void gvProducto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //
+            // Se obtiene la fila seleccionada del gridview
+            //
+            GridViewRow row = gvProducto.SelectedRow;
+
+            //
+            // Obtengo el id de la entidad que se esta editando
+            // en este caso de la entidad Person
+            //
+            string cod_articulo = Convert.ToString(gvProducto.DataKeys[row.RowIndex].Value);
+
+            listaArticulos = (List<modelowmspcarticulos>)Session["listaArticulos"];
+            foreach (var item in listaArticulos)
+            {
+                if (item.cod_articulo == cod_articulo)
+                {
+                  articulo = item;
+
+                    break;
+                }
+
+            }
+            // Crea la variable de sessión
+            Session["articulo"] = articulo;
+
+            // Refrescamos el formuario padre
+            ClientScript.RegisterClientScriptBlock(GetType(), "Refresca", "window.opener.location.reload(); window.close();", true);
+
+
         }
     }
 }

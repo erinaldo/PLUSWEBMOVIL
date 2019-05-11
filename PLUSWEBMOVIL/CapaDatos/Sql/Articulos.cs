@@ -26,7 +26,6 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = ArtB__cod_emp;
                 conmand.Parameters.Add("@articulo", SqlDbType.VarChar).Value = ArtB__articulo;
                 conmand.Parameters.Add("@tipo", SqlDbType.VarChar).Value = ArtB__tipo;
-
                 conmand.Parameters.Add("@compras", SqlDbType.VarChar).Value = ArtB__compras;
                 conmand.Parameters.Add("@ventas", SqlDbType.VarChar).Value = ArtB__ventas;
             

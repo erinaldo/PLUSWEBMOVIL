@@ -12,15 +12,17 @@
 <body>
      <form id="form1" runat="server">
     <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="white">
-       
-            <div>
+       <tr>
+           <td colspan ="4">
+            
 
-
+                
                 <h2 class="textos">Buscar Cliente</h2>
                 <asp:TextBox class="form-control" ID="TxtBuscarCliente" AutoPostBack="True"  OnTextChanged="TxtBuscarCliente_TextChanged" placeholder="Buscar..." runat="server" />
+               
 
-
-            </div>
+           
+          
             </br>
         </br>
                     <div>
@@ -55,6 +57,7 @@
 
           </table>
         </form>
-  
+       </td>
+           </tr>
 </body>
 </html>

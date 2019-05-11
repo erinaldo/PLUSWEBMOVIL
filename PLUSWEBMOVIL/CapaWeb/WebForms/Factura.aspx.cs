@@ -18,8 +18,15 @@ namespace CapaWeb.WebForms
         Consultavendedores ConsultaVendedores = new Consultavendedores();
         Consultawmspcformaspag ConsultaFPagos = new Consultawmspcformaspag();
         Cosnsultawmspcarticulos ConsultaArticulo = new Cosnsultawmspcarticulos();
+        ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
+        CabezeraFactura GuardarCabezera = new CabezeraFactura();
+
         modelowmspctitulares cliente = new modelowmspctitulares();
         modelowmspcresfact resolucion = new modelowmspcresfact();
+        modelowmspcarticulos articulo = new modelowmspcarticulos();
+        modelocabecerafactura cabecerafactura = new modelocabecerafactura();
+        modelonumerador nrotrans = new modelonumerador();
+        
 
         List<modelowmspcresfact> listaRes = null;
         List<modelowmspcccostos> listaCostos = null;
@@ -30,6 +37,7 @@ namespace CapaWeb.WebForms
         List<modelowmspcfpago> listaPagos = null;
         List<modelowmspctitulares> listaTodos = null;
         List<modelowmspcarticulos> listaArticulos = null;
+        List<modelonumerador> listaNumerador = null;
 
         public string Ven__usuario = "desarrollo";
         public string Ven__cod_emp = "04";
@@ -58,6 +66,7 @@ namespace CapaWeb.WebForms
         public string ArtB__tipo = "0";
         public string ArtB__compras = "0";
         public string ArtB__ventas = "S";
+        public string numerador = "trans";
 
 
 
@@ -72,12 +81,21 @@ namespace CapaWeb.WebForms
 
             }
 
+            if (Session["articulo"] != null)
+            {
+                // recupera la variable de secion con el objetoarticulo
+                articulo = (modelowmspcarticulos)Session["articulo"];
+                articulos.Text = articulo.nom_articulo;
+                precio.Text = articulo.precio_total;
+
+
+            }
             if (!IsPostBack)
             {
                 CargarGrilla();
-                Session.Remove("cliente");       
-               
-               
+                Session.Remove("cliente");
+                DateTime hoy = DateTime.Today;
+                fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
 
                 if (Request.Cookies["ComPwm"] != null)
                 {
@@ -129,40 +147,33 @@ namespace CapaWeb.WebForms
 
 
         }
-       
 
-        public void CargarProducto()
+        private void inhabilitarCajasC()
         {
+            Button3.Enabled = false;
+            cod_fpago.Enabled = false;
+            cod_vendedor.Enabled = false;
+            cod_moneda.Enabled = false;
+            cod_costos.Enabled = false;
+            serie_docum.Enabled = false;
+            fecha.Enabled = false;
+            dniCliente.Enabled = false;
+            nombreCliente.Enabled = false;
+            ocompra.Enabled = false;
+            porc_descto.Enabled = false;
+            area.Enabled = false;
+            GuardarCabecera.Visible = false;
+            //detalle habilitar
+            Button4.Visible = true;
+            BuscarArticulo.Visible = true;
+            Producto.Visible = true;
+            pvp.Visible = true;
+            articulos.Visible = true;
+            precio.Visible = true;
             
-            listaArticulos = ConsultaArticulo.ConsultaArticulos(ArtB__usuario, ArtB__cod_emp, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
-
-            
-
-            Grid3.DataSource = listaArticulos;
-            Grid3.DataBind();
-            Grid3.Height = 100;
-
         }
 
-        public void Buscar()
-        {
-            //listar todos los articulos
-            listaArticulos = ConsultaArticulo.ConsultaArticulos(ArtB__usuario, ArtB__cod_emp, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
-
-            Grid3.DataSource = listaArticulos;
-            Grid3.DataBind();
-            Grid3.Height = 100;
-
-        }
-       
-
-        protected void Grid3_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
-        {
-            // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
-            Grid3.CurrentPageIndex = 0;
-            Grid3.CurrentPageIndex = e.NewPageIndex;
-            Buscar();
-        }
+      
 
 
        
@@ -194,53 +205,107 @@ namespace CapaWeb.WebForms
 
         }
 
-        
 
-        protected void BuscarP_Click(object sender, EventArgs e)
+        public void Validar()
         {
 
-            string ArtB_articulo = BuscarP.Text;
-            listaArticulos = ConsultaArticulo.ConsultaArticulos(ArtB__usuario, ArtB__cod_emp, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
-
-            Grid3.DataSource = listaArticulos;
-            Grid3.DataBind();
-            Grid3.Height = 100;
-        }
-        protected void BuscarP_TextChanged(object sender, EventArgs e)
-        {
-            string ArtB_articulo = BuscarP.Text;
-            listaArticulos = ConsultaArticulo.ConsultaArticulos(ArtB__usuario, ArtB__cod_emp, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
-
-            Grid3.DataSource = listaArticulos;
-            Grid3.DataBind();
-            Grid3.Height = 100;
-        }
-
-        protected void Grid3_ItemCommand(object source, DataGridCommandEventArgs e)
-        {
+            DateTime hoy = DateTime.Today;
            
-            int Id;
-
-            switch (e.CommandName) //ultilizo la variable para la opcion
-            {
-
-                case "Seleccionar": //ejecuta el codigo si el usuario ingresa el numero 1
-                    Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("cod_articulo")).Text);
-
-                  
-
-                    Response.Redirect("Factura.aspx" +Id.ToString());
-                    break;//termina la ejecucion del programa despues de ejecutar el codigo
-
-               
-            }
         }
-
-        
-
         protected void GuardarCabecera_Click(object sender, EventArgs e)
         {
-           
+            //obtener numero de transaccion
+            nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
+            string valor_asignado = nrotrans.valor_asignado;
+            DateTime Fecha = Convert.ToDateTime(fecha.Text);
+
+                string error = "";
+            if (Session["cliente"] != null)
+            {
+                // recupera la variable de secion con el objeto persona
+                cliente = (modelowmspctitulares)Session["cliente"];
+               
+
+            }
+
+
+             cabecerafactura.cod_cliente = cliente.cod_tit;
+            cabecerafactura.dia = string.Format("{0:00}", Fecha.Day);
+            cabecerafactura.mes = string.Format("{0:00}", Fecha.Month);
+            cabecerafactura.anio = Fecha.Year.ToString();
+            cabecerafactura.fec_doc = fecha.Text;
+            cabecerafactura.serie_docum = serie_docum.SelectedValue;
+            cabecerafactura.cod_ccostos = cod_costos.SelectedValue;
+            cabecerafactura.cod_vendedor = cod_vendedor.SelectedValue;
+            cabecerafactura.cod_fpago = cod_fpago.SelectedValue;
+            cabecerafactura.observaciones = area.Text;
+            cabecerafactura.nro_trans = valor_asignado;
+            cabecerafactura.cod_emp = ResF_cod_emp;
+            cabecerafactura.cod_docum = "0";
+            cabecerafactura.nro_docum = "0";
+            cabecerafactura.subtotal = Convert.ToDecimal("0.00");
+            cabecerafactura.iva = Convert.ToDecimal("0.00");
+            cabecerafactura.monto_imponible = Convert.ToDecimal("0.00");
+            cabecerafactura.total = Convert.ToDecimal("0.00");
+            cabecerafactura.estado = "P";
+            cabecerafactura.usuario_mod = "04";
+            cabecerafactura.nro_audit = "0"; // por defecto va cero s disapra triger
+            cabecerafactura.ocompra = ocompra.Text;
+            cabecerafactura.cod_moneda = cod_moneda.SelectedValue;
+            cabecerafactura.tipo = "VTA";
+            cabecerafactura.porc_descto = Convert.ToDecimal("0.00");
+            cabecerafactura.descuento = Convert.ToDecimal("0.00");
+            cabecerafactura.diar = "10";
+            cabecerafactura.mesr = "05";
+            cabecerafactura.anior = "2019";
+            cabecerafactura.cod_proc_aud = "RCOMFACT";
+
+          error =  GuardarCabezera.InsertarCabezeraFactura(cabecerafactura);
+            if (string.IsNullOrEmpty(error))
+            {
+               
+            }
+            else
+            {
+                 //mensaje.Text = error;
+                inhabilitarCajasC();
+                this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+                Session["cabecera"] = cabecerafactura;
+
+            }
+
+
+
+        }
+
+        protected void BuscarArticulo_TextChanged(object sender, EventArgs e)
+        {
+            string ArtB__articulo = BuscarArticulo.Text;
+
+            listaArticulos = ConsultaArticulo.ConsultaArticulos(ArtB__usuario, ArtB__cod_emp, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
+
+
+            articulo = null;
+            foreach (modelowmspcarticulos item in listaArticulos)
+            {
+                articulo = item;
+                break;
+            }
+
+            if (articulo == null)
+            {
+                BuscarArticulo.Text = "No existe el cliente";
+            }
+            else
+            {
+
+
+                Session["articulo"] = articulo;
+                articulos.Text = articulo.nom_articulo;
+                precio.Text = articulo.precio; 
+
+                
+            }
         }
     }
 }
