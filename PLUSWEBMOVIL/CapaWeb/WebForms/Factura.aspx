@@ -55,91 +55,46 @@
                                 </td>
                                 <td class="textos" colspan="2">
                                     <asp:Label ID="cod_tit" required="required" runat="server" Text="" Visible="False"></asp:Label>
-                                    <asp:TextBox required="required" ID="nombreCliente" class="textos" size="40" MaxLength="50" runat="server" ReadOnly="true"></asp:TextBox>
+                                    <asp:TextBox required="required" ID="nombreCliente" class="textos" size="43" MaxLength="50" runat="server" ReadOnly="true"></asp:TextBox>
                                 </td>
-
-                            </tr>
-                            <tr valign="top">
-                                <td align="right" nowrap="nowrap" class="busqueda">
+                                 <td align="right" nowrap="nowrap" class="busqueda">
                                     <div align="left">Teléfono:</div>
                                 </td>
                                 <td class="textos">
                                     <asp:TextBox required="required" ID="fonoCliente" class="textos" size="27" runat="server" ReadOnly="true"></asp:TextBox>
                                 </td>
+                            </tr>
+                            <tr valign="top">
+                                
                                 <td align="right" nowrap="nowrap" class="busqueda">
                                     <div align="left">Fecha:</div>
                                 </td>
                                 <td>
 
-                                    <asp:TextBox ID="fecha" type="date" onkeyup="FechaActual();" required="required" value="today" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="fecha" type="date" onkeyup="FechaActual();" Width="202" required="required" value="today" runat="server"></asp:TextBox>
 
                                 </td>
 
-                            </tr>
-                            <tr valign="top">
-                                <td align="right" nowrap="nowrap" class="busqueda">
-                                    <div align="left">C. Costos:</div>
-                                </td>
-                                <td>
-                                    <asp:DropDownList class="textos" name="cod_costos" ID="cod_costos" runat="server">
-                                    </asp:DropDownList>
-                                </td>
-
-                                <td align="right" nowrap="nowrap" class="busqueda">
-                                    <div align="left">Serie Documento:</div>
-                                </td>
-                                <td>
-                                    <label>
-                                        <asp:DropDownList class="textos" name="serie_docum" ID="serie_docum" runat="server">
-                                        </asp:DropDownList>
-
-                                    </label>
-                                </td>
-
-
-                            </tr>
-
-                            <tr valign="top">
-                                <td align="right" nowrap="nowrap" class="busqueda">
-                                    <div align="left">Vendedor:</div>
-                                </td>
-                                <td>
-
-                                    <asp:DropDownList class="textos" name="cod_vendedor" ID="cod_vendedor" runat="server">
-                                    </asp:DropDownList>
-                                </td>
-
-                                <td align="right" nowrap="nowrap" class="busqueda">
-                                    <div align="left">Moneda:</div>
-                                </td>
-                                <td>
-                                    <label>
-
-                                        <asp:DropDownList class="textos" name="cod_moneda" ID="cod_moneda" runat="server">
-                                        </asp:DropDownList>
-                                    </label>
-                                </td>
-
-                            </tr>
-
-                            <tr valign="top">
                                 <td align="right" nowrap="nowrap" class="busqueda">
                                     <div align="left">F. Pago:</div>
                                 </td>
                                 <td>
 
-                                    <asp:DropDownList class="textos" name="cod_fpago" ID="cod_fpago" runat="server">
+                                    <asp:DropDownList class="textos" Width="250" name="cod_fpago" ID="cod_fpago" runat="server">
                                     </asp:DropDownList>
                                 </td>
-                                <td align="right" nowrap="nowrap" class="busqueda">
-                                    <div align="left">O.Compra:</div>
+
+                                 <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Serie Documento:</div>
                                 </td>
                                 <td>
                                     <label>
-                                        <asp:TextBox ID="ocompra" name="ocompra" class="textos" runat="server"></asp:TextBox>
+                                        <asp:DropDownList class="textos" name="serie_docum" Width="205" ID="serie_docum" runat="server">
+                                        </asp:DropDownList>
 
                                     </label>
                                 </td>
+                                
 
                             </tr>
                             <tr valign="top">
@@ -148,44 +103,71 @@
                                 </td>
                                 <td valign="top">
                                     <label>
-                                        <asp:TextBox ID="nro_pedido" class="textos" name="nro_pedido" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="nro_pedido" class="textos" Width="202" name="nro_pedido" runat="server"></asp:TextBox>
 
                                     </label>
                                 </td>
-                                <td align="right" valign="top" nowrap="nowrap" class="busqueda">
+                                <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">C. Costos:</div>
+                                </td>
+                                <td>
+                                    <asp:DropDownList class="textos" name="cod_costos" ID="cod_costos" runat="server">
+                                    </asp:DropDownList>
+                                </td>
+
+                               <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Moneda:</div>
+                                </td>
+                                <td>
+                                    <label>
+
+                                        <asp:DropDownList class="textos" name="cod_moneda" Width="205" ID="cod_moneda" runat="server">
+                                        </asp:DropDownList>
+                                    </label>
+                                </td>
+
+
+                            </tr>
+
+                            <tr valign="top">
+                                
+                                <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">O.Compra:</div>
+                                </td>
+                                <td>
+                                    <label>
+                                        <asp:TextBox ID="ocompra" name="ocompra" Width="202" class="textos" runat="server"></asp:TextBox>
+
+                                    </label>
+                                </td>
+                                 <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Vendedor:</div>
+                                </td>
+                                <td>
+
+                                    <asp:DropDownList class="textos" Width="250" name="cod_vendedor" ID="cod_vendedor" runat="server">
+                                    </asp:DropDownList>
+                                </td>
+                                 <td align="right" valign="top" nowrap="nowrap" class="busqueda">
                                     <div align="left">% Descuento:</div>
                                 </td>
                                 <td valign="top">
                                     <label>
-                                        <asp:TextBox ID="porc_descto" class="textos" value="0" name="porc_descto" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="porc_descto" class="textos" value="0" Width="205" name="porc_descto" runat="server"></asp:TextBox>
 
                                     </label>
                                 </td>
-
-
                             </tr>
+                           
                             <tr>
                                 <td align="right" valign="top" nowrap="nowrap" class="busqueda">
                                     <div align="left">Observaciones:</div>
                                 </td>
-                                <td colspan="4">
-
-
-                                    <asp:TextBox ID="area" runat="server" Width="500" class="textos" TextMode="MultiLine" cols="100" Rows="3"></asp:TextBox>
-
+                                <td colspan="5">
+                                    <asp:TextBox ID="area" runat="server" Width="890" class="textos" TextMode="MultiLine" cols="100" Rows="3"></asp:TextBox>
                                     <div class="textos2" align="left">Caracteres disponibles: <b><span id="myCounter">250</span></b></div>
                                 </td>
                             </tr>
-
-                            <tr valign="top">
-                                <td>
-
-                                    <asp:Button ID="GuardarCabecera" CssClass="botones" OnClick="GuardarCabecera_Click" runat="server" Text="Aceptar" />
-                                </td>
-
-
-                            </tr>
-
                         </table>
                     </td>
                 </tr>
@@ -214,11 +196,18 @@
                                     <asp:Label ID="Producto" class="busqueda" runat="server" Text="Label">Descripción</asp:Label>
                                 </td>
                                 <td>
-                                    <asp:Label ID="pvp" runat="server" class="busqueda" Text="Label">P.V.P</asp:Label>
-                                </td>
-                                <td>
                                     <asp:Label ID="lblCantidad" runat="server" class="busqueda" Text="Label">Cantidad</asp:Label>
                                 </td>
+                                <td>
+                                    <asp:Label ID="pvp" runat="server" class="busqueda" Text="Label">Precio</asp:Label>
+                                </td>
+                                <td>
+                                    <asp:Label ID="Label1" runat="server" class="busqueda" Text="Label">% Descto</asp:Label>
+                                </td>
+                                <td>
+                                    <asp:Label ID="Label2" runat="server" class="busqueda" Text="Label">% IVA</asp:Label>
+                                </td>
+                              
                             </tr>
                             <tr>
 
@@ -231,19 +220,17 @@
                                 </td>
 
                                 <td>
-                                    <asp:TextBox ID="precio" CssClass="textos" type="number" min="0.00" step="0.01" runat="server" Width="100px"></asp:TextBox>
+                                    <asp:TextBox ID="cantidad" CssClass="textos"  min="0.00" step="0.01" type="number" value="1" Width="60px" runat="server"></asp:TextBox>
                                 </td>
-
                                 <td>
-                                    <asp:TextBox ID="cantidad" CssClass="textos" type="number" value="1" Width="60px" runat="server"></asp:TextBox>
-
+                                    <asp:TextBox ID="precio" CssClass="textos" type="number"  runat="server" Width="100px"></asp:TextBox>
                                 </td>
-
                                  <td>
-                                    <asp:TextBox ID="iva" CssClass="textos" type="number" value="1" Width="60px" runat="server"></asp:TextBox>
-
+                                    <asp:TextBox ID="porcdescto" CssClass="textos" type="number" value="0"  Width="60px" runat="server"></asp:TextBox>
                                 </td>
-
+                                <td>
+                                    <asp:TextBox ID="iva" CssClass="textos" type="number" readonly="true" Width="60px" runat="server"></asp:TextBox>
+                                </td>
                                 <td>
                                     <asp:Button ID="AgregarProducto" CssClass="botones" runat="server" Text="Agregar" OnClick="AgregarProducto_Click" />
                                 </td>
@@ -273,11 +260,12 @@
                                             <Columns>
                                                 <asp:BoundField DataField="cod_articulo" HeaderText="Código" />
                                                 <asp:BoundField DataField="nom_articulo" HeaderText="Descripción" />
-                                                <asp:BoundField DataField="porc_impuesto" HeaderText="% IVA" />
-                                                <asp:BoundField DataField="precio" HeaderText="P.V.P" />
-                                                <asp:BoundField DataField="valor_impu" HeaderText="I.V.A" />
-                                                <asp:BoundField DataField="precio_total" HeaderText="Total" />
-                                                <asp:ButtonField ButtonType="Button" ControlStyle-CssClass="botones" CommandName="Select" HeaderText="" ShowHeader="True" Text="Eliminar" />
+                                                <asp:BoundField DataField="cantidad" HeaderText="Cantidad" />
+                                                <asp:BoundField DataField="precio_unit" HeaderText="Precio" />
+                                                <asp:BoundField DataField="detadescuento" HeaderText="% Descto" />
+                                                 <asp:BoundField DataField="detaiva" HeaderText="IVA" />
+                                                <asp:BoundField DataField="total" HeaderText="Total" />
+                                                
                                             </Columns>
 
                                             <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />

@@ -256,6 +256,7 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.GridView gvProducto;
 
         protected global::System.Web.UI.WebControls.TextBox iva;
+        protected global::System.Web.UI.WebControls.TextBox porcdescto;
 
     }
 }

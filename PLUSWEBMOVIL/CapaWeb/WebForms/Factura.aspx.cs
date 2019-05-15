@@ -160,7 +160,17 @@ namespace CapaWeb.WebForms
                 modeloDetalleFactura = new List<ModeloDetalleFactura>();
                 item.cod_articulo = BuscarArticulo.Text;
                 item.nom_articulo = articulos.Text;
-                item.precio = Convert.ToDecimal(precio.Text);
+                item.cantidad = Convert.ToDecimal(cantidad.Text);
+                item.precio_unit = Convert.ToDecimal(precio.Text);
+                item.porc_iva = Convert.ToDecimal(iva.Text);
+                item.porc_descto = Convert.ToDecimal(porcdescto.Text);
+                item.subtotal = Convert.ToDecimal(precio.Text) * Convert.ToDecimal(cantidad.Text);
+                
+                item.descuento = (item.subtotal * item.porc_descto)/ 100;
+                item.detadescuento = item.subtotal - item.descuento;
+                item.poriva = item.porc_iva / 100;
+                item.detaiva = item.detadescuento * item.poriva;
+                item.total = item.detadescuento + item.detaiva; 
 
                 modeloDetalleFactura.Add(item);
                 Session["detalle"] = modeloDetalleFactura;
@@ -171,8 +181,17 @@ namespace CapaWeb.WebForms
                 modeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);
                 item.cod_articulo = BuscarArticulo.Text;
                 item.nom_articulo = articulos.Text;
-                item.precio = Convert.ToDecimal(precio.Text);
+                item.cantidad = Convert.ToDecimal(cantidad.Text);
+                item.precio_unit = Convert.ToDecimal(precio.Text);
+                item.porc_iva = Convert.ToDecimal(iva.Text);
+                item.porc_descto = Convert.ToDecimal(porcdescto.Text);
+                item.subtotal = Convert.ToDecimal(precio.Text) * Convert.ToDecimal(cantidad.Text);
 
+                item.descuento = (item.subtotal * item.porc_descto) / 100;
+                item.detadescuento = item.subtotal - item.descuento;
+                item.poriva = item.porc_iva / 100;
+                item.detaiva = item.detadescuento * item.poriva;
+                item.total = item.detadescuento + item.detaiva;
                 modeloDetalleFactura.Add(item);
                 Session["detalle"] = modeloDetalleFactura;
 
@@ -187,6 +206,8 @@ namespace CapaWeb.WebForms
             BuscarArticulo.Text = "";
             articulos.Text = "";
             precio.Text = "";
+            iva.Text = "0";
+            porcdescto.Text = "0";
         }
 
         
@@ -380,7 +401,8 @@ namespace CapaWeb.WebForms
                     BuscarArticulo.Text = articulo.cod_articulo;
                     articulos.Text = articulo.nom_articulo;
                     precio.Text = articulo.precio;
-                    iva.Text = "1                        ";
+                    iva.Text = articulo.porc_impuesto;
+
                 }
             }
         }
