@@ -18,6 +18,7 @@ namespace CapaProceso.RestCliente
         {
             StreamReader sr = new StreamReader("F:\\factura.txt");
             string contenido = sr.ReadToEnd();
+            string output = contenido;
             sr.Close();
 
            
@@ -27,7 +28,7 @@ namespace CapaProceso.RestCliente
             string credentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes($"{user}:{password}"));
 
 
-            string output = JsonConvert.SerializeObject(LlenarJSONFactura(), Formatting.Indented);
+            //output = JsonConvert.SerializeObject(LlenarJSONFactura(), Formatting.Indented);
 
             
 
@@ -54,7 +55,7 @@ namespace CapaProceso.RestCliente
                 jsonRespuestaDE.error = response.Content;
             }
 
-            return output;//"Error " + jsonRespuestaDE.error + "\nqrdata " + jsonRespuestaDE.qrdata;
+            return "Error " + jsonRespuestaDE.error + "\nqrdata " + jsonRespuestaDE.qrdata;
         }
 
         public ComprobanteFacturaJSON LlenarJSONFactura()
@@ -81,7 +82,7 @@ namespace CapaProceso.RestCliente
 
             while (dr.Read())
             {
-                encabezado.codmoneda = "COP";
+                //encabezado.codmoneda = "COP";
                 encabezado.anulado = "N";
                 encabezado.comentarios = Convert.ToString(dr["observaciones"]);
                 encabezado.emisor = 830106032;

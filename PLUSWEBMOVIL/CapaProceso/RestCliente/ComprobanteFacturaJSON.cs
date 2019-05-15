@@ -34,11 +34,11 @@ namespace CapaProceso.RestCliente
 
     public class Encabezado
     {
-        
-        public string codmoneda { get; set; }
+        public Int64 emisor { get; set; }
+        //public string codmoneda { get; set; }
         public string anulado { get; set; }
         public string comentarios { get; set; }
-        public Int64 emisor { get; set; }        
+              
         public Decimal descuento { get; set; }
         public string fecha { get; set; }
         public int idsuc { get; set; }
