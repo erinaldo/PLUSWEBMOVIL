@@ -223,11 +223,7 @@
                             <tr>
 
                                 <td>
-
-                                    <asp:TextBox ID="BuscarArticulo" runat="server" size="20" MaxLength="50" AutoPostBack="True" OnTextChanged="BuscarArticulo_TextChanged"></asp:TextBox>
-
-
-
+                                    <asp:TextBox ID="BuscarArticulo" runat="server"  placeholder="Buscar..."  size="20" MaxLength="50" AutoPostBack="True" OnTextChanged="BuscarArticulo_TextChanged"></asp:TextBox>
                                 </td>
 
                                 <td>
@@ -239,7 +235,7 @@
                                 </td>
 
                                 <td>
-                                    <asp:TextBox ID="cantidad" CssClass="textos" type="number" value="1" Width="50px" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="cantidad" CssClass="textos" type="number" value="1" Width="60px" runat="server"></asp:TextBox>
 
                                 </td>
 
@@ -260,7 +256,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <%--<table border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#0E748A">
+                        <table border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#0E748A">
                             <tr>
                                 <td>
                                     <asp:Panel ID="Panel1" runat="server" Height="300px" Width="100%" ScrollBars="Auto">
@@ -288,7 +284,7 @@
 
                                 </td>
                             </tr>
-                        </table>--%>
+                        </table>
                     </td>
                 </tr>
             </table>
