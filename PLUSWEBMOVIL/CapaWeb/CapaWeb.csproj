@@ -94,6 +94,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="RestCliente\consumorest.aspx" />
+    <Content Include="Tema\css\modal.css" />
+    <Content Include="Tema\css\reset.min.css" />
     <Content Include="Tema\css\Style.css" />
     <Content Include="Tema\imagenes\accept.png" />
     <Content Include="Tema\imagenes\add.png" />
@@ -134,7 +136,10 @@
     <Content Include="Tema\imagenes\version_print.png" />
     <Content Include="Tema\imagenes\xls.png" />
     <Content Include="Web.config" />
-    <Content Include="WebForms\FPagoPos.aspx" />
+    <Content Include="WebForms\BuscarArticulo.aspx" />
+    <Content Include="WebForms\BuscarCliente.aspx" />
+    <Content Include="WebForms\CrearCliente.aspx" />
+    <Content Include="WebForms\Factura.aspx" />
     <Content Include="WebForms\Inicio.aspx" />
     <Content Include="WebForms\prueba.aspx" />
   </ItemGroup>
@@ -148,12 +153,33 @@
       <DependentUpon>consumorest.aspx</DependentUpon>
     </Compile>
     <Compile Include="RestCliente\prueba.cs" />
-    <Compile Include="WebForms\FPagoPos.aspx.cs">
-      <DependentUpon>FPagoPos.aspx</DependentUpon>
+    <Compile Include="WebForms\BuscarArticulo.aspx.cs">
+      <DependentUpon>BuscarArticulo.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WebForms\FPagoPos.aspx.designer.cs">
-      <DependentUpon>FPagoPos.aspx</DependentUpon>
+    <Compile Include="WebForms\BuscarArticulo.aspx.designer.cs">
+      <DependentUpon>BuscarArticulo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarCliente.aspx.cs">
+      <DependentUpon>BuscarCliente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarCliente.aspx.designer.cs">
+      <DependentUpon>BuscarCliente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\CrearCliente.aspx.cs">
+      <DependentUpon>CrearCliente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\CrearCliente.aspx.designer.cs">
+      <DependentUpon>CrearCliente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\Factura.aspx.cs">
+      <DependentUpon>Factura.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\Factura.aspx.designer.cs">
+      <DependentUpon>Factura.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\Inicio.aspx.cs">
       <DependentUpon>Inicio.aspx</DependentUpon>

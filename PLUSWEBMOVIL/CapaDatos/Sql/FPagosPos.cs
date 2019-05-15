@@ -15,7 +15,7 @@ namespace CapaDatos.Sql
         {
             cn = conexion.genearConexion();
 
-            string consulta = "SELECT TOP 1000  * FROM wmm_fpagoPOS";
+            string consulta = "SELECT  * FROM wmm_fpagoPOS";
             SqlCommand conmand = new SqlCommand(consulta, cn);
             SqlDataReader dr = conmand.ExecuteReader();
             
