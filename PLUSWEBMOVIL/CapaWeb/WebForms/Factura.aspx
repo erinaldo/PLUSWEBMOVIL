@@ -16,8 +16,8 @@
     </script>
 
     <form id="form1" class="forms-sample" runat="server">
-
-
+        
+       
         <div style="align-items: center">
             <table>
                 <tr>
@@ -236,6 +236,11 @@
 
                                 <td>
                                     <asp:TextBox ID="cantidad" CssClass="textos" type="number" value="1" Width="60px" runat="server"></asp:TextBox>
+
+                                </td>
+
+                                 <td>
+                                    <asp:TextBox ID="iva" CssClass="textos" type="number" value="1" Width="60px" runat="server"></asp:TextBox>
 
                                 </td>
 

@@ -380,8 +380,7 @@ namespace CapaWeb.WebForms
                     BuscarArticulo.Text = articulo.cod_articulo;
                     articulos.Text = articulo.nom_articulo;
                     precio.Text = articulo.precio;
-
-
+                    iva.Text = "1                        ";
                 }
             }
         }
