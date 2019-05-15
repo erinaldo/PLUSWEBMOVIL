@@ -10,7 +10,7 @@
 namespace CapaWeb.WebForms {
     
     
-    public partial class BuscarCliente {
+    public partial class CrearCliente {
         
         /// <summary>
         /// Control form1.
@@ -31,21 +31,39 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
-        /// Control TxtBuscarCliente.
+        /// Control doc_legal.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TxtBuscarCliente;
+        protected global::System.Web.UI.WebControls.TextBox doc_legal;
         
         /// <summary>
-        /// Control gvPerson.
+        /// Control dir_tit.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvPerson;
+        protected global::System.Web.UI.WebControls.TextBox dir_tit;
+        
+        /// <summary>
+        /// Control Cancelar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Cancelar;
+        
+        /// <summary>
+        /// Control Guardar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Guardar;
     }
 }

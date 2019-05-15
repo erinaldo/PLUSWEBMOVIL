@@ -9,6 +9,7 @@ namespace CapaProceso.Modelos
     {
         public string cod_dpto { get; set; }
         public string nom_dpto { get; set; }
+        public string descripcion { get; set; }
         public string activo { get; set; }
        
     }

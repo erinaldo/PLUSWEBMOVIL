@@ -21,6 +21,7 @@ namespace CapaProceso.Consultas
             {
 
                 modelowmspcmonedas item = new modelowmspcmonedas();
+                item.descripcion = Convert.ToString(dr["cod_moneda"])+ " - "+ Convert.ToString(dr["simbolo_moneda"]);
                 item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
                 item.nom_moneda = Convert.ToString(dr["nom_moneda"]);
                 item.simbolo_moneda = Convert.ToString(dr["simbolo_moneda"]);

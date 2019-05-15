@@ -4,13 +4,13 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="shortcut icon" href="~/Tema/imagenes/logo_ico.jpg" />
- <link rel="stylesheet" href="~/Tema/css/Style.css" />
-     
-     
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" href="~/Tema/imagenes/logo_ico.jpg" />
+    <link rel="stylesheet" href="~/Tema/css/Style.css" />
+
+
     <title>PlusWebMobile</title>
-   
+
 </head>
 <body>
     <table width="984" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
@@ -21,7 +21,8 @@
 
                         <td>
                             <div align="center">
-                                <img src="../Tema/imagenes/Titulo_Superior.png" alt="Version" /></div>
+                                <img src="../Tema/imagenes/Titulo_Superior.png" alt="Version" />
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -101,29 +102,39 @@
                         </td>
 
                     </tr>
-
-
+                    <tr>
+                        <td>
+                            <table align="center" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                                    </td>
+                                </tr>
+                            </table>
+                            </asp:ContentPlaceHolder>
+                        </td>
+                    </tr>
+                </table>
             </td>
 
         </tr>
-        
-                        <asp:ContentPlaceHolder ID="MainContent" runat="server">
-                        </asp:ContentPlaceHolder>
 
-    <tr>
-        <td>
-            <table border="0" cellspacing="0" cellpadding="0" width="100%">
-                <tr>
-                    <td>
-                        <img src="../Tema/imagenes/version.png" alt="Version" border="0" /></td>
-                    <td align="right"><span id="siteseal">
-                        <script async type="text/javascript" src="https://seal.starfieldtech.com/getSeal?sealID=GLZk7IZ70bn0PSCGC1QHZQgsLDOUt4YBxd2FhY9Gb07hNqDShY93DUuJrUof"></script>
-                    </span></td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-  </table>
+
+
+        <tr>
+            <td>
+                <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                    <tr>
+                        <td>
+                            <img src="../Tema/imagenes/version.png" alt="Version" border="0" /></td>
+                        <td align="right"><span id="siteseal">
+                            <script async type="text/javascript" src="https://seal.starfieldtech.com/getSeal?sealID=GLZk7IZ70bn0PSCGC1QHZQgsLDOUt4YBxd2FhY9Gb07hNqDShY93DUuJrUof"></script>
+                        </span></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>
 

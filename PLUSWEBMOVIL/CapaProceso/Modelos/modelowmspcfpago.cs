@@ -7,7 +7,9 @@ namespace CapaProceso.Modelos
 {
    public  class modelowmspcfpago
     {
+
         public string cod_fpago { get; set; }
+        public string descripcion { get; set; }
         public string nom_fpago { get; set; }
         public string plazo_libre { get; set; }
         public string cant_cuotas { get; set; }

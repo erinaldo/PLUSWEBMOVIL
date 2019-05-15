@@ -22,8 +22,10 @@ namespace CapaWeb.WebForms
 
         protected void Page_Load(object sender, EventArgs e)
         {
+           
             if (!IsPostBack)
             {
+               
                 Session.Remove("cliente");
 
                 if (Request.Cookies["ComPwm"] != null)
@@ -31,6 +33,18 @@ namespace CapaWeb.WebForms
                     string ComPwm = Request.Cookies["ComPwm"].Value;
 
                 }
+
+                if (Session["listaCliente"] != null)
+                {
+                    // recupera la variable de secion con el objeto persona   
+                    lista = (List<modelowmspctitulares>)Session["listaCliente"];
+                    Session["lista"] = lista;
+                    gvPerson.DataSource = lista;
+                    gvPerson.DataBind();
+
+                }
+
+
             }
 
         }
@@ -58,7 +72,7 @@ namespace CapaWeb.WebForms
             // Se obtiene la fila seleccionada del gridview
             //
             GridViewRow row = gvPerson.SelectedRow;
-
+            
             //
             // Obtengo el id de la entidad que se esta editando
             // en este caso de la entidad Person

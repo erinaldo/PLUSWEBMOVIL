@@ -40,15 +40,6 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox dniCliente;
         
         /// <summary>
-        /// Control Button3.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button3;
-        
-        /// <summary>
         /// Control cod_tit.
         /// </summary>
         /// <remarks>
@@ -67,6 +58,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox nombreCliente;
         
         /// <summary>
+        /// Control fonoCliente.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox fonoCliente;
+        
+        /// <summary>
         /// Control fecha.
         /// </summary>
         /// <remarks>
@@ -74,15 +74,6 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox fecha;
-        
-        /// <summary>
-        /// Control serie_docum.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList serie_docum;
         
         /// <summary>
         /// Control cod_costos.
@@ -94,13 +85,13 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.DropDownList cod_costos;
         
         /// <summary>
-        /// Control cod_moneda.
+        /// Control serie_docum.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cod_moneda;
+        protected global::System.Web.UI.WebControls.DropDownList serie_docum;
         
         /// <summary>
         /// Control cod_vendedor.
@@ -112,13 +103,13 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.DropDownList cod_vendedor;
         
         /// <summary>
-        /// Control ocompra.
+        /// Control cod_moneda.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ocompra;
+        protected global::System.Web.UI.WebControls.DropDownList cod_moneda;
         
         /// <summary>
         /// Control cod_fpago.
@@ -128,6 +119,24 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList cod_fpago;
+        
+        /// <summary>
+        /// Control ocompra.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ocompra;
+        
+        /// <summary>
+        /// Control nro_pedido.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox nro_pedido;
         
         /// <summary>
         /// Control porc_descto.
@@ -157,24 +166,6 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Button GuardarCabecera;
         
         /// <summary>
-        /// Control BuscarArticulo.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox BuscarArticulo;
-        
-        /// <summary>
-        /// Control Button4.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button4;
-        
-        /// <summary>
         /// Control Producto.
         /// </summary>
         /// <remarks>
@@ -191,6 +182,24 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label pvp;
+        
+        /// <summary>
+        /// Control lblCantidad.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCantidad;
+        
+        /// <summary>
+        /// Control BuscarArticulo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox BuscarArticulo;
         
         /// <summary>
         /// Control articulos.
@@ -211,12 +220,39 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox precio;
         
         /// <summary>
-        /// Control Grid4.
+        /// Control cantidad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DataGrid Grid4;
+        protected global::System.Web.UI.WebControls.TextBox cantidad;
+        
+        /// <summary>
+        /// Control AgregarProducto.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AgregarProducto;
+        
+        /// <summary>
+        /// Control Panel1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel1;
+        
+        /// <summary>
+        /// Control gvProducto.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvProducto;
     }
 }

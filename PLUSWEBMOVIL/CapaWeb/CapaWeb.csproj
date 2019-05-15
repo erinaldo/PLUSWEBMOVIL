@@ -138,8 +138,8 @@
     <Content Include="Web.config" />
     <Content Include="WebForms\BuscarArticulo.aspx" />
     <Content Include="WebForms\BuscarCliente.aspx" />
+    <Content Include="WebForms\CrearCliente.aspx" />
     <Content Include="WebForms\Factura.aspx" />
-    <Content Include="WebForms\FPagoPos.aspx" />
     <Content Include="WebForms\Inicio.aspx" />
     <Content Include="WebForms\prueba.aspx" />
   </ItemGroup>
@@ -167,19 +167,19 @@
     <Compile Include="WebForms\BuscarCliente.aspx.designer.cs">
       <DependentUpon>BuscarCliente.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\CrearCliente.aspx.cs">
+      <DependentUpon>CrearCliente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\CrearCliente.aspx.designer.cs">
+      <DependentUpon>CrearCliente.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\Factura.aspx.cs">
       <DependentUpon>Factura.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\Factura.aspx.designer.cs">
       <DependentUpon>Factura.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WebForms\FPagoPos.aspx.cs">
-      <DependentUpon>FPagoPos.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebForms\FPagoPos.aspx.designer.cs">
-      <DependentUpon>FPagoPos.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\Inicio.aspx.cs">
       <DependentUpon>Inicio.aspx</DependentUpon>

@@ -21,6 +21,7 @@ namespace CapaProceso.Consultas
             {
 
                 modelowmspcccostos item = new modelowmspcccostos();
+                item.descripcion = Convert.ToString(dr["cod_dpto"])+ " - "+ Convert.ToString(dr["nom_dpto"]);
                 item.cod_dpto = Convert.ToString(dr["cod_dpto"]);
                 item.nom_dpto = Convert.ToString(dr["nom_dpto"]);
                 item.activo = Convert.ToString(dr["activo"]);

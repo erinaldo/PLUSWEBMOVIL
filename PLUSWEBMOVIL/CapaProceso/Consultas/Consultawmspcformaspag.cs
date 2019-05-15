@@ -23,6 +23,7 @@ namespace CapaProceso.Consultas
             {
 
                 modelowmspcfpago item = new modelowmspcfpago();
+                item.descripcion = Convert.ToString(dr["cod_fpago"]) + " - " + Convert.ToString(dr["nom_fpago"]);
                 item.cod_fpago = Convert.ToString(dr["cod_fpago"]);
                 item.nom_fpago = Convert.ToString(dr["nom_fpago"]);
                 item.plazo_libre = Convert.ToString(dr["plazo_libre"]);

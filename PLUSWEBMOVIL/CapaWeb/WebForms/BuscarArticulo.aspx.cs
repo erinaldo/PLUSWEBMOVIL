@@ -35,8 +35,19 @@ namespace CapaWeb.WebForms
                     string ComPwm = Request.Cookies["ComPwm"].Value;
 
                 }
+                if (Session["listaProducto"] != null)
+                {
+                    // recupera la variable de secion con el objeto persona   
+                    listaArticulos = (List<modelowmspcarticulos>)Session["listaProducto"];
+                    Session["listaArticulos"] = listaArticulos;
+                    gvProducto.DataSource = listaArticulos;
+                    gvProducto.DataBind();
+
+                }
             }
         }
+
+       
         protected void TxtBuscarProducto_TextChanged(object sender, EventArgs e)
         {
             CargarGrilla(TxtBuscarProducto.Text);

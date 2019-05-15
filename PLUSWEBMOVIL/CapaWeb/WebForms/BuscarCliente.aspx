@@ -13,19 +13,23 @@
      <form id="form1" runat="server">
     <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="white">
        <tr>
-           <td colspan ="4">
+           <td colspan="4">
             
-
+               <asp:Label ID="Label1" runat="server" class="texto" Text="Label">Buscar Cliente</asp:Label>
                 
-                <h2 class="textos">Buscar Cliente</h2>
-                <asp:TextBox class="form-control" ID="TxtBuscarCliente" AutoPostBack="True"  OnTextChanged="TxtBuscarCliente_TextChanged" placeholder="Buscar..." runat="server" />
-               
+              </td>
+            <td colspan="4">
+                <asp:TextBox class="texto" size="40" maxlength="50"  ID="TxtBuscarCliente" AutoPostBack="True"  OnTextChanged="TxtBuscarCliente_TextChanged" placeholder="Identificación/ Nombre" runat="server" />
+           </tr>
+        <tr>
 
-           
-          
-            </br>
-        </br>
-                    <div>
+        </tr>   
+                <tr>
+                  <br />
+                    <br />  
+         
+       
+                   
 
                         <table border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#0E748A">
                             <tr>
@@ -38,7 +42,8 @@
                                         <Columns>
 
                                             <asp:BoundField DataField="nom_tit" HeaderText="Cliente" />
-                                            <asp:BoundField DataField="dir_tit" HeaderText="Dirección" />
+                                            <asp:BoundField DataField="nro_dgi1" HeaderText="Cédula" />
+                                            <asp:BoundField DataField="tel_tit" HeaderText="Teléfono" />
 
                                             <asp:ButtonField ButtonType="Button"  ControlStyle-CssClass="botones" CommandName="Select" HeaderText="Seleccionar" ShowHeader="True" Text="Seleccionar" />
 
@@ -53,11 +58,11 @@
                                 </td>
                             </tr>
                         </table>
-                    </div>
-
-          </table>
-        </form>
-       </td>
+         
            </tr>
+                              
+    </table>
+        </form>
+      
 </body>
 </html>
