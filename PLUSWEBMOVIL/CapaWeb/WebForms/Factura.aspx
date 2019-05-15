@@ -260,10 +260,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <table border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#0E748A">
+                        <%--<table border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#0E748A">
                             <tr>
                                 <td>
-                                    <asp:Panel ID="Panel1" runat="server" Height="300px" Width="100%" ScrollBars="Vertical">
+                                    <asp:Panel ID="Panel1" runat="server" Height="300px" Width="100%" ScrollBars="Auto">
 
                                         <asp:GridView ID="gvProducto" runat="server" AutoGenerateColumns="False"
                                             CellPadding="4" BackColor="#DD6D29"
@@ -288,7 +288,7 @@
 
                                 </td>
                             </tr>
-                        </table>
+                        </table>--%>
                     </td>
                 </tr>
             </table>

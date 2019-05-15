@@ -405,14 +405,7 @@ namespace CapaWeb.WebForms
 
         }
 
-        protected void gvProducto_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-            if (e.Row.RowType == DataControlRowType.DataRow)
-            {
-                if (e.Row.RowIndex == 0)
-                    e.Row.Style.Add("height", "60px");
-            }
-        }
+       
     }
 }
 
