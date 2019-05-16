@@ -257,6 +257,10 @@ namespace CapaWeb.WebForms {
 
         protected global::System.Web.UI.WebControls.TextBox iva;
         protected global::System.Web.UI.WebControls.TextBox porcdescto;
+        protected global::System.Web.UI.WebControls.TextBox txtSumaDesc;
+        protected global::System.Web.UI.WebControls.TextBox txtSumaIva;
+        protected global::System.Web.UI.WebControls.TextBox txtSumaSubTo;
+        protected global::System.Web.UI.WebControls.TextBox txtSumaTotal;
 
     }
 }

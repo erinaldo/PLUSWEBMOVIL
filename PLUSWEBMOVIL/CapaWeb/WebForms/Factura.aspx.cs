@@ -65,7 +65,10 @@ namespace CapaWeb.WebForms
         public string ArtB__compras = "0";
         public string ArtB__ventas = "S";
         public string numerador = "trans";
-
+        public decimal sumaTotal = 0;
+        public decimal sumaIva = 0;
+        public decimal sumaDescuento = 0;
+        public decimal sumaSubtotal = 0;
 
 
         protected void Page_Load(object sender, EventArgs e)
@@ -87,13 +90,15 @@ namespace CapaWeb.WebForms
                 articulos.Text = articulo.nom_articulo;
                 precio.Text = articulo.precio_total;
                 BuscarArticulo.Text = articulo.cod_articulo;
+                iva.Text = articulo.porc_impuesto;
+                porcdescto.Text = "0";
 
 
             }
             if (!IsPostBack)
             {
                 Session.Remove("articulo");
-
+                Session.Remove("sumaSubtotal");
                 Session.Remove("cliente");
                 DateTime hoy = DateTime.Today;
                 fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
@@ -155,49 +160,55 @@ namespace CapaWeb.WebForms
 
             if (Session["detalle"] == null)
             {               
-                
-               
-                modeloDetalleFactura = new List<ModeloDetalleFactura>();
-                item.cod_articulo = BuscarArticulo.Text;
-                item.nom_articulo = articulos.Text;
-                item.cantidad = Convert.ToDecimal(cantidad.Text);
-                item.precio_unit = Convert.ToDecimal(precio.Text);
-                item.porc_iva = Convert.ToDecimal(iva.Text);
-                item.porc_descto = Convert.ToDecimal(porcdescto.Text);
-                item.subtotal = Convert.ToDecimal(precio.Text) * Convert.ToDecimal(cantidad.Text);
-                
-                item.descuento = (item.subtotal * item.porc_descto)/ 100;
-                item.detadescuento = item.subtotal - item.descuento;
-                item.poriva = item.porc_iva / 100;
-                item.detaiva = item.detadescuento * item.poriva;
-                item.total = item.detadescuento + item.detaiva; 
-
-                modeloDetalleFactura.Add(item);
-                Session["detalle"] = modeloDetalleFactura;
-
+               modeloDetalleFactura = new List<ModeloDetalleFactura>();             
             }
             else
             {
                 modeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);
-                item.cod_articulo = BuscarArticulo.Text;
-                item.nom_articulo = articulos.Text;
-                item.cantidad = Convert.ToDecimal(cantidad.Text);
-                item.precio_unit = Convert.ToDecimal(precio.Text);
-                item.porc_iva = Convert.ToDecimal(iva.Text);
-                item.porc_descto = Convert.ToDecimal(porcdescto.Text);
-                item.subtotal = Convert.ToDecimal(precio.Text) * Convert.ToDecimal(cantidad.Text);
-
-                item.descuento = (item.subtotal * item.porc_descto) / 100;
-                item.detadescuento = item.subtotal - item.descuento;
-                item.poriva = item.porc_iva / 100;
-                item.detaiva = item.detadescuento * item.poriva;
-                item.total = item.detadescuento + item.detaiva;
-                modeloDetalleFactura.Add(item);
-                Session["detalle"] = modeloDetalleFactura;
-
             }
 
+            item.cod_articulo = BuscarArticulo.Text;
+            item.nom_articulo = articulos.Text;
+            item.cantidad = Convert.ToDecimal(cantidad.Text);
+            item.precio_unit = Convert.ToDecimal(precio.Text);
+            item.porc_iva = Convert.ToDecimal(iva.Text);
+            item.porc_descto = Convert.ToDecimal(porcdescto.Text);
+            item.subtotal = Convert.ToDecimal(precio.Text) * Convert.ToDecimal(cantidad.Text);
+            item.poriva = item.porc_iva / 100;
+
+            if(Session["sumaSubtotal"] != null)
+            {
+                sumaSubtotal = Convert.ToDecimal(Session["sumaSubtotal"]);
+            }
             
+            sumaSubtotal += item.subtotal;
+            Session["sumaSubtotal"] = sumaSubtotal.ToString();
+            txtSumaSubTo.Text = sumaSubtotal.ToString();
+
+            if (item.porc_descto == 0)
+            {
+                item.descuento = 0;
+                item.detadescuento = 0;
+                item.detaiva = item.subtotal * item.poriva;
+                item.subdos = item.subtotal;
+            }
+            else
+            {
+                item.descuento = item.porc_descto / 100;
+                item.detadescuento = item.subtotal - item.descuento;
+                item.detaiva = item.detadescuento * item.poriva;
+                item.subdos = item.subtotal - item.descuento;
+            }
+
+
+
+            item.total = item.subdos + item.detaiva;
+
+            modeloDetalleFactura.Add(item);
+            Session["detalle"] = modeloDetalleFactura;
+
+
+
 
             modeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);
             gvProducto.DataSource = modeloDetalleFactura;
@@ -208,6 +219,7 @@ namespace CapaWeb.WebForms
             precio.Text = "";
             iva.Text = "0";
             porcdescto.Text = "0";
+            cantidad.Text = "1";
         }
 
         
@@ -402,6 +414,8 @@ namespace CapaWeb.WebForms
                     articulos.Text = articulo.nom_articulo;
                     precio.Text = articulo.precio;
                     iva.Text = articulo.porc_impuesto;
+                    porcdescto.Text = "0";
+
 
                 }
             }
@@ -418,6 +432,18 @@ namespace CapaWeb.WebForms
             GridViewRow row = gvProducto.SelectedRow;
 
             modeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);
+           
+            if (Session["sumaSubtotal"] != null)
+            {
+                sumaSubtotal = Convert.ToDecimal(Session["sumaSubtotal"]);
+            }
+
+            sumaSubtotal -= Convert.ToDecimal(row.Cells[6].Text);
+            Session["sumaSubtotal"] = sumaSubtotal.ToString();
+            txtSumaSubTo.Text = sumaSubtotal.ToString();
+
+
+            
             modeloDetalleFactura.RemoveAt(row.RowIndex);
             Session["detalle"] = modeloDetalleFactura;
             modeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);

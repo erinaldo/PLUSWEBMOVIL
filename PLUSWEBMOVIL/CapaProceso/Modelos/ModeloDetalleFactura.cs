@@ -36,6 +36,7 @@ namespace CapaProceso.Modelos
         public decimal detaiva { get; set; }
         public decimal detasubtotal { get; set; }
         public decimal poriva { get; set; }
+        public decimal subdos{ get; set; }
 
     }
 }

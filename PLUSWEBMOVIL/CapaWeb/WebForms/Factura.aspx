@@ -212,7 +212,7 @@
                             <tr>
 
                                 <td>
-                                    <asp:TextBox ID="BuscarArticulo" runat="server"  placeholder="Buscar..."  size="20" MaxLength="50" AutoPostBack="True" OnTextChanged="BuscarArticulo_TextChanged"></asp:TextBox>
+                                    <asp:TextBox ID="BuscarArticulo" runat="server" required="required" placeholder="Buscar..."  size="20" MaxLength="50" AutoPostBack="True" OnTextChanged="BuscarArticulo_TextChanged"></asp:TextBox>
                                 </td>
 
                                 <td>
@@ -262,10 +262,13 @@
                                                 <asp:BoundField DataField="nom_articulo" HeaderText="Descripción" />
                                                 <asp:BoundField DataField="cantidad" HeaderText="Cantidad" />
                                                 <asp:BoundField DataField="precio_unit" HeaderText="Precio" />
+                                                <asp:BoundField DataField="subtotal"    HeaderText="Subtotal" />
                                                 <asp:BoundField DataField="detadescuento" HeaderText="% Descto" />
-                                                 <asp:BoundField DataField="detaiva" HeaderText="IVA" />
+                                                <asp:BoundField DataField="detaiva" HeaderText="IVA" />
                                                 <asp:BoundField DataField="total" HeaderText="Total" />
-                                                
+                                                <asp:ButtonField ButtonType="Button" ControlStyle-CssClass="botones" CommandName="Select" HeaderText="" ShowHeader="True" Text="Eliminar" >
+                                                <ControlStyle CssClass="botones" />
+                                                </asp:ButtonField>
                                             </Columns>
 
                                             <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />
@@ -275,6 +278,48 @@
                                         </asp:GridView>
                                     </asp:Panel>
 
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                   <tr>
+                    <td>
+
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#0E748A">
+                            <tr>
+                                
+                                
+                                <td>
+                                    <asp:Label ID="Label5" runat="server" Text="Descuento"></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:Label ID="Label6" runat="server" Text="Iva"></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:Label ID="Label4" runat="server" Text="SubTotal"></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:Label ID="Label3" runat="server" Text="Total"></asp:Label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <asp:TextBox ID="txtSumaDesc" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtSumaIva" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtSumaSubTo" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtSumaTotal" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
                                 </td>
                             </tr>
                         </table>
