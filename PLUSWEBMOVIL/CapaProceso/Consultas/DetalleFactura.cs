@@ -1,12 +1,23 @@
-﻿using System;
+﻿using CapaDatos.Sql;
+using CapaProceso.Modelos;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
-using CapaProceso.Modelos;
 
 namespace CapaProceso.Consultas
 {
    public  class DetalleFactura
     {
+        FacturaDetalle detalleFacturas = new FacturaDetalle();
+        ModeloDetalleFactura modeloDetFactura = new ModeloDetalleFactura();
+       
+
+        public string InsertarDetalleFactura(ModeloDetalleFactura detalleFactura)
+        {
+            string respuesta = detalleFacturas.InsertarDetalle(detalleFactura);
+            return respuesta;
+        }
     }
 }

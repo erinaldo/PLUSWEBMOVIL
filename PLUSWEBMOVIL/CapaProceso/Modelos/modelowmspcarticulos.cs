@@ -17,7 +17,7 @@ namespace CapaProceso.Modelos
         public string activo_com { get; set; }
         public string cod_tipoart { get; set; }
 
-        public string volumen_art { get; set; }
+        public Decimal volumen_art { get; set; }
         public string activo_cmp { get; set; }
         public string cod_concepret { get; set; }
         public string cod_cta_vtas { get; set; }

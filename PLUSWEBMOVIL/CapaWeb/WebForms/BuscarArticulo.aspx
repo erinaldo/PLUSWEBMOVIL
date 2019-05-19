@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="BuscarArticulo.aspx.cs" Inherits="CapaWeb.WebForms.BuscarArticulo" %>
-
+<link href="../Tema/css/modal.css" rel="stylesheet" />
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
