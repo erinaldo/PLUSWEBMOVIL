@@ -13,9 +13,9 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
         public string generarPdf()
         {
             string bpathPdfGenrado = "";
-
-
-
+            FileStream fs = new FileStream("F://PLUSCOLOMBIA/FACRURACIONLECTRONICA/PDF/factura.pdf", FileMode.Create);
+            Document document = new Document(iTextSharp.text.PageSize.LETTER, 0, 0, 0, 0);
+            //PdfWriter
 
 
 
