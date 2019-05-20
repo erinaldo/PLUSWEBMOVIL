@@ -30,7 +30,7 @@ namespace CapaProceso.Consultas
                 item.activo_stk = Convert.ToString(dr["activo_stk"]);
                 item.activo_com = Convert.ToString(dr["activo_com"]);
                 item.cod_tipoart = Convert.ToString(dr["cod_tipoart"]);
-                item.volumen_art = Convert.ToString(dr["volumen_art"]);
+                item.volumen_art = Convert.ToDecimal(dr["volumen_art"]);
                 item.activo_cmp = Convert.ToString(dr["activo_cmp"]);
                 item.cod_concepret = Convert.ToString(dr["cod_concepret"]);
                 item.cod_cta_vtas = Convert.ToString(dr["cod_cta_vtas"]);

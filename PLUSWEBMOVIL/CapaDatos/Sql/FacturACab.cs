@@ -13,6 +13,8 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
 
+        
+
         public SqlDataReader ConsultaCabezaraFactura(string cod_emp, string tipo)
         {
             cn = conexion.genearConexion();
@@ -24,6 +26,23 @@ namespace CapaDatos.Sql
             conmand.Parameters.Add("tipo", SqlDbType.VarChar).Value = tipo;
 
 
+            SqlDataReader dr = conmand.ExecuteReader();
+
+            return dr;
+
+        }
+        public SqlDataReader ConsultaFacturaNroTran(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        {
+            cn = conexion.genearConexion();
+
+            string consulta = ("wmspc_facturasWM_cab");
+            SqlCommand conmand = new SqlCommand(consulta, cn);
+            conmand.CommandType = CommandType.StoredProcedure;
+            conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = Ccf_usuario;
+            conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = Ccf_cod_emp;
+            conmand.Parameters.Add("@tipo1", SqlDbType.VarChar).Value = Ccf_tipo1;
+            conmand.Parameters.Add("@tipo2", SqlDbType.VarChar).Value = Ccf_tipo2;
+            conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = Ccf_nro_trans;
             SqlDataReader dr = conmand.ExecuteReader();
 
             return dr;
@@ -41,20 +60,16 @@ namespace CapaDatos.Sql
                 SqlCommand conmand = new SqlCommand(insert, cn);
 
                 conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = cabezeraFactura.cod_cliente;
-            conmand.Parameters.Add("@fec_doc", SqlDbType.Date).Value = cabezeraFactura.fec_doc;
-            
+                conmand.Parameters.Add("@fec_doc", SqlDbType.Date).Value = cabezeraFactura.fec_doc;
                 conmand.Parameters.Add("@dia", SqlDbType.VarChar).Value = cabezeraFactura.dia;
                 conmand.Parameters.Add("@mes", SqlDbType.VarChar).Value = cabezeraFactura.mes;
                 conmand.Parameters.Add("@anio", SqlDbType.VarChar).Value = cabezeraFactura.anio;
-                
-
                 conmand.Parameters.Add("@serie_docum", SqlDbType.VarChar).Value = cabezeraFactura.serie_docum;
                 conmand.Parameters.Add("@cod_ccostos", SqlDbType.VarChar).Value = cabezeraFactura.cod_ccostos;
                 conmand.Parameters.Add("@cod_vendedor", SqlDbType.VarChar).Value = cabezeraFactura.cod_vendedor;
                 conmand.Parameters.Add("@cod_fpago", SqlDbType.VarChar).Value = cabezeraFactura.cod_fpago;
                 conmand.Parameters.Add("@observaciones", SqlDbType.VarChar).Value = cabezeraFactura.observaciones;
                 conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = cabezeraFactura.nro_trans;
-               
                 conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cabezeraFactura.cod_emp;
                 conmand.Parameters.Add("@cod_docum", SqlDbType.VarChar).Value = cabezeraFactura.cod_docum;
                 conmand.Parameters.Add("@nro_docum", SqlDbType.VarChar).Value = cabezeraFactura.nro_docum;

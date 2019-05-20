@@ -84,9 +84,9 @@
     <Compile Include="Consultas\Consultawmspcmonedas.cs" />
     <Compile Include="Consultas\Consultawmspcresfact.cs" />
     <Compile Include="Consultas\Consultawmsptitulares.cs" />
+    <Compile Include="Consultas\Consultawmtfacturascab.cs" />
     <Compile Include="Consultas\Cosnsultawmspcarticulos.cs" />
     <Compile Include="Consultas\DetalleFactura.cs" />
-    <Compile Include="Modelos\ModeloDetalleFactura.cs" />
     <Compile Include="Modelos\modelonumerador.cs" />
     <Compile Include="Modelos\modelovendedores.cs" />
     <Compile Include="Modelos\modelowmspcarticulos.cs" />
@@ -95,6 +95,7 @@
     <Compile Include="Modelos\modelowmspcmonedas.cs" />
     <Compile Include="Modelos\modelowmspcresfact.cs" />
     <Compile Include="Modelos\modelowmspctitulares.cs" />
+    <Compile Include="Modelos\modelowmtfacturascab.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestCliente\ComprobanteFacturaJSON.cs" />
     <Compile Include="RestCliente\ConsumoRest.cs" />

@@ -13,17 +13,17 @@ namespace CapaProceso.Modelos
         public string nom_articulo2 { get; set; }
         public decimal cantidad { get; set; }
         public decimal precio_unit { get; set; }
-        public int base_imp { get; set; }
+        public decimal base_imp { get; set; }
         public decimal porc_iva { get; set; }
-        public decimal nro_trans { get; set; }
+        public string nro_trans { get; set; }
         public int linea { get; set; }
         public string cod_emp { get; set; }
         public string cod_concepret { get; set; }
         public decimal porc_descto { get; set; }
         public decimal valor_descto { get; set; }
-        public decimal cod_cta_vtas { get; set; }
-        public decimal cod_cta_cos { get; set; }
-        public decimal cod_cta_inve { get; set; }
+        public string cod_cta_vtas { get; set; }
+        public string cod_cta_cos { get; set; }
+        public string cod_cta_inve { get; set; }
         public string usuario_mod { get; set; }
         public string nro_audit { get; set; }
         public DateTime fecha_mod { get; set; }
