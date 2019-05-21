@@ -11,7 +11,7 @@ function abrir_ventana_total(x) {
 
 </script>
 <form runat="server">
-<p><a href="javascript:abrir_ventana_total('tu_pagina')">esto abre una ventana al 100%</a></p>
- <asp:Button runat="server" ID="btoSelec"  Text="Selecionar"  OnClientClick="window.open('./SelecBandera.aspx','MiPagina', 'top=300,width=650 ,height=210, left=350, status=no, scrollbars=no, toolbars=no, menubar=no');" />
+<p><a href="javascript:abrir_ventana_total('tu_pagina')">esto abre una ventana al 100%</a><asp:Button ID="Button1" target="_blank" runat="server" OnClick="Button1_Click"  Text="PDF" />
+    </p>
 </form>
 </asp:Content>

@@ -146,6 +146,7 @@
     <Content Include="WebForms\Factura.aspx" />
     <Content Include="WebForms\Inicio.aspx" />
     <Content Include="WebForms\prueba.aspx" />
+    <Content Include="WebForms\ReporteFactura.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GenerarPDF\FacturaElectronica\PdfFacturaElectronica.cs" />
@@ -206,6 +207,13 @@
     </Compile>
     <Compile Include="WebForms\prueba.aspx.designer.cs">
       <DependentUpon>prueba.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\ReporteFactura.aspx.cs">
+      <DependentUpon>ReporteFactura.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\ReporteFactura.aspx.designer.cs">
+      <DependentUpon>ReporteFactura.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
