@@ -1,7 +1,11 @@
-﻿using iTextSharp.text;
+﻿using Gma.QrCodeNet.Encoding;
+using Gma.QrCodeNet.Encoding.Windows.Render;
+using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -14,8 +18,10 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
         {
             
             string bpathPdfGenrado = "F://PLUSCOLOMBIA/FACRURACIONLECTRONICA/PDF/factura.pdf";
-            string qr = "F://PLUSCOLOMBIA/FACRURACIONLECTRONICA/PDF/qr.jpg";
-            
+            string qr = ImagenQR(bpathPdfGenrado);
+
+
+
             FileStream fs = new FileStream(bpathPdfGenrado, FileMode.Create);
             Document document = new Document(iTextSharp.text.PageSize.A4, 30, 30, 30, 30);
             PdfWriter pw = PdfWriter.GetInstance(document, fs);
@@ -45,6 +51,19 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
             document.Close();
 
             return bpathPdfGenrado;
+        }
+
+        public string ImagenQR(string texto)
+        {
+            string qrPath = "F://PLUSCOLOMBIA/FACRURACIONLECTRONICA/PDF/qrcode.png";
+
+            var qrEncoder = new QrEncoder(ErrorCorrectionLevel.H);
+            var qrCode = qrEncoder.Encode(texto);
+
+            var renderer = new GraphicsRenderer(new FixedModuleSize(5, QuietZoneModules.Two), Brushes.Black, Brushes.White);
+            using (var stream = new FileStream(qrPath, FileMode.Create))
+            renderer.WriteToStream(qrCode.Matrix, ImageFormat.Png, stream);
+            return qrPath;
         }
     }
 }

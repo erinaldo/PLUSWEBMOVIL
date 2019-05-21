@@ -11,7 +11,8 @@ function abrir_ventana_total(x) {
 
 </script>
 <form runat="server">
-<p><a href="javascript:abrir_ventana_total('tu_pagina')">esto abre una ventana al 100%</a><asp:Button ID="Button1" target="_blank" runat="server" OnClick="Button1_Click"  Text="PDF" />
+<p><a href="javascript:abrir_ventana_total('tu_pagina')">esto abre una ventana al 100%</a><asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="QR" />
+    <asp:Button ID="Button1" target="_blank" runat="server" OnClick="Button1_Click"  Text="PDF" />
     </p>
 </form>
 </asp:Content>
