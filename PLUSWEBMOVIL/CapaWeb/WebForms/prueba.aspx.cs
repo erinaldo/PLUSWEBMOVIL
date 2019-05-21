@@ -6,6 +6,7 @@ using Gma.QrCodeNet.Encoding;
 using Gma.QrCodeNet.Encoding.Windows.Render;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Text;
 
 namespace CapaWeb.WebForms
 {
@@ -27,7 +28,12 @@ namespace CapaWeb.WebForms
 
         protected void Button2_Click(object sender, EventArgs e)
         {
+            string bpathPdfGenrado = "F://PLUSCOLOMBIA/FACRURACIONLECTRONICA/PDF/factura.pdf";
+
+            byte[] pdfBytes = File.ReadAllBytes(bpathPdfGenrado);
+            string pdfBase64 = Convert.ToBase64String(pdfBytes);
             
+            Label1.Text = pdfBase64;
         }
     }
 }
