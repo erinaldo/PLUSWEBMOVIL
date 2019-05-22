@@ -8,6 +8,7 @@ namespace CapaProceso.Modelos
    public  class modelowmtfacturascab
     {
         //consulta cabecera por nro_trans procedimiento wmtfacturascab
+        public string observacion { get; set; }
         public string nro_trans { get; set; }
         public string cod_emp { get; set; }
         public string fec_doc { get; set; }

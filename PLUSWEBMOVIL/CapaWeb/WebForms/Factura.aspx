@@ -12,13 +12,27 @@
             } else {             
                 respuesta = true;
             }
-
-            if (precio == null || precio == "") {
-                alert("Ingrese el artículo");
+            if (cantidad == null || cantidad == "" || cantidad <= 0) {
+                alert("Ingrese cantidad");
                 respuesta = false;
             } else {
                 respuesta = true;
             }
+            
+            if (porcdescto < 0 || porcdescto == "") {
+                alert("Descuento no puede ser menor que cero");
+                respuesta = false;
+            } else {
+                respuesta = true;
+            }
+            if (precio == null || precio == "" || precio <= 0) {
+                alert("Ingrese precio");
+                respuesta = false;
+            } else {
+                respuesta = true;
+            }
+
+
 
             return respuesta
         }
@@ -240,7 +254,7 @@
                                     <asp:TextBox ID="cantidad" CssClass="textos"  min="1" step="0.01" type="number" value="1" Width="60px" runat="server"></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="precio"   CssClass="textos"  type="number" min="0.01" step="0.01" value="0" runat="server" Width="100px"></asp:TextBox>
+                                    <asp:TextBox ID="precio"   CssClass="textos"  type="number"  step="0.01" value="0" runat="server" Width="100px"></asp:TextBox>
                                 </td>
                                  <td>
                                     <asp:TextBox ID="porcdescto" CssClass="textos" min="0" step="0.01" type="number" value="0"  Width="60px" runat="server"></asp:TextBox>
@@ -283,7 +297,7 @@
                                                 <asp:BoundField DataField="detadescuento" HeaderText="% Descto" />
                                                 <asp:BoundField DataField="detaiva" HeaderText="IVA" />
                                                 <asp:BoundField DataField="total" HeaderText="Total" />
-                                                <asp:ButtonField ButtonType="Button" ControlStyle-CssClass="botones" CommandName="Select" HeaderText="" ShowHeader="True" Text="Eliminar" >
+                                                <asp:ButtonField ButtonType="Image" ControlStyle-CssClass="botones" CommandName="Select" HeaderText="" ShowHeader="True" ImageUrl="~/Tema/imagenes/delete.png">
                                                 <ControlStyle CssClass="botones" />
                                                 </asp:ButtonField>
                                             </Columns>
@@ -342,12 +356,35 @@
                                 </td>
                                 
                             </tr>
-                            <tr>
-                                <td>
-                                    <asp:Button ID="GuardarDetalle" runat="server" OnClick="GuardarDetalle_Click"  Text="Salvar" />
+                            
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table>
+                               <tr>
+                                <td >
+                                    <asp:Button ID="GuardarDetalle" CssClass="botones" runat="server" OnClick="GuardarDetalle_Click"  Text="Salvar" />
                                 </td>
+                                <td >
+                                    <asp:Button ID="Cancelar" CssClass="botones" runat="server" onclick="Cancelar_Click" Text="Cancelar" />
+                                </td>
+                    
                             </tr>
                         </table>
+                    </td>
+                </tr>
+                          
+                <tr>
+                    <td>
+
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <asp:Button ID="Confirmar"  class="btnAzul" runat="server" Text="Confirmar" />
                     </td>
                 </tr>
                 <tr>

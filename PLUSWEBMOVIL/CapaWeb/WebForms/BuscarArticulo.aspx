@@ -34,9 +34,7 @@
                                                 <asp:BoundField  DataField="cod_articulo" HeaderText="Código" />
                                                 <asp:BoundField  DataField="nom_articulo" HeaderText="Descripción" />
                                                 <asp:BoundField  DataField="porc_impuesto" HeaderText="% IVA" />
-                                                <asp:BoundField  DataField="precio" HeaderText="P.V.P" />
-                                                <asp:BoundField  DataField="valor_impu" HeaderText="I.V.A" />
-                                                <asp:BoundField  DataField="precio_total" HeaderText="Total" />
+                                                <asp:BoundField  DataField="precio_total" HeaderText="P.V.P" />
                                                 <asp:ButtonField ButtonType="Button"  ControlStyle-CssClass="botones" CommandName="Select" HeaderText="Seleccionar" ShowHeader="True" Text="Seleccionar" />
                                             </Columns>
                                               <FooterStyle BackColor="#CC0066" Font-Bold="True" ForeColor="White" />

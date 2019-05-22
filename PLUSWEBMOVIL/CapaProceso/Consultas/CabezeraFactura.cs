@@ -19,5 +19,11 @@ namespace CapaProceso.Consultas
             return respuesta;
         }
 
+
+        public string EliminarCabDetFactura(string nro_trans)
+        {
+            string respuesta = factura.EliminarCabDetFactura(nro_trans);
+            return respuesta;
+        }
     }
 }

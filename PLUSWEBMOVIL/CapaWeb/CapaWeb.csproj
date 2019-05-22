@@ -130,6 +130,7 @@
     <Content Include="Tema\imagenes\search.png" />
     <Content Include="Tema\imagenes\Seguridad.png" />
     <Content Include="Tema\imagenes\Titulo_Superior.png" />
+    <Content Include="Tema\imagenes\trash.png" />
     <Content Include="Tema\imagenes\unlock.png" />
     <Content Include="Tema\imagenes\user.png" />
     <Content Include="Tema\imagenes\version.png" />
@@ -138,6 +139,7 @@
     <Content Include="Web.config" />
     <Content Include="WebForms\BuscarArticulo.aspx" />
     <Content Include="WebForms\BuscarCliente.aspx" />
+    <Content Include="WebForms\BuscarFacturas.aspx" />
     <Content Include="WebForms\CrearCliente.aspx" />
     <Content Include="WebForms\Factura.aspx" />
     <Content Include="WebForms\Inicio.aspx" />
@@ -166,6 +168,13 @@
     </Compile>
     <Compile Include="WebForms\BuscarCliente.aspx.designer.cs">
       <DependentUpon>BuscarCliente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarFacturas.aspx.cs">
+      <DependentUpon>BuscarFacturas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarFacturas.aspx.designer.cs">
+      <DependentUpon>BuscarFacturas.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\CrearCliente.aspx.cs">
       <DependentUpon>CrearCliente.aspx</DependentUpon>

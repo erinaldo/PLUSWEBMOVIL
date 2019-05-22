@@ -57,6 +57,7 @@
     <Compile Include="Sql\CMonedas.cs" />
     <Compile Include="Sql\Documento.cs" />
     <Compile Include="Sql\Empresa.cs" />
+    <Compile Include="Sql\EstadosFactura.cs" />
     <Compile Include="Sql\FacturACab.cs" />
     <Compile Include="Sql\FacturaDetalle.cs" />
     <Compile Include="Sql\Fpagos.cs" />

@@ -71,8 +71,19 @@ namespace CapaWeb.WebForms
         public string Ccf_cod_emp = "04";
         public string Ccf_usuario = "desarrollo";
         public string Ccf_tipo1 = "C";
-        public string Ccf_tipo2 = "FV";
-        public string Ccf_nro_trans ="0";
+        public string Ccf_tipo2 = "VTA";
+        public string Ccf_nro_trans = "0";
+        public string Ccf_estado = "";
+        public string Ccf_cliente = "";
+        public string Ccf_cod_docum = "";
+        public string Ccf_serie_docum = "";
+        public string Ccf_nro_docum = "";
+        public string Ccf_diai = "";
+        public string Ccf_mesi = "";
+        public string Ccf_anioi = "";
+        public string Ccf_diaf = "";
+        public string Ccf_mesf = "";
+        public string Ccf_aniof = "";
         public string numerador = "trans";
         public decimal sumaTotal = 0;
         public decimal sumaIva = 0;
@@ -99,7 +110,7 @@ namespace CapaWeb.WebForms
                 articulos.Text = articulo.nom_articulo;
                 precio.Text = articulo.precio_total;
                 BuscarArticulo.Text = articulo.cod_articulo;
-                iva.Text = articulo.porc_impuesto;
+                iva.Text =(articulo.porc_impuesto);
                 porcdescto.Text = "0";
 
 
@@ -196,10 +207,10 @@ namespace CapaWeb.WebForms
                     /*Suma detalle*/
 
                     itemSuma.cantidad += Convert.ToDecimal(cantidad.Text);
-                    itemSuma.precio_unit = Convert.ToDecimal(precio.Text);
-                    itemSuma.porc_iva = Convert.ToDecimal(iva.Text);
-                    itemSuma.porc_descto = Convert.ToDecimal(porcdescto.Text);
-                    itemSuma.subtotal = itemSuma.precio_unit  * itemSuma.cantidad;
+                    itemSuma.precio_unit = Math.Round(Convert.ToDecimal(precio.Text), 2);
+                    itemSuma.porc_iva = Math.Round(Convert.ToDecimal(iva.Text), 0);
+                    itemSuma.porc_descto = Math.Round(Convert.ToDecimal(porcdescto.Text), 0);
+                    itemSuma.subtotal = Math.Round((itemSuma.precio_unit  * itemSuma.cantidad), 2);
                     itemSuma.poriva = itemSuma.porc_iva / 100;
 
                     if (Session["sumaSubtotal"] != null)
@@ -215,16 +226,16 @@ namespace CapaWeb.WebForms
                     {
                         itemSuma.descuento = 0;
                         itemSuma.detadescuento = 0;
-                        itemSuma.detaiva = itemSuma.subtotal * itemSuma.poriva;
+                        itemSuma.detaiva =Math.Round(( itemSuma.subtotal * itemSuma.poriva), 0);
                         itemSuma.subdos = itemSuma.subtotal;
                         itemSuma.total = itemSuma.subdos + itemSuma.detaiva; //Suma total
                     }
                     else
                     {
                         itemSuma.descuento = itemSuma.porc_descto / 100;
-                        itemSuma.detadescuento = itemSuma.subtotal - itemSuma.descuento;
-                        itemSuma.detaiva = itemSuma.detadescuento * itemSuma.poriva;
-                        itemSuma.subdos = itemSuma.subtotal - itemSuma.descuento;
+                        itemSuma.detadescuento = Math.Round((itemSuma.subtotal - itemSuma.descuento), 2);
+                        itemSuma.detaiva = Math.Round((itemSuma.detadescuento * itemSuma.poriva), 0);
+                        itemSuma.subdos = Math.Round((itemSuma.subtotal - itemSuma.descuento),2);
                         itemSuma.total = itemSuma.subdos + itemSuma.detaiva; //Suma total
                     }
 
@@ -267,10 +278,10 @@ namespace CapaWeb.WebForms
                 item.nom_articulo2 = articulos.Text;
                 item.cod_ccostos = cod_costos.SelectedValue;
                 item.cantidad = Convert.ToDecimal(cantidad.Text);
-                item.precio_unit = Convert.ToDecimal(precio.Text);
-                item.porc_iva = Convert.ToDecimal(iva.Text);
-                item.porc_descto = Convert.ToDecimal(porcdescto.Text);
-                item.subtotal = Convert.ToDecimal(precio.Text) * Convert.ToDecimal(cantidad.Text);
+                item.precio_unit = Math.Round(Convert.ToDecimal(precio.Text), 2);
+                item.porc_iva = Math.Round(Convert.ToDecimal(iva.Text), 0);
+                item.porc_descto = Math.Round(Convert.ToDecimal(porcdescto.Text), 0);
+                item.subtotal = Math.Round(Convert.ToDecimal(precio.Text) * Convert.ToDecimal(cantidad.Text), 2);
                 item.poriva = item.porc_iva / 100;
 
                 if (Session["sumaSubtotal"] != null)
@@ -286,17 +297,17 @@ namespace CapaWeb.WebForms
                 {
                     item.descuento = 0;
                     item.detadescuento = 0;
-                    item.detaiva = item.subtotal * item.poriva;
+                    item.detaiva = Math.Round(item.subtotal * item.poriva , 0);
                     item.subdos = item.subtotal;
-                    item.total = item.subdos + item.detaiva; //Suma total
+                    item.total = Math.Round(item.subdos + item.detaiva , 2); //Suma total
                 }
                 else
                 {
                     item.descuento = item.porc_descto / 100;
-                    item.detadescuento = item.subtotal - item.descuento;
-                    item.detaiva = item.detadescuento * item.poriva;
-                    item.subdos = item.subtotal - item.descuento;
-                    item.total = item.subdos + item.detaiva; //Suma total
+                    item.detadescuento = Math.Round( item.subtotal - item.descuento , 0);
+                    item.detaiva = Math.Round(item.detadescuento * item.poriva , 2);
+                    item.subdos = Math.Round(item.subtotal - item.descuento, 2);
+                    item.total = Math.Round(item.subdos + item.detaiva , 2); //Suma total
                 }
 
                 if (Session["sumaIva"] != null)
@@ -356,7 +367,7 @@ namespace CapaWeb.WebForms
            
             //consulta nro_auditoria de la cabecera
             string Ccf_nro_trans = valor_asignado;
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+            listaConsCab = ConsultaCabe.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof); 
             int count = 0;
             conscabcera = null;
             foreach (modelowmtfacturascab item in listaConsCab)
@@ -378,7 +389,7 @@ namespace CapaWeb.WebForms
 
                 if (conscabcera == null)
                 {
-                    BuscarArticulo.Text = "No existe el cliente";
+                    BuscarArticulo.Text = "No existe el producto";
                 }
                 else
                 {
@@ -392,9 +403,20 @@ namespace CapaWeb.WebForms
         }
         public void InsertarCabecera()
         {
-            //obtener numero de transaccion
-            nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
-             valor_asignado = nrotrans.valor_asignado;
+            if (Session["valor_asignado"] != null)
+            {
+                 GuardarCabezera.EliminarCabDetFactura(Session["valor_asignado"].ToString());
+                valor_asignado = Session["valor_asignado"].ToString();
+            }
+            else
+            {
+                //obtener numero de transaccion
+                nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
+                valor_asignado = nrotrans.valor_asignado;
+                //Guardar N° transaccion 
+                Session["valor_asignado"] = valor_asignado;
+            }
+
             DateTime Fecha = Convert.ToDateTime(fecha.Text);
             //obtener cliente
             string error = "";
@@ -607,8 +629,7 @@ namespace CapaWeb.WebForms
         {
            
           InsertarDetalle();
-          
-           
+                    
         }
 
 
@@ -665,6 +686,7 @@ namespace CapaWeb.WebForms
 
         protected void GuardarDetalle_Click(object sender, EventArgs e)
         {
+            //Salvar cabecera
             GuardarDetalle();
         }
 
@@ -687,6 +709,10 @@ namespace CapaWeb.WebForms
             return articulo;
         }
 
+        protected void Cancelar_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("BuscarFacturas.aspx");
+        }
     }
 }
 
