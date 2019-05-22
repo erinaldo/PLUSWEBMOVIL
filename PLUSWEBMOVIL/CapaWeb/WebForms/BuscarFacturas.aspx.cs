@@ -53,7 +53,7 @@ namespace CapaWeb.WebForms
             estados.DataValueField = "estado";
             estados.DataBind();
 
-            estados.Items.Insert(0, new ListItem("TODOS", "TODOS"));
+            estados.Items.Insert(0, new ListItem("TODOS", "0"));
             estados.SelectedIndex = 0;
 
         }
@@ -73,7 +73,7 @@ namespace CapaWeb.WebForms
         }
         private void CargarGrilla()
         {
-            /*DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
+            DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
             DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
             string Ccf_cliente = txtCliente.Text;
             string Ccf_serie_docum = txtSerie.Text;
@@ -83,7 +83,7 @@ namespace CapaWeb.WebForms
             string Ccf_anioi = Fechainicio.Year.ToString();
             string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
             string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
-            string Ccf_aniof = Fechafin.Year.ToString();*/
+            string Ccf_aniof = Fechafin.Year.ToString();
 
 
             listaConsCab = ConsultaCabe.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
@@ -117,6 +117,38 @@ namespace CapaWeb.WebForms
         }
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
+            //Escoger opcion
+            
+            int Id;
+
+            switch (e.CommandName) //ultilizo la variable para la opcion
+            {
+
+                case "Editar": //ejecuta el codigo si el usuario ingresa el numero 1
+                    Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+
+                    Response.Redirect("Container.aspx" + Id.ToString() + "TRN"+ "UPD");
+                    break;//termina la ejecucion del programa despues de ejecutar el codigo
+
+                case "Eliminar": //ejecuta el codigo si el usuario ingresa el numero 2
+                    Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+
+                       Response.Redirect("Container.aspx" + Id.ToString() + "TRN" + "DLT");
+                    break;
+
+                case "Imprimir": //ejecuta el codigo si el usuario ingresa el numero 3
+                    Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+
+                    Response.Redirect("Container.aspx" + Id.ToString() + "TRN" + "IMP");
+                    break;
+                case "Ver": //ejecuta el codigo si el usuario ingresa el numero 3
+                    Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+
+                    //2 voy a agregando los valores que deseo
+                    Response.Redirect("Ver.aspx" + Id.ToString());
+                    break;
+ 
         }
+    }
         }
 }

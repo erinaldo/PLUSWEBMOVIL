@@ -5,6 +5,8 @@
         function validarCamposArticulo(){
             var BuscarArticulo = document.getElementById("<%= BuscarArticulo.ClientID %>").value;
             var precio = document.getElementById("<%= precio.ClientID %>").value;
+            var cantidad = document.getElementById("<%= cantidad.ClientID %>").value;
+            var porcdescto = document.getElementById("<%= porcdescto.ClientID %>").value;
             var respuesta;
             if (BuscarArticulo == null || BuscarArticulo == "") {
                 alert("Ingrese el artículo");
@@ -38,7 +40,7 @@
         }
 
         function FechaActual() {
-
+            var respuesta;
             var fechaActual = document.getElementById("<%= fecha.ClientID %>").value;
 
         }
@@ -95,13 +97,22 @@
                                 </td>
                             </tr>
                             <tr valign="top">
+                                    <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Correo:</div>
+                                </td>
+                                <td>
+                                    <label>
+                                        <asp:TextBox ID="txtcorreo"  Width="202" class="textos" runat="server"></asp:TextBox>
+
+                                    </label>
+                                </td>
                                 
                                 <td align="right" nowrap="nowrap" class="busqueda">
                                     <div align="left">Fecha:</div>
                                 </td>
                                 <td>
 
-                                    <asp:TextBox ID="fecha" type="date" onkeyup="FechaActual();" Width="202" required="required" value="today" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="fecha" type="date" onkeyup="FechaActual();" Width="248" required="required" value="today" runat="server"></asp:TextBox>
 
                                 </td>
 
@@ -110,20 +121,11 @@
                                 </td>
                                 <td>
 
-                                    <asp:DropDownList class="textos" Width="252" name="cod_fpago" ID="cod_fpago" runat="server">
+                                    <asp:DropDownList class="textos" Width="209" name="cod_fpago" ID="cod_fpago" runat="server">
                                     </asp:DropDownList>
                                 </td>
 
-                                 <td align="right" nowrap="nowrap" class="busqueda">
-                                    <div align="left">Serie Documento:</div>
-                                </td>
-                                <td>
-                                    <label>
-                                        <asp:DropDownList class="textos" name="serie_docum" Width="210" ID="serie_docum" runat="server">
-                                        </asp:DropDownList>
-
-                                    </label>
-                                </td>
+                                 
                                 
 
                             </tr>
@@ -160,8 +162,7 @@
                             </tr>
 
                             <tr valign="top">
-                                
-                                <td align="right" nowrap="nowrap" class="busqueda">
+                                 <td align="right" nowrap="nowrap" class="busqueda">
                                     <div align="left">O.Compra:</div>
                                 </td>
                                 <td>
@@ -170,6 +171,7 @@
 
                                     </label>
                                 </td>
+                               
                                  <td align="right" nowrap="nowrap" class="busqueda">
                                     <div align="left">Vendedor:</div>
                                 </td>
@@ -178,18 +180,32 @@
                                     <asp:DropDownList class="textos" Width="252" name="cod_vendedor" ID="cod_vendedor" runat="server">
                                     </asp:DropDownList>
                                 </td>
-                                 <td align="right" valign="top" nowrap="nowrap" class="busqueda">
-                                    <div align="left">% Descuento:</div>
+                                 <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Serie Documento:</div>
                                 </td>
-                                <td valign="top">
+                                <td>
                                     <label>
-                                        <asp:TextBox ID="porc_descto" class="textos" value="0" Width="205" name="porc_descto" runat="server"></asp:TextBox>
+                                        <asp:DropDownList class="textos" name="serie_docum" Width="210" ID="serie_docum" runat="server">
+                                        </asp:DropDownList>
 
                                     </label>
                                 </td>
                             </tr>
-                           
+                           <tr>
+                               <td align="right" valign="top" nowrap="nowrap" class="busqueda">
+                                    <div align="left">% Descuento:</div>
+                                </td>
+                                <td valign="top">
+                                    <label>
+                                        <asp:TextBox ID="porc_descto" class="textos" value="0" Width="202" name="porc_descto" runat="server"></asp:TextBox>
+
+                                    </label>
+                                </td>
+                                
+                              
+                           </tr>
                             <tr>
+                                
                                 <td align="right" valign="top" nowrap="nowrap" class="busqueda">
                                     <div align="left">Observaciones:</div>
                                 </td>

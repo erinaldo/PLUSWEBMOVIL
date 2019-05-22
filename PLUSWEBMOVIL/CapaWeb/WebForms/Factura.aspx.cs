@@ -100,6 +100,7 @@ namespace CapaWeb.WebForms
                 nombreCliente.Text = cliente.nom_tit;
                 dniCliente.Text = cliente.nro_dgi1;
                 fonoCliente.Text = cliente.tel_tit;
+                txtcorreo.Text = cliente.email_tit;
 
             }
 
@@ -205,18 +206,41 @@ namespace CapaWeb.WebForms
                 {
                     existe = true;
                     /*Suma detalle*/
-
-                    itemSuma.cantidad += Convert.ToDecimal(cantidad.Text);
-                    itemSuma.precio_unit = Math.Round(Convert.ToDecimal(precio.Text), 2);
-                    itemSuma.porc_iva = Math.Round(Convert.ToDecimal(iva.Text), 0);
-                    itemSuma.porc_descto = Math.Round(Convert.ToDecimal(porcdescto.Text), 0);
-                    itemSuma.subtotal = Math.Round((itemSuma.precio_unit  * itemSuma.cantidad), 2);
-                    itemSuma.poriva = itemSuma.porc_iva / 100;
-
+                    /*Recupero varibales de secion*/
                     if (Session["sumaSubtotal"] != null)
                     {
                         sumaSubtotal = Convert.ToDecimal(Session["sumaSubtotal"]);
                     }
+                   
+                    if (Session["sumaDescuento"] != null)
+                    {
+                        sumaDescuento = Convert.ToDecimal(Session["sumaDescuento"]);
+                    }
+
+                    if (Session["sumaIva"] != null)
+                    {
+                        sumaIva = Convert.ToDecimal(Session["sumaIva"]);
+                    }
+
+                    if (Session["sumaTotal"] != null)
+                    {
+                        sumaTotal = Convert.ToDecimal(Session["sumaTotal"]);
+                    }
+                    /* Resto los totales antes de agregar un nuevo por que puede haber variado el precio*/
+                    sumaSubtotal -= itemSuma.subtotal;
+                    sumaDescuento -= itemSuma.detadescuento;
+                    sumaIva -= itemSuma.detaiva;
+                    sumaTotal -= itemSuma.total;
+
+                    /* sumo los numebos valores agregados al producto*/
+                    itemSuma.cantidad += Convert.ToDecimal(cantidad.Text);
+                    itemSuma.precio_unit = Math.Round(Convert.ToDecimal(precio.Text), 2);
+                    itemSuma.porc_iva = Math.Round(Convert.ToDecimal(iva.Text), 0);
+                    itemSuma.porc_descto = Math.Round(Convert.ToDecimal(porcdescto.Text), 0);
+                    itemSuma.subtotal = Math.Round((itemSuma.precio_unit * itemSuma.cantidad), 2);
+                    itemSuma.poriva = itemSuma.porc_iva / 100;
+
+                    
 
                     sumaSubtotal += itemSuma.subtotal;
                     Session["sumaSubtotal"] = sumaSubtotal.ToString();
@@ -226,7 +250,7 @@ namespace CapaWeb.WebForms
                     {
                         itemSuma.descuento = 0;
                         itemSuma.detadescuento = 0;
-                        itemSuma.detaiva =Math.Round(( itemSuma.subtotal * itemSuma.poriva), 0);
+                        itemSuma.detaiva = Math.Round(( itemSuma.subtotal * itemSuma.poriva), 0);
                         itemSuma.subdos = itemSuma.subtotal;
                         itemSuma.total = itemSuma.subdos + itemSuma.detaiva; //Suma total
                     }
@@ -239,34 +263,20 @@ namespace CapaWeb.WebForms
                         itemSuma.total = itemSuma.subdos + itemSuma.detaiva; //Suma total
                     }
 
-                    if (Session["sumaIva"] != null)
-                    {
-                        sumaIva = Convert.ToDecimal(Session["sumaIva"]);
-                    }
-                    sumaIva += itemSuma.detaiva;
-                    Session["sumaIva"] = sumaIva.ToString();
-                    txtSumaIva.Text = sumaIva.ToString();
-
-                    if (Session["sumaDescuento"] != null)
-                    {
-                        sumaDescuento = Convert.ToDecimal(Session["sumaDescuento"]);
-                    }
-
                     sumaDescuento += itemSuma.detadescuento;
                     Session["sumaDescuento"] = sumaDescuento.ToString();
                     txtSumaDesc.Text = sumaDescuento.ToString();
 
+                    sumaIva += itemSuma.detaiva;
+                    Session["sumaIva"] = sumaIva.ToString();
+                    txtSumaIva.Text = sumaIva.ToString();           
 
-
-                    if (Session["sumaTotal"] != null)
-                    {
-                        sumaTotal = Convert.ToDecimal(Session["sumaTotal"]);
-                    }
                     sumaTotal += itemSuma.total;
                     Session["sumaTotal"] = sumaTotal.ToString();
                     txtSumaTotal.Text = sumaTotal.ToString();                   
 
                     /*Suma detalle*/
+
                     break;
                 }
             }
@@ -329,10 +339,7 @@ namespace CapaWeb.WebForms
 
 
 
-                if (Session["sumaTotal"] != null)
-                {
-                    sumaTotal = Convert.ToDecimal(Session["sumaTotal"]);
-                }
+                
                 sumaTotal += item.total;
                 Session["sumaTotal"] = sumaTotal.ToString();
                 txtSumaTotal.Text = sumaTotal.ToString();
@@ -563,6 +570,7 @@ namespace CapaWeb.WebForms
                     nombreCliente.Text = cliente.nom_tit;
                     fonoCliente.Text = cliente.tel_tit;
                     dniCliente.Text = cliente.nro_dgi1;
+                    txtcorreo.Text = cliente.email_tit;
                 }
             }
 

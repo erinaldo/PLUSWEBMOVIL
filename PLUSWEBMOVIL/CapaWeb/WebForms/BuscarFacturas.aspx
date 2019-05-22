@@ -81,14 +81,12 @@
                         <table border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#0E748A">
                             <tr>
                                 <td>
-                                    <asp:Panel ID="Panel1" runat="server" Height="250px" Width="100%" ScrollBars="Auto">
-                                        
-
+                                                                  
                                     <asp:DataGrid ID="Grid" runat="server" onrowcreated="GriTipoUsuario_RowCreated"
                                         onrowcommand="GriTipoUsuario_RowCommand"
                                         AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
                                         OnItemCommand="Grid_ItemCommand" AllowSorting="True" ShowFooter="True"
-                                        OnPageIndexChanged="Grid_PageIndexChanged" PageSize="8" CellPadding="1" GridLines="Horizontal" BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px">
+                                        OnPageIndexChanged="Grid_PageIndexChanged" PageSize="9" CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1">
 
 
                                         <Columns>
@@ -124,6 +122,7 @@
                                                         <asp:Label ID="descripcion" runat="server" Text='<%#Eval("observacion") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
+                                                <ItemStyle Font-Bold="False" Font-Italic="False" Font-Overline="False" Font-Strikeout="False" Font-Underline="False" HorizontalAlign="Center" />
                                             </asp:TemplateColumn>
 
                                             <asp:TemplateColumn HeaderText="ESTADO">
