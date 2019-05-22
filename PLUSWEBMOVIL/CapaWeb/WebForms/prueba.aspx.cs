@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using CapaDatos.Sql;
+
+using CapaWeb.GenerarPDF.FacturaElectronica;
+using System.IO;
+using Gma.QrCodeNet.Encoding;
+using Gma.QrCodeNet.Encoding.Windows.Render;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Text;
 
 namespace CapaWeb.WebForms
 {
@@ -12,8 +14,26 @@ namespace CapaWeb.WebForms
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+            
+
+
         }
-   
+
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            string url = "ReporteFactura.aspx";
+            Response.Write("<script>window.open('"+ url + "')</script>");
         }
+
+        protected void Button2_Click(object sender, EventArgs e)
+        {
+            string bpathPdfGenrado = "F://PLUSCOLOMBIA/FACRURACIONLECTRONICA/PDF/factura.pdf";
+
+            byte[] pdfBytes = File.ReadAllBytes(bpathPdfGenrado);
+            string pdfBase64 = Convert.ToBase64String(pdfBytes);
+            
+            Label1.Text = pdfBase64;
+        }
+    }
 }

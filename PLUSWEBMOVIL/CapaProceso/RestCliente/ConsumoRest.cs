@@ -55,7 +55,12 @@ namespace CapaProceso.RestCliente
                 jsonRespuestaDE.error = response.Content;
             }
 
-            return "Error " + jsonRespuestaDE.error + "\nqrdata " + jsonRespuestaDE.qrdata;
+            string base64Encoded = jsonRespuestaDE.xml;
+            string base64Decoded;
+            byte[] data = Convert.FromBase64String(base64Encoded);
+            base64Decoded = ASCIIEncoding.ASCII.GetString(data);
+
+            return "Error: " + jsonRespuestaDE.error + "\nqrdata: " + jsonRespuestaDE.qrdata + "\nxml: " + base64Decoded;
         }
 
         public ComprobanteFacturaJSON LlenarJSONFactura()
@@ -136,6 +141,8 @@ namespace CapaProceso.RestCliente
 
             return tercero;
         }
+
+
 
     }
 }
