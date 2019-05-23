@@ -236,7 +236,11 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button AgregarProducto;
-        
+        protected global::System.Web.UI.WebControls.Button Cancelar;
+        protected global::System.Web.UI.WebControls.Button Confirmar;
+        protected global::System.Web.UI.WebControls.Button btnGuardarDetalle;
+
+
         /// <summary>
         /// Control Panel1.
         /// </summary>

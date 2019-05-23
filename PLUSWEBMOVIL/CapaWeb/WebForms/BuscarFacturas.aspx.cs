@@ -70,7 +70,14 @@ namespace CapaWeb.WebForms
 
         protected void NuevaFactura_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Factura.aspx");
+            //1 primero creo un objeto Clave/Valor de QueryString 
+            QueryString qs = new QueryString();
+
+            //2 voy a agregando los valores que deseo
+            qs.Add("TRN", "INS");
+            qs.Add("Id", "");
+            Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
+           
         }
         private void CargarGrilla()
         {
@@ -142,16 +149,20 @@ namespace CapaWeb.WebForms
                 case "Imprimir": //ejecuta el codigo si el usuario ingresa el numero 3
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
 
-                    Response.Redirect("Container.aspx" + Id.ToString() + "TRN" + "IMP");
+                    //2 voy a agregando los valores que deseo
+                    qs.Add("TRN", "IMP");
+                    qs.Add("Id", Id.ToString());
+                    Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
                     break;
                 case "Ver": //ejecuta el codigo si el usuario ingresa el numero 3
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
 
                     //2 voy a agregando los valores que deseo
-                    Response.Redirect("Ver.aspx" + Id.ToString());
+                    qs.Add("TRN", "VER");
+                    qs.Add("Id", Id.ToString());
+                    Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
                     break;
- 
-        }
+            }
     }
         }
 }

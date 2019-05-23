@@ -19,6 +19,7 @@ namespace CapaWeb.WebForms
         ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
         CabezeraFactura GuardarCabezera = new CabezeraFactura();
         DetalleFactura GuardarDetalles = new DetalleFactura();
+        Consultaconfirmarfactura ConfirmarFactura = new Consultaconfirmarfactura();
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
         Consultawmtfacturasdet ConsultaDeta = new Consultawmtfacturasdet();
 
@@ -27,6 +28,7 @@ namespace CapaWeb.WebForms
         modelowmspcarticulos articulo = new modelowmspcarticulos();
         modelocabecerafactura cabecerafactura = new modelocabecerafactura();
         modelonumerador nrotrans = new modelonumerador();
+        modeloinsertarconfirmar confirmarinsertar = new modeloinsertarconfirmar();
         ModeloDetalleFactura detallefactura = new ModeloDetalleFactura();
         modelowmtfacturascab conscabcera = new modelowmtfacturascab();
         ModeloDetalleFactura consdetalle = new ModeloDetalleFactura();
@@ -42,6 +44,7 @@ namespace CapaWeb.WebForms
         List<modelowmtfacturascab> listaConsCab = null;
         List<ModeloDetalleFactura> listaConsDetalle = null;
         List<ModeloDetalleFactura> ModeloDetalleFactura = new List<ModeloDetalleFactura>();
+        List<modeloinsertarconfirmar> modeloinsertarconfirmar = new List<modeloinsertarconfirmar>();
 
         public string valor_asignado = null;
         public string Ven__usuario = "desarrollo";
@@ -149,7 +152,7 @@ namespace CapaWeb.WebForms
 
                     case "INS":
                         cargarListaDesplegables();
-
+                        Session.Remove("listaCliente");
                         Session.Remove("valor_asignado");
                         DateTime hoy = DateTime.Today;
                         fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
@@ -160,8 +163,17 @@ namespace CapaWeb.WebForms
                         Session["valor_asignado"] = id.ToString();
 
                         cargarListaDesplegables();
-                        LlenarFormulario();                        
+                        LlenarFactura();                        
 
+                        break;
+
+                    case "VER":
+                        Int64 ide = Int64.Parse(qs["Id"].ToString());
+                        Session["valor_asignado"] = ide.ToString();
+
+                        cargarListaDesplegables();
+                        LlenarFactura();
+                        BloquearFactura();
                         break;
                 }
 
@@ -171,7 +183,41 @@ namespace CapaWeb.WebForms
             }
         }
 
-        protected void LlenarFormulario()
+        protected void BloquearFactura()
+        {
+            //inhabilitar cajas de texto cabecera factura
+            dniCliente.Enabled = false;
+            nombreCliente.Enabled = false;
+            fonoCliente.Enabled = false;
+            txtcorreo.Enabled = false;
+            fecha.Enabled = false;
+            cod_fpago.Enabled = false;
+            nro_pedido.Enabled = false;
+            cod_costos.Enabled = false;
+            serie_docum.Enabled = false;
+            ocompra.Enabled = false;
+            area.Enabled = false;
+            porc_descto.Enabled = false;
+            cmbCod_moneda.Enabled = false;
+            cod_vendedor.Enabled = false;
+            txtSumaSubTo.Enabled = false;
+            txtSumaTotal.Enabled = false;
+            txtSumaIva.Enabled = false;
+            txtSumaDesc.Enabled = false;
+            gvProducto.Enabled = false;
+            //botones
+            AgregarProducto.Enabled = false;
+            Confirmar.Visible = false;
+            btnGuardarDetalle.Visible = false;
+            //detalle producto
+            BuscarArticulo.Enabled = false;
+            articulos.Enabled = false;
+            cantidad.Enabled = false;
+            precio.Enabled = false;
+            porcdescto.Enabled = false;
+            iva.Enabled = false;
+        }
+        protected void LlenarFactura()
         {
             //llenar formulario para la actualizacion de datos
                           
@@ -207,7 +253,10 @@ namespace CapaWeb.WebForms
                 DateTime dtfec_doc = Convert.ToDateTime(conscabcera.fec_doc);                
                 fecha.Text = dtfec_doc.ToString("yyyy-MM-dd");
                 cod_fpago.SelectedValue = conscabcera.cod_fpago;
-                        // nro_pedido.Text = conscabcera.pe
+                // nro_pedido.Text = conscabcera.pe
+                area.Text = conscabcera.observaciones;
+                ocompra.Text = conscabcera.ocompra;
+                porc_descto.Text = Convert.ToString(conscabcera.porc_descto);
                         cod_costos.SelectedValue = conscabcera.cod_ccostos;                       
                         cmbCod_moneda.SelectedValue = conscabcera.cod_moneda;
                         cod_vendedor.SelectedValue = conscabcera.cod_vendedor;
@@ -474,9 +523,9 @@ namespace CapaWeb.WebForms
             
         }
 
-        public void BuscarCabecera()
+        public modelowmtfacturascab BuscarCabecera()
         {
-           
+           //Busca el nro de auditoria para poder insertar el detalle factura
             //consulta nro_auditoria de la cabecera
             string Ccf_nro_trans = valor_asignado;
             listaConsCab = ConsultaCabe.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof); 
@@ -486,32 +535,13 @@ namespace CapaWeb.WebForms
             {
                 count++;
                 conscabcera = item;
-
             }
 
             if (count > 1)
             {
-
-                mensaje.Text = "inconsistencia";
-                    
-
-            }
-            else
-            {
-
-                if (conscabcera == null)
-                {
-                    BuscarArticulo.Text = "No existe el producto";
-                }
-                else
-                {
-
-                    auditoria = conscabcera.nro_audit;
-
-                }
-            }
-
-            
+                mensaje.Text = "Factura no encontrada";
+            }           
+            return conscabcera;
         }
         public void InsertarCabecera()
         {
@@ -591,15 +621,21 @@ namespace CapaWeb.WebForms
 
         }
 
-        public void GuardarDetalle()
+        public modelowmtfacturascab GuardarDetalle()
         {
+            string error;
+            //Busca en gv_producto todos los items añadidos que estan en la variable de session detalle
             ModeloDetalleFactura = new List<ModeloDetalleFactura>();
 
             ModeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);
            
-           
+                //Insertar primero la cabecera
                 InsertarCabecera();
-                BuscarCabecera();
+            //Busca el nro de auditoria
+            conscabcera = null;
+            conscabcera = BuscarCabecera();
+           
+            //Va añadiendo linea por linea al modelo insertar detalle factura
                 int contarLinea = 0;
                 foreach (var item in ModeloDetalleFactura)
                 {
@@ -621,25 +657,27 @@ namespace CapaWeb.WebForms
                     detallefactura.cod_cta_cos = item.cod_cta_cos;
                     detallefactura.cod_cta_inve = item.cod_cta_inve;
                     detallefactura.usuario_mod = Vend__usuario ;
-                    detallefactura.nro_audit = auditoria;
+                    detallefactura.nro_audit = conscabcera.nro_audit;
                     detallefactura.fecha_mod = DateTime.Today;
                     detallefactura.tasa_iva = item.tasa_iva;
                     detallefactura.cod_ccostos = item.cod_ccostos;
 
-                    GuardarDetalles.InsertarDetalleFactura(detallefactura);
-
+                error = GuardarDetalles.InsertarDetalleFactura(detallefactura);
+                if (string.IsNullOrEmpty(error))
+                {
 
                 }
-            
+                else
+                {
+                    this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+                   
+                }
 
-        }
+            }
+            return conscabcera;
+           }
 
-   
-
-      
-
-
-       
+        
         protected void dniCliente_TextChanged(object sender, EventArgs e)
         {
             string Ven__cod_tit = dniCliente.Text;
@@ -740,7 +778,7 @@ namespace CapaWeb.WebForms
 
         protected void AgregarProducto_Click(object sender, EventArgs e)
         {
-           
+         //Agrega el producto a la grilla gv_Producto  
           InsertarDetalle();
                     
         }
@@ -799,8 +837,9 @@ namespace CapaWeb.WebForms
 
         protected void GuardarDetalle_Click(object sender, EventArgs e)
         {
-            //Salvar cabecera
+            //Boton Salvar
             GuardarDetalle();
+
         }
 
         public modelowmspcarticulos BuscarProducto(string ArtB__articulo)
@@ -825,6 +864,25 @@ namespace CapaWeb.WebForms
         protected void Cancelar_Click(object sender, EventArgs e)
         {
             Response.Redirect("BuscarFacturas.aspx");
+        }
+
+        protected void Confirmar_Click(object sender, EventArgs e)
+        {
+            
+                //Boton Coonfirmar hace lo mismo que el salvar solo aumenta la insercion a la tabla wmt_facturas_ins
+                conscabcera = null;
+                conscabcera = GuardarDetalle();
+
+                confirmarinsertar.nro_trans = conscabcera.nro_trans;
+                confirmarinsertar.cod_emp = conscabcera.cod_emp;
+                confirmarinsertar.usuario_mod = Vend__usuario;
+                confirmarinsertar.fecha_mod = DateTime.Now;
+                confirmarinsertar.nro_audit = conscabcera.nro_audit;
+
+                 ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
+                
+            
+
         }
     }
 }

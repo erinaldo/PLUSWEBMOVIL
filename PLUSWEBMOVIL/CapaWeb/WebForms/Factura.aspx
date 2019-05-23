@@ -377,11 +377,11 @@
                         <table>
                                <tr>
                                 <td >
-                                    <asp:Button ID="GuardarDetalle" Class="btnFactura1"  runat="server" OnClick="GuardarDetalle_Click"  Text="Salvar" />
+                                    <asp:Button ID="btnGuardarDetalle" Class="btnFactura1"  runat="server" OnClick="GuardarDetalle_Click"  Text="Salvar" />
                                 </td>
                                 <td >
-                                    <asp:Button ID="Cancelar" Class="btnFactura1"  runat="server" onclick="Cancelar_Click" Text="Cancelar" />
-                        <asp:Button ID="Confirmar"  Class="btnFactura1" runat="server" Text="Confirmar" />
+                                    <asp:Button ID="Cancelar" Class="btnFactura1"  runat="server" onclick="Cancelar_Click" UseSubmitBehavior="False" Text="Cancelar" />
+                                    <asp:Button ID="Confirmar"  Class="btnFactura1" runat="server" OnClientClick="return confirm('desea guardar la factura?');" OnClick="Confirmar_Click" Text="Confirmar" />
                                 </td>
                     
                             </tr>

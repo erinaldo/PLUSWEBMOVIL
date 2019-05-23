@@ -131,7 +131,7 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@cod_proc_aud", SqlDbType.VarChar).Value = cabezeraFactura.cod_proc_aud;
 
                 int dr = conmand.ExecuteNonQuery();
-                return "Cabezera de factura guardada correctamente";
+                return "";
            }
             catch (Exception e)
             {

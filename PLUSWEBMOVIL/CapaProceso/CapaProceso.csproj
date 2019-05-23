@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Consultas\CabezeraFactura.cs" />
+    <Compile Include="Consultas\Consultaconfirmarfactura.cs" />
     <Compile Include="Consultas\Consultaestadosfactura.cs" />
     <Compile Include="Consultas\ConsultaNumerador.cs" />
     <Compile Include="Consultas\Consultavendedores.cs" />
