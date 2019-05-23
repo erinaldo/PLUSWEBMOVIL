@@ -10,11 +10,12 @@ using System.IO;
 using System.Linq;
 using System.Web;
 
+
 namespace CapaWeb.GenerarPDF.FacturaElectronica
 {
     public class PdfFacturaElectronica
     {
-        public string generarPdf()
+        public string generarPdf( )
         {
             
             string bpathPdfGenrado = "F://PLUSCOLOMBIA/FACRURACIONLECTRONICA/PDF/factura.pdf";
@@ -27,15 +28,9 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
             PdfWriter pw = PdfWriter.GetInstance(document, fs);
 
            
-            Paragraph title = new Paragraph();
-            title.Font = FontFactory.GetFont(FontFactory.TIMES, 18f, BaseColor.BLUE);
-            title.Add("Hola Mundo!!");
-            title.Alignment = Element.ALIGN_CENTER;
+            
             document.Open();
-            document.Add(title);
-            document.Add(new Paragraph("Hola Mundo!!"));
-            document.Add(new Paragraph("Parrafo 1"));
-            document.Add(new Paragraph("Parrafo 2"));
+            
 
             // Creamos la imagen y le ajustamos el tamaño
             iTextSharp.text.Image imagen = iTextSharp.text.Image.GetInstance(qr);
@@ -46,8 +41,56 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
             imagen.ScalePercent(percentage * 100);
 
             // Insertamos la imagen en el documento
-            document.Add(imagen);
+            //document.Add(imagen);
 
+
+            PdfPTable table = new PdfPTable(3);//cantidad de columnas que va tener la tabla
+            table.WidthPercentage = 100;
+            PdfPCell cell = new PdfPCell();
+
+            cell = cabezera("FACTURA VENTA");
+
+            cell.Colspan = 3;
+           
+            cell.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right            
+
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("Col 1 Row 1"));
+
+            cell.BorderWidthBottom = 0;
+            cell.BorderWidthLeft = 1;
+            cell.BorderWidthTop = 0;
+            cell.BorderWidthRight = 0;
+
+
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("Col 1 Row 1"));
+            cell.Border = 0;
+
+            table.AddCell(cell);
+
+            table.AddCell(imagen);
+
+            table.AddCell("Col 1 Row 2");
+
+            table.AddCell("Col 2 Row 2");
+
+           
+
+            
+
+            PdfPTable testTable = new PdfPTable(2);
+            PdfPCell c2;
+            testTable.AddCell("aaaa");
+            testTable.AddCell("bbbb");
+
+            c2 = new PdfPCell(testTable);//this line made the difference
+
+            table.AddCell(c2);
+
+            document.Add(table);
             document.Close();
 
             return bpathPdfGenrado;
@@ -64,6 +107,24 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
             using (var stream = new FileStream(qrPath, FileMode.Create))
             renderer.WriteToStream(qrCode.Matrix, ImageFormat.Png, stream);
             return qrPath;
+        }
+
+        public PdfPCell cabezera(string mensaje)
+        {
+            Paragraph contenido = new Paragraph();
+            contenido.Font = FontFactory.GetFont(FontFactory.TIMES, 18f, BaseColor.BLACK);
+
+            contenido.Add(mensaje);
+            contenido.Alignment = Element.ALIGN_CENTER;
+
+            PdfPCell cell = new PdfPCell(contenido);
+
+            cell.BorderWidthBottom = 0;
+            cell.BorderWidthLeft = 1;
+            cell.BorderWidthTop = 1;
+            cell.BorderWidthRight = 1;
+
+            return cell;
         }
     }
 }
