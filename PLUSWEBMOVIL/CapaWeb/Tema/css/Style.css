@@ -1,4 +1,28 @@
-﻿
+﻿/* === boton personalizado === */
+
+.contenedor1{
+	background: url(../imagenes//version.png) no-repeat center ;
+	height: 80px;
+	width: 100%;
+}
+
+.btnFactura1 {
+  -webkit-border-radius: 5;
+  -moz-border-radius: 5;
+  border-radius: 5px;
+  font-family: Arial;
+  color: #FFFFFF;
+  font-size: 14px;
+  background: #DD6D29;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.btnFactura1:hover {
+  background: #e67737;
+  text-decoration: none;
+}
 /* === Inicio de pagina === */
 a:link {	text-decoration: none;
 	color: #0E748A;

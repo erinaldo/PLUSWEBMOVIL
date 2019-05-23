@@ -109,7 +109,7 @@ namespace CapaWeb.WebForms {
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cod_moneda;
+        protected global::System.Web.UI.WebControls.DropDownList cmbCod_moneda;
         
         /// <summary>
         /// Control cod_fpago.
@@ -236,7 +236,11 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button AgregarProducto;
-        
+        protected global::System.Web.UI.WebControls.Button Cancelar;
+        protected global::System.Web.UI.WebControls.Button Confirmar;
+        protected global::System.Web.UI.WebControls.Button btnGuardarDetalle;
+
+
         /// <summary>
         /// Control Panel1.
         /// </summary>
@@ -261,6 +265,7 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox txtSumaIva;
         protected global::System.Web.UI.WebControls.TextBox txtSumaSubTo;
         protected global::System.Web.UI.WebControls.TextBox txtSumaTotal;
+        protected global::System.Web.UI.WebControls.TextBox txtcorreo;
         protected global::System.Web.UI.WebControls.DropDownList ListaCCostos;
 
     }

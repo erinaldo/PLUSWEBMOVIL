@@ -123,18 +123,12 @@
 
         <tr>
             <td>
-                <table border="0" cellspacing="0" cellpadding="0" width="100%">
-                    <tr>
-                        <td>
-                            <img src="../Tema/imagenes/version.png" alt="Version" border="0" /></td>
-                        <td align="right"><span id="siteseal">
-                            <script async type="text/javascript" src="https://seal.starfieldtech.com/getSeal?sealID=GLZk7IZ70bn0PSCGC1QHZQgsLDOUt4YBxd2FhY9Gb07hNqDShY93DUuJrUof"></script>
-                        </span></td>
-                    </tr>
-                </table>
+               <div class="contenedor1"></div>
             </td>
         </tr>
     </table>
 </body>
 </html>
+
+<script async type="text/javascript" src="https://seal.starfieldtech.com/getSeal?sealID=GLZk7IZ70bn0PSCGC1QHZQgsLDOUt4YBxd2FhY9Gb07hNqDShY93DUuJrUof"></script>
 

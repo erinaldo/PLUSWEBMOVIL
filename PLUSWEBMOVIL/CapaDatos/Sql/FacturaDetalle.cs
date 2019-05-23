@@ -14,8 +14,8 @@ namespace CapaDatos.Sql
         public SqlConnection cn = null;
         public string InsertarDetalle(ModeloDetalleFactura detalleFactura)
         {
-           // try
-            //{
+            try
+            {
                 cn = conexion.genearConexion();
 
                 string insert = "INSERT INTO  wmt_facturas_det (nom_articulo, nom_articulo2, cantidad, precio_unit, base_imp, porc_iva, nro_trans, linea, cod_emp, cod_articulo, cod_concepret, porc_descto, valor_descto, cod_cta_vtas, cod_cta_cos, cod_cta_inve, usuario_mod, nro_audit, fecha_mod, tasa_iva, cod_ccostos) VALUES (@nom_articulo, @nom_articulo2, @cantidad, @precio_unit, @base_imp, @porc_iva, @nro_trans, @linea, @cod_emp, @cod_articulo, @cod_concepret, @porc_descto, @valor_descto, @cod_cta_vtas, @cod_cta_cos, @cod_cta_inve, @usuario_mod, @nro_audit, @fecha_mod, @tasa_iva, @cod_ccostos)";
@@ -42,14 +42,29 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@tasa_iva", SqlDbType.VarChar).Value = detalleFactura.tasa_iva;
                 conmand.Parameters.Add("@cod_ccostos", SqlDbType.VarChar).Value = detalleFactura.cod_ccostos;
                 int dr = conmand.ExecuteNonQuery();
-                return "Detalle de factura guardada correctamente";
-           /* }
+                return "Factura salvada correctamente";
+            }
             catch (Exception e)
             {
 
                 return e.ToString();
-            }*/
+            }
 
+        }
+
+        public SqlDataReader ConsultaDetalleFactura(string nro_trans)
+        {
+            cn = conexion.genearConexion();
+            string consulta = "SELECT * FROM dbo.wmt_facturas_det WHERE nro_trans =@nro_trans ORDER BY linea ASC";
+            SqlCommand conmand = new SqlCommand(consulta, cn);
+
+            conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
+           
+
+
+            SqlDataReader dr = conmand.ExecuteReader();
+
+            return dr;
         }
     }
 }

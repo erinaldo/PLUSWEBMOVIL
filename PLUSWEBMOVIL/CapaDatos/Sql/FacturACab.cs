@@ -13,7 +13,34 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
 
-        
+        public string EliminarCabDetFactura(string nro_trans)
+        {
+            try
+            {
+                string mensaje = "Eliminacion correctamente";
+
+            cn = conexion.genearConexion();
+
+            string delete = "DELETE FROM wmt_facturas_det WHERE nro_trans =  @nro_trans ";
+            SqlCommand conmand = new SqlCommand(delete, cn);
+            conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+            conmand.ExecuteNonQuery();
+
+
+            string delete1 = "DELETE FROM wmt_facturas_cab WHERE nro_trans = @nro_trans ";
+            conmand = new SqlCommand(delete1, cn);
+            conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+            conmand.ExecuteNonQuery();
+
+            return  mensaje;
+            }
+            catch (Exception e)
+            {
+
+                return e.ToString();
+            }
+
+        }
 
         public SqlDataReader ConsultaCabezaraFactura(string cod_emp, string tipo)
         {
@@ -31,7 +58,7 @@ namespace CapaDatos.Sql
             return dr;
 
         }
-        public SqlDataReader ConsultaFacturaNroTran(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        public SqlDataReader ConsultaFacturaNroTran(  string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string Ccf_estado, string Ccf_cliente, string Ccf_cod_docum,string Ccf_serie_docum, string Ccf_nro_docum ,string Ccf_diai, string Ccf_mesi, string Ccf_anioi, string Ccf_diaf,string Ccf_mesf, string Ccf_aniof)
         {
             cn = conexion.genearConexion();
 
@@ -43,9 +70,22 @@ namespace CapaDatos.Sql
             conmand.Parameters.Add("@tipo1", SqlDbType.VarChar).Value = Ccf_tipo1;
             conmand.Parameters.Add("@tipo2", SqlDbType.VarChar).Value = Ccf_tipo2;
             conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = Ccf_nro_trans;
+            conmand.Parameters.Add("@estado", SqlDbType.VarChar).Value = Ccf_estado;
+            conmand.Parameters.Add("@cliente", SqlDbType.VarChar).Value = Ccf_cliente;
+            conmand.Parameters.Add("@cod_docum", SqlDbType.VarChar).Value = Ccf_cod_docum;
+            conmand.Parameters.Add("@serie_docum", SqlDbType.VarChar).Value = Ccf_serie_docum;
+            conmand.Parameters.Add("@nro_docum", SqlDbType.VarChar).Value = Ccf_nro_docum;
+            conmand.Parameters.Add("@diai", SqlDbType.VarChar).Value = Ccf_diai;
+            conmand.Parameters.Add("@mesi", SqlDbType.VarChar).Value = Ccf_mesi;
+            conmand.Parameters.Add("@anioi", SqlDbType.VarChar).Value = Ccf_anioi;
+            conmand.Parameters.Add("@diaf", SqlDbType.VarChar).Value = Ccf_diaf;
+            conmand.Parameters.Add("@mesf", SqlDbType.VarChar).Value = Ccf_mesf;
+            conmand.Parameters.Add("@aniof", SqlDbType.VarChar).Value = Ccf_aniof;
+
             SqlDataReader dr = conmand.ExecuteReader();
 
             return dr;
+
 
         }
 
@@ -91,7 +131,7 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@cod_proc_aud", SqlDbType.VarChar).Value = cabezeraFactura.cod_proc_aud;
 
                 int dr = conmand.ExecuteNonQuery();
-                return "Cabezera de factura guardada correctamente";
+                return "";
            }
             catch (Exception e)
             {

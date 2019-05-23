@@ -81,6 +81,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Consultas\CabezeraFactura.cs" />
+    <Compile Include="Consultas\Consultaconfirmarfactura.cs" />
+    <Compile Include="Consultas\Consultaestadosfactura.cs" />
     <Compile Include="Consultas\ConsultaNumerador.cs" />
     <Compile Include="Consultas\Consultavendedores.cs" />
     <Compile Include="Consultas\Consultawmspccostos.cs" />
@@ -89,8 +91,10 @@
     <Compile Include="Consultas\Consultawmspcresfact.cs" />
     <Compile Include="Consultas\Consultawmsptitulares.cs" />
     <Compile Include="Consultas\Consultawmtfacturascab.cs" />
+    <Compile Include="Consultas\Consultawmtfacturasdet.cs" />
     <Compile Include="Consultas\Cosnsultawmspcarticulos.cs" />
     <Compile Include="Consultas\DetalleFactura.cs" />
+    <Compile Include="Modelos\modeloestadosfactura.cs" />
     <Compile Include="Modelos\modelonumerador.cs" />
     <Compile Include="Modelos\modelovendedores.cs" />
     <Compile Include="Modelos\modelowmspcarticulos.cs" />
