@@ -51,5 +51,20 @@ namespace CapaDatos.Sql
             }
 
         }
+
+        public SqlDataReader ConsultaDetalleFactura(string nro_trans)
+        {
+            cn = conexion.genearConexion();
+            string consulta = "SELECT * FROM dbo.wmt_facturas_det WHERE nro_trans =@nro_trans ORDER BY linea ASC";
+            SqlCommand conmand = new SqlCommand(consulta, cn);
+
+            conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
+           
+
+
+            SqlDataReader dr = conmand.ExecuteReader();
+
+            return dr;
+        }
     }
 }

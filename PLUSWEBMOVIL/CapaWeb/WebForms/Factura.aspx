@@ -39,11 +39,7 @@
             return respuesta
         }
 
-        function FechaActual() {
-            var respuesta;
-            var fechaActual = document.getElementById("<%= fecha.ClientID %>").value;
-
-        }
+       
     </script>
 
 
@@ -153,7 +149,7 @@
                                 <td>
                                     <label>
 
-                                        <asp:DropDownList class="textos" name="cod_moneda" Width="210" ID="cod_moneda" runat="server">
+                                        <asp:DropDownList class="textos" name="cmbCod_moneda" Width="210" ID="cmbCod_moneda" runat="server">
                                         </asp:DropDownList>
                                     </label>
                                 </td>
@@ -381,10 +377,11 @@
                         <table>
                                <tr>
                                 <td >
-                                    <asp:Button ID="GuardarDetalle" CssClass="botones" runat="server" OnClick="GuardarDetalle_Click"  Text="Salvar" />
+                                    <asp:Button ID="GuardarDetalle" Class="btnFactura1"  runat="server" OnClick="GuardarDetalle_Click"  Text="Salvar" />
                                 </td>
                                 <td >
-                                    <asp:Button ID="Cancelar" CssClass="botones" runat="server" onclick="Cancelar_Click" Text="Cancelar" />
+                                    <asp:Button ID="Cancelar" Class="btnFactura1"  runat="server" onclick="Cancelar_Click" Text="Cancelar" />
+                        <asp:Button ID="Confirmar"  Class="btnFactura1" runat="server" Text="Confirmar" />
                                 </td>
                     
                             </tr>
@@ -392,17 +389,8 @@
                     </td>
                 </tr>
                           
-                <tr>
-                    <td>
-
-                        <hr />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <asp:Button ID="Confirmar"  class="btnAzul" runat="server" Text="Confirmar" />
-                    </td>
-                </tr>
+                
+                
                 <tr>
                     <td>
 

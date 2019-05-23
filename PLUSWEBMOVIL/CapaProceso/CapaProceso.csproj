@@ -90,6 +90,7 @@
     <Compile Include="Consultas\Consultawmspcresfact.cs" />
     <Compile Include="Consultas\Consultawmsptitulares.cs" />
     <Compile Include="Consultas\Consultawmtfacturascab.cs" />
+    <Compile Include="Consultas\Consultawmtfacturasdet.cs" />
     <Compile Include="Consultas\Cosnsultawmspcarticulos.cs" />
     <Compile Include="Consultas\DetalleFactura.cs" />
     <Compile Include="Modelos\modeloestadosfactura.cs" />

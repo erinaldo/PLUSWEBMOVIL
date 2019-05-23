@@ -155,8 +155,10 @@
     <Content Include="WebForms\ReporteFactura.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Urlencriptacion\Encryption.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\PdfFacturaElectronica.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Urlencriptacion\QueryString.cs" />
     <Compile Include="RestCliente\consumorest.aspx.cs">
       <DependentUpon>consumorest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

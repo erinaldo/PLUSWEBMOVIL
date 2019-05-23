@@ -29,7 +29,7 @@ namespace CapaProceso.Consultas
                 item.cod_emp = Convert.ToString(dr["cod_emp"]);
                 item.fec_doc = Convert.ToString(dr["fec_doc"]);
                 item.aniomes = Convert.ToString(dr["aniomes"]);
-                item.cod_docum = Convert.ToString(dr["nom_fpago"]);
+                item.cod_docum = Convert.ToString(dr["cod_docum"]);
                 item.serie_docum = Convert.ToString(dr["serie_docum"]);
                 item.nro_docum = Convert.ToString(dr["nro_docum"]);
                 item.cod_cliente = Convert.ToString(dr["cod_cliente"]);

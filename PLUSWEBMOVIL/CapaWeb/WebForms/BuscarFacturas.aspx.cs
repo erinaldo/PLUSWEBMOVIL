@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CapaProceso.Consultas;
 using CapaProceso.Modelos;
 using System.Web.UI.WebControls;
+using CapaWeb.Urlencriptacion;
 
 namespace CapaWeb.WebForms
 {
@@ -117,8 +118,10 @@ namespace CapaWeb.WebForms
         }
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
+            //1 primero creo un objeto Clave/Valor de QueryString 
+            QueryString qs = new QueryString();
             //Escoger opcion
-            
+
             int Id;
 
             switch (e.CommandName) //ultilizo la variable para la opcion
@@ -127,14 +130,14 @@ namespace CapaWeb.WebForms
                 case "Editar": //ejecuta el codigo si el usuario ingresa el numero 1
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
 
-                    Response.Redirect("Container.aspx" + Id.ToString() + "TRN"+ "UPD");
-                    break;//termina la ejecucion del programa despues de ejecutar el codigo
+                    //2 voy a agregando los valores que deseo
+                    qs.Add("TRN", "UDP");
+                    qs.Add("Id", Id.ToString());
 
-                case "Eliminar": //ejecuta el codigo si el usuario ingresa el numero 2
-                    Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+                    Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    break;//termina la ejecucion del programa despues de ejecutar el codigo                   
 
-                       Response.Redirect("Container.aspx" + Id.ToString() + "TRN" + "DLT");
-                    break;
+                
 
                 case "Imprimir": //ejecuta el codigo si el usuario ingresa el numero 3
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
