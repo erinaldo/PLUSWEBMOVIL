@@ -11,13 +11,17 @@ namespace CapaWeb.WebForms
     {
         Consultaestadosfactura Consultaestados = new Consultaestadosfactura();
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
-        
+
+        public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
+        public ConsultaLogo consultaLogo = new ConsultaLogo();
+        public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
+
         modelowmtfacturascab conscabcera = new modelowmtfacturascab();
 
         List<modelowmtfacturascab> listaConsCab = null;
         List<modeloestadosfactura> Listaestados = null;
-        public string Ccf_cod_emp = "04";
-        public string Ccf_usuario = "desarrollo";
+        public string ComPwm;
+        public string AmUsrLog;        
         public string Ccf_tipo1 = "C";
         public string Ccf_tipo2 = "VTA";
         public string Ccf_nro_trans = " ";
@@ -36,10 +40,18 @@ namespace CapaWeb.WebForms
         public string EstF_proceso = "RCOMFACT";
         protected void Page_Load(object sender, EventArgs e)
         {
+            RecuperarCokie();           
+
+            ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
+            foreach (var item in ListaModelowmspclogo)
+            {
+                Modelowmspclogo = item;
+                break;
+            }
+
             if (!IsPostBack)
             {
-                cargarListaDesplegables();
-              // DateTime hoy = DateTime.Today;
+                cargarListaDesplegables();              
                 fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 fechafin.Text = DateTime.Today.ToString("yyyy-MM-dd");
             }
@@ -94,7 +106,7 @@ namespace CapaWeb.WebForms
             string Ccf_aniof = Fechafin.Year.ToString();
 
 
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
             Grid.DataSource = listaConsCab;
             Grid.DataBind();
             Grid.Height = 100;
@@ -118,7 +130,7 @@ namespace CapaWeb.WebForms
             string Ccf_aniof = Fechafin.Year.ToString();
       
 
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
             Grid.DataSource = listaConsCab;
             Grid.DataBind();
             Grid.Height = 100;
@@ -164,5 +176,18 @@ namespace CapaWeb.WebForms
                     break;
             }
     }
+        public void RecuperarCokie()
+        {
+            if (Request.Cookies["ComPwm"] != null)
+            {
+                ComPwm = Request.Cookies["ComPwm"].Value;
+            }
+
+            if (Request.Cookies["ComPwm"] != null)
+            {
+                AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+
+            }
         }
+    }
 }

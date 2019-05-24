@@ -7,28 +7,48 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="shortcut icon" href="~/Tema/imagenes/logo_ico.jpg" />
     <link rel="stylesheet" href="~/Tema/css/Style.css" />
-    
+
     <title>PlusWebMobile</title>
 
 
 </head>
-<body >
+<body>
     <table width="984" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
         <tr>
             <td>
                 <table width="100%" border="0" cellpadding="0" cellspacing="0">
-                    <tr height="100">
+                    <tr height="100px">
 
                         <td>
+                            <div align="left">
+                                <div class="contenedor">
+                                    <img src="../Tema/imagenes/Titulo_Superior.png" alt="Version">
+                                    <div class="texto-encima">
+                                        <blockquote>
+                                            <p align="left" class="Empresa"><%Response.Write(Modelowmspclogo.nom_emp); %></p>
+                                            <div align="left" class="textos"><%Response.Write(Modelowmspclogo.nro_id); %></div>
+                                            <div align="left" class="textos"><%Response.Write(Modelowmspclogo.direccion); %></div>
+                                            <div align="left" class="textos"><%Response.Write(Modelowmspclogo.telefono); %></div>
+                                            <div align="left" class="textos"><%Response.Write(Modelowmspclogo.nom_ciudad + ", " + Modelowmspclogo.nom_pais); %></div>
+                                        </blockquote>
+                                    </div>
+
+                                </div>
+                        </td>
+                        <td>
                             <div align="center">
-                                <img src="../Tema/imagenes/Titulo_Superior.png" alt="Version" />
+                                
+                                <img src="<%Response.Write(Modelowmspclogo.sitio_app + "Logo/"+ Modelowmspclogo.logo); %>" />
+
                             </div>
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
-
+        <tr>
+            <td height="20px"></td>
+        </tr>
         <tr>
 
             <td>
@@ -41,7 +61,7 @@
                                 <tr>
                                     <td><a href="Tablero_Control.asp">
                                         <img src="../Tema/imagenes/application_search.png" alt="Tablero Control" width="32" height="32" border="0" /></a></td>
-                                    <td><a href="Tablero_Control.asp">TABLERO DE CONTROL</a></td>
+                                    <td><a href="<%Response.Write(Modelowmspclogo.sitio_app + "Tablero_Control.asp"); %>">TABLERO DE CONTROL</a></td>
                                 </tr>
                             </table>
                         </td>
@@ -51,7 +71,7 @@
                                 <tr>
                                     <td><a href="MenuAdmin.asp">
                                         <img src="../Tema/imagenes/lock.png" alt="Administracion" width="32" height="32" border="0" /></a></td>
-                                    <td><a href="MenuAdmin.asp">ADMINISTRACION</a></td>
+                                    <td><a href="<%Response.Write(Modelowmspclogo.sitio_app + "MenuAdmin.asp"); %>">ADMINISTRACION</a></td>
                                 </tr>
                             </table>
                         </td>
@@ -60,7 +80,7 @@
                                 <tr>
                                     <td><a href="Menu_Ppal.asp">
                                         <img src="../Tema/imagenes/home.png" alt="Home" width="32" height="32" border="0" /></a></td>
-                                    <td><a href="Menu_Ppal.asp">MENU PRINCIPAL</a></td>
+                                    <td><a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">MENU PRINCIPAL</a></td>
                                 </tr>
                             </table>
                         </td>
@@ -69,7 +89,7 @@
                                 <tr>
                                     <td><a href="Menu_Ppal.asp">
                                         <img src="../Tema/imagenes/block.png" alt="Log Off" width="32" height="32" border="0" /></a></td>
-                                    <td><a href="Menu_Ppal.asp">SALIR</a></td>
+                                    <td><a href="<%Response.Write(Modelowmspclogo.sitio_app + "Reg_MenuFacturasV.asp?MM_Logoutnow=1"); %>">SALIR</a></td>
                                 </tr>
                             </table>
                         </td>
@@ -77,7 +97,11 @@
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td>
-                                        <img src="../Tema/imagenes/user.png" alt="Usuario" width="32" height="32" border="0" title="Usuario Activo" /></td>
+                                        <img src="../Tema/imagenes/user.png" alt="Usuario" width="32" height="32" border="0" title="Usuario Activo" />
+                                        </td><td>
+                                        <%Response.Write(Modelowmusuario.Nombre); %>
+
+                                    </td>
 
                                 </tr>
                             </table>
@@ -91,17 +115,7 @@
 
         <tr>
             <td>
-                <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
-                    <tr>
-                        <td valign="top">
-                            <table width="100%" border="0" cellspacing="0">
-                                <tr>
-                                    <td class="nav">---&gt;<a href="Menu_Ppal.asp">Menu Principal</a>---&gt;<a href="Reg_MenuFacturasV.asp?cod_proceso=RCOMFACT">Facturas Venta</a>---&gt;Nuevo</td>
-                                </tr>
-                            </table>
-                        </td>
-
-                    </tr>
+                <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">                   
                     <tr>
                         <td>
                             <table align="center" cellpadding="0" cellspacing="0">
@@ -123,7 +137,7 @@
 
         <tr>
             <td>
-               <div class="contenedor1"></div>
+                <div class="contenedor1"></div>
             </td>
         </tr>
     </table>

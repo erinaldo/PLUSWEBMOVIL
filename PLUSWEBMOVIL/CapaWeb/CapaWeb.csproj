@@ -144,6 +144,7 @@
     <Content Include="Tema\imagenes\version.png" />
     <Content Include="Tema\imagenes\version_print.png" />
     <Content Include="Tema\imagenes\xls.png" />
+    <Content Include="Tema\Logo\titulo_logo.png" />
     <Content Include="Web.config" />
     <Content Include="WebForms\BuscarArticulo.aspx" />
     <Content Include="WebForms\BuscarCliente.aspx" />

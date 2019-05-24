@@ -1,4 +1,6 @@
-﻿using Gma.QrCodeNet.Encoding;
+﻿using CapaProceso.Consultas;
+using CapaProceso.Modelos;
+using Gma.QrCodeNet.Encoding;
 using Gma.QrCodeNet.Encoding.Windows.Render;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -15,9 +17,43 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
 {
     public class PdfFacturaElectronica
     {
-        public string generarPdf( )
+       public modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+        public List<modelowmtfacturascab> listaConsCab = null;
+        public Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
+        
+        
+        
+        public string Ccf_estado = null;
+        public string Ccf_cliente = null;
+        public string Ccf_cod_docum = null;
+        public string Ccf_serie_docum = null;
+        public string Ccf_nro_docum = null;
+        public string Ccf_diai = null;
+        public string Ccf_mesi = null;
+        public string Ccf_anioi = null;
+        public string Ccf_diaf = null;
+        public string Ccf_mesf = null;
+        public string Ccf_aniof = null;
+
+        public modelowmtfacturascab buscarCabezeraFactura( string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
-            
+
+            listaConsCab = ConsultaCabe.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
+
+                }
+            return conscabcera;
+        }
+        public string generarPdf(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        {
+            conscabcera = null;
+            conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+
             string bpathPdfGenrado = "F://PLUSCOLOMBIA/FACRURACIONLECTRONICA/PDF/factura.pdf";
             string qr = ImagenQR(bpathPdfGenrado);
 
@@ -44,7 +80,7 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
             //document.Add(imagen);
 
 
-            PdfPTable table = new PdfPTable(3);//cantidad de columnas que va tener la tabla
+            PdfPTable table = new PdfPTable(1);//cantidad de columnas que va tener la tabla
             table.WidthPercentage = 100;
             PdfPCell cell = new PdfPCell();
 
@@ -56,7 +92,7 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
 
             table.AddCell(cell);
 
-            cell = new PdfPCell(new Phrase("Col 1 Row 1"));
+            cell = new PdfPCell(new Phrase(conscabcera.nom_tit));
 
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 1;
@@ -66,7 +102,7 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
 
             table.AddCell(cell);
 
-            cell = new PdfPCell(new Phrase("Col 1 Row 1"));
+            cell = new PdfPCell(new Phrase(conscabcera.nro_dgi));
             cell.Border = 0;
 
             table.AddCell(cell);

@@ -15,10 +15,15 @@ namespace CapaWeb.WebForms
 {
     public partial class ReporteFactura : System.Web.UI.Page
     {
+        public string Ccf_cod_emp = "04";
+        public string Ccf_usuario = "desarrollo";
+        public string Ccf_tipo1 = "C";
+        public string Ccf_tipo2 = "VTA";
+        public string Ccf_nro_trans = "6407";
         protected void Page_Load(object sender, EventArgs e)
         {
             PdfFacturaElectronica pdf = new PdfFacturaElectronica();
-            string path = pdf.generarPdf();
+            string path = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
             Response.ContentType = "application/pdf";
             Response.WriteFile(path);            

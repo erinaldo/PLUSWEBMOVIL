@@ -48,6 +48,16 @@
        
         <div style="align-items: center">
             <table>
+                 <tr>
+                        <td valign="top">
+                            <table width="100%" border="0" cellspacing="0">
+                                <tr>
+                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="BuscarFacturas.aspx">Facturas Venta</a>---&gt;Nuevo</td>
+                                </tr>
+                            </table>
+                        </td>
+
+                    </tr>
                 <tr>
                     <td>
                         <p class="Subtitulo1">Por favor ingrese los datos solicitados:</p>

@@ -46,36 +46,26 @@ namespace CapaWeb.WebForms
         List<ModeloDetalleFactura> ModeloDetalleFactura = new List<ModeloDetalleFactura>();
         List<modeloinsertarconfirmar> modeloinsertarconfirmar = new List<modeloinsertarconfirmar>();
 
+        public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
+        public ConsultaLogo consultaLogo = new ConsultaLogo();
+        public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
+
+        public string ComPwm;
+        public string AmUsrLog;
         public string valor_asignado = null;
-        public string Ven__usuario = "desarrollo";
-        public string Ven__cod_emp = "04";
         public string Ven__cod_tipotit = "cliente";
-        public string ResF_usuario = "desarrollo";
-        public string ResF_cod_emp = "04";
         public string ResF_estado = "S";
         public string ResF_serie = "0";
         public string ResF_tipo = "F";
-        public string CC__usuario = "desarrollo";
-        public string CC__cod_emp = "04";
         public string CC__cod_dpto = "0";
-        public string MonB__usuario = "desarrollo";
-        public string MonB__cod_emp = "04";
         public string MonB__moneda = "0";
-        public string Vend__usuario = "desarrollo";
-        public string Vend__cod_emp = "04";
         public string Vend__cod_tipotit = "vendedores";
         public string Vend__cod_tit = "0";
-        public string FP__usuario = "desarrollo";
-        public string FP__cod_emp = "04";
-        public string FP__cod_fpago = "0";
-        public string ArtB__usuario = "desarrollo";
-        public string ArtB__cod_emp = "04";
+        public string FP__cod_fpago = "0";       
         public string ArtB__articulo = "tubo";
         public string ArtB__tipo = "0";
         public string ArtB__compras = "0";
-        public string ArtB__ventas = "S";
-        public string Ccf_cod_emp = "04";
-        public string Ccf_usuario = "desarrollo";
+        public string ArtB__ventas = "S";  
         public string Ccf_tipo1 = "C";
         public string Ccf_tipo2 = "VTA";
         public string Ccf_nro_trans = "0";
@@ -100,14 +90,21 @@ namespace CapaWeb.WebForms
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            RecuperarCokie();
+            ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
+            foreach (var item in ListaModelowmspclogo)
+            {
+                Modelowmspclogo = item;
+                break;
+            }
+
 
             if (Session["cliente"] != null)
             {
                 // recupera la variable de secion con el objeto persona
                 cliente = (modelowmspctitulares)Session["cliente"];
                 nombreCliente.Text = cliente.nom_tit;
-                dniCliente.Text = cliente.nro_dgi;
+                dniCliente.Text = cliente.nro_dgi1;
                 fonoCliente.Text = cliente.tel_tit;
                 txtcorreo.Text = cliente.email_tit;
 
@@ -137,11 +134,7 @@ namespace CapaWeb.WebForms
                 Session.Remove("detalle");
 
 
-                if (Request.Cookies["ComPwm"] != null)
-                {
-                    string ComPwm = Request.Cookies["ComPwm"].Value;
-
-                }
+                
 
                 QueryString qs = ulrDesencriptada();
 
@@ -224,7 +217,7 @@ namespace CapaWeb.WebForms
                 
                 string Ccf_nro_trans = Session["valor_asignado"].ToString();
 
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 int count = 0;
                 conscabcera = null;
                 foreach (modelowmtfacturascab item in listaConsCab)
@@ -243,32 +236,32 @@ namespace CapaWeb.WebForms
 
                 }
                 else
-                {                 
+                {
 
-                      auditoria = conscabcera.nro_audit;
-                        dniCliente.Text = conscabcera.nro_dgi2;
-                        nombreCliente.Text = conscabcera.nom_tit;
-                        fonoCliente.Text = conscabcera.tel_tit;
+                auditoria = conscabcera.nro_audit;
+                dniCliente.Text = conscabcera.nro_dgi1;
+                nombreCliente.Text = conscabcera.nom_tit;
+                fonoCliente.Text = conscabcera.tel_tit;
                 //txtcorreo.Text = conscabcera.e
-                DateTime dtfec_doc = Convert.ToDateTime(conscabcera.fec_doc);                
+                DateTime dtfec_doc = Convert.ToDateTime(conscabcera.fec_doc);
                 fecha.Text = dtfec_doc.ToString("yyyy-MM-dd");
                 cod_fpago.SelectedValue = conscabcera.cod_fpago;
                 // nro_pedido.Text = conscabcera.pe
                 area.Text = conscabcera.observaciones;
                 ocompra.Text = conscabcera.ocompra;
                 porc_descto.Text = Convert.ToString(conscabcera.porc_descto);
-                        cod_costos.SelectedValue = conscabcera.cod_ccostos;                       
-                        cmbCod_moneda.SelectedValue = conscabcera.cod_moneda;
-                        cod_vendedor.SelectedValue = conscabcera.cod_vendedor;
-                        txtSumaSubTo.Text = Convert.ToString(conscabcera.subtotal);
-                    txtSumaTotal.Text = Convert.ToString(conscabcera.total);
-                   txtSumaIva.Text = Convert.ToString(conscabcera.iva);
-                    txtSumaDesc.Text = Convert.ToString(conscabcera.descuento);
+                cod_costos.SelectedValue = conscabcera.cod_ccostos;
+                cmbCod_moneda.SelectedValue = conscabcera.cod_moneda;
+                cod_vendedor.SelectedValue = conscabcera.cod_vendedor;
+                txtSumaSubTo.Text = Convert.ToString(conscabcera.subtotal);
+                txtSumaTotal.Text = Convert.ToString(conscabcera.total);
+                txtSumaIva.Text = Convert.ToString(conscabcera.iva);
+                txtSumaDesc.Text = Convert.ToString(conscabcera.descuento);
 
-               Session["sumaSubtotal"] = Convert.ToString(conscabcera.subtotal);
-               Session["sumaDescuento"] = Convert.ToString(conscabcera.descuento);
-               Session["sumaIva"] = Convert.ToString(conscabcera.iva);
-               Session["sumaTotal"] = Convert.ToString(conscabcera.total);                
+                Session["sumaSubtotal"] = Convert.ToString(conscabcera.subtotal);
+                Session["sumaDescuento"] = Convert.ToString(conscabcera.descuento);
+                Session["sumaIva"] = Convert.ToString(conscabcera.iva);
+                Session["sumaTotal"] = Convert.ToString(conscabcera.total);
             }
 
                 //Carga detalle factura
@@ -297,14 +290,14 @@ namespace CapaWeb.WebForms
         {
 
             //LIsta Resolucion facturas
-            listaRes = ConsultaResolucion.ConsultaResolusiones(ResF_usuario, ResF_cod_emp, ResF_estado, ResF_serie, ResF_tipo);
+            listaRes = ConsultaResolucion.ConsultaResolusiones(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo);
             serie_docum.DataSource = listaRes;
             serie_docum.DataTextField = "serie_docum";
             serie_docum.DataValueField = "serie_docum";
             serie_docum.DataBind();
 
             //lista ccostos
-            listaCostos = ConsultaCCostos.ConsultaCCostos(CC__usuario, CC__cod_emp, CC__cod_dpto);
+            listaCostos = ConsultaCCostos.ConsultaCCostos(AmUsrLog, ComPwm, CC__cod_dpto);
             cod_costos.DataSource = listaCostos;
             cod_costos.DataTextField = "descripcion";
             cod_costos.DataValueField = "cod_dpto";
@@ -312,21 +305,21 @@ namespace CapaWeb.WebForms
             
 
             //lissta moneedaa
-            listaMonedas = ConsultaCMonedas.ConsultaCMonedas(MonB__usuario, MonB__cod_emp, MonB__moneda);
+            listaMonedas = ConsultaCMonedas.ConsultaCMonedas(AmUsrLog, ComPwm, MonB__moneda);
             cmbCod_moneda.DataSource = listaMonedas;
             cmbCod_moneda.DataTextField = "descripcion";
             cmbCod_moneda.DataValueField = "cod_moneda";
             cmbCod_moneda.DataBind();
 
             //lissta vendedores
-            listaVendedores = ConsultaVendedores.ConsultaVendedores(Vend__usuario, Vend__cod_emp, Vend__cod_tipotit, Vend__cod_tit);
+            listaVendedores = ConsultaVendedores.ConsultaVendedores(AmUsrLog, ComPwm, Vend__cod_tipotit, Vend__cod_tit);
             cod_vendedor.DataSource = listaVendedores;
             cod_vendedor.DataTextField = "nom_tit";
             cod_vendedor.DataValueField = "cod_tit";
             cod_vendedor.DataBind();
 
             //lissta fpago
-            listaPagos = ConsultaFPagos.ConsultaFpagos(FP__usuario, FP__cod_emp, FP__cod_fpago);
+            listaPagos = ConsultaFPagos.ConsultaFpagos(AmUsrLog, ComPwm, FP__cod_fpago);
             cod_fpago.DataSource = listaPagos;
             cod_fpago.DataTextField = "descripcion";
             cod_fpago.DataValueField = "cod_fpago";
@@ -528,7 +521,7 @@ namespace CapaWeb.WebForms
            //Busca el nro de auditoria para poder insertar el detalle factura
             //consulta nro_auditoria de la cabecera
             string Ccf_nro_trans = valor_asignado;
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof); 
+            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof); 
             int count = 0;
             conscabcera = null;
             foreach (modelowmtfacturascab item in listaConsCab)
@@ -564,7 +557,7 @@ namespace CapaWeb.WebForms
             string error = "";
             string Ven__cod_tit = dniCliente.Text;
 
-            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit);
+            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit);
 
 
             cliente = null;
@@ -585,7 +578,7 @@ namespace CapaWeb.WebForms
             cabecerafactura.cod_fpago = cod_fpago.SelectedValue;
             cabecerafactura.observaciones = area.Text;
             cabecerafactura.nro_trans = valor_asignado;
-            cabecerafactura.cod_emp = ResF_cod_emp;
+            cabecerafactura.cod_emp = ComPwm;
             cabecerafactura.cod_docum = "0";
             cabecerafactura.nro_docum = "0";
             cabecerafactura.subtotal = Convert.ToDecimal("0.00");
@@ -648,7 +641,7 @@ namespace CapaWeb.WebForms
                     detallefactura.porc_iva = item.porc_iva;
                     detallefactura.nro_trans = valor_asignado;
                     detallefactura.linea = contarLinea;
-                    detallefactura.cod_emp = Vend__cod_emp;
+                    detallefactura.cod_emp = ComPwm;
                     detallefactura.cod_articulo = item.cod_articulo;
                     detallefactura.cod_concepret = item.cod_concepret;
                     detallefactura.porc_descto = item.porc_descto;
@@ -656,7 +649,7 @@ namespace CapaWeb.WebForms
                     detallefactura.cod_cta_vtas =item.cod_cta_vtas;
                     detallefactura.cod_cta_cos = item.cod_cta_cos;
                     detallefactura.cod_cta_inve = item.cod_cta_inve;
-                    detallefactura.usuario_mod = Vend__usuario ;
+                    detallefactura.usuario_mod = AmUsrLog ;
                     detallefactura.nro_audit = conscabcera.nro_audit;
                     detallefactura.fecha_mod = DateTime.Today;
                     detallefactura.tasa_iva = item.tasa_iva;
@@ -682,7 +675,7 @@ namespace CapaWeb.WebForms
         {
             string Ven__cod_tit = dniCliente.Text;
 
-            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit);
+            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit);
 
             int contar = 0;
             cliente = null;
@@ -712,7 +705,7 @@ namespace CapaWeb.WebForms
                    
                     nombreCliente.Text = cliente.nom_tit;
                     fonoCliente.Text = cliente.tel_tit;
-                    dniCliente.Text = cliente.nro_dgi;
+                    dniCliente.Text = cliente.nro_dgi1;
                     txtcorreo.Text = cliente.email_tit;
                 }
             }
@@ -735,7 +728,7 @@ namespace CapaWeb.WebForms
             
             string ArtB__articulo = BuscarArticulo.Text;
 
-            listaArticulos = ConsultaArticulo.ConsultaArticulos(ArtB__usuario, ArtB__cod_emp, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
+            listaArticulos = ConsultaArticulo.ConsultaArticulos(AmUsrLog, ComPwm, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
 
             int count = 0;
             articulo = null;
@@ -846,7 +839,7 @@ namespace CapaWeb.WebForms
         {
             
 
-            listaArticulos = ConsultaArticulo.ConsultaArticulos(ArtB__usuario, ArtB__cod_emp, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
+            listaArticulos = ConsultaArticulo.ConsultaArticulos(AmUsrLog, ComPwm, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
 
             
             articulo = null;
@@ -875,7 +868,7 @@ namespace CapaWeb.WebForms
 
                 confirmarinsertar.nro_trans = conscabcera.nro_trans;
                 confirmarinsertar.cod_emp = conscabcera.cod_emp;
-                confirmarinsertar.usuario_mod = Vend__usuario;
+                confirmarinsertar.usuario_mod = AmUsrLog;
                 confirmarinsertar.fecha_mod = DateTime.Now;
                 confirmarinsertar.nro_audit = conscabcera.nro_audit;
 
@@ -884,6 +877,21 @@ namespace CapaWeb.WebForms
             
 
         }
+
+        public void RecuperarCokie()
+        {
+            if (Request.Cookies["ComPwm"] != null)
+            {
+                ComPwm = Request.Cookies["ComPwm"].Value;
+            }
+
+            if (Request.Cookies["ComPwm"] != null)
+            {
+                AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+
+            }
+        }
+
     }
 }
 

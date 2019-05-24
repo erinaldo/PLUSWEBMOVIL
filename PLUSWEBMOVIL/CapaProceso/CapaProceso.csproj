@@ -83,6 +83,7 @@
     <Compile Include="Consultas\CabezeraFactura.cs" />
     <Compile Include="Consultas\Consultaconfirmarfactura.cs" />
     <Compile Include="Consultas\Consultaestadosfactura.cs" />
+    <Compile Include="Consultas\ConsultaLogo.cs" />
     <Compile Include="Consultas\ConsultaNumerador.cs" />
     <Compile Include="Consultas\Consultavendedores.cs" />
     <Compile Include="Consultas\Consultawmspccostos.cs" />
@@ -103,7 +104,9 @@
     <Compile Include="Modelos\modelowmspcmonedas.cs" />
     <Compile Include="Modelos\modelowmspcresfact.cs" />
     <Compile Include="Modelos\modelowmspctitulares.cs" />
+    <Compile Include="Modelos\modelowmspclogo.cs" />
     <Compile Include="Modelos\modelowmtfacturascab.cs" />
+    <Compile Include="Modelos\modelowmusuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestCliente\ComprobanteFacturaJSON.cs" />
     <Compile Include="RestCliente\ConsumoRest.cs" />
