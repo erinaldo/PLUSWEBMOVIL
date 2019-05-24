@@ -150,7 +150,6 @@
     <Content Include="WebForms\BuscarFacturas.aspx" />
     <Content Include="WebForms\CrearCliente.aspx" />
     <Content Include="WebForms\Factura.aspx" />
-    <Content Include="WebForms\Inicio.aspx" />
     <Content Include="WebForms\prueba.aspx" />
     <Content Include="WebForms\ReporteFactura.aspx" />
   </ItemGroup>
@@ -201,13 +200,6 @@
     </Compile>
     <Compile Include="WebForms\Factura.aspx.designer.cs">
       <DependentUpon>Factura.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WebForms\Inicio.aspx.cs">
-      <DependentUpon>Inicio.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebForms\Inicio.aspx.designer.cs">
-      <DependentUpon>Inicio.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
