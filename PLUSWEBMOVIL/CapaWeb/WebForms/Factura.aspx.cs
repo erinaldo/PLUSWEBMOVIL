@@ -239,7 +239,7 @@ namespace CapaWeb.WebForms
                 {
 
                 auditoria = conscabcera.nro_audit;
-                dniCliente.Text = conscabcera.nro_dgi1;
+                dniCliente.Text = conscabcera.nro_dgi2;
                 nombreCliente.Text = conscabcera.nom_tit;
                 fonoCliente.Text = conscabcera.tel_tit;
                 //txtcorreo.Text = conscabcera.e

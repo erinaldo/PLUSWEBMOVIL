@@ -161,10 +161,12 @@ namespace CapaWeb.WebForms
                 case "Imprimir": //ejecuta el codigo si el usuario ingresa el numero 3
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
 
-                    //2 voy a agregando los valores que deseo
-                    qs.Add("TRN", "IMP");
+                    //2 voy a agregando los valores que deseo                  
                     qs.Add("Id", Id.ToString());
-                    Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
+
+                    
+                   
+                    Response.Write("<script>window.open('" + "ReporteFactura.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
                     break;
                 case "Ver": //ejecuta el codigo si el usuario ingresa el numero 3
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
