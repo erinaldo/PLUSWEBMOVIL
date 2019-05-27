@@ -20,9 +20,11 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
        public modelowmtfacturascab conscabcera = new modelowmtfacturascab();
         public List<modelowmtfacturascab> listaConsCab = null;
         public Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
-        
-        
-        
+        public ConsultaLogo consultaLogo = new ConsultaLogo();
+        public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
+        public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
+
+
         public string Ccf_estado = null;
         public string Ccf_cliente = null;
         public string Ccf_cod_docum = null;
@@ -54,6 +56,11 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
             conscabcera = null;
             conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
+            Modelowmspclogo = null;
+            Modelowmspclogo = BuscarEmpresa(Ccf_cod_emp, Ccf_usuario);
+
+            PdfPCell cell = new PdfPCell();//Creo la columna para el logo
+
             string bpathPdfGenrado = "F://PLUSCOLOMBIA/FACRURACIONLECTRONICA/PDF/factura.pdf";
             string qr = ImagenQR(bpathPdfGenrado);
 
@@ -66,23 +73,58 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
            
             
             document.Open();
+
             
+            PdfPTable tablaLogo = new PdfPTable(3);//cantidad de columnas que va tener la tabla
+
+            tablaLogo.WidthPercentage = 100;
 
             // Creamos la imagen y le ajustamos el tamaño
-            iTextSharp.text.Image imagen = iTextSharp.text.Image.GetInstance(qr);
+            iTextSharp.text.Image imagen = iTextSharp.text.Image.GetInstance(Modelowmspclogo.sitio_app + "Logo/" + Modelowmspclogo.logo);
             imagen.BorderWidth = 0;
             imagen.Alignment = Element.ALIGN_RIGHT;
             float percentage = 0.0f;
             percentage = 150 / imagen.Width;
             imagen.ScalePercent(percentage * 100);
 
+            cell = new PdfPCell(imagen);
+            cell.Border = 0;
+            tablaLogo.AddCell(cell);
+
+            // Creamos la imagen y le ajustamos el tamaño
+            imagen = iTextSharp.text.Image.GetInstance(qr);
+            imagen.BorderWidth = 0;
+            imagen.Alignment = Element.ALIGN_RIGHT;
+            percentage = 0.0f;
+            percentage = 150 / imagen.Width;
+            imagen.ScalePercent(percentage * 80);
+
+            cell = new PdfPCell(new Phrase(conscabcera.cod_emp));
+            cell.Border = 0;
+
+            tablaLogo.AddCell(cell);
+
+            PdfPTable tablaEmpresa = new PdfPTable(1);
+
+            cell = new PdfPCell(new Phrase(conscabcera.nom_tit));
+            cell.Border = 0;
+            tablaEmpresa.AddCell(cell);
+
+            cell = new PdfPCell(imagen);
+            cell.Border = 0;
+            tablaEmpresa.AddCell(cell);
+
+            cell = new PdfPCell(tablaEmpresa);//this line made the difference
+            cell.Border = 0;
+
+            tablaLogo.AddCell(cell);
             // Insertamos la imagen en el documento
-            //document.Add(imagen);
+            document.Add(tablaLogo);
 
 
             PdfPTable table = new PdfPTable(1);//cantidad de columnas que va tener la tabla
             table.WidthPercentage = 100;
-            PdfPCell cell = new PdfPCell();
+            cell = new PdfPCell();
 
             cell = cabezera("FACTURA VENTA");
 
@@ -107,7 +149,7 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
 
             table.AddCell(cell);
 
-            table.AddCell(imagen);
+            table.AddCell("");
 
             table.AddCell("Col 1 Row 2");
 
@@ -161,6 +203,18 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
             cell.BorderWidthRight = 1;
 
             return cell;
+        }
+
+        public modelowmspclogo BuscarEmpresa(string empresa, string usuario)
+        {
+            ListaModelowmspclogo = consultaLogo.BuscartaLogo(empresa, usuario);
+            foreach (var item in ListaModelowmspclogo)
+            {
+                Modelowmspclogo = item;
+                break;
+            }
+
+            return Modelowmspclogo;
         }
     }
 }

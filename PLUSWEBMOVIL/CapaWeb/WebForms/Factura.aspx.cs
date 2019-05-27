@@ -884,8 +884,13 @@ namespace CapaWeb.WebForms
             {
                 ComPwm = Request.Cookies["ComPwm"].Value;
             }
+            else
+            {
+                Response.Redirect("../Inicio.asp");
+            }
 
-            if (Request.Cookies["ComPwm"] != null)
+
+            if (Request.Cookies["AmUsrLog"] != null)
             {
                 AmUsrLog = Request.Cookies["AmUsrLog"].Value;
 
