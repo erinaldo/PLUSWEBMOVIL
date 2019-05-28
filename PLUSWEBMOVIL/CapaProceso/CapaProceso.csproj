@@ -35,6 +35,10 @@
       <HintPath>..\packages\Gma.QrCodeNet.0.4.1.2\lib\net40\Gma.QrCodeNet.Encoding.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.9\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -81,10 +85,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Consultas\CabezeraFactura.cs" />
+    <Compile Include="Consultas\ConsultaBancos.cs" />
     <Compile Include="Consultas\Consultaconfirmarfactura.cs" />
+    <Compile Include="Consultas\ConsultaEmpresa.cs" />
     <Compile Include="Consultas\Consultaestadosfactura.cs" />
     <Compile Include="Consultas\ConsultaLogo.cs" />
     <Compile Include="Consultas\ConsultaNumerador.cs" />
+    <Compile Include="Consultas\Consultaparamcomercial.cs" />
     <Compile Include="Consultas\Consultavendedores.cs" />
     <Compile Include="Consultas\Consultawmspccostos.cs" />
     <Compile Include="Consultas\Consultawmspcformaspag.cs" />
@@ -95,11 +102,14 @@
     <Compile Include="Consultas\Consultawmtfacturasdet.cs" />
     <Compile Include="Consultas\Cosnsultawmspcarticulos.cs" />
     <Compile Include="Consultas\DetalleFactura.cs" />
+    <Compile Include="Modelos\modelobancos.cs" />
     <Compile Include="Modelos\modeloestadosfactura.cs" />
     <Compile Include="Modelos\modelonumerador.cs" />
+    <Compile Include="Modelos\modeloparametrocomercial.cs" />
     <Compile Include="Modelos\modelovendedores.cs" />
     <Compile Include="Modelos\modelowmspcarticulos.cs" />
     <Compile Include="Modelos\modelowmspcccostos.cs" />
+    <Compile Include="Modelos\modelowmspcempresas.cs" />
     <Compile Include="Modelos\modelowmspcfpago.cs" />
     <Compile Include="Modelos\modelowmspcmonedas.cs" />
     <Compile Include="Modelos\modelowmspcresfact.cs" />

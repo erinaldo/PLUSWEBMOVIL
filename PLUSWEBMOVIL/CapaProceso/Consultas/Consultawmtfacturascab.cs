@@ -65,6 +65,7 @@ namespace CapaProceso.Consultas
                 item.nro_audit = Convert.ToString(dr["nro_audit"]);
                 item.nom_ciudad = Convert.ToString(dr["nom_ciudad"]);
                 item.vlr_letras = Convert.ToString(dr["vlr_letras"]);
+                item.cod_atrib1 = Convert.ToString(dr["cod_atrib1"]);
                 item.ini = Convert.ToString(dr["ini"]);
                 item.fin = Convert.ToString(dr["fin"]);
                 item.fres_ini = Convert.ToDateTime(dr["fres_ini"]);

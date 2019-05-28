@@ -49,6 +49,7 @@ namespace CapaProceso.Modelos
         public string nro_audit { get; set; }
         public string nom_ciudad { get; set; }
         public string vlr_letras { get; set; }
+        public string cod_atrib1 { get; set; }
         public string ini { get; set; }
         public string fin { get; set; }
         public DateTime fres_ini { get; set; }

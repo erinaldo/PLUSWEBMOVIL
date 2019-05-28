@@ -257,8 +257,8 @@ namespace CapaWeb.WebForms {
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvProducto;
-
+        
+        protected global::System.Web.UI.WebControls.DataGrid gv_Producto;
         protected global::System.Web.UI.WebControls.TextBox iva;
         protected global::System.Web.UI.WebControls.TextBox porcdescto;
         protected global::System.Web.UI.WebControls.TextBox txtSumaDesc;

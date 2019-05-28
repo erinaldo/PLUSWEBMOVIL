@@ -31,6 +31,23 @@ namespace CapaDatos.Sql
 
         }
 
-       
+        public SqlDataReader BuscarEmpresa(string Ven__usuario, string Ven__cod_emp)
+        {
+
+            cn = conexion.genearConexion();
+
+            string consulta = ("wmspc_empresas");
+            SqlCommand conmand = new SqlCommand(consulta, cn);
+
+            conmand.CommandType = CommandType.StoredProcedure;
+            conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = Ven__usuario;
+            conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = Ven__cod_emp;
+            
+            SqlDataReader dr = conmand.ExecuteReader();
+
+            return dr;
+
+        }
+
     }
 }

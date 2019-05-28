@@ -305,32 +305,103 @@
                             <tr>
                                 <td>
                                     <asp:Panel ID="Panel1" runat="server" Height="250px" Width="100%" ScrollBars="Auto">
+                                        <asp:DataGrid ID="gv_Producto" runat="server" 
+                                        
+                                        AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
+                                         AllowSorting="True" ShowFooter="True"
+                                          CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" OnItemCommand="gv_Producto_ItemCommand">
 
-                                        <asp:GridView ID="gvProducto" runat="server" AutoGenerateColumns="False"
-                                            CellPadding="4" BackColor="#DD6D29"
-                                            OnSelectedIndexChanged="gvProducto_SelectedIndexChanged" PageSize="1000">
-                                            <RowStyle BackColor="#EFF3FB" />
-                                            <Columns>
-                                                <asp:BoundField DataField="cod_articulo" HeaderText="Código" />
-                                                <asp:BoundField DataField="nom_articulo" HeaderText="Descripción" />                                                
-                                                <asp:BoundField DataField="cantidad" HeaderText="Cantidad" />
-                                                <asp:BoundField DataField="precio_unit" HeaderText="Precio" />
-                                                <asp:BoundField DataField="subtotal"    HeaderText="Subtotal" />
-                                                <asp:BoundField DataField="detadescuento" HeaderText="% Descto" />
-                                                <asp:BoundField DataField="detaiva" HeaderText="IVA" />
-                                                <asp:BoundField DataField="total" HeaderText="Total" />
-                                                <asp:ButtonField ButtonType="Image" ControlStyle-CssClass="botones" CommandName="Select" HeaderText="" ShowHeader="True" ImageUrl="~/Tema/imagenes/delete.png">
-                                                <ControlStyle CssClass="botones" />
-                                                </asp:ButtonField>
-                                            </Columns>
 
-                                            <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />
+                                        <Columns>
+                                            <asp:TemplateColumn HeaderText="Código" >
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="cod_articulo" runat="server" Text='<%#Eval("cod_articulo") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
 
-                                            <AlternatingRowStyle BackColor="White" />
+                                            <asp:TemplateColumn HeaderText="Descripción">
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="nom_articulo" runat="server" Text='<%#Eval("nom_articulo") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
 
-                                        </asp:GridView>
-                                    </asp:Panel>
+                                            <asp:TemplateColumn HeaderText="Cantidad">
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="cantidad" runat="server" Text='<%#Eval("cantidad") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
 
+                                            <asp:TemplateColumn HeaderText="Precio">
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="precio_unit" runat="server" Text='<%#Eval("precio_unit") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                                <ItemStyle Font-Bold="False" Font-Italic="False" Font-Overline="False" Font-Strikeout="False" Font-Underline="False" HorizontalAlign="Center" />
+                                            </asp:TemplateColumn>
+
+                                            <asp:TemplateColumn HeaderText="Sub total">
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="subtotal" runat="server" Text='<%#Eval("subtotal") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+                                            <asp:TemplateColumn HeaderText="Descto">
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="detadescuento" runat="server" Text='<%#Eval("detadescuento") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+                                           
+                                             <asp:TemplateColumn HeaderText="IVA">
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="detaiva" runat="server" Text='<%#Eval("detaiva") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+                                            <asp:TemplateColumn HeaderText="Total">
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="total" runat="server" Text='<%#Eval("total") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+
+                                            <asp:TemplateColumn>
+                                                <ItemTemplate>
+                                                    <asp:ImageButton ID="imgEditar" runat="server" CausesValidation="false" CommandName="Editar"
+                                                        ImageUrl="~/Tema/imagenes/edit.png" ToolTip="Editar" Width="16" />
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+
+                                            <asp:TemplateColumn>
+                                                <ItemTemplate>
+                                                    <asp:ImageButton ID="imgEliminar" runat="server" CausesValidation="false" CommandName="Eliminar"
+                                                        ImageUrl="~/Tema/imagenes/trash.png" ToolTip="Eliminar" Width="16" />
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+                                                                                                                                    
+                                        </Columns>
+
+                                        <FooterStyle BackColor="White" ForeColor="#00000f" />
+                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />
+                                        <ItemStyle ForeColor="#00000f" />
+                                        <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" Mode="NumericPages" />
+                                        <SelectedItemStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+
+
+                                    </asp:DataGrid>
+                                        </asp:Panel>
+                                        
                                 </td>
                             </tr>
                         </table>
