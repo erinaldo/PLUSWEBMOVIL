@@ -19,17 +19,18 @@ namespace CapaProceso.Consultas
         SmtpClient smtp = new SmtpClient();
 
 
-        public bool enviarcorreo(string asunto, string mensaje, string correo , string adjunto)
+        public bool enviarcorreo(string asunto, string mensaje, string correo , List<string> adjunto)
         {
 
             try
             {
+               
                 /* recuperar de base de tabla HostMail */
                 string Usuario = "prueba@cepes.ec";
                 string Contrasenia = "Plus2019*";
                 string smtpHost = "mail.cepes.ec";
-                int puerto = 465;
-                bool ssl = true;
+                int puerto = 587;
+                bool ssl = false;
                 /* recuperar de base de tabla HostMail */
 
                 email.From = new MailAddress(Usuario);
@@ -39,15 +40,22 @@ namespace CapaProceso.Consultas
 
                 if (adjunto.Equals("") == false)
                 {
-                    Attachment archivo = new Attachment(adjunto);
-                    email.Attachments.Add(archivo);
+                    foreach (var item in adjunto)
+                    {
+                        if (item.Equals("") == false)
+                        {
+                            Attachment archivo = new Attachment(item);
+                            email.Attachments.Add(archivo);
+                        }
+                        
+                    }
+                    
 
                 }
 
-
                 email.IsBodyHtml = true;
                 smtp.Host = smtpHost;
-                smtp.Port = puerto;
+                smtp.Port = puerto;                
                 smtp.Credentials = new NetworkCredential(Usuario, Contrasenia);
                 smtp.EnableSsl = ssl;
                 smtp.Send(email);

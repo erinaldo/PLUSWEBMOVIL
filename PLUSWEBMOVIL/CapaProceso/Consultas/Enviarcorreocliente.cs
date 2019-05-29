@@ -68,7 +68,7 @@ namespace CapaProceso.Consultas
         {
 
             //Consultamos los datos del cliente
-
+            modelowmspctitulares cliente = new modelowmspctitulares();
             conscabcera = null;
             conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
@@ -76,23 +76,74 @@ namespace CapaProceso.Consultas
 
             string Ven__cod_tit = conscabcera.cod_cliente;
             cliente = null;
-            cliente = buscarCliente(Ccf_cod_emp, Ccf_usuario, Ven__cod_tipotit, Ven__cod_tit);
+            cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit);
 
-            EnviarCorreo correo = new EnviarCorreo();
-            string nombre = "";
-            string email = "luis.orlando.andagoya@gmail.com";
+            if(cliente != null)
+            {
+                EnviarCorreo correo = new EnviarCorreo();
+                string nombre = "";
+                string email = "";
 
-            nombre = cliente.nom_tit;
-            email = cliente.email_tit;
+                nombre = cliente.nom_tit;
+                email = cliente.email_tit;
+                if (email == "")
+                {
+
+                  
+                    email = "Margarita.quijozaca@gmail.com";//cliente.email_tit;
 
 
-            string mensaje = "<strong> Estimado(a): </strong>" + nombre.ToUpper() + "<br/>" + "Su archivo adjunto es: " + pathPdf;
+                    string mensaje = "<strong> Estimado(a): </strong>" + nombre.ToUpper() + "<br/>" + "Se a generado la factura N°: " + conscabcera.nro_docum;
+
+                    List<string> listaPath = new List<string>();// lista de archivos adjuntos
+                    listaPath.Add(pathPdf);
+                    listaPath.Add(pathXml);
+                    correo.enviarcorreo("Envio de  Factura Electronica", mensaje, email, listaPath);
 
 
-            correo.enviarcorreo("Envio de  Contraseña", mensaje, email, pathPdf);
+                    return true;
+
+
+                }
+                else
+                {
+                    string mensaje = "<strong> Estimado(a): </strong>" + nombre.ToUpper() + "<br/>" + "Se a generado la factura N°: " + conscabcera.cod_docum;
+
+                    List<string> listaPath = new List<string>();// lista de archivos adjuntos
+                    listaPath.Add(pathPdf);
+                    listaPath.Add(pathXml);
+                    correo.enviarcorreo("Envio de  Factura Electronica", mensaje, email, listaPath);
+                    return true;
+
+
+                }
+
+
+                
+            }
+            else
+            {
+
+                EnviarCorreo correo = new EnviarCorreo();
+                string nombre = "";
+                string email = "";
+
+                nombre = "Prueba";//cliente.nom_tit;
+                email = "Margarita.quijozaca@gmail.com";//cliente.email_tit;
+
+
+                string mensaje = "<strong> Estimado(a): </strong>" + nombre.ToUpper() + "<br/>" + "Se a generado la factura N°: " + conscabcera.nro_docum;
+
+                List<string> listaPath = new List<string>();// lista de archivos adjuntos
+                listaPath.Add(pathPdf);
+                listaPath.Add(pathXml);
+                correo.enviarcorreo("Envio de  Contraseña", mensaje, email, listaPath);
+
+
+                return true;
+            }
 
           
-            return true;
         }
 
     }
