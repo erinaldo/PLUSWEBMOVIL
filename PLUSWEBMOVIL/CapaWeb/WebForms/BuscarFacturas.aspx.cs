@@ -12,14 +12,21 @@ namespace CapaWeb.WebForms
         Consultaestadosfactura Consultaestados = new Consultaestadosfactura();
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
 
+             
+
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
 
         modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+        
 
         List<modelowmtfacturascab> listaConsCab = null;
         List<modeloestadosfactura> Listaestados = null;
+        EnviarCorreo correo = new EnviarCorreo();
+        Consultawmsptitulares ConsultaTitulares = new Consultawmsptitulares();
+        public List<modelowmspctitulares> lista = null;
+        modelowmspctitulares cliente = new modelowmspctitulares();
         public string ComPwm;
         public string AmUsrLog;        
         public string Ccf_tipo1 = "C";
@@ -35,7 +42,10 @@ namespace CapaWeb.WebForms
         public string Ccf_anioi = "";
         public string Ccf_diaf = "";
         public string Ccf_mesf = "";
-        public string Ccf_aniof = "";
+        public string Ccf_aniof = "";     
+        public string Ven__cod_tipotit = "cliente";
+        public string Ven__cod_tit = " ";
+
 
         public string EstF_proceso = "RCOMFACT";
         protected void Page_Load(object sender, EventArgs e)
@@ -56,6 +66,8 @@ namespace CapaWeb.WebForms
                 fechafin.Text = DateTime.Today.ToString("yyyy-MM-dd");
             }
         }
+
+    
         public void cargarListaDesplegables()
         {
             //Lista Estados facturas
@@ -135,6 +147,9 @@ namespace CapaWeb.WebForms
             Grid.DataBind();
             Grid.Height = 100;
         }
+
+       
+
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
             //1 primero creo un objeto Clave/Valor de QueryString 
@@ -163,9 +178,7 @@ namespace CapaWeb.WebForms
 
                     //2 voy a agregando los valores que deseo                  
                     qs.Add("Id", Id.ToString());
-
-                    
-                   
+                  
                     Response.Write("<script>window.open('" + "ReporteFactura.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
                     break;
                 case "Ver": //ejecuta el codigo si el usuario ingresa el numero 3

@@ -102,6 +102,8 @@
     <Compile Include="Consultas\Consultawmtfacturasdet.cs" />
     <Compile Include="Consultas\Cosnsultawmspcarticulos.cs" />
     <Compile Include="Consultas\DetalleFactura.cs" />
+    <Compile Include="Consultas\EnviarCorreo.cs" />
+    <Compile Include="Consultas\Enviarcorreocliente.cs" />
     <Compile Include="Modelos\modelobancos.cs" />
     <Compile Include="Modelos\modeloestadosfactura.cs" />
     <Compile Include="Modelos\modelonumerador.cs" />

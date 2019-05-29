@@ -11,6 +11,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using CapaProceso.Consultas;
+using CapaProceso.Modelos;
+
 
 namespace CapaWeb.WebForms
 {
@@ -21,6 +24,23 @@ namespace CapaWeb.WebForms
         public string Ccf_tipo1 = "C";
         public string Ccf_tipo2 = "VTA";
         public string Ccf_nro_trans = null;
+        public string Ccf_estado = null;
+        public string Ccf_cliente = null;
+        public string Ccf_cod_docum = null;
+        public string Ccf_serie_docum = null;
+        public string Ccf_nro_docum = null;
+        public string Ccf_diai = null;
+        public string Ccf_mesi = null;
+        public string Ccf_anioi = null;
+        public string Ccf_diaf = null;
+        public string Ccf_mesf = null;
+        public string Ccf_aniof = null;
+
+
+        Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
+        modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+        List<modelowmtfacturascab> listaConsCab = null;
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             RecuperarCokie();
@@ -30,13 +50,18 @@ namespace CapaWeb.WebForms
             Ccf_nro_trans = id.ToString();
 
             PdfFacturaElectronica pdf = new PdfFacturaElectronica();
-            string path = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+            string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+
+            Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
+            Boolean error = enviarcorreocliente.EnviarCorreoCliente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, "");
 
             Response.ContentType = "application/pdf";
-            Response.WriteFile(path);            
+            Response.WriteFile(pathPdf);            
             Response.End();
 
         }
+
+   
         public QueryString ulrDesencriptada()
         {
             //1- guardo el Querystring encriptado que viene desde el request en mi objeto

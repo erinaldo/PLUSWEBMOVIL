@@ -250,11 +250,24 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
             //Fin llenar con clase celdas
 
 
+            //estilos del detalle
+            BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1250, BaseFont.EMBEDDED);
+            iTextSharp.text.Font fontText = new iTextSharp.text.Font(bf, 9);
 
             //opcion detalle cabcera
             PdfPTable detacab = new PdfPTable(7);//cantidad de columnas que va tener la tabla
             detacab.WidthPercentage = 100;
             detacab.SpacingAfter = 10;
+            float[] values = new float[7];
+            values[0] = 90;
+            values[1] = 300;
+            values[2] = 70;
+            values[3] = 70;
+            values[4] = 70;
+            values[5] = 70;
+            values[6] = 70;
+            detacab.SetWidths(values);
+
             float[] detacabs = { 0.55f };
             cell = new PdfPCell();
 
@@ -289,16 +302,22 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
 
             document.Add(detacab);
 
-            //estilos del detalle
-            BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1250, BaseFont.EMBEDDED);
-            iTextSharp.text.Font fontText = new iTextSharp.text.Font(bf, 10);
+            
 
             //Cargar Detalle factura
             PdfPTable detalle = new PdfPTable(7);//cantidad de columnas que va tener la tabla
             detalle.WidthPercentage = 100f;
             detalle.SpacingAfter = 10;
 
-
+            values = new float[7];
+            values[0] = 90;
+            values[1] = 300;
+            values[2] = 70;
+            values[3] = 70;
+            values[4] = 70;
+            values[5] = 70;
+            values[6] = 70;
+            detalle.SetWidths(values);
 
             foreach (ModeloDetalleFactura item in listaConsDet)
             {
@@ -684,7 +703,7 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
         public PdfPCell celdasD(string mensaje)
         {
             Paragraph contenido = new Paragraph();
-            contenido.Font = FontFactory.GetFont(FontFactory.TIMES, 11f, BaseColor.BLACK);
+            contenido.Font = FontFactory.GetFont(FontFactory.TIMES, 9f, BaseColor.BLACK);
 
             contenido.Add(mensaje);
             contenido.Alignment = Element.ALIGN_CENTER;

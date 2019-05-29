@@ -22,6 +22,7 @@ namespace CapaWeb.WebForms
         Consultaconfirmarfactura ConfirmarFactura = new Consultaconfirmarfactura();
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
         Consultawmtfacturasdet ConsultaDeta = new Consultawmtfacturasdet();
+        
 
         modelowmspctitulares cliente = new modelowmspctitulares();
         modelowmspcresfact resolucion = new modelowmspcresfact();
@@ -176,6 +177,7 @@ namespace CapaWeb.WebForms
             }
         }
 
+      
         protected void BloquearFactura()
         {
             //inhabilitar cajas de texto cabecera factura
