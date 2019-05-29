@@ -1,14 +1,7 @@
-﻿using CapaProceso.Consultas;
-using CapaProceso.Modelos;
-using Gma.QrCodeNet.Encoding;
-using Gma.QrCodeNet.Encoding.Windows.Render;
-using iTextSharp.text;
-using iTextSharp.text.html.simpleparser;
-using iTextSharp.text.pdf;
+﻿using CapaProceso.Modelos;
 using System;
 using System.Collections.Generic;
 
-using System.IO;
 
 namespace CapaProceso.Consultas
 {
