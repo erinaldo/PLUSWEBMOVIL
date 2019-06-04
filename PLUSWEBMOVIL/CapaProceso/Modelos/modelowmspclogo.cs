@@ -19,5 +19,11 @@ namespace CapaProceso.Modelos
         public string sitio_app { get; set; }
         public string nom_ciudad { get; set; }
         public string logo { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
+        public string linkemidocuelec{ get; set; }
+        public string linkgenpdf { get; set; }
+        public string pathtmpfac { get; set; }
+  
     }
 }

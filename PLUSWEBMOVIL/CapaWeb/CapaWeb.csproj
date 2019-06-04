@@ -158,6 +158,7 @@
     <Content Include="WebForms\BuscarFacturas.aspx" />
     <Content Include="WebForms\CrearCliente.aspx" />
     <Content Include="WebForms\Factura.aspx" />
+    <Content Include="WebForms\PortalFacturas.aspx" />
     <Content Include="WebForms\prueba.aspx" />
     <Content Include="WebForms\ReporteFactura.aspx" />
   </ItemGroup>
@@ -215,6 +216,13 @@
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\PortalFacturas.aspx.cs">
+      <DependentUpon>PortalFacturas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\PortalFacturas.aspx.designer.cs">
+      <DependentUpon>PortalFacturas.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\prueba.aspx.cs">
       <DependentUpon>prueba.aspx</DependentUpon>

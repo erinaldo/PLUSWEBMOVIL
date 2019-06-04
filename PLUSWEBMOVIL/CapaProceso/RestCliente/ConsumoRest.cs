@@ -9,32 +9,95 @@ using CapaDatos;
 using CapaDatos.Sql;
 using System.Data.SqlClient;
 using RestSharp;
+using CapaProceso.Modelos;
+using CapaProceso.Consultas;
 
 namespace CapaProceso.RestCliente
 {
     public class ConsumoRest
     {
-        public string ConsultarRest()
+        public modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+        public ModeloDetalleFactura consdetalle = new ModeloDetalleFactura();
+        public List<modelowmtfacturascab> listaConsCab = null;
+        public List<ModeloDetalleFactura> listaConsDet = null;
+        public Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
+        public Consultawmtfacturasdet ConsultaDeta = new Consultawmtfacturasdet();
+        public ConsultaLogo consultaLogo = new ConsultaLogo();
+        public ConsultaBancos consultabanco = new ConsultaBancos();
+        public Consultaparamcomercial consultaComercial = new Consultaparamcomercial();
+        public ConsultaEmpresa consultaEmpresa = new ConsultaEmpresa();
+        public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
+        public List<modelobancos> ListaModelobancos = new List<modelobancos>();
+        public List<modelowmspcempresas> ListaModeloempresa = new List<modelowmspcempresas>();
+        public List<modeloparametrocomercial> ListaModelocomercial = new List<modeloparametrocomercial>();
+        public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
+        public modelowmspcempresas Modeloempresa = new modelowmspcempresas();
+        public modeloparametrocomercial Modelocomercial = new modeloparametrocomercial();
+        public modelobancos ModeloBancos = new modelobancos();
+
+        public  Consultawmsptitulares ConsultaTitulares = new Consultawmsptitulares();
+        public List<modelowmspctitulares> lista = null;
+        public modelowmspctitulares cliente = new modelowmspctitulares();
+
+        public List<modelowmspctctrxCotizacion> ListaModelocotizacion = new List<modelowmspctctrxCotizacion>();
+        public modelowmspctctrxCotizacion ModeloCotizacion = new modelowmspctctrxCotizacion();
+        public ConsultawmspctctrxCotizacion consultaMoneda = new ConsultawmspctctrxCotizacion();
+
+        public List<modelowmspcfacturasWMimpuRest> ListaModeloimpuesto = new List<modelowmspcfacturasWMimpuRest>();
+        public modelowmspcfacturasWMimpuRest ModeloImpuesto = new modelowmspcfacturasWMimpuRest();
+        public ConsultawmspcfacturasWMimpuRest consultaImpuesto = new ConsultawmspcfacturasWMimpuRest();
+
+        public List<JsonRespuestaDE> ListaModelorespuestaDs = new List<JsonRespuestaDE>();
+        public List<JsonRespuestaDE> ListaBuscarQr = null;
+        public JsonRespuestaDE ModeloResQr = new JsonRespuestaDE();
+        public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
+
+        public GuardarrespuestaDS guardarResJson = new GuardarrespuestaDS();
+        
+
+        public string Ccf_estado = null;
+        public string Ccf_cliente = null;
+        public string Ccf_cod_docum = null;
+        public string Ccf_serie_docum = null;
+        public string Ccf_nro_docum = null;
+        public string Ccf_diai = null;
+        public string Ccf_mesi = null;
+        public string Ccf_anioi = null;
+        public string Ccf_diaf = null;
+        public string Ccf_mesf = null;
+        public string Ccf_aniof = null;
+        public string nro_trans = null;
+        public string Ven__cod_tipotit = "cliente";
+        public string Ven__cod_tit = " ";
+        public string impuesto_rest = "0";
+        public string ConsultarRest(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
+            //Consultar usuario y contraseña
+            Modelowmspclogo = null;
+            Modelowmspclogo = BuscarUsuarioLogo( Ccf_cod_emp, Ccf_usuario);
+
+            //consultar datos en la tabla wmt_respuestaDS
+            ModeloResQr = null;
+            ModeloResQr = BuscarRespuestaDS(Ccf_nro_trans);
+
             StreamReader sr = new StreamReader("F:\\factura.txt");
             string contenido = sr.ReadToEnd();
             string output = contenido;
             sr.Close();
 
-           
-            string user = "tUNXlvbVCGaYXlIsP/ycevcfb+72i3e/QvGOvJofKDo=";
-            string password = "jlO749qCdKRwZXUr/M/KC6KHxcr7Ubfq7J/9B0somVQgI85vtKAYrtFG4bY53Bcr";
+            //Proporcionar credenciales
+             string username = Modelowmspclogo.username;
+             string password = Modelowmspclogo.password;
+             string linkemidocuelec = Modelowmspclogo.linkemidocuelec;
+                        
+             string credentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes($"{username}:{password}"));
 
-            string credentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes($"{user}:{password}"));
 
-
-            //output = JsonConvert.SerializeObject(LlenarJSONFactura(), Formatting.Indented);
+            output = JsonConvert.SerializeObject(LlenarJSONFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans), Formatting.Indented);
 
             
 
-
-
-            var client = new RestClient("https://ws.dsnube.co/dsrest/dsdatasnapfe.dll/datasnap/rest/TFactura/docfe");
+            var client = new RestClient(linkemidocuelec);
             var request = new RestRequest(Method.POST);
 
             request.AddHeader("Authorization", "Basic " + credentials);
@@ -49,99 +112,311 @@ namespace CapaProceso.RestCliente
             {
                 jsonRespuestaDE = JsonConvert.DeserializeObject<JsonRespuestaDE>(response.Content);
             }
-
+            
             if (tipo.Equals("text/html"))
             {
                 jsonRespuestaDE.error = response.Content;
             }
 
+            
+
             string base64Encoded = jsonRespuestaDE.xml;
             string base64Decoded;
-            byte[] data = Convert.FromBase64String(base64Encoded);
-            base64Decoded = ASCIIEncoding.ASCII.GetString(data);
+            // byte[] data = Convert.FromBase64String(base64Encoded);
+            //base64Decoded = ASCIIEncoding.ASCII.GetString(data);
 
-            return "Error: " + jsonRespuestaDE.error + "\nqrdata: " + jsonRespuestaDE.qrdata + "\nxml: " + base64Decoded;
+            if (jsonRespuestaDE.linea <= 0)
+            {
+                jsonRespuestaDE.linea = 1;
+            }
+            else
+            {
+                jsonRespuestaDE.linea = jsonRespuestaDE.linea + 1;
+            }
+            
+            jsonRespuestaDE.json = output;
+            jsonRespuestaDE.nro_trans = Ccf_nro_trans;//Aqui enviar numero de transacion
+            guardarResJson.InsertarRespuestaJson(jsonRespuestaDE);
+            return "Error: " + jsonRespuestaDE.error + "\nqrdata: " + jsonRespuestaDE.qrdata + "\nxml: ";//+ base64Decoded;
+
+            
         }
 
-        public ComprobanteFacturaJSON LlenarJSONFactura()
+        public ComprobanteFacturaJSON LlenarJSONFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
             ComprobanteFacturaJSON comprobanteFacturaJSON = new ComprobanteFacturaJSON();
             /* Datos de encabezado de la factura */
 
-            comprobanteFacturaJSON.encabezado = LlenarEnacabezadoFacturaJSON();
-            comprobanteFacturaJSON.detalle = LlenarDetalleFacturaJSON();
-            comprobanteFacturaJSON.impuesto = LlenarImpuestoFacturaJSON();
-            comprobanteFacturaJSON.pago = LlenarPagotoFacturaJSON();
-            comprobanteFacturaJSON.sucursal = LlenarSucursalFacturaJSON();
-            comprobanteFacturaJSON.tercero = LlenarTerceroFacturaJSON();
+            comprobanteFacturaJSON.encabezado = LlenarEnacabezadoFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+            comprobanteFacturaJSON.detalle = LlenarDetalleFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_nro_trans);
+            comprobanteFacturaJSON.impuesto = LlenarImpuestoFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_nro_trans, impuesto_rest);
+            comprobanteFacturaJSON.sucursal = LlenarSucursalFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+            comprobanteFacturaJSON.tercero = LlenarTerceroFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
             return comprobanteFacturaJSON;
         }
 
-        public Encabezado LlenarEnacabezadoFacturaJSON()
+        public Encabezado LlenarEnacabezadoFacturaJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
             Encabezado encabezado = new Encabezado();
-            FacturACab facturACab = new FacturACab();
 
-            SqlDataReader dr = facturACab.ConsultaCabezaraFactura("04", "VTA");
+            conscabcera = null;
+            conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
-            while (dr.Read())
-            {
-                //encabezado.codmoneda = "COP";
-                encabezado.anulado = "N";
-                encabezado.comentarios = Convert.ToString(dr["observaciones"]);
-                encabezado.emisor = 830106032;
-                encabezado.descuento = Convert.ToDecimal(dr["descuento"]);
-                encabezado.fecha = Convert.ToDateTime(dr["fec_doc"]).ToString("yyyy-MM-dd");
-                //encabezado.idsuc = Convert.ToInt32(dr["descuento"]);
-                encabezado.idvendedor = Convert.ToInt32(dr["cod_vendedor"]);
-                encabezado.iva = Convert.ToDecimal(dr["iva"]);
+            Modeloempresa = null;
+            Modeloempresa = BuscarCabEmpresa(Ccf_usuario, Ccf_cod_emp);
 
-            }
+            ModeloCotizacion = null;
+            ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
+
+                //Usuario prueba emisor = 830106032;
+               //encabezado.emisor = 830106032;
+                encabezado.emisor = Convert.ToInt32(Modeloempresa.nro_dgi2);
+                encabezado.codmoneda = conscabcera.cod_moneda;
+                encabezado.comentarios = conscabcera.observaciones;
+                encabezado.factortrm = Convert.ToDecimal(ModeloCotizacion.tc_mov1c);      
+                encabezado.fecha = conscabcera.fec_doc;
+                encabezado.fvence = conscabcera.fec_venc.ToString("yyyy-MM-dd");
+                encabezado.idsuc = 1;
+                encabezado.idvendedor = Convert.ToInt32(conscabcera.cod_vendedor);
+                encabezado.iva = Convert.ToDecimal(conscabcera.iva);
+                encabezado.nit = Convert.ToInt64(conscabcera.nro_dgi);
+                encabezado.numero = Convert.ToInt32(conscabcera.nro_docum);
+                encabezado.ordencompra = Convert.ToString(conscabcera.ocompra);
+                encabezado.prefijo = "FVE";  // va quemado por defecto para los comprobantes de factura
+                encabezado.subtotal = Convert.ToInt32(conscabcera.subtotal);
+                encabezado.sucursal = 0;//Preguntar a alfredo con que se obtien la sucursal por factura
+                encabezado.total = Convert.ToInt32(conscabcera.total);
+                encabezado.usuario = Ccf_usuario;  //Usuario que facturo
+                encabezado.totalDet = 1; //la cantidad de lineas del detalle de la factura
+                encabezado.totalImp = 1; //la cantidad de lineas de los impuestos
+           
                 return encabezado;
         }
 
-        public List<Detalle> LlenarDetalleFacturaJSON()
+        public List<Detalle> LlenarDetalleFacturaJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_nro_trans)
         {
-            List<Detalle> detalle = new List<Detalle>();
-            Detalle item = new Detalle();
+            
+                consdetalle = null;
+                consdetalle = buscarDetalleFactura(Ccf_nro_trans);
+                List<Detalle> detalle = new List<Detalle>();
+                ModeloCotizacion = null;
+                ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
 
-            detalle.Add(item);
-            return detalle;
+
+            Detalle item = new Detalle();
+                item.adicional = "";
+                item.cantidad = Convert.ToInt32(consdetalle.cantidad);
+                item.idproducto = consdetalle.cod_articulo;
+                item.idunidad = "";//Preguntar a alfredo de donde trae la unidad
+                item.iva = Convert.ToInt32(consdetalle.valor_iva);                
+                item.nombreproducto = consdetalle.nom_articulo;
+                item.operacion = "SA";
+                item.porcdcto = Convert.ToInt32(consdetalle.porc_descto);
+                item.porciva = Convert.ToInt32(consdetalle.porc_iva);
+                item.pos = consdetalle.linea;
+                item.precio = Convert.ToInt32(consdetalle.precio_unit);               
+                item.subtotal = Convert.ToInt32(consdetalle.subtotal);
+            if (ModeloCotizacion.cod_moneda != "COP")
+            {
+                item.preciousd = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.precio;
+                item.ivausd = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.iva;
+                item.subtotalusd = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.subtotal;
+            }
+            else
+            {
+                item.preciousd = 0;
+                item.ivausd = 0;
+                item.subtotalusd = 0;
+            }
+
+
+                return detalle;
         }
 
-        public List<Impuesto> LlenarImpuestoFacturaJSON()
+        public List<Impuesto> LlenarImpuestoFacturaJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_nro_trans, string impuesto_rest)
         {
             List<Impuesto> impuesto = new List<Impuesto>();
             Impuesto item = new Impuesto();
+            //Buscamos todos los impuestos de la factura
+            ModeloImpuesto = null;
+            ModeloImpuesto = BuscarImpuestosREst(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans, impuesto_rest);
+
+
+            
+                item.base_calculo = Convert.ToDecimal(ModeloImpuesto.base_impu);
+                item.porciva = Convert.ToDecimal( ModeloImpuesto.porc_impu);
+                item.valor = Convert.ToDecimal(ModeloImpuesto.valor_impu);
+               
+          
+            
+           
+            
             impuesto.Add(item);
+
             return impuesto;
         }
 
-        public List<Pago> LlenarPagotoFacturaJSON()
-        {
-            List<Pago> pago = new List<Pago>();
-            Pago item = new Pago();
-            pago.Add(item);
-            return pago;
-        }
-
-        public Sucursal LlenarSucursalFacturaJSON()
+       
+        public Sucursal LlenarSucursalFacturaJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
             
             Sucursal sucursal = new Sucursal();
+
+            modelowmspctitulares cliente = new modelowmspctitulares();
             
+            string Ven__cod_tit = conscabcera.cod_cliente;
+            cliente = null;
+            cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit);
+
+            sucursal.ciudad = cliente.nom_ciudad;
+            sucursal.codcliente = cliente.cod_tit;
+            sucursal.departamento = cliente.nom_provincia;
+            sucursal.direccion1 = cliente.dir_tit;
+            sucursal.dpto = cliente.cod_provincia;
+            sucursal.email = cliente.email_tit;
+            sucursal.emailfe = cliente.email_tit;
+            sucursal.idsuc = 0; //no se
+            // opcional sucursal.idvendedor = 
+            // opcional sucursal.movil =
+            // obligatorio sucursal.mun = 
+            sucursal.nit = Convert.ToInt64(cliente.nro_dgi);
+            sucursal.razonsocial = cliente.razon_social;
+            sucursal.telefono1  = cliente.tel_tit;
+            sucursal.telefono2 = cliente.tel_tit; //opcional 2 fono
             return sucursal;
         }
 
-        public Tercero LlenarTerceroFacturaJSON()
+        public Tercero LlenarTerceroFacturaJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
 
             Tercero tercero = new Tercero();
 
+            modelowmspctitulares cliente = new modelowmspctitulares();
+
+            string Ven__cod_tit = conscabcera.cod_cliente;
+            cliente = null;
+            cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit);
+
+            
+            tercero.comentarios = "";
+            tercero.dv = cliente.nro_dgi1; //digito verificador
+            tercero.identificacion =Convert.ToInt64(cliente.nro_dgi);
+            tercero.idtipoempresa = 0; //Convert.ToInt32(cliente.cod_tipo_emp_gan);
+            tercero.nit = Convert.ToInt64(cliente.nro_dgi);
+            tercero.nom1 = cliente.nom_tit;
+            tercero.nom2 = "";
+            tercero.razonsocial = cliente.razon_social;
+            // obligatorio tercero.tdoc = //preguntar a laurita como scar el tipo de identificacion de la tabla tipo de identificaciones
+            tercero.tipopersona = cliente.control_tit;
+
             return tercero;
         }
 
+        public modelowmspctitulares buscarCliente(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit)
+        {
+
+
+            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit);
+            int count = 0;
+            cliente = null;
+            foreach (modelowmspctitulares item in lista)
+            {
+                count++;
+                cliente = item;
+
+            }
+            return cliente;
+        }
+
+        public ModeloDetalleFactura buscarDetalleFactura(string nro_trans)
+        {
+            listaConsDet = ConsultaDeta.ConsultaDetalleFacura(nro_trans);
+            int count = 0;
+            consdetalle = null;
+            foreach (ModeloDetalleFactura item in listaConsDet)
+            {
+                count++;
+                consdetalle = item;
+
+            }
+            return consdetalle;
+        }
+        public modelowmtfacturascab buscarCabezeraFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        {
+
+            listaConsCab = ConsultaCabe.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+            int count = 0;
+            conscabcera = null;
+            foreach (modelowmtfacturascab item in listaConsCab)
+            {
+                count++;
+                conscabcera = item;
+
+            }
+            return conscabcera;
+        }
+        public modelowmspclogo BuscarUsuarioLogo(string Ccf_cod_emp, string Ccf_usuario)
+        {
+            ListaModelowmspclogo = consultaLogo.BuscartaLogo(Ccf_cod_emp, Ccf_usuario);
+           
+            foreach (var item in ListaModelowmspclogo)
+            {
+                Modelowmspclogo = item;
+                break;
+            }
+
+            return Modelowmspclogo;
+        }
+        public modelowmspcfacturasWMimpuRest BuscarImpuestosREst(string usuario, string empresa, string nro_trans, string impuesto)
+        {
+            ListaModeloimpuesto = consultaImpuesto.BuscarImpuestoRest(usuario, empresa, nro_trans, impuesto);
+            foreach (modelowmspcfacturasWMimpuRest item in ListaModeloimpuesto)
+            {
+            if (item.nom_impuesto.Trim() == "IVA GENERADO")
+            {
+                ModeloImpuesto = item;
+                break;
+            }
+               
+            }
+
+            return ModeloImpuesto;
+        }
+        public modelowmspctctrxCotizacion BuscarCotizacion(string usuario, string empresa, string nro_trans)
+        {
+            ListaModelocotizacion = consultaMoneda.BuscartatrmCotizacion(usuario, empresa, nro_trans);
+            foreach (var item in ListaModelocotizacion)
+            {
+                ModeloCotizacion = item;
+                break;
+            }
+
+            return ModeloCotizacion;
+        }
+        public JsonRespuestaDE BuscarRespuestaDS(string nro_trans)
+        {
+            ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
+           
+            foreach (var item in ListaModelorespuestaDs)
+            {
+                ModeloResQr = item;
+                break;
+            }
+
+            return ModeloResQr;
+        }
+        public modelowmspcempresas BuscarCabEmpresa(string usuario, string empresa)
+        {
+            ListaModeloempresa = consultaEmpresa.BuscartaEmpresa(usuario, empresa);
+            foreach (var item in ListaModeloempresa)
+            {
+                Modeloempresa = item;
+                break;
+            }
+
+            return Modeloempresa;
+        }
 
 
     }

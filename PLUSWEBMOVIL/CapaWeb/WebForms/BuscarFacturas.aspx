@@ -178,6 +178,12 @@
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
                                             
+                                            <asp:TemplateColumn>
+                                                <ItemTemplate>
+                                                    <asp:ImageButton ID="imgError" runat="server" CausesValidation="false" CommandName="Mostrar"
+                                                        ImageUrl="~/Tema/imagenes/application_search.png" ToolTip="Mostrar" Width="16" />
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
                                         </Columns>
 
 

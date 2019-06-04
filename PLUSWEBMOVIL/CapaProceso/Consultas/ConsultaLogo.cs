@@ -30,10 +30,15 @@ namespace CapaProceso.Consultas
                 item.nom_pais = Convert.ToString(dr["nom_pais"]);
                 item.cod_provincia = Convert.ToString(dr["cod_provincia"]);
                 item.cod_ciudad = Convert.ToString(dr["cod_ciudad"]);
-                item.sitio_app = Convert.ToString(dr["sitio_app"]);
+                item.sitio_app = "http://localhost/Pruebas6WMD/";//Convert.ToString(dr["sitio_app"]);
                 item.nom_ciudad = Convert.ToString(dr["nom_ciudad"]);                
                 item.logo = Convert.ToString(dr["logo"]);
-                
+                item.username = Convert.ToString(dr["username"]);
+                item.password = Convert.ToString(dr["password"]);
+                item.linkemidocuelec = Convert.ToString(dr["linkemidocuelec"]);
+                item.linkgenpdf = Convert.ToString(dr["linkgenpdf"]);
+                item.pathtmpfac = Convert.ToString(dr["pathtmpfac"]);
+
                 lista.Add(item);
 
                

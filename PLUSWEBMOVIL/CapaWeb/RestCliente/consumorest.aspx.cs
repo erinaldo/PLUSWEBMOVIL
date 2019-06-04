@@ -19,7 +19,7 @@ namespace CapaWeb.RestCliente
         {
             ConsumoRest consumoRest = new ConsumoRest();
 
-            TextBox1.Text = consumoRest.ConsultarRest();
+            TextBox1.Text = consumoRest.ConsultarRest("04","desarrollo","c","VTA","6385");
 
         }
 

@@ -23,10 +23,12 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
         public Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
         public Consultawmtfacturasdet ConsultaDeta = new Consultawmtfacturasdet();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
+        public ConsultawmspctctrxCotizacion consultaMoneda = new ConsultawmspctctrxCotizacion();
         public ConsultaBancos consultabanco = new ConsultaBancos();
         public Consultaparamcomercial consultaComercial = new Consultaparamcomercial();
         public ConsultaEmpresa consultaEmpresa = new ConsultaEmpresa();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
+        public List<modelowmspctctrxCotizacion> ListaModelocotizacion = new List<modelowmspctctrxCotizacion>();
         public List<modelobancos> ListaModelobancos = new List<modelobancos>();
         public List<modelowmspcempresas> ListaModeloempresa = new List<modelowmspcempresas>();
         public List<modeloparametrocomercial> ListaModelocomercial = new List<modeloparametrocomercial>();
@@ -34,8 +36,12 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
         public modelowmspcempresas Modeloempresa = new modelowmspcempresas();
         public modeloparametrocomercial Modelocomercial = new modeloparametrocomercial();
         public modelobancos ModeloBancos = new modelobancos();
+        public modelowmspctctrxCotizacion ModeloCotizacion = new modelowmspctctrxCotizacion();
 
 
+        public List<JsonRespuestaDE> ListaModelorespuestaDs = new List<JsonRespuestaDE>();
+        public JsonRespuestaDE ModeloResQr = new JsonRespuestaDE();
+        public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
 
         public string Ccf_estado = null;
         public string Ccf_cliente = null;
@@ -50,6 +56,22 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
         public string Ccf_aniof = null;
         public string nro_trans = null;
 
+        public JsonRespuestaDE BuscarRespuestaDS(string nro_trans)
+        {
+            ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
+
+            foreach (var item in ListaModelorespuestaDs)
+            {
+                if (item.qrdata != " ")
+                {
+                    ModeloResQr = item;
+                    break;
+                }
+               
+            }
+
+            return ModeloResQr;
+        }
         public ModeloDetalleFactura buscarDetalleFactura(string nro_trans)
         {
             listaConsDet = ConsultaDeta.ConsultaDetalleFacura(nro_trans);
@@ -98,10 +120,17 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
             ModeloBancos = null;
             ModeloBancos = BuscarBancos(Ccf_usuario, Ccf_cod_emp);
 
+            ModeloCotizacion = null;
+            ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
+
+           
 
 
-            string bpathPdfGenrado = "F://PLUSCOLOMBIA/FACRURACIONLECTRONICA/PDF/factura.pdf";
-            string qr = ImagenQR(bpathPdfGenrado);
+
+            string pathtmpfac = Modelowmspclogo.pathtmpfac;  //Traemos el path, la ruta 
+            string qrPath = pathtmpfac + Ccf_cod_emp.Trim() + Ccf_nro_trans.Trim() + "qrcode.png";
+            string bpathPdfGenrado = pathtmpfac + Ccf_cod_emp.Trim() + Ccf_nro_trans.Trim() + "factura.pdf";
+            string qr = ImagenQR(qrPath, Ccf_nro_trans);
 
 
 
@@ -129,7 +158,7 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
             cell.Border = 0;
             tablaLogo.AddCell(cell);
 
-            // Creamos la imagen y le ajustamos el tamaño
+            // Creamos la imagen QR y le ajustamos el tamaño
             imagen = iTextSharp.text.Image.GetInstance(qr);
             imagen.BorderWidth = 0;
             imagen.Alignment = Element.ALIGN_RIGHT;
@@ -634,10 +663,12 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
             return bpathPdfGenrado;
         }
 
-        public string ImagenQR(string texto)
+        public string ImagenQR(string qrPath, string Ccf_nro_trans)
         {
-            string qrPath = "F://PLUSCOLOMBIA/FACRURACIONLECTRONICA/PDF/qrcode.png";
+            ModeloResQr = null;  //Traemos el QR respuesta
+            ModeloResQr = BuscarRespuestaDS(Ccf_nro_trans);
 
+            string texto = ModeloResQr.qrdata;
             var qrEncoder = new QrEncoder(ErrorCorrectionLevel.H);
             var qrCode = qrEncoder.Encode(texto);
 
@@ -728,6 +759,17 @@ namespace CapaWeb.GenerarPDF.FacturaElectronica
             }
 
             return Modelowmspclogo;
+        }
+        public modelowmspctctrxCotizacion BuscarCotizacion(string usuario, string empresa, string nro_trans)
+        {
+            ListaModelocotizacion = consultaMoneda.BuscartatrmCotizacion(usuario,empresa, nro_trans);
+            foreach (var item in ListaModelocotizacion)
+            {
+                ModeloCotizacion = item;
+                break;
+            }
+
+            return ModeloCotizacion;
         }
 
         public modelobancos BuscarBancos(string empresa, string usuario)
