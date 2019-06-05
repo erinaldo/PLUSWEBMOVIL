@@ -62,13 +62,36 @@ namespace CapaWeb.WebForms
                     case "MTR":
                         Int64 ide = Int64.Parse(qs["Id"].ToString());
                         string nro_trans = ide.ToString();
-                        CargarGrilla(nro_trans);
+                        CargarFormularioRespuestaDS(nro_trans);
                         break;
                 }
 
             }
         }
 
+        private void CargarFormularioRespuestaDS(string nro_trans)
+        {
+
+            ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
+            int count = 0;
+            foreach (var item in ListaModelorespuestaDs)
+            {
+                ModeloResQr = item;
+                count++;
+                break;
+            }
+
+            txt_nro_trans.Text = ModeloResQr.nro_trans;
+            txt_linea.Text = Convert.ToString(ModeloResQr.linea);
+            txt_id.Text = ModeloResQr.id;
+            txt_qrdata.Text = ModeloResQr.qrdata;
+            txt_xml.Text = ModeloResQr.xml;
+            txt_cufe.Text = ModeloResQr.cufe;
+            txt_error.Text = ModeloResQr.error;
+            txt_json.Text = ModeloResQr.json;
+
+
+        }
         private void CargarGrilla(string nro_trans)
         {
 

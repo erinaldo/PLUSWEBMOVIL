@@ -18,7 +18,106 @@
                         <p class="Subtitulo1">Lista de incidencias</p>
                     </td>
                 </tr>
-    
+                <tr>
+                    <td>
+
+                        <hr />
+                    </td>
+                </tr>
+                  <tr>
+                    <td>
+                        <table align="center">
+                            <tr>
+                                <td colspan="4">
+                                    <asp:Label ID="mensaje" name="mensaje" runat="server" Text=""></asp:Label>
+                                </td>
+                            </tr>
+
+                            <tr valign="top">
+                                <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">N° Transacción:</div>
+                                </td>
+
+                                <td class="textos">
+                                    
+                                    <asp:TextBox ID="txt_nro_trans" class="textos" size="27"  ReadOnly="true" runat="server"></asp:TextBox>
+
+                                </td>
+                                 </tr>
+                            <tr valign="top">
+                                <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Id:</div>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txt_id"  class="textos" size="27"  ReadOnly="true" runat="server"></asp:TextBox>
+                                    
+                                </td>
+                            </tr>
+                                <tr valign="top">
+                                 <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Linea:</div>
+                                </td>
+                                <td class="textos">
+                                    <asp:TextBox ID="txt_linea" class="textos" size="27"   runat="server" ReadOnly="true"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                    <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Qrdata:</div>
+                                </td>
+                                <td>
+                                    <label>
+                                        <asp:TextBox ID="txt_qrdata" Width="880" class="textos"  ReadOnly="true" TextMode="MultiLine" cols="100" Rows="3" runat="server"></asp:TextBox>
+
+                                    </label>
+                                </td>
+                                </tr>
+                                <tr valign="top">
+                                <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Xml:</div>
+                                </td>
+                                <td>
+                                   <asp:TextBox ID="txt_xml" Width="880" class="textos" ReadOnly="true" TextMode="MultiLine" cols="100" Rows="3"  runat="server"></asp:TextBox>
+
+                                </td>
+                               </tr>
+                            
+                            <tr valign="top">
+                                <td align="right" valign="top" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Cufe:</div>
+                                </td>
+                                <td valign="top">
+                                    <label>
+                                        <asp:TextBox ID="txt_cufe" Width="880" class="textos" ReadOnly="true" TextMode="MultiLine" cols="100" Rows="3" runat="server"></asp:TextBox>
+
+                                    </label>
+                                </td>
+                                </tr>
+                            <tr valign="top">
+                                <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Error:</div>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txt_error" Width="880" class="textos" ReadOnly="true" TextMode="MultiLine" cols="100" Rows="3" runat="server"></asp:TextBox>
+                                </td>
+                                </tr>
+                            <tr valign="top">
+                               <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Json:</div>
+                                </td>
+                                <td>
+                                    <label>
+                                        <asp:TextBox ID="txt_json" Width="880" class="textos" ReadOnly="true" TextMode="MultiLine" cols="100" Rows="3" runat="server"></asp:TextBox>
+                                        
+                                    </label>
+                                </td>
+
+
+                            </tr>
+
+                        </table>
+                    </td>
+                </tr>
                         <tr>
                     <td>
                         <table border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#0E748A">
@@ -51,53 +150,7 @@
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
 
-                                            <asp:TemplateColumn HeaderText="QR DATA">
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="qrdata" runat="server" Text='<%#Eval("qrdata") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-
-                                            <asp:TemplateColumn HeaderText="XML">
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="xml" runat="server" Text='<%#Eval("xml") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                                <ItemStyle Font-Bold="False" Font-Italic="False" Font-Overline="False" Font-Strikeout="False" Font-Underline="False" HorizontalAlign="Center" />
-                                            </asp:TemplateColumn>
-
-                                            <asp:TemplateColumn HeaderText="ID">
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="id" runat="server" Text='<%#Eval("id") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-                                             <asp:TemplateColumn HeaderText="CUFE">
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="cufe" runat="server" Text='<%#Eval("cufe") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-
-                                            <asp:TemplateColumn HeaderText="ERROR">
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="error" runat="server" Text='<%#Eval("error") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-
-                                            <asp:TemplateColumn HeaderText="JSON">
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="json" runat="server" Text='<%#Eval("json") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
+                                            
                                             
 
                                           

@@ -129,6 +129,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestCliente\ComprobanteFacturaJSON.cs" />
     <Compile Include="RestCliente\ConsumoRest.cs" />
+    <Compile Include="RestCliente\JsonFacturacionElectronica.cs" />
+    <Compile Include="RestCliente\ProcesoRest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CapaDatos\CapaDatos.csproj">

@@ -25,7 +25,7 @@ namespace CapaDatos.Sql
             return dr;
         }
 
-        public string InsertarRespuestaDS(string nro_trans, int linea, string qrdata, string xml, string id, string cufe, string error, string json)
+        public string InsertarRespuestaDS(JsonRespuestaDE jsonRespuestaDE)
         {
             try
             {
@@ -33,14 +33,14 @@ namespace CapaDatos.Sql
 
                 string insert = "INSERT INTO  wmt_respuestaDS (nro_trans, linea, qrdata, xml, id, cufe, error,json) VALUES (@nro_trans, @linea, @qrdata, @xml, @id, @cufe, @error, @json)";
                 SqlCommand conmand = new SqlCommand(insert, cn);
-                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
-                conmand.Parameters.Add("@linea", SqlDbType.Int).Value = linea;
-                conmand.Parameters.Add("@qrdata", SqlDbType.VarChar).Value = qrdata;
-                conmand.Parameters.Add("@xml", SqlDbType.VarChar).Value = xml;
-                conmand.Parameters.Add("@id", SqlDbType.VarChar).Value = id;
-                conmand.Parameters.Add("@cufe", SqlDbType.VarChar).Value = cufe;
-                conmand.Parameters.Add("@error", SqlDbType.VarChar).Value = error;
-                conmand.Parameters.Add("@json", SqlDbType.VarChar).Value = json;
+                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = jsonRespuestaDE.nro_trans;
+                conmand.Parameters.Add("@linea", SqlDbType.Int).Value = jsonRespuestaDE.linea;
+                conmand.Parameters.Add("@qrdata", SqlDbType.VarChar).Value = jsonRespuestaDE.qrdata;
+                conmand.Parameters.Add("@xml", SqlDbType.VarChar).Value = jsonRespuestaDE.xml;
+                conmand.Parameters.Add("@id", SqlDbType.VarChar).Value = jsonRespuestaDE.id;
+                conmand.Parameters.Add("@cufe", SqlDbType.VarChar).Value = jsonRespuestaDE.cufe;
+                conmand.Parameters.Add("@error", SqlDbType.VarChar).Value = jsonRespuestaDE.error;
+                conmand.Parameters.Add("@json", SqlDbType.VarChar).Value = jsonRespuestaDE.json;
 
 
                 int dr = conmand.ExecuteNonQuery();
