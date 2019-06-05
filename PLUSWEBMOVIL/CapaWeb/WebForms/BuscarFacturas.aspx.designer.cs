@@ -33,7 +33,7 @@ namespace CapaWeb.WebForms {
         /// <summary>
         /// Control txtCliente.
         /// </summary>
-        /// <remarks>
+        /// <remarks>o 
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>

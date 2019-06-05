@@ -107,7 +107,7 @@
                                 </td>
                                 <td>
                                     <label>
-                                        <asp:TextBox ID="txt_json" Width="880" class="textos" ReadOnly="true" TextMode="MultiLine" cols="100" Rows="3" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txt_json" Width="880" class="textos" ReadOnly="true" TextMode="MultiLine" cols="200" Rows="10" runat="server"></asp:TextBox>
                                         
                                     </label>
                                 </td>

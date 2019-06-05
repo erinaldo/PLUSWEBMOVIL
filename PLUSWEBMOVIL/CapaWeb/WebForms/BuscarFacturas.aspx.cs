@@ -4,6 +4,7 @@ using CapaProceso.Consultas;
 using CapaProceso.Modelos;
 using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
+using CapaProceso.RestCliente;
 
 namespace CapaWeb.WebForms
 {
@@ -19,8 +20,8 @@ namespace CapaWeb.WebForms
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
 
         modelowmtfacturascab conscabcera = new modelowmtfacturascab();
-        
 
+        ConsumoRest consumoRest = new ConsumoRest();
         List<modelowmtfacturascab> listaConsCab = null;
         List<modeloestadosfactura> Listaestados = null;
         EnviarCorreo correo = new EnviarCorreo();
@@ -152,6 +153,7 @@ namespace CapaWeb.WebForms
 
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
+            ConsumoRest consumoRest = new ConsumoRest();
             //1 primero creo un objeto Clave/Valor de QueryString 
             QueryString qs = new QueryString();
             //Escoger opcion
@@ -197,6 +199,31 @@ namespace CapaWeb.WebForms
                     qs.Add("TRN", "MTR");
                     qs.Add("Id", Id.ToString());
                     Response.Redirect("PortalFacturas.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    break;
+
+                case "Reenviar": //ejecuta el codigo si el usuario ingresa el numero 3
+                    Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+                    string estado = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
+
+                    if (estado == "CONTABILIZADO")
+                    {
+                        //consumoRest.ConsultarRest();
+                    }
+                    else
+                        if (estado == "FINALIZADO")
+                    {
+                        this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA FINALIZADA')+ error;</script>");
+                    }
+                    else
+                        if (estado == "ANULADO")
+                    {
+                        this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA ANULADA')+ error;</script>");
+                    }
+                    else
+                        if (estado == "PENDIENTE")
+                    {
+                        this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA EN  PROCESO')+ error;</script>");
+                    }
                     break;
             }
     }

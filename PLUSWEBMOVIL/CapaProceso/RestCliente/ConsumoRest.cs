@@ -25,7 +25,7 @@ namespace CapaProceso.RestCliente
         public JsonFacturacionElectronica consultaResJson = new JsonFacturacionElectronica();
         public ProcesoRest procesoRest = new ProcesoRest();
 
-        public string ConsultarRest(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        public Boolean EnviarFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
             //Consultar usuario y contraseña
             Modelowmspclogo = null;
@@ -55,8 +55,16 @@ namespace CapaProceso.RestCliente
             jsonRespuestaDE.json = jsonRes;
             jsonRespuestaDE.nro_trans = Ccf_nro_trans;
             guardarResJson.InsertarRespuestaJson(jsonRespuestaDE);//Inserta la respuesta obtenida del servicio rest en la tabla
-            return "Error: " + jsonRespuestaDE.error + "\nqrdata: " + jsonRespuestaDE.qrdata + "\nxml: ";//+ base64Decoded;
+            //return "Error: " + jsonRespuestaDE.error + "\nqrdata: " + jsonRespuestaDE.qrdata + "\nxml: ";//+ base64Decoded;
 
+            if (jsonRespuestaDE.error == null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
             
         }
         public modelowmspclogo BuscarUsuarioLogo(string Ccf_cod_emp, string Ccf_usuario)

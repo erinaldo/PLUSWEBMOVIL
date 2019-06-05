@@ -10,7 +10,7 @@ namespace CapaWeb.WebForms
     public partial class PortalFacturas : System.Web.UI.Page
     {
 
-        List<modelowmtfacturascab> listaConsCab = null;
+     
         modelocabecerafactura cabecerafactura = new modelocabecerafactura();
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
 
@@ -20,9 +20,6 @@ namespace CapaWeb.WebForms
 
         modelowmtfacturascab conscabcera = new modelowmtfacturascab();
         ModeloDetalleFactura consdetalle = new ModeloDetalleFactura();
-        List<ModeloDetalleFactura> listaConsDetalle = null;
-
-
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();

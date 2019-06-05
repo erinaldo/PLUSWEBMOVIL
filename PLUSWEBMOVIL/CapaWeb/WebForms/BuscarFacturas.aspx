@@ -184,6 +184,13 @@
                                                         ImageUrl="~/Tema/imagenes/application_search.png" ToolTip="Mostrar" Width="16" />
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
+
+                                            <asp:TemplateColumn>
+                                                <ItemTemplate>
+                                                    <asp:ImageButton ID="imgReenviar" runat="server" CausesValidation="false" CommandName="Reenviar"
+                                                        ImageUrl="~/Tema/imagenes/up.png" ToolTip="Reenviar" Width="16" />
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
                                         </Columns>
 
 
