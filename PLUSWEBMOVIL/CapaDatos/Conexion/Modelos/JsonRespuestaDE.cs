@@ -9,7 +9,7 @@ namespace CapaProceso.Modelos
     {
         public string qrdata { get; set; }
         public string xml { get; set; }
-        public int id { get; set; }
+        public string id { get; set; }
         public string cufe { get; set; }
         public string error { get; set; }
         public string json { get; set; }

@@ -28,7 +28,7 @@ namespace CapaProceso.Consultas
                 item.linea = Convert.ToInt16(dr["linea"]);
                 item.qrdata = Convert.ToString(dr["qrdata"]);
                 item.xml = Convert.ToString(dr["xml"]);
-                item.id = Convert.ToInt32(dr["id"]);
+                item.id = Convert.ToString(dr["id"]);
                 item.cufe = Convert.ToString(dr["cufe"]);
                 item.error = Convert.ToString(dr["error"]);
                 item.json = Convert.ToString(dr["json"]);

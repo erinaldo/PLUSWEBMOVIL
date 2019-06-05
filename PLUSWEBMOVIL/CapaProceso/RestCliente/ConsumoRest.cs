@@ -76,10 +76,7 @@ namespace CapaProceso.RestCliente
             Modelowmspclogo = null;
             Modelowmspclogo = BuscarUsuarioLogo( Ccf_cod_emp, Ccf_usuario);
 
-            //consultar datos en la tabla wmt_respuestaDS
-            ModeloResQr = null;
-            ModeloResQr = BuscarRespuestaDS(Ccf_nro_trans);
-
+           
             StreamReader sr = new StreamReader("F:\\factura.txt");
             string contenido = sr.ReadToEnd();
             string output = contenido;
@@ -93,7 +90,7 @@ namespace CapaProceso.RestCliente
              string credentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes($"{username}:{password}"));
 
 
-            output = JsonConvert.SerializeObject(LlenarJSONFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans), Formatting.Indented);
+            //output = JsonConvert.SerializeObject(LlenarJSONFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans), Formatting.Indented);
 
             
 
@@ -118,25 +115,48 @@ namespace CapaProceso.RestCliente
                 jsonRespuestaDE.error = response.Content;
             }
 
-            
+          
+            if (jsonRespuestaDE.qrdata == null)
+            {
+                jsonRespuestaDE.qrdata = " ";
+            }
 
+            if (jsonRespuestaDE.id == null)
+            {
+                jsonRespuestaDE.id = " ";
+            }
+            if (jsonRespuestaDE.cufe == null)
+            {
+                jsonRespuestaDE.cufe = " ";
+            }
             string base64Encoded = jsonRespuestaDE.xml;
             string base64Decoded;
             // byte[] data = Convert.FromBase64String(base64Encoded);
             //base64Decoded = ASCIIEncoding.ASCII.GetString(data);
-
-            if (jsonRespuestaDE.linea <= 0)
+            if (jsonRespuestaDE.xml == null)
             {
-                jsonRespuestaDE.linea = 1;
+                jsonRespuestaDE.xml = " ";
             }
+            //consultar datos en la tabla wmt_respuestaDS
+            ModeloResQr = null;
+            ModeloResQr = BuscarRespuestaDS(Ccf_nro_trans);
+            if (ModeloResQr == null)
+            {
+                if (jsonRespuestaDE.linea <= 0)
+                {
+                    jsonRespuestaDE.linea = 1;
+                }
+                
+              }
             else
             {
-                jsonRespuestaDE.linea = jsonRespuestaDE.linea + 1;
+                jsonRespuestaDE.linea = ModeloResQr.linea + 1;
+                
             }
-            
+         
             jsonRespuestaDE.json = output;
             jsonRespuestaDE.nro_trans = Ccf_nro_trans;//Aqui enviar numero de transacion
-            guardarResJson.InsertarRespuestaJson(jsonRespuestaDE);
+            guardarResJson.InsertarRespuestaJson(jsonRespuestaDE.nro_trans, jsonRespuestaDE.linea, jsonRespuestaDE.qrdata, jsonRespuestaDE.xml, jsonRespuestaDE.id, jsonRespuestaDE.cufe, jsonRespuestaDE.error, jsonRespuestaDE.json);
             return "Error: " + jsonRespuestaDE.error + "\nqrdata: " + jsonRespuestaDE.qrdata + "\nxml: ";//+ base64Decoded;
 
             
@@ -170,7 +190,7 @@ namespace CapaProceso.RestCliente
             ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
 
                 //Usuario prueba emisor = 830106032;
-               //encabezado.emisor = 830106032;
+                encabezado.emisor = 830106032;
                 encabezado.emisor = Convert.ToInt32(Modeloempresa.nro_dgi2);
                 encabezado.codmoneda = conscabcera.cod_moneda;
                 encabezado.comentarios = conscabcera.observaciones;
@@ -302,7 +322,7 @@ namespace CapaProceso.RestCliente
             tercero.comentarios = "";
             tercero.dv = cliente.nro_dgi1; //digito verificador
             tercero.identificacion =Convert.ToInt64(cliente.nro_dgi);
-            tercero.idtipoempresa = 0; //Convert.ToInt32(cliente.cod_tipo_emp_gan);
+            tercero.idtipoempresa = Convert.ToInt32(cliente.cod_tipo_emp_iva);
             tercero.nit = Convert.ToInt64(cliente.nro_dgi);
             tercero.nom1 = cliente.nom_tit;
             tercero.nom2 = "";
@@ -329,9 +349,9 @@ namespace CapaProceso.RestCliente
             return cliente;
         }
 
-        public ModeloDetalleFactura buscarDetalleFactura(string nro_trans)
+        public ModeloDetalleFactura buscarDetalleFactura(string Ccf_nro_trans)
         {
-            listaConsDet = ConsultaDeta.ConsultaDetalleFacura(nro_trans);
+            listaConsDet = ConsultaDeta.ConsultaDetalleFacura(Ccf_nro_trans);
             int count = 0;
             consdetalle = null;
             foreach (ModeloDetalleFactura item in listaConsDet)
@@ -368,9 +388,9 @@ namespace CapaProceso.RestCliente
 
             return Modelowmspclogo;
         }
-        public modelowmspcfacturasWMimpuRest BuscarImpuestosREst(string usuario, string empresa, string nro_trans, string impuesto)
+        public modelowmspcfacturasWMimpuRest BuscarImpuestosREst(string Ccf_usuario, string Ccf_cod_emp, string Ccf_nro_trans, string impuesto)
         {
-            ListaModeloimpuesto = consultaImpuesto.BuscarImpuestoRest(usuario, empresa, nro_trans, impuesto);
+            ListaModeloimpuesto = consultaImpuesto.BuscarImpuestoRest(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans, impuesto);
             foreach (modelowmspcfacturasWMimpuRest item in ListaModeloimpuesto)
             {
             if (item.nom_impuesto.Trim() == "IVA GENERADO")
@@ -383,9 +403,9 @@ namespace CapaProceso.RestCliente
 
             return ModeloImpuesto;
         }
-        public modelowmspctctrxCotizacion BuscarCotizacion(string usuario, string empresa, string nro_trans)
+        public modelowmspctctrxCotizacion BuscarCotizacion(string Ccf_usuario, string Ccf_cod_emp, string Ccf_nro_trans)
         {
-            ListaModelocotizacion = consultaMoneda.BuscartatrmCotizacion(usuario, empresa, nro_trans);
+            ListaModelocotizacion = consultaMoneda.BuscartatrmCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
             foreach (var item in ListaModelocotizacion)
             {
                 ModeloCotizacion = item;
@@ -394,9 +414,9 @@ namespace CapaProceso.RestCliente
 
             return ModeloCotizacion;
         }
-        public JsonRespuestaDE BuscarRespuestaDS(string nro_trans)
+        public JsonRespuestaDE BuscarRespuestaDS(string Ccf_nro_trans)
         {
-            ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
+            ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(Ccf_nro_trans);
            
             foreach (var item in ListaModelorespuestaDs)
             {
@@ -406,9 +426,9 @@ namespace CapaProceso.RestCliente
 
             return ModeloResQr;
         }
-        public modelowmspcempresas BuscarCabEmpresa(string usuario, string empresa)
+        public modelowmspcempresas BuscarCabEmpresa(string Ccf_usuario, string Ccf_cod_emp)
         {
-            ListaModeloempresa = consultaEmpresa.BuscartaEmpresa(usuario, empresa);
+            ListaModeloempresa = consultaEmpresa.BuscartaEmpresa(Ccf_usuario, Ccf_cod_emp);
             foreach (var item in ListaModeloempresa)
             {
                 Modeloempresa = item;
