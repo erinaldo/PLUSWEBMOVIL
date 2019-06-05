@@ -57,7 +57,7 @@ namespace CapaProceso.RestCliente
             guardarResJson.InsertarRespuestaJson(jsonRespuestaDE);//Inserta la respuesta obtenida del servicio rest en la tabla
             //return "Error: " + jsonRespuestaDE.error + "\nqrdata: " + jsonRespuestaDE.qrdata + "\nxml: ";//+ base64Decoded;
 
-            if (jsonRespuestaDE.error == null)
+            if (jsonRespuestaDE.error.Trim() == "" )
             {
                 return true;
             }

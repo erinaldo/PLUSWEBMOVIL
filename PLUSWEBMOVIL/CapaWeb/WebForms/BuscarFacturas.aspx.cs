@@ -153,7 +153,7 @@ namespace CapaWeb.WebForms
 
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
-            ConsumoRest consumoRest = new ConsumoRest();
+          
             //1 primero creo un objeto Clave/Valor de QueryString 
             QueryString qs = new QueryString();
             //Escoger opcion
@@ -194,11 +194,33 @@ namespace CapaWeb.WebForms
 
                 case "Mostrar": //ejecuta el codigo si el usuario ingresa el numero 3
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+                    string estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
 
-                    //2 voy a agregando los valores que deseo
-                    qs.Add("TRN", "MTR");
-                    qs.Add("Id", Id.ToString());
-                    Response.Redirect("PortalFacturas.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    if (estadoM == "CONTABILIZADO")
+                    {
+
+                        qs.Add("TRN", "MTR");
+                        qs.Add("Id", Id.ToString());
+                        Response.Redirect("PortalFacturas.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    }
+                    else
+                        if (estadoM == "FINALIZADO")
+                    {
+                        qs.Add("TRN", "MTR");
+                        qs.Add("Id", Id.ToString());
+                        Response.Redirect("PortalFacturas.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    }
+                    else
+                        if (estadoM == "ANULADO")
+                    {
+                        this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA ANULADA')+ error;</script>");
+                    }
+                    else
+                        if (estadoM == "PENDIENTE")
+                    {
+                        this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA EN  PROCESO')+ error;</script>");
+                    }
+                
                     break;
 
                 case "Reenviar": //ejecuta el codigo si el usuario ingresa el numero 3
@@ -207,7 +229,9 @@ namespace CapaWeb.WebForms
 
                     if (estado == "CONTABILIZADO")
                     {
-                        //consumoRest.ConsultarRest();
+                        
+                        qs.Add("Id", Id.ToString());
+                        Response.Redirect("ReenviarFacturaJson.aspx" + Encryption.EncryptQueryString(qs).ToString());
                     }
                     else
                         if (estado == "FINALIZADO")

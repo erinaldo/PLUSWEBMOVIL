@@ -160,6 +160,7 @@
     <Content Include="WebForms\Factura.aspx" />
     <Content Include="WebForms\PortalFacturas.aspx" />
     <Content Include="WebForms\prueba.aspx" />
+    <Content Include="WebForms\ReenviarFacturaJson.aspx" />
     <Content Include="WebForms\ReporteFactura.aspx" />
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +223,13 @@
     </Compile>
     <Compile Include="WebForms\prueba.aspx.designer.cs">
       <DependentUpon>prueba.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\ReenviarFacturaJson.aspx.cs">
+      <DependentUpon>ReenviarFacturaJson.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\ReenviarFacturaJson.aspx.designer.cs">
+      <DependentUpon>ReenviarFacturaJson.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\ReporteFactura.aspx.cs">
       <DependentUpon>ReporteFactura.aspx</DependentUpon>
