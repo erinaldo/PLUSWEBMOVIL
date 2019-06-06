@@ -12,7 +12,7 @@ using System.Drawing.Imaging;
 using System.IO;
 
 
-namespace CapaWeb.GenerarPDF.FacturaElectronica
+namespace CapaProceso.GenerarPDF.FacturaElectronica
 {
     public class PdfFacturaElectronica
     {

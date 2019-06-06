@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using RestSharp;
 using CapaProceso.Modelos;
 using CapaProceso.Consultas;
+using CapaProceso.GenerarPDF.FacturaElectronica;
 
 namespace CapaProceso.RestCliente
 {
@@ -54,11 +55,34 @@ namespace CapaProceso.RestCliente
            
             jsonRespuestaDE.json = jsonRes;
             jsonRespuestaDE.nro_trans = Ccf_nro_trans;
+
+            
             guardarResJson.InsertarRespuestaJson(jsonRespuestaDE);//Inserta la respuesta obtenida del servicio rest en la tabla
-            //return "Error: " + jsonRespuestaDE.error + "\nqrdata: " + jsonRespuestaDE.qrdata + "\nxml: ";//+ base64Decoded;
+
+            
 
             if (jsonRespuestaDE.error.Trim() == "" )
             {
+                //Envia Pdf el pdf si es autorizado
+                sr = new StreamReader("F:\\pdf.txt");
+                contenido = sr.ReadToEnd();
+                string jsonResPdf = contenido;
+                sr.Close();
+
+                string linkgenpdf = Modelowmspclogo.linkgenpdf;
+                
+                PdfFacturaElectronica pdf = new PdfFacturaElectronica();
+                string pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+
+                byte[] pdfBytes = File.ReadAllBytes(pathPdf);
+                string pdfBase64 = Convert.ToBase64String(pdfBytes);
+
+                //Envia el json armado para y obtiene la respuesta
+                jsonRespuestaDE = procesoRest.EnviarJSONDS(linkgenpdf, credentials, jsonResPdf);
+
+                jsonRespuestaDE.json = jsonResPdf;
+                jsonRespuestaDE.nro_trans = Ccf_nro_trans;
+                guardarResJson.InsertarRespuestaJson(jsonRespuestaDE);//Inserta la respuesta obtenida del servicio rest en la tabla
                 return true;
             }
             else

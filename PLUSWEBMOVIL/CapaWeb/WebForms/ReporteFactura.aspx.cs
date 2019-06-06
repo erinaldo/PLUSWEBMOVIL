@@ -1,5 +1,4 @@
-﻿using CapaWeb.GenerarPDF.FacturaElectronica;
-using CapaWeb.Urlencriptacion;
+﻿using CapaWeb.Urlencriptacion;
 using Gma.QrCodeNet.Encoding;
 using Gma.QrCodeNet.Encoding.Windows.Render;
 using System;
@@ -13,7 +12,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using CapaProceso.Consultas;
 using CapaProceso.Modelos;
-
+using CapaProceso.GenerarPDF.FacturaElectronica;
 
 namespace CapaWeb.WebForms
 {

@@ -53,13 +53,23 @@ namespace CapaProceso.RestCliente
             {
                 jsonRespuestaDE.cufe = " ";
             }
-            string base64Encoded = jsonRespuestaDE.xml;
-            string base64Decoded;
-            // byte[] data = Convert.FromBase64String(base64Encoded);
-            //base64Decoded = ASCIIEncoding.ASCII.GetString(data);
+
+            if (jsonRespuestaDE.error == null)
+            {
+                jsonRespuestaDE.error = " ";
+            }
+            
             if (jsonRespuestaDE.xml == null)
             {
                 jsonRespuestaDE.xml = " ";
+            }
+            else
+            {
+                string base64Encoded = jsonRespuestaDE.xml;
+                string base64Decoded;
+                byte[] data = Convert.FromBase64String(base64Encoded);
+                base64Decoded = ASCIIEncoding.ASCII.GetString(data);
+                jsonRespuestaDE.xml = base64Decoded;
             }
             return jsonRespuestaDE;
         }

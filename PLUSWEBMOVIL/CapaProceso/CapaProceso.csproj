@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Gma.QrCodeNet.Encoding, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Gma.QrCodeNet.0.4.1.2\lib\net40\Gma.QrCodeNet.Encoding.dll</HintPath>
+      <HintPath>..\packages\QrCode.Net.0.4.0.0\lib\net40\Gma.QrCodeNet.Encoding.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="itextsharp, Version=5.5.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
@@ -53,6 +53,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO, Version=2.6.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.1.1.10\lib\net40\System.IO.dll</HintPath>
       <Private>True</Private>
@@ -108,6 +109,7 @@
     <Compile Include="Consultas\EnviarCorreo.cs" />
     <Compile Include="Consultas\Enviarcorreocliente.cs" />
     <Compile Include="Consultas\GuardarrespuestaDS.cs" />
+    <Compile Include="ReslClientePdf\PdfFacturaElectronica.cs" />
     <Compile Include="Modelos\modelobancos.cs" />
     <Compile Include="Modelos\modeloestadosfactura.cs" />
     <Compile Include="Modelos\modeloJsonRespuestaDE.cs" />
@@ -130,6 +132,7 @@
     <Compile Include="RestCliente\ComprobanteFacturaJSON.cs" />
     <Compile Include="RestCliente\ConsumoRest.cs" />
     <Compile Include="RestCliente\JsonFacturacionElectronica.cs" />
+    <Compile Include="GenerarPDF\FacturaElectronica\JsonFdfFacturaElectronica.cs" />
     <Compile Include="RestCliente\ProcesoRest.cs" />
   </ItemGroup>
   <ItemGroup>
