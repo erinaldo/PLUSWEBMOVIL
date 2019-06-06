@@ -37,8 +37,7 @@ namespace CapaWeb.WebForms
 
 
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
-        modelowmtfacturascab conscabcera = new modelowmtfacturascab();
-        List<modelowmtfacturascab> listaConsCab = null;
+        modelowmtfacturascab conscabcera = new modelowmtfacturascab();        
         
         protected void Page_Load(object sender, EventArgs e)
         {

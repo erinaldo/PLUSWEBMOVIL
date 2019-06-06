@@ -83,6 +83,7 @@ namespace CapaProceso.RestCliente
                 jsonRespuestaDE.json = jsonResPdf;
                 jsonRespuestaDE.nro_trans = Ccf_nro_trans;
                 guardarResJson.InsertarRespuestaJson(jsonRespuestaDE);//Inserta la respuesta obtenida del servicio rest en la tabla
+
                 return true;
             }
             else

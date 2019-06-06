@@ -71,6 +71,7 @@ namespace CapaProceso.RestCliente
                 base64Decoded = ASCIIEncoding.ASCII.GetString(data);
                 jsonRespuestaDE.xml = base64Decoded;
             }
+
             return jsonRespuestaDE;
         }
     }
