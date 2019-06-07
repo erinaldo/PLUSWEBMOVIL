@@ -58,7 +58,12 @@ namespace CapaProceso.RestCliente
             {
                 jsonRespuestaDE.error = " ";
             }
-            
+
+            if (jsonRespuestaDE.result == null)
+            {
+                jsonRespuestaDE.result = " ";
+            }
+
             if (jsonRespuestaDE.xml == null)
             {
                 jsonRespuestaDE.xml = " ";

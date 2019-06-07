@@ -10,23 +10,28 @@ namespace CapaProceso.RestCliente
     public class JsonFacturacionElectronica
     {
         public modelowmtfacturascab conscabcera = new modelowmtfacturascab();
-        public ModeloDetalleFactura consdetalle = new ModeloDetalleFactura();
         public List<modelowmtfacturascab> listaConsCab = null;
-        public List<ModeloDetalleFactura> listaConsDet = null;
         public Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
+
+        public ModeloDetalleFactura consdetalle = new ModeloDetalleFactura();
+        public List<ModeloDetalleFactura> listaConsDet = null;
         public Consultawmtfacturasdet ConsultaDeta = new Consultawmtfacturasdet();
-        public ConsultaLogo consultaLogo = new ConsultaLogo();
-        public ConsultaBancos consultabanco = new ConsultaBancos();
-        public Consultaparamcomercial consultaComercial = new Consultaparamcomercial();
-        public ConsultaEmpresa consultaEmpresa = new ConsultaEmpresa();
-        public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
-        public List<modelobancos> ListaModelobancos = new List<modelobancos>();
+
         public List<modelowmspcempresas> ListaModeloempresa = new List<modelowmspcempresas>();
-        public List<modeloparametrocomercial> ListaModelocomercial = new List<modeloparametrocomercial>();
-        public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
+        public ConsultaEmpresa consultaEmpresa = new ConsultaEmpresa();
         public modelowmspcempresas Modeloempresa = new modelowmspcempresas();
-        public modeloparametrocomercial Modelocomercial = new modeloparametrocomercial();
+
+        public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
+        public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
+        public ConsultaLogo consultaLogo = new ConsultaLogo();
+
+        public List<modelobancos> ListaModelobancos = new List<modelobancos>();
+        public ConsultaBancos consultabanco = new ConsultaBancos();
         public modelobancos ModeloBancos = new modelobancos();
+
+        public List<modeloparametrocomercial> ListaModelocomercial = new List<modeloparametrocomercial>();
+        public Consultaparamcomercial consultaComercial = new Consultaparamcomercial();
+        public modeloparametrocomercial Modelocomercial = new modeloparametrocomercial();
 
         public Consultawmsptitulares ConsultaTitulares = new Consultawmsptitulares();
         public List<modelowmspctitulares> lista = null;

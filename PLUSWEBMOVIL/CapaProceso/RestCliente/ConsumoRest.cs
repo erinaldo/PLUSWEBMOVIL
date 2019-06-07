@@ -12,6 +12,7 @@ using RestSharp;
 using CapaProceso.Modelos;
 using CapaProceso.Consultas;
 using CapaProceso.GenerarPDF.FacturaElectronica;
+using CapaProceso.ReslClientePdf;
 
 namespace CapaProceso.RestCliente
 {
@@ -25,6 +26,7 @@ namespace CapaProceso.RestCliente
         public GuardarrespuestaDS guardarResJson = new GuardarrespuestaDS();
         public JsonFacturacionElectronica consultaResJson = new JsonFacturacionElectronica();
         public ProcesoRest procesoRest = new ProcesoRest();
+        public JsonFacturaPDF jsonFacturapdf = new JsonFacturaPDF();
 
         public Boolean EnviarFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
@@ -61,7 +63,7 @@ namespace CapaProceso.RestCliente
 
             
 
-            if (jsonRespuestaDE.error.Trim() == "" )
+            if (jsonRespuestaDE.error.Trim() == "" )//Si la factura no tiene errores
             {
                 //Envia Pdf el pdf si es autorizado
                 sr = new StreamReader("F:\\pdf.txt");
@@ -69,22 +71,40 @@ namespace CapaProceso.RestCliente
                 string jsonResPdf = contenido;
                 sr.Close();
 
-                string linkgenpdf = Modelowmspclogo.linkgenpdf;
+                string linkgenpdf = Modelowmspclogo.linkgenpdf;//Obtengo link para enviara pdf
                 
                 PdfFacturaElectronica pdf = new PdfFacturaElectronica();
-                string pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                string pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);//Genero el pdf
 
                 byte[] pdfBytes = File.ReadAllBytes(pathPdf);
-                string pdfBase64 = Convert.ToBase64String(pdfBytes);
+                string pdfBase64 = Convert.ToBase64String(pdfBytes);//Convierto el pdf en base 64
 
+                //Consultar pdf, convertir a json
+                //jsonResPdf = JsonConvert.SerializeObject(jsonFacturapdf.RespuestaJSONPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pdfBase64), Formatting.Indented);
+               
+
+                
+                
                 //Envia el json armado para y obtiene la respuesta
                 jsonRespuestaDE = procesoRest.EnviarJSONDS(linkgenpdf, credentials, jsonResPdf);
+                /*Volver a preguntar si error es igul a nulo*/
+                if (jsonRespuestaDE.error.Trim() == null)
+                {
+                    jsonRespuestaDE.error = "";
+                }
 
+                if (jsonRespuestaDE.result.Trim() == null)
+                {
+                    return false;
+                }
                 jsonRespuestaDE.json = jsonResPdf;
                 jsonRespuestaDE.nro_trans = Ccf_nro_trans;
                 guardarResJson.InsertarRespuestaJson(jsonRespuestaDE);//Inserta la respuesta obtenida del servicio rest en la tabla
+               
+               
+                    return true;
+                
 
-                return true;
             }
             else
             {

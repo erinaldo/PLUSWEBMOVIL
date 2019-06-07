@@ -32,13 +32,16 @@
                         <table align="center">
                             <tr>
                                 <td colspan="4">
-                                    <asp:Label ID="mensaje" name="mensaje" Visible="false" runat="server" Text=""></asp:Label>
+                                    <asp:Label ID="mensaje" name="mensaje" Visible="true" runat="server" Text=""></asp:Label>
+                                </td>
+                                <td colspan="4">
+                                    <asp:Label ID="lbl_nro_trans" name="lbl_nro_trans" Visible="false" runat="server" Text=""></asp:Label>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>
-                                    <asp:Button ID="btn_reenviar" CssClass ="btnFactura1" runat="server" Text="Reenviar" OnClick="btn_reenviar_Click" />
+                                    <asp:Button ID="btn_reenviar" CssClass ="btnFactura1" runat="server" Text="Enviar" OnClick="btn_reenviar_Click" />
                                 </td>
                                 <td></td>
                                 <td align="right">

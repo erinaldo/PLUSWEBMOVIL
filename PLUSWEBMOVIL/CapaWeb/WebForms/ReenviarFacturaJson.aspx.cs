@@ -34,7 +34,7 @@ namespace CapaWeb.WebForms
 
                 QueryString qs = ulrDesencriptada();
                 Int64 ide = Int64.Parse(qs["Id"].ToString());
-               mensaje.Text = ide.ToString();
+               lbl_nro_trans.Text = ide.ToString();
                
 
             }
@@ -73,16 +73,17 @@ namespace CapaWeb.WebForms
         {
             ConsumoRest consumoRest = new ConsumoRest();
             bool respuesta = false;
-            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTA", mensaje.Text);
+            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTA", lbl_nro_trans.Text);
             if (respuesta)
             {
                 mensaje.Text = "Su factura fue enviada exitosamente";
-                mensaje.Visible = true;
+                btn_reenviar.Enabled = false;
+                
             }
             else
             {
                 mensaje.Text = "Hubo un error al enviar, revice por favor el detalle de errores.";
-                mensaje.Visible = true;
+               
             }
         }
 

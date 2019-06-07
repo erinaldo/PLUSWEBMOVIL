@@ -109,6 +109,7 @@
     <Compile Include="Consultas\EnviarCorreo.cs" />
     <Compile Include="Consultas\Enviarcorreocliente.cs" />
     <Compile Include="Consultas\GuardarrespuestaDS.cs" />
+    <Compile Include="ReslClientePdf\JsonFacturaPDF.cs" />
     <Compile Include="ReslClientePdf\PdfFacturaElectronica.cs" />
     <Compile Include="Modelos\modelobancos.cs" />
     <Compile Include="Modelos\modeloestadosfactura.cs" />

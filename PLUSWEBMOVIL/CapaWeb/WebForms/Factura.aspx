@@ -21,7 +21,7 @@
                 respuesta = true;
             }
             
-            if (porcdescto < 0 || porcdescto == "") {
+            if (porcdescto < 0 || porcdescto == "" || porcdescto == null ) {
                 alert("Descuento no puede ser menor que cero");
                 respuesta = false;
             } else {

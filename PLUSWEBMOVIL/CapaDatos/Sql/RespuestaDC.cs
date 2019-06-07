@@ -31,7 +31,7 @@ namespace CapaDatos.Sql
             {
                 cn = conexion.genearConexion();
 
-                string insert = "INSERT INTO  wmt_respuestaDS (nro_trans, linea, qrdata, xml, id, cufe, error,json) VALUES (@nro_trans, @linea, @qrdata, @xml, @id, @cufe, @error, @json)";
+                string insert = "INSERT INTO  wmt_respuestaDS (nro_trans, linea, qrdata, xml, id, cufe, error,json, result) VALUES (@nro_trans, @linea, @qrdata, @xml, @id, @cufe, @error, @json, @result)";
                 SqlCommand conmand = new SqlCommand(insert, cn);
                 conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = jsonRespuestaDE.nro_trans;
                 conmand.Parameters.Add("@linea", SqlDbType.Int).Value = jsonRespuestaDE.linea;
@@ -41,6 +41,7 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@cufe", SqlDbType.VarChar).Value = jsonRespuestaDE.cufe;
                 conmand.Parameters.Add("@error", SqlDbType.VarChar).Value = jsonRespuestaDE.error;
                 conmand.Parameters.Add("@json", SqlDbType.VarChar).Value = jsonRespuestaDE.json;
+                conmand.Parameters.Add("@result", SqlDbType.VarChar).Value = jsonRespuestaDE.result;
 
 
                 int dr = conmand.ExecuteNonQuery();

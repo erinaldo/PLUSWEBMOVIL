@@ -31,6 +31,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label mensaje;
         
         /// <summary>
+        /// Control lbl_nro_trans.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_nro_trans;
+        
+        /// <summary>
         /// Control btn_reenviar.
         /// </summary>
         /// <remarks>
