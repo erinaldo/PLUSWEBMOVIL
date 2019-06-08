@@ -29,6 +29,10 @@ namespace CapaProceso.RestCliente
         public ConsultaBancos consultabanco = new ConsultaBancos();
         public modelobancos ModeloBancos = new modelobancos();
 
+        public List<modeloUsuariosucursal> ListaUsuSucursal = new List<modeloUsuariosucursal>();
+        public ConsultawmusuarioSucursal ConsultaUsuSucursal = new ConsultawmusuarioSucursal();
+        public modeloUsuariosucursal ModeloUsuSucursal = new modeloUsuariosucursal();
+             
         public List<modeloparametrocomercial> ListaModelocomercial = new List<modeloparametrocomercial>();
         public Consultaparamcomercial consultaComercial = new Consultaparamcomercial();
         public modeloparametrocomercial Modelocomercial = new modeloparametrocomercial();
@@ -189,20 +193,16 @@ namespace CapaProceso.RestCliente
 
             Sucursal sucursal = new Sucursal();
 
-            modelowmspctitulares cliente = new modelowmspctitulares();
+           ModeloUsuSucursal  = BuscarUsuarioSucursal (Ccf_cod_emp, Ccf_usuario);
 
-            string Ven__cod_tit = conscabcera.cod_cliente;
-            cliente = null;
-            cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit);
-
-            sucursal.ciudad = cliente.nom_ciudad;
+            sucursal.ciudad = "";
             sucursal.codcliente = cliente.cod_tit;
             sucursal.departamento = cliente.nom_provincia;
             sucursal.direccion1 = cliente.dir_tit;
             sucursal.dpto = cliente.cod_provincia;
             sucursal.email = cliente.email_tit;
             sucursal.emailfe = cliente.email_tit;
-            sucursal.idsuc = 0; //no se
+            sucursal.idsuc =Convert.ToInt32( ModeloUsuSucursal.cod_sucursal); //no se
             // opcional sucursal.idvendedor = 
             // opcional sucursal.movil =
             // obligatorio sucursal.mun = 
@@ -342,6 +342,18 @@ namespace CapaProceso.RestCliente
             }
 
             return Modeloempresa;
+        }
+
+        public modeloUsuariosucursal BuscarUsuarioSucursal(string Ccf_cod_emp, string Ccf_usuario)
+        {
+            ListaUsuSucursal = ConsultaUsuSucursal.ConsultaUsuarioSucursal(Ccf_cod_emp, Ccf_usuario);
+            foreach (var item in ListaUsuSucursal)
+            {
+                ModeloUsuSucursal = item;
+                break;
+            }
+
+            return ModeloUsuSucursal;
         }
 
 

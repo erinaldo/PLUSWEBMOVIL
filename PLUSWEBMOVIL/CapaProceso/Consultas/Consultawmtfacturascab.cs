@@ -82,6 +82,7 @@ namespace CapaProceso.Consultas
                 item.nom_moneda = Convert.ToString(dr["nom_moneda"]);
                 item.nro_doc_inve = Convert.ToString(dr["nro_doc_inve"]);
                 item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
+                item.cod_sucursal = Convert.ToString(dr["cod_sucursal"]);
                 lista.Add(item);
 
             }

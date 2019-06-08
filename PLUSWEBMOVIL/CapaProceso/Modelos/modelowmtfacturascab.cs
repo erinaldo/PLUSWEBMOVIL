@@ -67,5 +67,6 @@ namespace CapaProceso.Modelos
         public string nom_moneda { get; set; }
         public string nro_doc_inve { get; set; }
         public string cod_proc_aud { get; set; }
+        public string cod_sucursal { get; set; }
     }
 }

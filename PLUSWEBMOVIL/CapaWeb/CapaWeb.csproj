@@ -158,6 +158,8 @@
     <Content Include="WebForms\BuscarFacturas.aspx" />
     <Content Include="WebForms\CrearCliente.aspx" />
     <Content Include="WebForms\Factura.aspx" />
+    <Content Include="WebForms\FormSucursalempresa.aspx" />
+    <Content Include="WebForms\FormUsuariosucursal.aspx" />
     <Content Include="WebForms\PortalFacturas.aspx" />
     <Content Include="WebForms\ReenviarFacturaJson.aspx" />
     <Content Include="WebForms\ReporteFactura.aspx" />
@@ -207,6 +209,20 @@
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormSucursalempresa.aspx.cs">
+      <DependentUpon>FormSucursalempresa.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormSucursalempresa.aspx.designer.cs">
+      <DependentUpon>FormSucursalempresa.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormUsuariosucursal.aspx.cs">
+      <DependentUpon>FormUsuariosucursal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormUsuariosucursal.aspx.designer.cs">
+      <DependentUpon>FormUsuariosucursal.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\PortalFacturas.aspx.cs">
       <DependentUpon>PortalFacturas.aspx</DependentUpon>

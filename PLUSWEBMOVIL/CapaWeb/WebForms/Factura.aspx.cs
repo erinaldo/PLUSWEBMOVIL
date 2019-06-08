@@ -9,42 +9,52 @@ namespace CapaWeb.WebForms
 {
     public partial class Factura : System.Web.UI.Page
     {
-        Consultawmspcresfact ConsultaResolucion = new Consultawmspcresfact();
-        Consultawmsptitulares ConsultaTitulares = new Consultawmsptitulares();
+        
+        
         Consultawmspccostos ConsultaCCostos = new Consultawmspccostos();
         Consultawmspcmonedas ConsultaCMonedas = new Consultawmspcmonedas();
         Consultavendedores ConsultaVendedores = new Consultavendedores();
         Consultawmspcformaspag ConsultaFPagos = new Consultawmspcformaspag();
         Cosnsultawmspcarticulos ConsultaArticulo = new Cosnsultawmspcarticulos();
-        ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
-        CabezeraFactura GuardarCabezera = new CabezeraFactura();
-        DetalleFactura GuardarDetalles = new DetalleFactura();
-        Consultaconfirmarfactura ConfirmarFactura = new Consultaconfirmarfactura();
-        Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
-        Consultawmtfacturasdet ConsultaDeta = new Consultawmtfacturasdet();
-        
 
+        Consultawmsptitulares ConsultaTitulares = new Consultawmsptitulares();
         modelowmspctitulares cliente = new modelowmspctitulares();
+
+        Consultawmspcresfact ConsultaResolucion = new Consultawmspcresfact();
         modelowmspcresfact resolucion = new modelowmspcresfact();
-        modelowmspcarticulos articulo = new modelowmspcarticulos();
-        modelocabecerafactura cabecerafactura = new modelocabecerafactura();
-        modelonumerador nrotrans = new modelonumerador();
-        modeloinsertarconfirmar confirmarinsertar = new modeloinsertarconfirmar();
-        ModeloDetalleFactura detallefactura = new ModeloDetalleFactura();
-        modelowmtfacturascab conscabcera = new modelowmtfacturascab();
-        ModeloDetalleFactura consdetalle = new ModeloDetalleFactura();
-
-
         List<modelowmspcresfact> listaRes = null;
+
+        ConsultawmusuarioSucursal consultaUsuarioSucursal = new ConsultawmusuarioSucursal();
+        modeloUsuariosucursal ModeloUsuSucursal = new modeloUsuariosucursal();
+        List<modeloUsuariosucursal> ListaUsuSucursal = null;
+
+        ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
+        modelonumerador nrotrans = new modelonumerador();
+        
+        CabezeraFactura GuardarCabezera = new CabezeraFactura();
+        Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
+        List<modelowmtfacturascab> listaConsCab = null;
+        modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+        modelocabecerafactura cabecerafactura = new modelocabecerafactura();
+
+        Consultawmtfacturasdet ConsultaDeta = new Consultawmtfacturasdet();
+        ModeloDetalleFactura consdetalle = new ModeloDetalleFactura();
+        List<ModeloDetalleFactura> listaConsDetalle = null;
+        List<ModeloDetalleFactura> ModeloDetalleFactura = new List<ModeloDetalleFactura>();
+        ModeloDetalleFactura detallefactura = new ModeloDetalleFactura();
+        DetalleFactura GuardarDetalles = new DetalleFactura();
+
+       
         List<modelowmspcccostos> listaCostos = null;
         List<modelowmspctitulares> lista = null;
         List<modelowmspcmonedas> listaMonedas = null;
         List<modelovendedores> listaVendedores = null;
         List<modelowmspcfpago> listaPagos = null;
         List<modelowmspcarticulos> listaArticulos = null;
-        List<modelowmtfacturascab> listaConsCab = null;
-        List<ModeloDetalleFactura> listaConsDetalle = null;
-        List<ModeloDetalleFactura> ModeloDetalleFactura = new List<ModeloDetalleFactura>();
+        modelowmspcarticulos articulo = new modelowmspcarticulos();
+
+        modeloinsertarconfirmar confirmarinsertar = new modeloinsertarconfirmar();
+        Consultaconfirmarfactura ConfirmarFactura = new Consultaconfirmarfactura();
         List<modeloinsertarconfirmar> modeloinsertarconfirmar = new List<modeloinsertarconfirmar>();
 
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
@@ -558,17 +568,24 @@ namespace CapaWeb.WebForms
             }
 
             DateTime Fecha = Convert.ToDateTime(fecha.Text);
+            //Obtener n° sucursal
+            ListaUsuSucursal = consultaUsuarioSucursal.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
+            ModeloUsuSucursal = null;
+            foreach (modeloUsuariosucursal items in ListaUsuSucursal)
+            {
+                ModeloUsuSucursal = items;
+                break;
+            }
+
             //obtener cliente
             string error = "";
             string Ven__cod_tit = dniCliente.Text;
 
             lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit);
-
-
+            
             cliente = null;
             foreach (modelowmspctitulares item in lista)
             {
-
                 cliente = item;
                 break;
             }
@@ -602,6 +619,7 @@ namespace CapaWeb.WebForms
             cabecerafactura.mesr = "05";
             cabecerafactura.anior = "2019";
             cabecerafactura.cod_proc_aud = "RCOMFACT";
+            cabecerafactura.cod_sucursal = ModeloUsuSucursal.cod_sucursal;
 
             error = GuardarCabezera.InsertarCabezeraFactura(cabecerafactura);
             if (string.IsNullOrEmpty(error))

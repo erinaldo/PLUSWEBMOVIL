@@ -93,6 +93,9 @@
     <Compile Include="Consultas\ConsultaLogo.cs" />
     <Compile Include="Consultas\ConsultaNumerador.cs" />
     <Compile Include="Consultas\Consultaparamcomercial.cs" />
+    <Compile Include="Consultas\ConsultaSucursalempresa.cs" />
+    <Compile Include="Consultas\ConsultaUsuarioEmpresa.cs" />
+    <Compile Include="Consultas\ConsultausuarioSucursal.cs" />
     <Compile Include="Consultas\Consultavendedores.cs" />
     <Compile Include="Consultas\Consultawmspccostos.cs" />
     <Compile Include="Consultas\ConsultawmspcfacturasWMimpuRest.cs" />
@@ -101,14 +104,17 @@
     <Compile Include="Consultas\Consultawmspcresfact.cs" />
     <Compile Include="Consultas\ConsultawmspctctrxCotizacion.cs" />
     <Compile Include="Consultas\Consultawmsptitulares.cs" />
+    <Compile Include="Consultas\Consultawmsucempresa.cs" />
     <Compile Include="Consultas\Consultawmtfacturascab.cs" />
     <Compile Include="Consultas\Consultawmtfacturasdet.cs" />
     <Compile Include="Consultas\ConsultawmtrespuestaDS.cs" />
+    <Compile Include="Consultas\ConsultawmusuarioSucursal.cs" />
     <Compile Include="Consultas\Cosnsultawmspcarticulos.cs" />
     <Compile Include="Consultas\DetalleFactura.cs" />
     <Compile Include="Consultas\EnviarCorreo.cs" />
     <Compile Include="Consultas\Enviarcorreocliente.cs" />
     <Compile Include="Consultas\GuardarrespuestaDS.cs" />
+    <Compile Include="Modelos\modeloUsuarioxempresa.cs" />
     <Compile Include="ReslClientePdf\JsonFacturaPDF.cs" />
     <Compile Include="ReslClientePdf\PdfFacturaElectronica.cs" />
     <Compile Include="Modelos\modelobancos.cs" />
