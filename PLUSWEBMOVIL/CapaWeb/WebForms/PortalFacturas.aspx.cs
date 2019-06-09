@@ -59,13 +59,28 @@ namespace CapaWeb.WebForms
                     case "MTR":
                         Int64 ide = Int64.Parse(qs["Id"].ToString());
                         string nro_trans = ide.ToString();
-                        CargarFormularioRespuestaDS(nro_trans);
+                        //CargarFormularioRespuestaDS(nro_trans);
+                        CargarGrilla(nro_trans);
+                        FormularioRes.Visible = false;
                         break;
                 }
 
             }
         }
 
+        private void MostrarCamposFormulario()
+        {
+            FormularioRes.Visible = true;
+           /* txt_nro_trans.Visible = true;
+            txt_linea.Visible = true;
+            txt_id.Visible = true;
+            txt_qrdata.Visible = true;
+            txt_xml.Visible = true;
+            txt_cufe.Visible = true;
+            txt_error.Visible = true;
+            txt_json.Visible = true;*/
+        }
+       
         private void CargarFormularioRespuestaDS(string nro_trans)
         {
 
@@ -106,6 +121,27 @@ namespace CapaWeb.WebForms
             CargarGrilla(nro_trans);
         }
 
+        protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
+        {
+
+            //1 primero creo un objeto Clave/Valor de QueryString 
+            QueryString qs = new QueryString();
+            //Escoger opcion
+
+            int Id;
+
+            switch (e.CommandName) //ultilizo la variable para la opcion
+            {
+
+                case "Mostrar": //ejecuta el codigo si el usuario ingresa el numero 3
+                    Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+                    CargarFormularioRespuestaDS(Id.ToString());
+                    MostrarCamposFormulario();
+                    Grid.Visible = false;
+
+                    break;
+            }
+        }
         public void RecuperarCokie()
           {
             if (Request.Cookies["ComPwm"] != null)
