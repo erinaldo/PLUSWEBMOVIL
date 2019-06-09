@@ -115,7 +115,7 @@ namespace CapaWeb.WebForms
                 // recupera la variable de secion con el objeto persona
                 cliente = (modelowmspctitulares)Session["cliente"];
                 nombreCliente.Text = cliente.nom_tit;
-                dniCliente.Text = cliente.nro_dgi1;
+                dniCliente.Text = cliente.nro_dgi2;
                 fonoCliente.Text = cliente.tel_tit;
                 txtcorreo.Text = cliente.email_tit;
 
@@ -718,7 +718,11 @@ namespace CapaWeb.WebForms
             {
                 if (cliente == null)
                 {
-                    this.Page.Response.Write("<script language='JavaScript'>window.open('./CrearCliente.aspx','Crear Cliente', 'top=100,width=580 ,height=400, left=400');</script>");
+                    nombreCliente.Text = "";
+                    fonoCliente.Text = "";
+                    dniCliente.Text = "";
+                    txtcorreo.Text = "";
+                    // this.Page.Response.Write("<script language='JavaScript'>window.open('./CrearCliente.aspx','Crear Cliente', 'top=100,width=580 ,height=400, left=400');</script>");
 
                 }
                 else
@@ -728,7 +732,7 @@ namespace CapaWeb.WebForms
 
                     nombreCliente.Text = cliente.nom_tit;
                     fonoCliente.Text = cliente.tel_tit;
-                    dniCliente.Text = cliente.nro_dgi1;
+                    dniCliente.Text = cliente.nro_dgi2;
                     txtcorreo.Text = cliente.email_tit;
                 }
             }

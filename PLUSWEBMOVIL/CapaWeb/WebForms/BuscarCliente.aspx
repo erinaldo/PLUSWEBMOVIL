@@ -42,7 +42,7 @@
                                         <Columns>
 
                                             <asp:BoundField DataField="nom_tit" HeaderText="Cliente" />
-                                            <asp:BoundField DataField="nro_dgi1" HeaderText="Cédula" />
+                                            <asp:BoundField DataField="nro_dgi2" HeaderText="Cédula" />
                                             <asp:BoundField DataField="tel_tit" HeaderText="Teléfono" />
 
                                             <asp:ButtonField ButtonType="Button"  ControlStyle-CssClass="botones" CommandName="Select" HeaderText="Seleccionar" ShowHeader="True" Text="Seleccionar" />
