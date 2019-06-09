@@ -105,15 +105,15 @@ namespace CapaProceso.RestCliente
           
             
             encabezado.emisor = Convert.ToInt32(Modeloempresa.nro_dgi2);
-            encabezado.codmoneda = conscabcera.cod_moneda;
+            encabezado.codmoneda = conscabcera.cod_moneda.Trim();
             encabezado.comentarios = conscabcera.observaciones;
             encabezado.factortrm = Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
             encabezado.fecha = conscabcera.fec_doc.ToString("yyyy-MM-dd");
             encabezado.fvence = conscabcera.fec_venc.ToString("yyyy-MM-dd");
-            encabezado.idsuc = Convert.ToInt16(conscabcera.cod_sucursal);
+            encabezado.idsuc = 1;
             encabezado.idvendedor = Convert.ToInt32(conscabcera.cod_vendedor);
             encabezado.iva = Convert.ToDecimal(conscabcera.iva);
-            encabezado.nit = Convert.ToInt64(conscabcera.nro_dgi);
+            encabezado.nit = Convert.ToInt64(conscabcera.nro_dgi2);
             encabezado.numero = Convert.ToInt32(conscabcera.nro_docum);
             encabezado.ordencompra = Convert.ToString(conscabcera.ocompra);
             encabezado.prefijo = "FVE";  // va quemado por defecto para los comprobantes de factura
@@ -130,38 +130,43 @@ namespace CapaProceso.RestCliente
         public List<Detalle> LlenarDetalleFacturaJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_nro_trans)
         {
 
-            consdetalle = null;
-            consdetalle = buscarDetalleFactura(Ccf_nro_trans);
+            
+            listaConsDet = ConsultaDeta.ConsultaDetalleFacura(Ccf_nro_trans);
             List<Detalle> detalle = new List<Detalle>();
             ModeloCotizacion = null;
             ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
 
+            foreach (var item in listaConsDet)
+            {
+                Detalle itemDetalle = new Detalle();
+                itemDetalle.adicional = "";
+                itemDetalle.cantidad = Convert.ToInt32(item.cantidad);
+                itemDetalle.idproducto = item.cod_articulo;
+                itemDetalle.idunidad = "";//Preguntar a alfredo de donde trae la unidad
+                itemDetalle.iva = Convert.ToInt32(item.valor_iva);
+                itemDetalle.nombreproducto = item.nom_articulo;
+                itemDetalle.operacion = "SA"; //Factura en venta
+                itemDetalle.porcdcto = Convert.ToInt32(item.porc_descto);
+                itemDetalle.porciva = Convert.ToInt32(item.porc_iva);
+                itemDetalle.pos = item.linea;
+                itemDetalle.precio = Convert.ToInt32(item.precio_unit);
+                itemDetalle.subtotal = Convert.ToInt32(item.subtotal);
+                if (conscabcera.cod_moneda.Trim() != "COP")
+                {
+                    itemDetalle.preciousd = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * itemDetalle.precio;
+                    itemDetalle.ivausd = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * itemDetalle.iva;
+                    itemDetalle.subtotalusd = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * itemDetalle.subtotal;
+                }
+                else
+                {
+                    itemDetalle.preciousd = 0;
+                    itemDetalle.ivausd = 0;
+                    itemDetalle.subtotalusd = 0;
+                }
+                detalle.Add(itemDetalle);
 
-            Detalle item = new Detalle();
-            item.adicional = "";
-            item.cantidad = Convert.ToInt32(consdetalle.cantidad);
-            item.idproducto = consdetalle.cod_articulo;
-            item.idunidad = "";//Preguntar a alfredo de donde trae la unidad
-            item.iva = Convert.ToInt32(consdetalle.valor_iva);
-            item.nombreproducto = consdetalle.nom_articulo;
-            item.operacion = "SA";
-            item.porcdcto = Convert.ToInt32(consdetalle.porc_descto);
-            item.porciva = Convert.ToInt32(consdetalle.porc_iva);
-            item.pos = consdetalle.linea;
-            item.precio = Convert.ToInt32(consdetalle.precio_unit);
-            item.subtotal = Convert.ToInt32(consdetalle.subtotal);
-            if (ModeloCotizacion.cod_moneda != "COP")
-            {
-                item.preciousd = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.precio;
-                item.ivausd = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.iva;
-                item.subtotalusd = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.subtotal;
             }
-            else
-            {
-                item.preciousd = 0;
-                item.ivausd = 0;
-                item.subtotalusd = 0;
-            }
+            
 
 
             return detalle;
@@ -227,16 +232,18 @@ namespace CapaProceso.RestCliente
             cliente = null;
             cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit);
 
-
+            tercero.apli1 = "";
+            tercero.apl2 = "";
             tercero.comentarios = "";
             tercero.dv = cliente.nro_dgi1; //digito verificador
-            tercero.identificacion = Convert.ToInt64(cliente.nro_dgi);
-            tercero.idtipoempresa = Convert.ToInt32(cliente.cod_tipo_emp_iva);
-            tercero.nit = Convert.ToInt64(cliente.nro_dgi);
+            tercero.identificacion = Convert.ToInt64(cliente.nro_dgi2);
+            tercero.idtipoempresa = Convert.ToInt16(Modeloempresa.cod_emp);
+            tercero.nit = Convert.ToInt64(cliente.nro_dgi2);
             tercero.nom1 = cliente.nom_tit;
             tercero.nom2 = "";
             tercero.razonsocial = cliente.razon_social;
-            // obligatorio tercero.tdoc = //preguntar a laurita como scar el tipo de identificacion de la tabla tipo de identificaciones
+            tercero.tdoc = 31;
+            // obligatorio tercero.tdoc = //decir a Alfredo ue retorne la columna TcIdFCod de la tabla Amscn de Cnorus
             tercero.tipopersona = cliente.control_tit;
 
             return tercero;

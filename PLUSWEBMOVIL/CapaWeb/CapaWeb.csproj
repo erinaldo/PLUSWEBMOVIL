@@ -258,7 +258,6 @@
     <Content Include="Site.Master" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="RestCliente\" />
     <Folder Include="Tema\fonts\" />
     <Folder Include="Tema\js\" />
   </ItemGroup>
@@ -271,9 +270,6 @@
       <Project>{7394b022-408a-41b9-8890-bf67d3d9e862}</Project>
       <Name>CapaProceso</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

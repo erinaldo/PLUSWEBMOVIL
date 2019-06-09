@@ -46,7 +46,7 @@ namespace CapaProceso.Modelos
 
         }
 
-          public  modelowmspctitulares(string cod_tit, string nom_tit, string cod_dgi, string nro_dgi, string nro_dgi2, string nro_dgi1, string dir_tit, string tel_tit, string fax_tit, string email_tit, string dir_web, string cod_pais, string nom_pais, string cod_provincia, string nom_provincia, string ciudad_tit, string nom_ciudad, string cod_tipo_emp_gan, string nom_tipo_emp_gan, string cod_tipo_emp_iva, string nom_aux, string nom_aux2, string nom_aux3, string nom_aux4, string razon_social, string control_tit, string control_uso, string control_uso2, string cod_sop)
+          public  modelowmspctitulares(string cod_tit, string nom_tit, string cod_dgi, string nro_dgi, string nro_dgi1, string nro_dgi2, string dir_tit, string tel_tit, string fax_tit, string email_tit, string dir_web, string cod_pais, string nom_pais, string cod_provincia, string nom_provincia, string ciudad_tit, string nom_ciudad, string cod_tipo_emp_gan, string nom_tipo_emp_gan, string cod_tipo_emp_iva, string nom_aux, string nom_aux2, string nom_aux3, string nom_aux4, string razon_social, string control_tit, string control_uso, string control_uso2, string cod_sop)
         {
             this.cod_tit = cod_tit;
             this.nom_tit = nom_tit;
