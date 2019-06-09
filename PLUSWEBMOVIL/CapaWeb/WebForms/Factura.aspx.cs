@@ -630,7 +630,7 @@ namespace CapaWeb.WebForms
             {
                 //mensaje.Text = error;
 
-                this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+              //  this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
                 Session["cabecera"] = cabecerafactura;
 
             }
@@ -642,53 +642,61 @@ namespace CapaWeb.WebForms
             string error;
             //Busca en gv_producto todos los items añadidos que estan en la variable de session detalle
             ModeloDetalleFactura = new List<ModeloDetalleFactura>();
-
             ModeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);
 
             //Insertar primero la cabecera
             InsertarCabecera();
-            //Busca el nro de auditoria
-            conscabcera = null;
-            conscabcera = BuscarCabecera();
-
-            //Va añadiendo linea por linea al modelo insertar detalle factura
-            int contarLinea = 0;
-            foreach (var item in ModeloDetalleFactura)
+            /*
+             * Si no existe detalle debria guardar solo cabecera*/
+            if (ModeloDetalleFactura == null)
             {
-                contarLinea++;
-                detallefactura.nom_articulo = item.nom_articulo;
-                detallefactura.nom_articulo2 = item.nom_articulo2;
-                detallefactura.cantidad = item.cantidad;
-                detallefactura.precio_unit = item.precio_unit;
-                detallefactura.base_imp = item.base_imp;
-                detallefactura.porc_iva = item.porc_iva;
-                detallefactura.nro_trans = valor_asignado;
-                detallefactura.linea = contarLinea;
-                detallefactura.cod_emp = ComPwm;
-                detallefactura.cod_articulo = item.cod_articulo;
-                detallefactura.cod_concepret = item.cod_concepret;
-                detallefactura.porc_descto = item.porc_descto;
-                detallefactura.valor_descto = item.detadescuento;
-                detallefactura.cod_cta_vtas = item.cod_cta_vtas;
-                detallefactura.cod_cta_cos = item.cod_cta_cos;
-                detallefactura.cod_cta_inve = item.cod_cta_inve;
-                detallefactura.usuario_mod = AmUsrLog;
-                detallefactura.nro_audit = conscabcera.nro_audit;
-                detallefactura.fecha_mod = DateTime.Today;
-                detallefactura.tasa_iva = item.tasa_iva;
-                detallefactura.cod_ccostos = item.cod_ccostos;
+                this.Page.Response.Write("<script language='JavaScript'>window.alert('Factura salvada correctamente')+ error;</script>");
+            }
+            else
+            {
+                //Busca el nro de auditoria
+                conscabcera = null;
+                conscabcera = BuscarCabecera();
 
-                error = GuardarDetalles.InsertarDetalleFactura(detallefactura);
-                if (string.IsNullOrEmpty(error))
+                //Va añadiendo linea por linea al modelo insertar detalle factura
+                int contarLinea = 0;
+                foreach (var item in ModeloDetalleFactura)
                 {
+                    contarLinea++;
+                    detallefactura.nom_articulo = item.nom_articulo;
+                    detallefactura.nom_articulo2 = item.nom_articulo2;
+                    detallefactura.cantidad = item.cantidad;
+                    detallefactura.precio_unit = item.precio_unit;
+                    detallefactura.base_imp = item.base_imp;
+                    detallefactura.porc_iva = item.porc_iva;
+                    detallefactura.nro_trans = valor_asignado;
+                    detallefactura.linea = contarLinea;
+                    detallefactura.cod_emp = ComPwm;
+                    detallefactura.cod_articulo = item.cod_articulo;
+                    detallefactura.cod_concepret = item.cod_concepret;
+                    detallefactura.porc_descto = item.porc_descto;
+                    detallefactura.valor_descto = item.detadescuento;
+                    detallefactura.cod_cta_vtas = item.cod_cta_vtas;
+                    detallefactura.cod_cta_cos = item.cod_cta_cos;
+                    detallefactura.cod_cta_inve = item.cod_cta_inve;
+                    detallefactura.usuario_mod = AmUsrLog;
+                    detallefactura.nro_audit = conscabcera.nro_audit;
+                    detallefactura.fecha_mod = DateTime.Today;
+                    detallefactura.tasa_iva = item.tasa_iva;
+                    detallefactura.cod_ccostos = item.cod_ccostos;
+
+                    error = GuardarDetalles.InsertarDetalleFactura(detallefactura);
+                    if (string.IsNullOrEmpty(error))
+                    {
+
+                    }
+                    else
+                    {
+                       // this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+
+                    }
 
                 }
-                else
-                {
-                    this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
-
-                }
-
             }
             return conscabcera;
         }
@@ -738,14 +746,7 @@ namespace CapaWeb.WebForms
         }
 
 
-        public void Validar()
-        {
-
-            DateTime hoy = DateTime.Today;
-
-        }
-
-
+       
         protected void BuscarArticulo_TextChanged(object sender, EventArgs e)
         {
 
@@ -796,10 +797,7 @@ namespace CapaWeb.WebForms
         {
             //Agrega el producto a la grilla gv_Producto  
             InsertarDetalle();
-
         }
-
-
 
         protected void GuardarDetalle_Click(object sender, EventArgs e)
         {
