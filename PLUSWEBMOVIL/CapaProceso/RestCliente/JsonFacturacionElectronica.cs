@@ -92,6 +92,8 @@ namespace CapaProceso.RestCliente
         {
             Encabezado encabezado = new Encabezado();
 
+            listaConsDet = ConsultaDeta.ConsultaDetalleFacura(Ccf_nro_trans);
+
             conscabcera = null;
             conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
@@ -119,7 +121,7 @@ namespace CapaProceso.RestCliente
             encabezado.sucursal = Convert.ToInt16(conscabcera.cod_sucursal); //Preguntar a alfredo con que se obtien la sucursal por factura
             encabezado.total = Convert.ToInt32(conscabcera.total);
             encabezado.usuario = Ccf_usuario;  //Usuario que facturo
-            encabezado.totalDet = 1; //la cantidad de lineas del detalle de la factura
+            encabezado.totalDet = listaConsDet.Count; //la cantidad de lineas del detalle de la factura
             encabezado.totalImp = 1; //la cantidad de lineas de los impuestos
 
             return encabezado;
@@ -178,10 +180,6 @@ namespace CapaProceso.RestCliente
             item.base_calculo = Convert.ToDecimal(ModeloImpuesto.base_impu);
             item.porciva = Convert.ToDecimal(ModeloImpuesto.porc_impu);
             item.valor = Convert.ToDecimal(ModeloImpuesto.valor_impu);
-
-
-
-
 
             impuesto.Add(item);
 
