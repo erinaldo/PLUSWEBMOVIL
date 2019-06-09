@@ -75,14 +75,16 @@ namespace CapaProceso.RestCliente
         public ComprobanteFacturaJSON LlenarJSONFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
             ComprobanteFacturaJSON comprobanteFacturaJSON = new ComprobanteFacturaJSON();
+            Documento documento = new Documento();
             /* Datos de encabezado de la factura */
 
-            comprobanteFacturaJSON.encabezado = LlenarEnacabezadoFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-            comprobanteFacturaJSON.detalle = LlenarDetalleFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_nro_trans);
-            comprobanteFacturaJSON.impuesto = LlenarImpuestoFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_nro_trans, impuesto_rest);
-            comprobanteFacturaJSON.sucursal = LlenarSucursalFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-            comprobanteFacturaJSON.tercero = LlenarTerceroFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+            documento.encabezado = LlenarEnacabezadoFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+            documento.detalle = LlenarDetalleFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_nro_trans);
+            documento.impuesto = LlenarImpuestoFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_nro_trans, impuesto_rest);
+            documento.sucursal = LlenarSucursalFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+            documento.tercero = LlenarTerceroFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
+            comprobanteFacturaJSON.documento = documento;
             return comprobanteFacturaJSON;
         }
 
@@ -98,16 +100,15 @@ namespace CapaProceso.RestCliente
 
             ModeloCotizacion = null;
             ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
-
-            //Usuario prueba emisor = 830106032;
-            encabezado.emisor = 830106032;
+          
+            
             encabezado.emisor = Convert.ToInt32(Modeloempresa.nro_dgi2);
             encabezado.codmoneda = conscabcera.cod_moneda;
             encabezado.comentarios = conscabcera.observaciones;
             encabezado.factortrm = Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
-            encabezado.fecha = conscabcera.fec_doc;
+            encabezado.fecha = conscabcera.fec_doc.ToString("yyyy-MM-dd");
             encabezado.fvence = conscabcera.fec_venc.ToString("yyyy-MM-dd");
-            encabezado.idsuc = 1;
+            encabezado.idsuc = Convert.ToInt16(conscabcera.cod_sucursal);
             encabezado.idvendedor = Convert.ToInt32(conscabcera.cod_vendedor);
             encabezado.iva = Convert.ToDecimal(conscabcera.iva);
             encabezado.nit = Convert.ToInt64(conscabcera.nro_dgi);
@@ -115,7 +116,7 @@ namespace CapaProceso.RestCliente
             encabezado.ordencompra = Convert.ToString(conscabcera.ocompra);
             encabezado.prefijo = "FVE";  // va quemado por defecto para los comprobantes de factura
             encabezado.subtotal = Convert.ToInt32(conscabcera.subtotal);
-            encabezado.sucursal = 0;//Preguntar a alfredo con que se obtien la sucursal por factura
+            encabezado.sucursal = Convert.ToInt16(conscabcera.cod_sucursal); //Preguntar a alfredo con que se obtien la sucursal por factura
             encabezado.total = Convert.ToInt32(conscabcera.total);
             encabezado.usuario = Ccf_usuario;  //Usuario que facturo
             encabezado.totalDet = 1; //la cantidad de lineas del detalle de la factura
@@ -192,24 +193,28 @@ namespace CapaProceso.RestCliente
         {
 
             Sucursal sucursal = new Sucursal();
+            Tercero tercero = new Tercero();
+            modelowmspctitulares vendedor = new modelowmspctitulares();
 
-           ModeloUsuSucursal  = BuscarUsuarioSucursal (Ccf_cod_emp, Ccf_usuario);
+            ModeloUsuSucursal  = BuscarUsuarioSucursal (Ccf_cod_emp, Ccf_usuario);
+          
+            vendedor = null;
+            vendedor = buscarCliente(Ccf_usuario, Ccf_cod_emp, "VEN", conscabcera.cod_vendedor);
 
-            sucursal.ciudad = "";
-            sucursal.codcliente = cliente.cod_tit;
-            sucursal.departamento = cliente.nom_provincia;
-            sucursal.direccion1 = cliente.dir_tit;
-            sucursal.dpto = cliente.cod_provincia;
-            sucursal.email = cliente.email_tit;
-            sucursal.emailfe = cliente.email_tit;
-            sucursal.idsuc =Convert.ToInt32( ModeloUsuSucursal.cod_sucursal); //no se
-            // opcional sucursal.idvendedor = 
-            // opcional sucursal.movil =
-            // obligatorio sucursal.mun = 
-            sucursal.nit = Convert.ToInt64(cliente.nro_dgi);
-            sucursal.razonsocial = cliente.razon_social;
-            sucursal.telefono1 = cliente.tel_tit;
-            sucursal.telefono2 = cliente.tel_tit; //opcional 2 fono
+            sucursal.ciudad = vendedor.nom_ciudad;
+            sucursal.codcliente = conscabcera.cod_cliente;
+            sucursal.departamento = vendedor.nom_provincia;
+            sucursal.direccion1 = vendedor.dir_tit;
+            sucursal.dpto = vendedor.cod_provincia;
+            sucursal.email = vendedor.email_tit;
+            sucursal.emailfe = vendedor.email_tit;
+            sucursal.idsuc = Convert.ToInt16(ModeloUsuSucursal.cod_sucursal.Trim());
+            sucursal.idvendedor = Convert.ToInt64(conscabcera.cod_vendedor);
+            sucursal.movil = "";
+            sucursal.mun = vendedor.ciudad_tit;            
+            sucursal.razonsocial = vendedor.razon_social;
+            sucursal.telefono1 = vendedor.tel_tit;
+            sucursal.telefono2 = ""; 
             return sucursal;
         }
 

@@ -11,7 +11,7 @@ namespace CapaProceso.Modelos
         public string observacion { get; set; }
         public string nro_trans { get; set; }
         public string cod_emp { get; set; }
-        public string fec_doc { get; set; }
+        public DateTime fec_doc { get; set; }
         public string aniomes { get; set; }
         public string cod_docum { get; set; }
         public string serie_docum { get; set; }

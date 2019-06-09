@@ -27,7 +27,7 @@ namespace CapaProceso.Consultas
                 item.observacion = Convert.ToString(dr["serie_docum"]) + " - " + Convert.ToString(dr["nro_docum"]);
                 item.nro_trans = Convert.ToString(dr["nro_trans"]);
                 item.cod_emp = Convert.ToString(dr["cod_emp"]);
-                item.fec_doc = Convert.ToString(dr["fec_doc"]);
+                item.fec_doc = Convert.ToDateTime(dr["fec_doc"]);
                 item.aniomes = Convert.ToString(dr["aniomes"]);
                 item.cod_docum = Convert.ToString(dr["cod_docum"]);
                 item.serie_docum = Convert.ToString(dr["serie_docum"]);

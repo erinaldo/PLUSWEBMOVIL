@@ -41,7 +41,7 @@ namespace CapaProceso.RestCliente
         public string ordencompra { get; set; }
         public string prefijo { get; set; }
         public decimal subtotal { get; set; }
-        public decimal sucursal { get; set; }
+        public int sucursal { get; set; }
         public decimal total { get; set; }
         public string usuario { get; set; }
         public int totalDet { get; set; }
@@ -65,10 +65,9 @@ namespace CapaProceso.RestCliente
         public string email { get; set; }
         public string emailfe { get; set; }
         public int idsuc { get; set; }
-        public int idvendedor { get; set; }
+        public Int64 idvendedor { get; set; }
         public string movil { get; set; }
         public string mun { get; set; }
-        public long nit { get; set; }
         public string razonsocial { get; set; }
         public string telefono1 { get; set; }
         public string telefono2 { get; set; }
@@ -90,7 +89,7 @@ namespace CapaProceso.RestCliente
         public string tipopersona { get; set; }
     }
 
-    public class ComprobanteFacturaJSON
+    public class Documento
     {
         public List<Detalle> detalle { get; set; }
         public Encabezado encabezado { get; set; }
@@ -99,4 +98,8 @@ namespace CapaProceso.RestCliente
         public Tercero tercero { get; set; }
     }
 
+    public class ComprobanteFacturaJSON
+    {
+        public Documento documento { get; set; }
+    }
 }
