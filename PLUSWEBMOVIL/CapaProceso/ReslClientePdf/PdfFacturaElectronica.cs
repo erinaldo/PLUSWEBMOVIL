@@ -667,8 +667,16 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
         {
             ModeloResQr = null;  //Traemos el QR respuesta
             ModeloResQr = BuscarRespuestaDS(Ccf_nro_trans);
-
-            string texto = ModeloResQr.qrdata;
+            string texto = "";
+            if (ModeloResQr != null )
+            {
+                texto = ModeloResQr.qrdata;
+            }
+            else
+            {
+                texto = "No existe datos";
+            }
+            
             var qrEncoder = new QrEncoder(ErrorCorrectionLevel.H);
             var qrCode = qrEncoder.Encode(texto);
 
