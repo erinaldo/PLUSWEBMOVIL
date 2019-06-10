@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="BuscarFacturas.aspx.cs" Inherits="CapaWeb.WebForms.BuscarFacturas" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeBehind="BuscarFacturas.aspx.cs" Inherits="CapaWeb.WebForms.BuscarFacturas" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
    
    

@@ -208,7 +208,7 @@ namespace CapaWeb.WebForms
 
                     conscabcera = null;
                     conscabcera = buscarCabezeraFactura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Convert.ToString(Id));
-                    Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans="+ Convert.ToString(Id)+"&cod_docum=FV&serie_docum=S&nro_docum=0&tipo=VTA");
+                    Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans="+ Convert.ToString(Id)+ "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo=VTA");
                     break;
 
                 case "Ver": 

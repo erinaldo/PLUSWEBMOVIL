@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="FormUsuariosucursal.aspx.cs" Inherits="CapaWeb.WebForms.FormUsuariosucursal" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeBehind="FormUsuariosucursal.aspx.cs" Inherits="CapaWeb.WebForms.FormUsuariosucursal" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
      <form id="form1" class="forms-sample" runat="server" method="post">
         
