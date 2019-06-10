@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="PortalFacturas.aspx.cs" Inherits="CapaWeb.WebForms.PortalFacturas" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeBehind="PortalFacturas.aspx.cs" Inherits="CapaWeb.WebForms.PortalFacturas" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
      <form id="form1" class="forms-sample" runat="server" method="post">
           <div style="align-items: center">

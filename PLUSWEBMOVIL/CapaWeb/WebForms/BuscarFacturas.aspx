@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="BuscarFacturas.aspx.cs" Inherits="CapaWeb.WebForms.BuscarFacturas" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeBehind="BuscarFacturas.aspx.cs" Inherits="CapaWeb.WebForms.BuscarFacturas" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
    
    
@@ -121,7 +121,8 @@
                                             <asp:TemplateColumn HeaderText="FECHA">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="fec_doc" runat="server" Text='<%#Eval("fec_doc") %>'></asp:Label>
+                                                        
+                                                        <asp:Label ID="fec_doc" Type="date" runat="server" Text='<%#Eval("fec_doc_str") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>

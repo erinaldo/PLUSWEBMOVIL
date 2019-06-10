@@ -159,95 +159,94 @@ namespace CapaWeb.WebForms
             //Escoger opcion
 
             int Id;
-
+            string estadoM = "";
             switch (e.CommandName) //ultilizo la variable para la opcion
             {
 
-                case "Editar": //ejecuta el codigo si el usuario ingresa el numero 1
+                case "Editar": 
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+                    estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
 
-                    //2 voy a agregando los valores que deseo
-                    qs.Add("TRN", "UDP");
-                    qs.Add("Id", Id.ToString());
+                    switch (estadoM)
+                    {
+                         case "PENDIENTE":
+                           
+                            qs.Add("TRN", "UDP");
+                            qs.Add("Id", Id.ToString());
 
-                    Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
-                    break;//termina la ejecucion del programa despues de ejecutar el codigo                   
+                            Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                            break;
+                        default:
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA "+ estadoM  + "')+ error;</script>");
+                            break;
+                        
+                    }
+                   
+                    break;                
 
-                
-
-                case "Imprimir": //ejecuta el codigo si el usuario ingresa el numero 3
+                case "Imprimir": 
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+                    estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
+                    switch (estadoM)
+                    {
+                        case "FINALIZADO":
 
-                    //2 voy a agregando los valores que deseo                  
-                    qs.Add("Id", Id.ToString());
-                  
-                    Response.Write("<script>window.open('" + "ReporteFactura.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
+                            qs.Add("Id", Id.ToString());
+                            Response.Write("<script>window.open('" + "ReporteFactura.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
+                            break;
+                        default:
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
+                            break;
+
+                    }
+                    
                     break;
-                case "Ver": //ejecuta el codigo si el usuario ingresa el numero 3
+
+                case "Eliminar": 
+                    Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+                    Encabezado encabezado = new Encabezado();                  
+
+                    conscabcera = null;
+                    conscabcera = buscarCabezeraFactura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Convert.ToString(Id));
+                    Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans="+ Convert.ToString(Id)+ "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo=VTA");
+                    break;
+
+                case "Ver": 
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
 
-                    //2 voy a agregando los valores que deseo
+                   
                     qs.Add("TRN", "VER");
                     qs.Add("Id", Id.ToString());
                     Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
                     break;
 
-                case "Mostrar": //ejecuta el codigo si el usuario ingresa el numero 3
+                case "Mostrar": 
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
-                    string estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
+                    estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
 
-                    if (estadoM == "CONTABILIZADO")
-                    {
-
-                        qs.Add("TRN", "MTR");
-                        qs.Add("Id", Id.ToString());
-                        Response.Redirect("PortalFacturas.aspx" + Encryption.EncryptQueryString(qs).ToString());
-                    }
-                    else
-                        if (estadoM == "FINALIZADO")
-                    {
-                        qs.Add("TRN", "MTR");
-                        qs.Add("Id", Id.ToString());
-                        Response.Redirect("PortalFacturas.aspx" + Encryption.EncryptQueryString(qs).ToString());
-                    }
-                    else
-                        if (estadoM == "ANULADO")
-                    {
-                        this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA ANULADA')+ error;</script>");
-                    }
-                    else
-                        if (estadoM == "PENDIENTE")
-                    {
-                        this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA EN  PROCESO')+ error;</script>");
-                    }
+                    qs.Add("TRN", "MTR");
+                    qs.Add("Id", Id.ToString());
+                    Response.Redirect("PortalFacturas.aspx" + Encryption.EncryptQueryString(qs).ToString());
                 
                     break;
 
-                case "Reenviar": //ejecuta el codigo si el usuario ingresa el numero 3
+                case "Reenviar": 
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
-                    string estado = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
+                    estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
 
-                    if (estado == "CONTABILIZADO")
+                    switch (estadoM)
                     {
-                        
-                        qs.Add("Id", Id.ToString());
-                        Response.Redirect("ReenviarFacturaJson.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                        case "CONTABILIZADO":
+                            
+                            qs.Add("Id", Id.ToString());
+                            Response.Redirect("ReenviarFacturaJson.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                            break;
+                        default:
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
+                            break;
+
                     }
-                    else
-                        if (estado == "FINALIZADO")
-                    {
-                        this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA FINALIZADA')+ error;</script>");
-                    }
-                    else
-                        if (estado == "ANULADO")
-                    {
-                        this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA ANULADA')+ error;</script>");
-                    }
-                    else
-                        if (estado == "PENDIENTE")
-                    {
-                        this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA EN  PROCESO')+ error;</script>");
-                    }
+                    
                     break;
             }
     }
@@ -268,6 +267,21 @@ namespace CapaWeb.WebForms
                 AmUsrLog = Request.Cookies["AmUsrLog"].Value;
 
             }
+        }
+
+        public modelowmtfacturascab buscarCabezeraFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        {
+
+            listaConsCab = ConsultaCabe.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+            int count = 0;
+            conscabcera = null;
+            foreach (modelowmtfacturascab item in listaConsCab)
+            {
+                count++;
+                conscabcera = item;
+
+            }
+            return conscabcera;
         }
     }
 }

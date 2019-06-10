@@ -142,7 +142,7 @@ namespace CapaProceso.RestCliente
                 itemDetalle.adicional = "";
                 itemDetalle.cantidad = Convert.ToInt32(item.cantidad);
                 itemDetalle.idproducto = item.cod_articulo.Trim();
-                itemDetalle.idunidad = "";//Preguntar a alfredo de donde trae la unidad
+                itemDetalle.idunidad = "Und";//Preguntar a alfredo de donde trae la unidad
                 itemDetalle.iva = Convert.ToInt32(item.valor_iva);
                 itemDetalle.nombreproducto = item.nom_articulo;
                 itemDetalle.operacion = "SA"; //Factura en venta
@@ -242,8 +242,7 @@ namespace CapaProceso.RestCliente
             tercero.nom1 = cliente.nom_tit;
             tercero.nom2 = "";
             tercero.razonsocial = cliente.razon_social;
-            tercero.tdoc = 31;
-            // obligatorio tercero.tdoc = //decir a Alfredo ue retorne la columna TcIdFCod de la tabla Amscn de Cnorus
+            tercero.tdoc = Convert.ToInt16(cliente.cod_dgi);           
             tercero.tipopersona = cliente.control_tit;
 
             return tercero;

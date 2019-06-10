@@ -30,7 +30,8 @@ namespace CapaProceso.Consultas
                 item.nom_pais = Convert.ToString(dr["nom_pais"]);
                 item.cod_provincia = Convert.ToString(dr["cod_provincia"]);
                 item.cod_ciudad = Convert.ToString(dr["cod_ciudad"]);
-                item.sitio_app = "http://localhost/Pruebas6WMD/";//Convert.ToString(dr["sitio_app"]);
+                item.sitio_app = "http://localhost/Pruebas6WMD/";//para ambiente de pruebas
+                //item.sitio_app = "../";//para ambiente de produccion
                 item.nom_ciudad = Convert.ToString(dr["nom_ciudad"]);                
                 item.logo = Convert.ToString(dr["logo"]);
                 item.username = Convert.ToString(dr["username"]);

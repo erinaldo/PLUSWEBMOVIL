@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="FormSucursalempresa.aspx.cs" Inherits="CapaWeb.WebForms.FormSucursalempresa" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeBehind="FormSucursalempresa.aspx.cs" Inherits="CapaWeb.WebForms.FormSucursalempresa" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
    
       <form id="form1" class="forms-sample" runat="server" method="post">

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ReenviarFacturaJson.aspx.cs" Inherits="CapaWeb.WebForms.ReenviarFacturaJson" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeBehind="ReenviarFacturaJson.aspx.cs" Inherits="CapaWeb.WebForms.ReenviarFacturaJson" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <form id="form1" class="forms-sample" runat="server" method="post">
           <div style="align-items: center">
