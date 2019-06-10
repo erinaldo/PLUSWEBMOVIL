@@ -121,7 +121,8 @@
                                             <asp:TemplateColumn HeaderText="FECHA">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="fec_doc" runat="server" Text='<%#Eval("fec_doc") %>'></asp:Label>
+                                                        
+                                                        <asp:Label ID="fec_doc" Type="date" runat="server" Text='<%#Eval("fec_doc_str") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>

@@ -242,8 +242,7 @@ namespace CapaProceso.RestCliente
             tercero.nom1 = cliente.nom_tit;
             tercero.nom2 = "";
             tercero.razonsocial = cliente.razon_social;
-            tercero.tdoc = 31;
-            // obligatorio tercero.tdoc = //decir a Alfredo ue retorne la columna TcIdFCod de la tabla Amscn de Cnorus
+            tercero.tdoc = Convert.ToInt16(cliente.cod_dgi);           
             tercero.tipopersona = cliente.control_tit;
 
             return tercero;

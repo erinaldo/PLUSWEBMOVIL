@@ -28,6 +28,8 @@ namespace CapaProceso.Consultas
                 item.nro_trans = Convert.ToString(dr["nro_trans"]);
                 item.cod_emp = Convert.ToString(dr["cod_emp"]);
                 item.fec_doc = Convert.ToDateTime(dr["fec_doc"]);
+                DateTime fec_doc_str = Convert.ToDateTime(dr["fec_doc"]);
+                item.fec_doc_str = fec_doc_str.ToString("yyyy-MM-dd");                
                 item.aniomes = Convert.ToString(dr["aniomes"]);
                 item.cod_docum = Convert.ToString(dr["cod_docum"]);
                 item.serie_docum = Convert.ToString(dr["serie_docum"]);
