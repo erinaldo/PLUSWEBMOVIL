@@ -92,10 +92,10 @@
                         <table>
                                <tr>
                                 <td >
-                                    <asp:Button ID="btn_guardar" Class="btnFactura1"  runat="server" OnClientClick="return validarCamposSucursal();" onclick="btn_guardar_Click"  Text="confirmar" />
+                                    <asp:Button ID="btn_guardar" Class="botones"  runat="server" OnClientClick="return validarCamposSucursal();" onclick="btn_guardar_Click"  Text="Confirmar" />
                                 </td>
                                 <td >
-                                    <asp:Button ID="btn_cancela" Class="btnFactura1"  runat="server" onclick="btn_cancela_Click" UseSubmitBehavior="False" Text="Cancelar" /> 
+                                    <asp:Button ID="btn_cancela" Class="botones"  runat="server" onclick="btn_cancela_Click" UseSubmitBehavior="False" Text="Cancelar" /> 
                                 </td>
                             </tr>
                         </table>

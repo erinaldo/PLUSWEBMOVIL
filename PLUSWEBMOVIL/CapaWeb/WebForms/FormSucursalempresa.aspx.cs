@@ -15,11 +15,14 @@ namespace CapaWeb.WebForms
         public modeloSucuralempresa ModelosucursalEmpresa = new modeloSucuralempresa();
         public List<modeloSucuralempresa> ListaModeloSucursalEmpresa = new List<modeloSucuralempresa>();
         public ConsultaSucursalempresa ConsultaSucEmpresa = new ConsultaSucursalempresa();
+        public Consultawmsucempresa ConsultaSucursal = new Consultawmsucempresa();
+
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
         public string ComPwm;
         public string AmUsrLog;
+        public string cod_sucursal = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             RecuperarCokie();
@@ -29,6 +32,62 @@ namespace CapaWeb.WebForms
                 Modelowmspclogo = item;
                 break;
             }
+            if (!IsPostBack)
+            {
+
+                QueryString qs = ulrDesencriptada();
+
+                //Recibir opciones
+                switch (qs["TRN"].Substring(0, 3))
+                {
+
+                    case "INS":
+
+                        break;
+
+                    case "UDP":
+                       string ide = (qs["Id"].ToString());
+                        string cod_sucursal = ide.ToString();
+                        CargarFormularioSucursal(cod_sucursal);
+                        break;
+
+                    case "DLT":
+                        string id = (qs["Id"].ToString());
+                         cod_sucursal = id.ToString();
+                        CargarFormularioSucursal(cod_sucursal);
+                        break;
+                }
+
+            }
+        }
+        private void CargarFormularioSucursal(string cod_sucursal)
+        {
+
+            ListaModeloSucursalEmpresa  = ConsultaSucursal.ConsultaSucursalUnico(ComPwm, cod_sucursal);
+            int count = 0;
+            foreach (var item in ListaModeloSucursalEmpresa)
+            {
+                ModelosucursalEmpresa = item;
+                count++;
+                break;
+            }
+            txt_cod_sucursal.Text = ModelosucursalEmpresa.cod_sucursal;
+            txt_nom_sucursal.Text = ModelosucursalEmpresa.nom_sucursal;
+            txt_dir_sucursal.Text = ModelosucursalEmpresa.dir_sucursal;
+            txt_tel_sucursal.Text = ModelosucursalEmpresa.tel_sucursal;
+            txt_email_sucursal.Text = ModelosucursalEmpresa.email_sucursal;
+            txt_cod_sucursal.Enabled = false;
+            
+          
+        }
+        public QueryString ulrDesencriptada()
+        {
+            //1- guardo el Querystring encriptado que viene desde el request en mi objeto
+            QueryString qs = new QueryString(Request.QueryString);
+
+            ////2- Descencripto y de esta manera obtengo un array Clave/Valor normal
+            qs = Encryption.DecryptQueryString(qs);
+            return qs;
         }
         public void RecuperarCokie()
         {
@@ -50,33 +109,82 @@ namespace CapaWeb.WebForms
         }
         protected void btn_guardar_Click(object sender, EventArgs e)
         {
+            QueryString qs = ulrDesencriptada();
             string error = "";
-            DateTime hoy = DateTime.Today;
-            ModelosucursalEmpresa.cod_emp = ComPwm;
-            ModelosucursalEmpresa.cod_sucursal = txt_cod_sucursal.Text;
-            ModelosucursalEmpresa.nom_sucursal = txt_nom_sucursal.Text;
-            ModelosucursalEmpresa.dir_sucursal = txt_dir_sucursal.Text;
-            ModelosucursalEmpresa.email_sucursal = txt_email_sucursal.Text;
-            ModelosucursalEmpresa.tel_sucursal = txt_tel_sucursal.Text;
-            ModelosucursalEmpresa.fecha_mod = hoy;
-            ModelosucursalEmpresa.usuario_mod = AmUsrLog;
-           error = ConsultaSucEmpresa.InsertarSucursalEmpresa(ModelosucursalEmpresa);
+            
 
-            if (string.IsNullOrEmpty(error))
+            switch (qs["TRN"].Substring(0, 3)) //ultilizo la variable para la opcion
             {
+                case "INS":
+                   
+                    DateTime hoy = DateTime.Today;
+                    ModelosucursalEmpresa.cod_emp = ComPwm;
+                    ModelosucursalEmpresa.cod_sucursal = txt_cod_sucursal.Text;
+                    ModelosucursalEmpresa.nom_sucursal = txt_nom_sucursal.Text;
+                    ModelosucursalEmpresa.dir_sucursal = txt_dir_sucursal.Text;
+                    ModelosucursalEmpresa.email_sucursal = txt_email_sucursal.Text;
+                    ModelosucursalEmpresa.tel_sucursal = txt_tel_sucursal.Text;
+                    ModelosucursalEmpresa.fecha_mod = hoy;
+                    ModelosucursalEmpresa.usuario_mod = AmUsrLog;
+                    error = ConsultaSucEmpresa.ActualizarSucursalEmpresa(ModelosucursalEmpresa);
 
-            }
-            else
-            {
-              
-                this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
-                Response.Redirect("BuscarFacturas.aspx");
+                    if (string.IsNullOrEmpty(error))
+                    {
+
+                    }
+                    else
+                    {
+
+                        this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+                        Response.Redirect("FormListaSucursalEmpresa.aspx");
+                    }
+                    break;
+                case "UPD":
+
+                    DateTime hoy1 = DateTime.Today;
+                    ModelosucursalEmpresa.cod_emp = ComPwm;
+                    ModelosucursalEmpresa.cod_sucursal = txt_cod_sucursal.Text;
+                    ModelosucursalEmpresa.nom_sucursal = txt_nom_sucursal.Text;
+                    ModelosucursalEmpresa.dir_sucursal = txt_dir_sucursal.Text;
+                    ModelosucursalEmpresa.email_sucursal = txt_email_sucursal.Text;
+                    ModelosucursalEmpresa.tel_sucursal = txt_tel_sucursal.Text;
+                    ModelosucursalEmpresa.fecha_mod = hoy1;
+                    ModelosucursalEmpresa.usuario_mod = AmUsrLog;
+                    error = ConsultaSucEmpresa.ActualizarSucursalEmpresa(ModelosucursalEmpresa);
+
+                    if (string.IsNullOrEmpty(error))
+                    {
+
+                    }
+                    else
+                    {
+
+                        this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+                        Response.Redirect("FormListaSucursalEmpresa.aspx");
+                    }
+                    break;
+                case "DLT":
+
+                    ModelosucursalEmpresa.cod_sucursal = txt_cod_sucursal.Text;
+                     error = ConsultaSucEmpresa.EliminarSucursalEmpresa(ModelosucursalEmpresa);
+
+                    if (string.IsNullOrEmpty(error))
+                    {
+
+                    }
+                    else
+                    {
+
+                        this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+                        Response.Redirect("FormListaSucursalEmpresa.aspx");
+                    }
+                    break;
             }
         }
 
         protected void btn_cancela_Click(object sender, EventArgs e)
         {
-            Response.Redirect("BuscarFacturas.aspx");
+            Response.Redirect("FormListaSucursalEmpresa.aspx");
         }
     }
 }

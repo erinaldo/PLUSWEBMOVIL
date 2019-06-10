@@ -15,5 +15,8 @@ namespace CapaProceso.Modelos
         public DateTime fecha_mod { get; set; }
         public string nro_audit { get; set; }
         public string cod_proc_aud { get; set; }
+        public string nom_sucursal { get; set; }
+        public string usu_ante { get; set; }
+
     }
 }

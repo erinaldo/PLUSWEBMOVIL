@@ -17,8 +17,25 @@ namespace CapaProceso.Consultas
             string respuesta = guardarSucursal.InsertarSucursalEmpresa(ModelosucEmpresa);
             return respuesta;
         }
-        
 
-      
+        //Actualizar sucursal empresa 
+        SucursalEmpresa updateSucursal = new SucursalEmpresa();
+        modeloSucuralempresa ModelosucursalUPDATE = new modeloSucuralempresa();
+        public string ActualizarSucursalEmpresa(modeloSucuralempresa ModelosucEmpresa)
+        {
+            string respuesta = updateSucursal.ActualizarSucursalEmpresa(ModelosucEmpresa);
+            return respuesta;
+        }
+        //Eliminarr sucursal empresa 
+        SucursalEmpresa deleteSucursal = new SucursalEmpresa();
+        modeloSucuralempresa ModelosucursalDelete = new modeloSucuralempresa();
+        public string EliminarSucursalEmpresa(modeloSucuralempresa ModelosucEmpresa)
+        {
+            string respuesta = deleteSucursal.EliminarSucursalEmpresa(ModelosucEmpresa);
+            return respuesta;
+        }
+
+
+
     }
 }

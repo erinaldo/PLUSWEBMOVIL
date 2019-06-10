@@ -71,14 +71,6 @@ namespace CapaWeb.WebForms
         private void MostrarCamposFormulario()
         {
             FormularioRes.Visible = true;
-           /* txt_nro_trans.Visible = true;
-            txt_linea.Visible = true;
-            txt_id.Visible = true;
-            txt_qrdata.Visible = true;
-            txt_xml.Visible = true;
-            txt_cufe.Visible = true;
-            txt_error.Visible = true;
-            txt_json.Visible = true;*/
         }
        
         private void CargarFormularioRespuestaDS(string nro_trans)
