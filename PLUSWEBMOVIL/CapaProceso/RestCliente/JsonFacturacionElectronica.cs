@@ -142,7 +142,7 @@ namespace CapaProceso.RestCliente
                 itemDetalle.adicional = "";
                 itemDetalle.cantidad = Convert.ToInt32(item.cantidad);
                 itemDetalle.idproducto = item.cod_articulo.Trim();
-                itemDetalle.idunidad = "";//Preguntar a alfredo de donde trae la unidad
+                itemDetalle.idunidad = "Und";//Preguntar a alfredo de donde trae la unidad
                 itemDetalle.iva = Convert.ToInt32(item.valor_iva);
                 itemDetalle.nombreproducto = item.nom_articulo;
                 itemDetalle.operacion = "SA"; //Factura en venta
