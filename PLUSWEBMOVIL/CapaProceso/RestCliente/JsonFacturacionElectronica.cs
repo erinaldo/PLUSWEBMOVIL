@@ -118,7 +118,7 @@ namespace CapaProceso.RestCliente
             encabezado.ordencompra = Convert.ToString(conscabcera.ocompra);
             encabezado.prefijo = "FVE";  // va quemado por defecto para los comprobantes de factura
             encabezado.subtotal = Convert.ToInt32(conscabcera.subtotal);
-            encabezado.sucursal = Convert.ToInt16(conscabcera.cod_sucursal); //Preguntar a alfredo con que se obtien la sucursal por factura
+            encabezado.sucursal = Convert.ToInt16(conscabcera.cod_sucursal); 
             encabezado.total = Convert.ToInt32(conscabcera.total);
             encabezado.usuario = Ccf_usuario;  //Usuario que facturo
             encabezado.totalDet = listaConsDet.Count; //la cantidad de lineas del detalle de la factura

@@ -165,7 +165,11 @@ namespace CapaWeb.WebForms
 
         protected void Cancelar_Click(object sender, EventArgs e)
         {
-            Response.Redirect("BuscarFacturas.aspx");
+           // Response.Redirect("BuscarFacturas.aspx");
+            //ocultar campos
+            FormularioRes.Visible = false;
+            Grid.Visible = true;
+
         }
     }
 }
