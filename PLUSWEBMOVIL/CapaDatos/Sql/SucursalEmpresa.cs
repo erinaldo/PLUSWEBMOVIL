@@ -89,7 +89,20 @@ namespace CapaDatos.Sql
             }
 
         }
+        //Buscar unico sucrsal x empresa
+        public SqlDataReader UnicoSucursalEmpresa(string cod_emp, string cod_sucursal)
+        {
+            cn = conexion.genearConexion();
+            string consulta = "SELECT * FROM wmm_sucuremp WHERE cod_emp =@cod_emp AND cod_sucursal = @cod_sucursal";
+            SqlCommand conmand = new SqlCommand(consulta, cn);
 
+            conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
+            conmand.Parameters.Add("cod_sucursal", SqlDbType.VarChar).Value = cod_sucursal;
+
+            SqlDataReader dr = conmand.ExecuteReader();
+
+            return dr;
+        }
         public SqlDataReader ConsultaSucursalEmpresa(string cod_emp)
         {
             cn = conexion.genearConexion();

@@ -116,27 +116,41 @@ namespace CapaWeb.WebForms
             switch (qs["TRN"].Substring(0, 3)) //ultilizo la variable para la opcion
             {
                 case "INS":
-                   
-                    DateTime hoy = DateTime.Today;
-                    ModelosucursalEmpresa.cod_emp = ComPwm;
-                    ModelosucursalEmpresa.cod_sucursal = txt_cod_sucursal.Text;
-                    ModelosucursalEmpresa.nom_sucursal = txt_nom_sucursal.Text;
-                    ModelosucursalEmpresa.dir_sucursal = txt_dir_sucursal.Text;
-                    ModelosucursalEmpresa.email_sucursal = txt_email_sucursal.Text;
-                    ModelosucursalEmpresa.tel_sucursal = txt_tel_sucursal.Text;
-                    ModelosucursalEmpresa.fecha_mod = hoy;
-                    ModelosucursalEmpresa.usuario_mod = AmUsrLog;
-                    error = ConsultaSucEmpresa.ActualizarSucursalEmpresa(ModelosucursalEmpresa);
-
-                    if (string.IsNullOrEmpty(error))
+                    ListaModeloSucursalEmpresa = ConsultaSucursal.UnicoSucursalEmpresa(ComPwm, txt_cod_sucursal.Text);
+                    int count = 0;
+                    foreach (var item in ListaModeloSucursalEmpresa)
                     {
-
+                        ModelosucursalEmpresa = item;
+                        count++;
+                        break;
+                    }
+                    if (count > 0)
+                    {
+                        this.Page.Response.Write("<script language='JavaScript'>window.alert('Sucursal ya existe')+ error;</script>");
                     }
                     else
                     {
+                        DateTime hoy = DateTime.Today;
+                        ModelosucursalEmpresa.cod_emp = ComPwm;
+                        ModelosucursalEmpresa.cod_sucursal = txt_cod_sucursal.Text;
+                        ModelosucursalEmpresa.nom_sucursal = txt_nom_sucursal.Text;
+                        ModelosucursalEmpresa.dir_sucursal = txt_dir_sucursal.Text;
+                        ModelosucursalEmpresa.email_sucursal = txt_email_sucursal.Text;
+                        ModelosucursalEmpresa.tel_sucursal = txt_tel_sucursal.Text;
+                        ModelosucursalEmpresa.fecha_mod = hoy;
+                        ModelosucursalEmpresa.usuario_mod = AmUsrLog;
+                        error = ConsultaSucEmpresa.ActualizarSucursalEmpresa(ModelosucursalEmpresa);
 
-                        this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
-                        Response.Redirect("FormListaSucursalEmpresa.aspx");
+                        if (string.IsNullOrEmpty(error))
+                        {
+
+                        }
+                        else
+                        {
+
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+                            Response.Redirect("FormListaSucursalEmpresa.aspx");
+                        }
                     }
                     break;
                 case "UPD":

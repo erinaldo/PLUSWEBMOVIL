@@ -4,6 +4,7 @@ using CapaProceso.Consultas;
 using CapaProceso.Modelos;
 using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
+using CapaProceso.RestCliente;
 
 namespace CapaWeb.WebForms
 {
@@ -779,7 +780,7 @@ namespace CapaWeb.WebForms
 
                 if (articulo == null)
                 {
-                    BuscarArticulo.Text = "No existe el cliente";
+                    BuscarArticulo.Text = "No existe el producto/ servicio";
                 }
                 else
                 {
@@ -849,8 +850,24 @@ namespace CapaWeb.WebForms
 
             ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
 
+            ConsumoRest consumoRest = new ConsumoRest();
+            bool respuesta = false;
+            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTA", conscabcera.nro_trans);
+            if (respuesta)
+            {
+                mensaje.Text = "Su factura fue procesada exitosamente";
+                Confirmar.Enabled = false;
+                GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
+                Response.Redirect("BuscarFacturas.aspx");
 
+            }
+            else
+            {
+                GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
+                mensaje.Text = "Hubo un error al enviar, revice por favor el detalle de errores.";
+                Response.Redirect("BuscarFacturas.aspx");
 
+            }
         }
 
         public void RecuperarCokie()

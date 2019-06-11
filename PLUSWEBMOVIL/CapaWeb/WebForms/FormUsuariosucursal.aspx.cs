@@ -151,24 +151,41 @@ namespace CapaWeb.WebForms
             switch (qs["TRN"].Substring(0, 3)) //ultilizo la variable para la opcion
             {
                 case "INS":
-                    
-                    DateTime hoy = DateTime.Today;
-                    ModelousuarioSucursal.cod_emp = ComPwm;
-                    ModelousuarioSucursal.cod_sucursal = cbx_sucursal.SelectedValue;
-                    ModelousuarioSucursal.usuario = cbx_usuarios.SelectedValue;
-                    ModelousuarioSucursal.fecha_mod = hoy;
-                    ModelousuarioSucursal.usuario_mod = AmUsrLog;
-                    error = consultaUsuarioSucursal.InsertarUsuarioSucursal(ModelousuarioSucursal);
-
-                    if (string.IsNullOrEmpty(error))
+                    //verificar si es unico
+                    ListaModeloUsuarioSucursal = ConsultaUsuxSuc.UnicoUsuarioSucursal(ComPwm, cbx_usuarios.SelectedValue, cbx_sucursal.SelectedValue);
+                    int count = 0;
+                    foreach (var item in ListaModeloUsuarioSucursal)
                     {
-
+                        ModelousuarioSucursal = item;
+                        count++;
+                        break;
+                    }
+                    if (count > 0)
+                    {
+                        this.Page.Response.Write("<script language='JavaScript'>window.alert('Usuario ya existe')+ error;</script>");
                     }
                     else
                     {
 
-                        this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
-                        Response.Redirect("FormListaUsuarioSucursal.aspx");
+                        DateTime hoy = DateTime.Today;
+                        ModelousuarioSucursal.cod_emp = ComPwm;
+                        ModelousuarioSucursal.cod_sucursal = cbx_sucursal.SelectedValue;
+                        ModelousuarioSucursal.usuario = cbx_usuarios.SelectedValue;
+                        ModelousuarioSucursal.fecha_mod = hoy;
+                        ModelousuarioSucursal.usuario_mod = AmUsrLog;
+
+                        error = consultaUsuarioSucursal.InsertarUsuarioSucursal(ModelousuarioSucursal);
+
+                        if (string.IsNullOrEmpty(error))
+                        {
+
+                        }
+                        else
+                        {
+
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+                            Response.Redirect("FormListaUsuarioSucursal.aspx");
+                        }
                     }
                     break;
                 case "UPD":

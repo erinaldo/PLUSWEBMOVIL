@@ -16,7 +16,7 @@ namespace CapaWeb.WebForms
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
 
-       
+        public CabezeraFactura ActualizarEstadoFact = new CabezeraFactura();
         public string ComPwm;
         public string AmUsrLog;
         public string nro_trans = null;
@@ -78,7 +78,9 @@ namespace CapaWeb.WebForms
             {
                 mensaje.Text = "Su factura fue enviada exitosamente";
                 btn_reenviar.Enabled = false;
-                
+                ActualizarEstadoFact.ActualizarEstadoFactura(lbl_nro_trans.Text, "F");
+
+
             }
             else
             {

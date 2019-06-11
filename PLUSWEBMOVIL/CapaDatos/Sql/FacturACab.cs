@@ -13,6 +13,29 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
 
+        //ACTUALIXAR ESTADO FACTURA
+        public string ActualizarEstadoFactura(string nro_trans, string estado)
+        {
+            try
+            {
+                cn = conexion.genearConexion();
+
+                string insert = "UPDATE wmt_facturas_cab SET  estado = @estado WHERE nro_trans = @nro_trans";
+                SqlCommand conmand = new SqlCommand(insert, cn);
+                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                conmand.Parameters.Add("@estado", SqlDbType.VarChar).Value = estado;
+  
+                int dr = conmand.ExecuteNonQuery();
+                return "Factura guardada correctamente";
+            }
+            catch (Exception e)
+            {
+
+                return e.ToString();
+            }
+
+        }
+
         public string EliminarCabDetFactura(string nro_trans)
         {
             try

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="FormListaUsuarioSucursal.aspx.cs" Inherits="CapaWeb.FormListaUsuarioSucursal" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeBehind="FormListaUsuarioSucursal.aspx.cs" Inherits="CapaWeb.FormListaUsuarioSucursal" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
      <form id="form1" name="form1" class="forms-sample" runat="server" method="post">
          <div style="align-items: left">
@@ -7,7 +7,7 @@
                         <td valign="top">
                             <table width="100%" border="0" cellspacing="0">
                                 <tr>
-                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;Facturas Venta</td>
+                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;Usuario Sucursal</td>
                                 </tr>
                             </table>
                         </td>

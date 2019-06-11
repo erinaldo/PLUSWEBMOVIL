@@ -62,13 +62,34 @@ namespace CapaWeb.WebForms
 
             if (!IsPostBack)
             {
-                cargarListaDesplegables();              
+                cargarListaDesplegables();   
+                           
                 fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 fechafin.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                CargarGrillaInicial();
             }
         }
 
-    
+        private void CargarGrillaInicial()
+        {
+            DateTime Fechainicio = DateTime.Today;
+            DateTime Fechafin = DateTime.Today;
+
+            string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);
+            string Ccf_mesi = string.Format("{0:00}", Fechainicio.Month);
+            string Ccf_anioi = Fechainicio.Year.ToString();
+            string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
+            string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
+            string Ccf_aniof = Fechafin.Year.ToString();
+
+
+            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+            Grid.DataSource = listaConsCab;
+            Grid.DataBind();
+            Grid.Height = 100;
+
+
+        }
         public void cargarListaDesplegables()
         {
             //Lista Estados facturas
