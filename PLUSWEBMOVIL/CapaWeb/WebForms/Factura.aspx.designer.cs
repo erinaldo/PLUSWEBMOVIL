@@ -267,6 +267,9 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox txtSumaTotal;
         protected global::System.Web.UI.WebControls.TextBox txtcorreo;
         protected global::System.Web.UI.WebControls.DropDownList ListaCCostos;
+        protected global::System.Web.UI.WebControls.DropDownList cbx_proformas;
+        protected global::System.Web.UI.WebControls.DropDownList cbx_remisiones;
+
 
     }
 }

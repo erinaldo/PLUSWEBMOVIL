@@ -45,6 +45,7 @@
     <Compile Include="Conexion\Modelos\modeloinsertarconfirmar.cs" />
     <Compile Include="Conexion\Modelos\modeloSucuralempresa.cs" />
     <Compile Include="Conexion\Modelos\modeloUsuariosucursal.cs" />
+    <Compile Include="Conexion\Modelos\modelowmtproformascab.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -61,8 +62,10 @@
     <Compile Include="Sql\CMonedas.cs" />
     <Compile Include="Sql\ConfirmarFactura.cs" />
     <Compile Include="Sql\ConsultaLogoSql.cs" />
+    <Compile Include="Sql\ConsultaProformas.cs" />
     <Compile Include="Sql\CotizacionMonedaTrm.cs" />
     <Compile Include="Sql\CuentasBanco.cs" />
+    <Compile Include="Sql\DetalleProformaFac.cs" />
     <Compile Include="Sql\Documento.cs" />
     <Compile Include="Sql\Empresa.cs" />
     <Compile Include="Sql\EstadosFactura.cs" />
@@ -73,6 +76,7 @@
     <Compile Include="Sql\ImpuestosRest.cs" />
     <Compile Include="Sql\Numeradores.cs" />
     <Compile Include="Sql\ParametroComercial.cs" />
+    <Compile Include="Sql\RemisionesFactura.cs" />
     <Compile Include="Sql\RespuestaDC.cs" />
     <Compile Include="Sql\SerieDocumento.cs" />
     <Compile Include="Sql\SucursalEmpresa.cs" />

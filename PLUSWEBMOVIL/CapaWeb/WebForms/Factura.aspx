@@ -131,9 +131,6 @@
                                     </asp:DropDownList>
                                 </td>
 
-                                 
-                                
-
                             </tr>
                             <tr valign="top">
                                 <td align="right" valign="top" nowrap="nowrap" class="busqueda">
@@ -207,8 +204,40 @@
 
                                     </label>
                                 </td>
+                                <td align="right" valign="top" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Proformas:</div>
+                                </td>
+                                <td valign="top">
+                                    <label>
+                                        <asp:DropDownList class="textos" name="cbx_proformas" Width="250" ID="cbx_proformas" runat="server">
+                                        </asp:DropDownList>
+
+                                    </label>
+                                </td>
+                               
+                               <td>
+                                   <asp:Button ID="btn_Proforma" CssClass="botones" onclick="btn_Proforma_Click" runat="server" Text="Cargar Proforma" />
+                                  </td>
+                               </tr>
+                            <tr>
                                 
-                              
+                             
+                               <td align="right" valign="top" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Remisiones:</div>
+                                </td>
+                                <td valign="top">
+                                    <label>
+                                       <asp:DropDownList class="textos" name="cbx_remisiones" Width="210" ID="cbx_remisiones" runat="server">
+                                        </asp:DropDownList>
+
+                                    </label>
+                                </td>
+                               <td valign="top">
+                                   <label>
+                                   <asp:Button ID="btn_Remision" CssClass="botones" onclick="btn_Remision_Click" runat="server" Text="Cargar Remision" />
+                                       </label>
+                                  </td>
+
                            </tr>
                             <tr>
                                 
@@ -220,6 +249,7 @@
                                     <div class="textos2" align="left">Caracteres disponibles: <b><span id="myCounter">250</span></b></div>
                                 </td>
                             </tr>
+                            
                         </table>
                     </td>
                 </tr>
@@ -316,7 +346,7 @@
                                             <asp:TemplateColumn HeaderText="Código" >
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="cod_articulo" runat="server" Text='<%#Eval("cod_articulo") %>'></asp:Label>
+                                                        <asp:Label ID="cod_articulo" runat="server" class="textos" Text='<%#Eval("cod_articulo") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -324,7 +354,7 @@
                                             <asp:TemplateColumn HeaderText="Descripción">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="nom_articulo" runat="server" Text='<%#Eval("nom_articulo") %>'></asp:Label>
+                                                        <asp:Label ID="nom_articulo" runat="server" class="textos" Text='<%#Eval("nom_articulo") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -332,7 +362,7 @@
                                             <asp:TemplateColumn HeaderText="Cantidad">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="cantidad" runat="server" Text='<%#Eval("cantidad") %>'></asp:Label>
+                                                        <asp:Label ID="cantidad" runat="server" class="textos" Text='<%#Eval("cantidad") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -340,23 +370,23 @@
                                             <asp:TemplateColumn HeaderText="Precio">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="precio_unit" runat="server" Text='<%#Eval("precio_unit") %>'></asp:Label>
+                                                        <asp:Label ID="precio_unit" runat="server" class="textos" Text='<%#Eval("precio_unit") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                                 <ItemStyle Font-Bold="False" Font-Italic="False" Font-Overline="False" Font-Strikeout="False" Font-Underline="False" HorizontalAlign="Center" />
                                             </asp:TemplateColumn>
 
                                             <asp:TemplateColumn HeaderText="Sub total">
-                                                <ItemTemplate>
+                                                <ItemTemplate> 
                                                     <span style="float: left;">
-                                                        <asp:Label ID="subtotal" runat="server" Text='<%#Eval("subtotal") %>'></asp:Label>
+                                                        <asp:Label ID="subtotal" runat="server" class="textos" Text='<%#Eval("subtotal") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
                                             <asp:TemplateColumn HeaderText="Descto">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="detadescuento" runat="server" Text='<%#Eval("detadescuento") %>'></asp:Label>
+                                                        <asp:Label ID="detadescuento" runat="server" class="textos" Text='<%#Eval("detadescuento") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -364,14 +394,14 @@
                                              <asp:TemplateColumn HeaderText="IVA">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="detaiva" runat="server" Text='<%#Eval("detaiva") %>'></asp:Label>
+                                                        <asp:Label ID="detaiva" runat="server" class="textos" Text='<%#Eval("detaiva") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
                                             <asp:TemplateColumn HeaderText="Total">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="total" runat="server" Text='<%#Eval("total") %>'></asp:Label>
+                                                        <asp:Label ID="total" runat="server" class="textos" Text='<%#Eval("total") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>

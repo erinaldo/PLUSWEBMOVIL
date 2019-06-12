@@ -25,6 +25,19 @@ namespace CapaWeb.WebForms
         modelowmspcresfact resolucion = new modelowmspcresfact();
         List<modelowmspcresfact> listaRes = null;
 
+        ConsultaDetalleProforma ConsultaDetallePro = new ConsultaDetalleProforma();
+        modeloDetalleProforma ModeloDetallePro = new modeloDetalleProforma();
+        List<modeloDetalleProforma> ListaDetaProforma = null;
+
+        ConsultaProformasFac ConsultaProformas = new ConsultaProformasFac();
+        modelowmtproformascab ModeloProformas = new modelowmtproformascab();
+        List<modelowmtproformascab> ListaProofrmas = null;
+        ConsultaProformaIns InsertarProIns = new ConsultaProformaIns();
+
+        ConsultaRemisionesFac ConsultaRemisiones = new ConsultaRemisionesFac();
+        modeloRemisionesFactura ModeloRemision = new modeloRemisionesFactura();
+        List<modeloRemisionesFactura> ListaRemision = null;
+
         ConsultawmusuarioSucursal consultaUsuarioSucursal = new ConsultawmusuarioSucursal();
         modeloUsuariosucursal ModeloUsuSucursal = new modeloUsuariosucursal();
         List<modeloUsuariosucursal> ListaUsuSucursal = null;
@@ -302,6 +315,7 @@ namespace CapaWeb.WebForms
         }
         public void cargarListaDesplegables()
         {
+            //lista proformas
 
             //LIsta Resolucion facturas
             listaRes = ConsultaResolucion.ConsultaResolusiones(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo);
@@ -743,6 +757,20 @@ namespace CapaWeb.WebForms
                     fonoCliente.Text = cliente.tel_tit;
                     dniCliente.Text = cliente.nro_dgi2;
                     txtcorreo.Text = cliente.email_tit;
+                    //Consulta las proofrmas de ese cliente
+                    ListaProofrmas = ConsultaProformas.BuscarProformas(cliente.cod_tit, "A", "PF");
+                    cbx_proformas.DataSource = ListaProofrmas;
+                    cbx_proformas.DataTextField = "proformas";
+                    cbx_proformas.DataValueField = "nro_trans";
+                    cbx_proformas.DataBind();
+
+                    //Consulta remisiones
+                    ListaRemision = ConsultaRemisiones.BuscarRemisiones(cliente.cod_tit, "A", "GR");
+                    cbx_remisiones.DataSource = ListaRemision;
+                    cbx_remisiones.DataTextField = "proformas";
+                    cbx_remisiones.DataValueField = "nro_trans";
+                    cbx_remisiones.DataBind();
+
                 }
             }
 
@@ -966,6 +994,48 @@ namespace CapaWeb.WebForms
                     break;
             }
 
+
+        }
+
+        protected void btn_Proforma_Click(object sender, EventArgs e)
+        {
+            //Cargar datos de proforma en el detalle
+            //Consultar la proofrma y enviar
+            if (cbx_proformas.SelectedValue == null)
+            {
+
+            }
+            else
+            {
+                string nro_trans_pro = Convert.ToString(cbx_proformas.SelectedValue);
+                //traer el detalle de la proforma
+               ListaDetaProforma = ConsultaDetallePro.BuscarProformasDetalle(nro_trans_pro);
+                gv_Producto.DataSource = ListaDetaProforma;
+                gv_Producto.DataBind();
+
+                ///Insertar en la tabla proforma ins luego de q escoja
+                ///string Ven__cod_tit = dniCliente.Text;
+                string Ven__cod_tit = dniCliente.Text;
+                lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit);
+
+                int contar = 0;
+                cliente = null;
+                foreach (modelowmspctitulares item in lista)
+                {
+                    contar++;
+                    cliente = item;
+                }
+                ListaProofrmas = ConsultaProformas.BuscarProformas(cliente.cod_tit, "A", "PF");
+                foreach(var item in ListaProofrmas)
+                 {
+                    ModeloProformas = item;
+                }
+                InsertarProIns.InsertarProformaIns(ModeloProformas);
+            }
+        }
+
+        protected void btn_Remision_Click(object sender, EventArgs e)
+        {
 
         }
     }
