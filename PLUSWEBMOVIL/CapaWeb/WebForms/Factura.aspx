@@ -204,37 +204,36 @@
 
                                     </label>
                                 </td>
+                               </tr>
+                            <tr>
                                 <td align="right" valign="top" nowrap="nowrap" class="busqueda">
-                                    <div align="left">Proformas:</div>
+                                    <asp:Label align="center" ID="lbl_proforma" Visible="false" runat="server" Text="Proformas:"></asp:Label>
                                 </td>
                                 <td valign="top">
                                     <label>
-                                        <asp:DropDownList class="textos" name="cbx_proformas" Width="250" ID="cbx_proformas" runat="server">
+                                        <asp:DropDownList class="textos" Visible="false" name="cbx_proformas" Width="200" ID="cbx_proformas" runat="server">
                                         </asp:DropDownList>
 
                                     </label>
                                 </td>
                                
                                <td>
-                                   <asp:Button ID="btn_Proforma" CssClass="botones" onclick="btn_Proforma_Click" runat="server" Text="Cargar Proforma" />
+                                   <asp:Button ID="btn_Proforma" CssClass="botones" Visible="false" onclick="btn_Proforma_Click" runat="server" Text="Cargar Proforma" />
                                   </td>
-                               </tr>
-                            <tr>
-                                
-                             
-                               <td align="right" valign="top" nowrap="nowrap" class="busqueda">
-                                    <div align="left">Remisiones:</div>
+                               <td align="right"  valign="top" nowrap="nowrap" class="busqueda">
+                                   <asp:Label ID="lbl_remision" Visible="false" runat="server" Text="Remisiones:"></asp:Label>
+                                    
                                 </td>
                                 <td valign="top">
                                     <label>
-                                       <asp:DropDownList class="textos" name="cbx_remisiones" Width="210" ID="cbx_remisiones" runat="server">
+                                       <asp:DropDownList class="textos" Visible="false" name="cbx_remisiones" Width="150" ID="cbx_remisiones" runat="server">
                                         </asp:DropDownList>
 
                                     </label>
                                 </td>
                                <td valign="top">
                                    <label>
-                                   <asp:Button ID="btn_Remision" CssClass="botones" onclick="btn_Remision_Click" runat="server" Text="Cargar Remision" />
+                                   <asp:Button ID="btn_Remision" CssClass="botones" Visible="false" onclick="btn_Remision_Click" runat="server" Text="Cargar Remision" />
                                        </label>
                                   </td>
 
@@ -245,7 +244,7 @@
                                     <div align="left">Observaciones:</div>
                                 </td>
                                 <td colspan="5">
-                                    <asp:TextBox ID="area" runat="server" Width="880" class="textos" TextMode="MultiLine" cols="100" Rows="3"></asp:TextBox>
+                                    <asp:TextBox ID="area" runat="server" Width="900" class="textos" TextMode="MultiLine" cols="150" Rows="3"></asp:TextBox>
                                     <div class="textos2" align="left">Caracteres disponibles: <b><span id="myCounter">250</span></b></div>
                                 </td>
                             </tr>
@@ -257,6 +256,13 @@
                     <td>
 
                         <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <asp:Label ID="lbl_trx" visible="false" class="Subtitulo2" runat="server" Text=""></asp:Label>
+
+                        
                     </td>
                 </tr>
 
@@ -488,7 +494,7 @@
                         <table>
                                <tr>
                                 <td >
-                                    <asp:Button ID="btnGuardarDetalle" Class="btnFactura1"  runat="server" OnClick="GuardarDetalle_Click"  Text="Salvar" />
+                                    <asp:Button ID="btnGuardarDetalle" Class="btnFactura1" visible="false" runat="server" OnClick="GuardarDetalle_Click"  Text="Salvar" />
                                 </td>
                                 <td >
                                     <asp:Button ID="Cancelar" Class="btnFactura1"  runat="server" onclick="Cancelar_Click" UseSubmitBehavior="False" Text="Cancelar" />

@@ -31,5 +31,30 @@ namespace CapaDatos.Sql
             return dr;
 
         }
+
+        //tasa de la fecha actual
+        public SqlDataReader ActualMonedaTrm(string usuario, string cod_emp, string dia, string mes, string anio, string moneda)
+        {
+            //Buscar cotizacion moneda trm
+
+            cn = conexion.genearConexion();
+
+            string consulta = ("wmspc_tcambio");
+            SqlCommand conmand = new SqlCommand(consulta, cn);
+
+            conmand.CommandType = CommandType.StoredProcedure;
+            conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+            conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+            conmand.Parameters.Add("@dia", SqlDbType.VarChar).Value = dia;
+            conmand.Parameters.Add("@mes", SqlDbType.VarChar).Value = mes;
+            conmand.Parameters.Add("@anio", SqlDbType.VarChar).Value = anio;
+            conmand.Parameters.Add("@moneda", SqlDbType.VarChar).Value = moneda;
+
+            SqlDataReader dr = conmand.ExecuteReader();
+
+            return dr;
+
+        }
+
     }
 }

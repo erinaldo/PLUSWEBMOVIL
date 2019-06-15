@@ -43,6 +43,7 @@
     <Compile Include="Conexion\Modelos\modelocabecerafactura.cs" />
     <Compile Include="Conexion\Modelos\ModeloDetalleFactura.cs" />
     <Compile Include="Conexion\Modelos\modeloinsertarconfirmar.cs" />
+    <Compile Include="Conexion\Modelos\modeloRemisionesFactura.cs" />
     <Compile Include="Conexion\Modelos\modeloSucuralempresa.cs" />
     <Compile Include="Conexion\Modelos\modeloUsuariosucursal.cs" />
     <Compile Include="Conexion\Modelos\modelowmtproformascab.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Sql\CotizacionMonedaTrm.cs" />
     <Compile Include="Sql\CuentasBanco.cs" />
     <Compile Include="Sql\DetalleProformaFac.cs" />
+    <Compile Include="Sql\DetalleRemision.cs" />
     <Compile Include="Sql\Documento.cs" />
     <Compile Include="Sql\Empresa.cs" />
     <Compile Include="Sql\EstadosFactura.cs" />

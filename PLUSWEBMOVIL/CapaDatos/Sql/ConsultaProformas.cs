@@ -22,7 +22,7 @@ namespace CapaDatos.Sql
             {
                 cn = conexion.genearConexion();
 
-                string insert = "INSERT INTO  wmt_facturas_ins (nro_trans, nro_docum, cod_emp, cod_cliente, usuario_mod, nro_audit, cod_proceso) VALUES (@nro_trans, @nro_docum, @cod_emp, @cod_cliente, @usuario_mod, @nro_audit, @cod_proceso)";
+                string insert = "INSERT INTO  wmt_proformas_ins (nro_trans, nro_docum, cod_emp, cod_cliente, usuario_mod, nro_audit, cod_proceso) VALUES (@nro_trans, @nro_docum, @cod_emp, @cod_cliente, @usuario_mod, @nro_audit, @cod_proceso)";
                 SqlCommand conmand = new SqlCommand(insert, cn);
                 conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = proformaCab.nro_trans;
                 conmand.Parameters.Add("@nro_docum", SqlDbType.VarChar).Value = proformaCab.nro_docum;
@@ -43,6 +43,22 @@ namespace CapaDatos.Sql
 
         }
 
+        //BUSCAR X CABECERA UNICA
+        public SqlDataReader ConsultaProformasFactura(string nro_trans)
+        {
+
+            cn = conexion.genearConexion();
+
+            string consulta = ("SELECT * FROM dbo.wmt_proformas_cab WHERE nro_trans = @nro_trans");
+            SqlCommand conmand = new SqlCommand(consulta, cn);
+
+
+            conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+            SqlDataReader dr = conmand.ExecuteReader();
+
+            return dr;
+
+        }
         public SqlDataReader ListaProformasFactura(string cod_cliente, string estado, string tipo)
         {
 

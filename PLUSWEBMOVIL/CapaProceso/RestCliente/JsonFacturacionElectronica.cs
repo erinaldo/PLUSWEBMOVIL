@@ -102,8 +102,13 @@ namespace CapaProceso.RestCliente
 
             ModeloCotizacion = null;
             ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
-          
-            
+            string tasa = ModeloCotizacion.tc_mov1c;
+           
+            if (tasa == null)
+            {
+                string mensaje = "Revise por favor su tasa de cotización";
+            }
+            else { 
             encabezado.emisor = Convert.ToInt32(Modeloempresa.nro_dgi2);
             encabezado.codmoneda = conscabcera.cod_moneda.Trim();
             encabezado.comentarios = conscabcera.observaciones;
@@ -123,7 +128,7 @@ namespace CapaProceso.RestCliente
             encabezado.usuario = Ccf_usuario;  //Usuario que facturo
             encabezado.totalDet = listaConsDet.Count; //la cantidad de lineas del detalle de la factura
             encabezado.totalImp = 1; //la cantidad de lineas de los impuestos
-
+            }
             return encabezado;
         }
 

@@ -29,7 +29,8 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label mensaje;
-        
+        protected global::System.Web.UI.WebControls.Label lbl_trx;
+
         /// <summary>
         /// Control dniCliente.
         /// </summary>
@@ -164,7 +165,9 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button GuardarCabecera;
-        
+        protected global::System.Web.UI.WebControls.Button btn_Proforma;
+        protected global::System.Web.UI.WebControls.Button btn_Remision;
+
         /// <summary>
         /// Control Producto.
         /// </summary>
@@ -173,7 +176,10 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Producto;
-        
+        protected global::System.Web.UI.WebControls.Label lbl_remision;
+            protected global::System.Web.UI.WebControls.Label lbl_proforma;
+
+
         /// <summary>
         /// Control pvp.
         /// </summary>

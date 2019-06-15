@@ -36,5 +36,7 @@ namespace CapaProceso.Modelos
         public string cod_proc_aud { get; set; }
         public string cod_sucursal { get; set; }
         public string fec_doc_str { get; set; }
+        public string cod_proceso { get; set; }
+
     }
 }

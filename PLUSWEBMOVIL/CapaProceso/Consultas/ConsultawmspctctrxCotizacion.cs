@@ -33,5 +33,22 @@ namespace CapaProceso.Consultas
             }
             return lista;
         }
+
+        //Consulta tasa de cambio de la fecha actual
+        public List<modelowmspctctrxCotizacion> TasaCambioActual(string usuario, string cod_emp, string dia, string mes, string anio, string moneda)
+        {
+            List<modelowmspctctrxCotizacion> lista = new List<modelowmspctctrxCotizacion>();
+            SqlDataReader dr = consultatrmMoneda.ActualMonedaTrm(usuario, cod_emp, dia, mes, anio, moneda);
+
+            while (dr.Read())
+            {
+
+                modelowmspctctrxCotizacion item = new modelowmspctctrxCotizacion();
+                item.tc_mov = Convert.ToString(dr["tc_mov"]);
+                item.tc_trad = Convert.ToString(dr["tc_trad"]);
+              lista.Add(item);
+            }
+            return lista;
+        }
     }
 }

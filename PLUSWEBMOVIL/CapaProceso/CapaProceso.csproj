@@ -89,6 +89,7 @@
     <Compile Include="Consultas\ConsultaBancos.cs" />
     <Compile Include="Consultas\Consultaconfirmarfactura.cs" />
     <Compile Include="Consultas\ConsultaDetalleProforma.cs" />
+    <Compile Include="Consultas\ConsultaDetalleRemision.cs" />
     <Compile Include="Consultas\ConsultaEmpresa.cs" />
     <Compile Include="Consultas\Consultaestadosfactura.cs" />
     <Compile Include="Consultas\ConsultaLogo.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Consultas\ConsultaProformaIns.cs" />
     <Compile Include="Consultas\ConsultaProformasFac.cs" />
     <Compile Include="Consultas\ConsultaRemisionesFac.cs" />
+    <Compile Include="Consultas\ConsultaRemisionIns.cs" />
     <Compile Include="Consultas\ConsultaSucursalempresa.cs" />
     <Compile Include="Consultas\ConsultaUsuarioEmpresa.cs" />
     <Compile Include="Consultas\ConsultausuarioSucursal.cs" />
@@ -119,7 +121,7 @@
     <Compile Include="Consultas\Enviarcorreocliente.cs" />
     <Compile Include="Consultas\GuardarrespuestaDS.cs" />
     <Compile Include="Modelos\modeloDetalleProforma.cs" />
-    <Compile Include="Modelos\modeloRemisionesFactura.cs" />
+    <Compile Include="Modelos\modeloDetalleRemision.cs" />
     <Compile Include="Modelos\modeloUsuarioxempresa.cs" />
     <Compile Include="ReslClientePdf\JsonFacturaPDF.cs" />
     <Compile Include="ReslClientePdf\PdfFacturaElectronica.cs" />
