@@ -2,6 +2,7 @@
 using CapaProceso.Modelos;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -29,9 +30,8 @@ namespace CapaProceso.Consultas
                 item.cod_pais = Convert.ToString(dr["cod_pais"]);
                 item.nom_pais = Convert.ToString(dr["nom_pais"]);
                 item.cod_provincia = Convert.ToString(dr["cod_provincia"]);
-                item.cod_ciudad = Convert.ToString(dr["cod_ciudad"]);
-                item.sitio_app = "http://localhost/Pruebas6WMD/";//para ambiente de pruebas
-                //item.sitio_app = "../";//para ambiente de produccion
+                item.cod_ciudad = Convert.ToString(dr["cod_ciudad"]);                          
+                item.sitio_app = ConfigurationManager.AppSettings["path"];                
                 item.nom_ciudad = Convert.ToString(dr["nom_ciudad"]);                
                 item.logo = Convert.ToString(dr["logo"]);
                 item.username = Convert.ToString(dr["username"]);
