@@ -24,6 +24,20 @@ namespace CapaDatos.Sql
 
             return dr;
         }
+        //Consultar por linea la respuesta
+        public SqlDataReader RespuestaLineaQR(string nro_trans,  string linea)
+        {
+            cn = conexion.genearConexion();
+            string consulta = "SELECT * FROM dbo.wmt_respuestaDS WHERE nro_trans =@nro_trans AND linea = @linea";
+            SqlCommand conmand = new SqlCommand(consulta, cn);
+
+            conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
+            conmand.Parameters.Add("linea", SqlDbType.VarChar).Value = linea;
+
+            SqlDataReader dr = conmand.ExecuteReader();
+
+            return dr;
+        }
 
         public string InsertarRespuestaDS(JsonRespuestaDE jsonRespuestaDE)
         {

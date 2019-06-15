@@ -7,10 +7,8 @@ using CapaWeb.Urlencriptacion;
 
 namespace CapaWeb.WebForms
 {
-    public partial class PortalFacturas : System.Web.UI.Page
+    public partial class FormRespuestaJson : System.Web.UI.Page
     {
-
-     
         modelocabecerafactura cabecerafactura = new modelocabecerafactura();
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
 
@@ -50,7 +48,7 @@ namespace CapaWeb.WebForms
                 {
 
                     case "INS":
-                      
+
                         break;
 
                     case "UDP":
@@ -58,21 +56,38 @@ namespace CapaWeb.WebForms
 
                     case "MTR":
                         Int64 ide = Int64.Parse(qs["Id"].ToString());
+                        Int64 lin = Int64.Parse(qs["linea"].ToString());
+                        
                         string nro_trans = ide.ToString();
-                        //CargarFormularioRespuestaDS(nro_trans);
-                        CargarGrilla(nro_trans);
-                        FormularioRes.Visible = false;
+                        mensaje.Text = nro_trans;
+                        string linea = lin.ToString();
+                        CargarFormularioRespuestaDS(nro_trans, linea);
+                       
                         break;
                 }
 
             }
         }
 
-        private void MostrarCamposFormulario()
+        public void RecuperarCokie()
         {
-            FormularioRes.Visible = true;
+            if (Request.Cookies["ComPwm"] != null)
+            {
+                ComPwm = Request.Cookies["ComPwm"].Value;
+            }
+            else
+            {
+                Response.Redirect("../Inicio.asp");
+            }
+
+
+            if (Request.Cookies["AmUsrLog"] != null)
+            {
+                AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+
+            }
         }
-       
+
         private void CargarFormularioRespuestaDS(string nro_trans, string linea)
         {
 
@@ -93,70 +108,9 @@ namespace CapaWeb.WebForms
             txt_cufe.Text = ModeloResQr.cufe;
             txt_error.Text = ModeloResQr.error;
             txt_json.Text = ModeloResQr.json;
-
+            FormularioRes.Visible = true;
 
         }
-        private void CargarGrilla(string nro_trans)
-        {
-
-            ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
-            Grid.DataSource = ListaModelorespuestaDs;
-            Grid.DataBind();
-            Grid.Height = 100;
-        }
-
-        protected void Grid_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
-        {
-            // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
-            Grid.CurrentPageIndex = 0;
-            Grid.CurrentPageIndex = e.NewPageIndex;
-            CargarGrilla(nro_trans);
-        }
-
-        protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
-        {
-
-            //1 primero creo un objeto Clave/Valor de QueryString 
-            QueryString qs = new QueryString();
-            //Escoger opcion
-
-            int Id;
-            int  linea;
-
-            switch (e.CommandName) //ultilizo la variable para la opcion
-            {
-
-                case "Mostrar": //ejecuta el codigo si el usuario ingresa el numero 3
-                    Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
-                    linea = Convert.ToInt32(((Label)e.Item.Cells[2].FindControl("linea")).Text);
-                    qs.Add("TRN", "MTR");
-                    qs.Add("Id", Id.ToString());
-                    qs.Add("linea", linea.ToString());
-
-                    Response.Redirect("FormRespuestaJson.aspx" + Encryption.EncryptQueryString(qs).ToString());
-
-                    break;
-            }
-        }
-        public void RecuperarCokie()
-          {
-            if (Request.Cookies["ComPwm"] != null)
-            {
-                ComPwm = Request.Cookies["ComPwm"].Value;
-            }
-            else
-            {
-                Response.Redirect("../Inicio.asp");
-            }
-
-
-            if (Request.Cookies["AmUsrLog"] != null)
-            {
-                AmUsrLog = Request.Cookies["AmUsrLog"].Value;
-
-            }
-        }
-
         public QueryString ulrDesencriptada()
         {
             //1- guardo el Querystring encriptado que viene desde el request en mi objeto
@@ -166,11 +120,16 @@ namespace CapaWeb.WebForms
             qs = Encryption.DecryptQueryString(qs);
             return qs;
         }
-
         protected void Cancelar_Click(object sender, EventArgs e)
         {
-            Response.Redirect("BuscarFacturas.aspx");
-       
+            
+
+            QueryString qs = new QueryString();
+
+            //2 voy a agregando los valores que deseo
+            qs.Add("TRN", "MTR");
+            qs.Add("Id", mensaje.Text);
+            Response.Redirect("PortalFacturas.aspx" + Encryption.EncryptQueryString(qs).ToString());
         }
     }
 }

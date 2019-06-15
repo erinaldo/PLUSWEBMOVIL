@@ -36,5 +36,27 @@ namespace CapaProceso.Consultas
             }
             return lista;
         }
+        //Conusulta respuesta x linea
+        public List<JsonRespuestaDE> RespuestaLineaQr(string nro_trans, string linea)
+        {
+            List<JsonRespuestaDE> lista = new List<JsonRespuestaDE>();
+            SqlDataReader dr = consultaRespuesta.RespuestaLineaQR(nro_trans, linea);
+
+            while (dr.Read())
+            {
+                JsonRespuestaDE item = new JsonRespuestaDE();
+                item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                item.linea = Convert.ToInt16(dr["linea"]);
+                item.qrdata = Convert.ToString(dr["qrdata"]);
+                item.xml = Convert.ToString(dr["xml"]);
+                item.id = Convert.ToString(dr["id"]);
+                item.cufe = Convert.ToString(dr["cufe"]);
+                item.error = Convert.ToString(dr["error"]);
+                item.json = Convert.ToString(dr["json"]);
+                lista.Add(item);
+            }
+            return lista;
+        }
+
     }
 }

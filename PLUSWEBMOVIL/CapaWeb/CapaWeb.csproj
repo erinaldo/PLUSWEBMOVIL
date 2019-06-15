@@ -160,6 +160,7 @@
     <Content Include="WebForms\CrearCliente.aspx" />
     <Content Include="WebForms\Factura.aspx" />
     <Content Include="WebForms\FormListaSucursalEmpresa.aspx" />
+    <Content Include="WebForms\FormRespuestaJson.aspx" />
     <Content Include="WebForms\FormSucursalempresa.aspx" />
     <Content Include="WebForms\FormUsuariosucursal.aspx" />
     <Content Include="WebForms\PortalFacturas.aspx" />
@@ -211,6 +212,13 @@
     </Compile>
     <Compile Include="WebForms\Factura.aspx.designer.cs">
       <DependentUpon>Factura.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormRespuestaJson.aspx.cs">
+      <DependentUpon>FormRespuestaJson.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormRespuestaJson.aspx.designer.cs">
+      <DependentUpon>FormRespuestaJson.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>

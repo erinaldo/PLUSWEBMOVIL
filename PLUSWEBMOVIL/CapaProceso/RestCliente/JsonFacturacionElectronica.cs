@@ -115,7 +115,7 @@ namespace CapaProceso.RestCliente
             encabezado.nit = Convert.ToInt64(conscabcera.nro_dgi2);
             encabezado.numero = Convert.ToInt32(conscabcera.nro_docum);
             encabezado.ordencompra = Convert.ToString(conscabcera.ocompra);
-            encabezado.prefijo = "FVE";  // va quemado por defecto para los comprobantes de factura
+            encabezado.prefijo = Convert.ToString(conscabcera.serie_docum.Trim()); ;  // va quemado por defecto para los comprobantes de factura
             encabezado.subtotal = Convert.ToInt32(conscabcera.subtotal);
             encabezado.sucursal = Convert.ToInt16(conscabcera.cod_sucursal); 
             encabezado.total = Convert.ToInt32(conscabcera.total);
