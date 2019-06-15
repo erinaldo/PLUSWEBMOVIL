@@ -35,10 +35,10 @@ namespace CapaProceso.RestCliente
             Modelowmspclogo = BuscarUsuarioLogo( Ccf_cod_emp, Ccf_usuario);
             
            
-            StreamReader sr = new StreamReader("F:\\factura.txt");
-            string contenido = sr.ReadToEnd();
-            string jsonRes = contenido;
-            sr.Close();
+            //StreamReader sr = new StreamReader("F:\\factura.txt");
+           // string contenido = sr.ReadToEnd();
+            //string jsonRes = contenido;
+            //sr.Close();
 
             //Proporcionar credenciales
              string username = Modelowmspclogo.username;
@@ -48,7 +48,7 @@ namespace CapaProceso.RestCliente
              string credentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes($"{username}:{password}"));
 
             //Consultar datos para enviar el json arma la consulta y la estructura de json factura
-            
+            string jsonRes = "";
             jsonRes = JsonConvert.SerializeObject(consultaResJson.LlenarJSONFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans), Formatting.Indented);
            
             JsonRespuestaDE jsonRespuestaDE = new JsonRespuestaDE();
@@ -66,10 +66,10 @@ namespace CapaProceso.RestCliente
             if (jsonRespuestaDE.error.Trim() == "" )//Si la factura no tiene errores
             {
                 //Envia Pdf el pdf si es autorizado
-                sr = new StreamReader("F:\\pdf.txt");
-                contenido = sr.ReadToEnd();
-                string jsonResPdf = contenido;
-                sr.Close();
+                //sr = new StreamReader("F:\\pdf.txt");
+                //contenido = sr.ReadToEnd();
+                string jsonResPdf = "";
+                //sr.Close();
 
                 string linkgenpdf = Modelowmspclogo.linkgenpdf;//Obtengo link para enviara pdf
                 
@@ -80,7 +80,7 @@ namespace CapaProceso.RestCliente
                 string pdfBase64 = Convert.ToBase64String(pdfBytes);//Convierto el pdf en base 64
 
                 //Consultar pdf, convertir a json
-                //jsonResPdf = JsonConvert.SerializeObject(jsonFacturapdf.RespuestaJSONPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pdfBase64), Formatting.Indented);
+                jsonResPdf = JsonConvert.SerializeObject(jsonFacturapdf.RespuestaJSONPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pdfBase64), Formatting.Indented);
                
 
                 

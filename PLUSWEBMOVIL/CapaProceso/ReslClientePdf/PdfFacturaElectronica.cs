@@ -147,19 +147,19 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             PdfPTable tablaLogo = new PdfPTable(3);//cantidad de columnas que va tener la tabla
             tablaLogo.WidthPercentage = 100;
             // Creamos la imagen y le ajustamos el tamaño
-            iTextSharp.text.Image imagen = iTextSharp.text.Image.GetInstance(Modelowmspclogo.sitio_app + "Logo/" + Modelowmspclogo.logo);
-            imagen.BorderWidth = 0;
-            imagen.Alignment = Element.ALIGN_RIGHT;
-            float percentage = 0.0f;
-            percentage = 150 / imagen.Width;
-            imagen.ScalePercent(percentage * 100);
+            //iTextSharp.text.Image imagen = iTextSharp.text.Image.GetInstance(AppDomain.CurrentDomain.BaseDirectory + "/Logo/" + Modelowmspclogo.logo);
+            //imagen.BorderWidth = 0;
+            //imagen.Alignment = Element.ALIGN_RIGHT;
+            //float percentage = 0.0f;
+            //percentage = 150 / imagen.Width;
+            //imagen.ScalePercent(percentage * 100);
 
-            cell = new PdfPCell(imagen);
+            cell = new PdfPCell(new Phrase(""));
             cell.Border = 0;
             tablaLogo.AddCell(cell);
 
             // Creamos la imagen QR y le ajustamos el tamaño
-            imagen = iTextSharp.text.Image.GetInstance(qr);
+            iTextSharp.text.Image imagen = iTextSharp.text.Image.GetInstance(qr);
             imagen.BorderWidth = 0;
             imagen.Alignment = Element.ALIGN_RIGHT;
             imagen.ScaleAbsolute(80f, 80f);
