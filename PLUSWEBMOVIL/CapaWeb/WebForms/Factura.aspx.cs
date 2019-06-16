@@ -5,6 +5,7 @@ using CapaProceso.Modelos;
 using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
 using CapaProceso.RestCliente;
+using CapaDatos.Modelos;
 
 namespace CapaWeb.WebForms
 {

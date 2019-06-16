@@ -36,10 +36,14 @@ namespace CapaProceso.ReslClientePdf
         public JsonFdfFacturaElectronica RespuestaJSONPdf(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string pdfbase64)
         {
             JsonFdfFacturaElectronica jsonPdf = new JsonFdfFacturaElectronica();
+            Encabezado encabezado = new Encabezado();
+            Documento documento = new Documento();
             /* Datos de encabezado de la factura */
+            encabezado = LlenarEnacabezadoPdfJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pdfbase64);
+            documento.encabezado = encabezado;
+            jsonPdf.documento = documento;
 
-            jsonPdf.encabezado = LlenarEnacabezadoPdfJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pdfbase64);
-           
+
 
             return jsonPdf;
         }
@@ -54,11 +58,11 @@ namespace CapaProceso.ReslClientePdf
             Modeloempresa = null;
             Modeloempresa = BuscarCabEmpresa(Ccf_usuario, Ccf_cod_emp);
 
-            encabezado.emisor = 830106032;
-           // encabezado.emisor = Convert.ToInt32(Modeloempresa.nro_dgi2);
+           
+           encabezado.emisor = Convert.ToInt32(Modeloempresa.nro_dgi2);
             encabezado.idsuc = 1;
-            encabezado.numero = 993004462;//Convert.ToInt32(conscabcera.nro_docum);
-            encabezado.prefijo = "FVE";  // va quemado por defecto para los comprobantes de factura
+            encabezado.numero = Convert.ToInt32(conscabcera.nro_docum);
+            encabezado.prefijo = Convert.ToString(conscabcera.serie_docum.Trim());
             encabezado.contenidopdf = pdfbase64;
 
             return encabezado;

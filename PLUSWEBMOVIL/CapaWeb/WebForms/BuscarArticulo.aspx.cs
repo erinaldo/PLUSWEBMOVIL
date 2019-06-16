@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using CapaProceso.Consultas;
 using CapaProceso.Modelos;
+using CapaDatos.Modelos;
 
 namespace CapaWeb.WebForms
 {

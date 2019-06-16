@@ -26,6 +26,7 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@estado", SqlDbType.VarChar).Value = estado;
   
                 int dr = conmand.ExecuteNonQuery();
+                cn.Close();
                 return "Factura guardada correctamente";
             }
             catch (Exception e)
@@ -54,7 +55,7 @@ namespace CapaDatos.Sql
             conmand = new SqlCommand(delete1, cn);
             conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
             conmand.ExecuteNonQuery();
-
+            cn.Close();
             return  mensaje;
             }
             catch (Exception e)
@@ -155,6 +156,7 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@cod_sucursal", SqlDbType.VarChar).Value = cabezeraFactura.cod_sucursal;
 
                 int dr = conmand.ExecuteNonQuery();
+                cn.Close();
                 return "";
            }
             catch (Exception e)

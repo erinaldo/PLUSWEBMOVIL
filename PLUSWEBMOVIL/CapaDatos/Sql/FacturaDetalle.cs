@@ -42,6 +42,7 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@tasa_iva", SqlDbType.VarChar).Value = detalleFactura.tasa_iva;
                 conmand.Parameters.Add("@cod_ccostos", SqlDbType.VarChar).Value = detalleFactura.cod_ccostos;
                 int dr = conmand.ExecuteNonQuery();
+                cn.Close();
                 return "Factura salvada correctamente";
             }
             catch (Exception e)
