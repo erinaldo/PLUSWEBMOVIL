@@ -29,7 +29,7 @@ namespace CapaProceso.RestCliente
         public ProcesoRest procesoRest = new ProcesoRest();
         public JsonFacturaPDF jsonFacturapdf = new JsonFacturaPDF();
 
-        public Boolean EnviarFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        public string EnviarFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
             //Consultar usuario y contraseña
             Modelowmspclogo = null;
@@ -96,20 +96,20 @@ namespace CapaProceso.RestCliente
 
                 if (jsonRespuestaDE.result.Trim() == null)
                 {
-                    return false;
+                    return "";
                 }
                 jsonRespuestaDE.json = jsonResPdf;
                 jsonRespuestaDE.nro_trans = Ccf_nro_trans;
                 guardarResJson.InsertarRespuestaJson(jsonRespuestaDE);//Inserta la respuesta obtenida del servicio rest en la tabla
                
                
-                    return true;
+                    return "";
                 
 
             }
             else
             {
-                return false;
+                return jsonRespuestaDE.error;
             }
             
         }
@@ -125,7 +125,76 @@ namespace CapaProceso.RestCliente
 
             return Modelowmspclogo;
         }
-       
+
+        public string enviarPDF(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        {
+            //Consultar usuario y contraseña
+            Modelowmspclogo = null;
+            Modelowmspclogo = BuscarUsuarioLogo(Ccf_cod_emp, Ccf_usuario);
+
+
+            //StreamReader sr = new StreamReader("F:\\factura.txt");
+            // string contenido = sr.ReadToEnd();
+            //string jsonRes = contenido;
+            //sr.Close();
+
+            //Proporcionar credenciales
+            string username = Modelowmspclogo.username;
+            string password = Modelowmspclogo.password;
+            string linkemidocuelec = Modelowmspclogo.linkemidocuelec;
+
+            string credentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes($"{username}:{password}"));
+            //Envia Pdf el pdf si es autorizado
+            //sr = new StreamReader("F:\\pdf.txt");
+            //contenido = sr.ReadToEnd();
+            string jsonResPdf = "";
+            //sr.Close();
+
+            string linkgenpdf = Modelowmspclogo.linkgenpdf;//Obtengo link para enviara pdf
+
+            PdfFacturaElectronica pdf = new PdfFacturaElectronica();
+            string pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);//Genero el pdf
+
+            byte[] pdfBytes = File.ReadAllBytes(pathPdf);
+            string pdfBase64 = Convert.ToBase64String(pdfBytes);//Convierto el pdf en base 64
+
+            //Consultar pdf, convertir a json
+            jsonResPdf = JsonConvert.SerializeObject(jsonFacturapdf.RespuestaJSONPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pdfBase64), Formatting.Indented);
+
+
+
+            JsonRespuestaDE jsonRespuestaDE = new JsonRespuestaDE();
+            //Envia el json armado para y obtiene la respuesta
+            jsonRespuestaDE = procesoRest.EnviarJSONDS(linkgenpdf, credentials, jsonResPdf);
+            /*Volver a preguntar si error es igul a nulo*/
+            Boolean respuesta = false;
+            if (jsonRespuestaDE.error.Trim() == null)
+            {
+                jsonRespuestaDE.error = "";
+                respuesta = false;
+            }
+            else
+            {
+                respuesta = true;
+            }
+           
+            jsonRespuestaDE.json = jsonResPdf;
+            jsonRespuestaDE.nro_trans = Ccf_nro_trans;
+            guardarResJson.InsertarRespuestaJson(jsonRespuestaDE);//Inserta la respuesta obtenida del servicio rest en la tabla
+
+            if (respuesta)
+            {
+                return jsonRespuestaDE.error;
+            }
+            else
+            {
+                return "";
+            }
+
+
+
+        }
+
 
     }
 }

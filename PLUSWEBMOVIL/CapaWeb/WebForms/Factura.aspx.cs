@@ -968,9 +968,9 @@ namespace CapaWeb.WebForms
              ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
 
              ConsumoRest consumoRest = new ConsumoRest();
-             bool respuesta = false;
+             string respuesta = "";
              respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTA", conscabcera.nro_trans);
-             if (respuesta)
+             if (respuesta == "")
              {
                  mensaje.Text = "Su factura fue procesada exitosamente";
                  Confirmar.Enabled = false;
@@ -981,7 +981,7 @@ namespace CapaWeb.WebForms
              else
              {
                  GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
-                 mensaje.Text = "Hubo un error al enviar, revice por favor el detalle de errores.";
+                 mensaje.Text = respuesta;
                  Response.Redirect("BuscarFacturas.aspx");
 
              }

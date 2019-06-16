@@ -73,9 +73,9 @@ namespace CapaWeb.WebForms
         protected void btn_reenviar_Click(object sender, EventArgs e)
         {
             ConsumoRest consumoRest = new ConsumoRest();
-            bool respuesta = false;
+            string respuesta = "";
             respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTA", lbl_nro_trans.Text);
-            if (respuesta)
+            if (respuesta == "")
             {
                 mensaje.Text = "Su factura fue enviada exitosamente";
                 btn_reenviar.Enabled = false;
@@ -85,7 +85,7 @@ namespace CapaWeb.WebForms
             }
             else
             {
-                mensaje.Text = "Hubo un error al enviar, revice por favor el detalle de errores.";
+                mensaje.Text = respuesta;
                
             }
         }
@@ -93,6 +93,26 @@ namespace CapaWeb.WebForms
         protected void btn_cancelar_Click(object sender, EventArgs e)
         {
             Response.Redirect("BuscarFacturas.aspx");
+        }
+
+        protected void btn_reenviarpdf_Click(object sender, EventArgs e)
+        {
+            ConsumoRest consumoRest = new ConsumoRest();
+            string respuesta = "";
+            respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", "VTA", lbl_nro_trans.Text);
+            if (respuesta == "")
+            {
+                mensaje.Text = "Su factura fue enviada exitosamente"; ;
+                btn_reenviar.Enabled = false;
+                ActualizarEstadoFact.ActualizarEstadoFactura(lbl_nro_trans.Text, "F");
+
+
+            }
+            else
+            {
+                mensaje.Text = respuesta;
+
+            }
         }
     }
 }

@@ -49,6 +49,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Button btn_reenviar;
         
         /// <summary>
+        /// Control btn_reenviarpdf.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_reenviarpdf;
+        
+        /// <summary>
         /// Control btn_cancelar.
         /// </summary>
         /// <remarks>

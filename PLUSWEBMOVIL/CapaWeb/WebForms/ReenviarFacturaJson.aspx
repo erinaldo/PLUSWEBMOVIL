@@ -43,7 +43,9 @@
                                 <td>
                                     <asp:Button ID="btn_reenviar" CssClass ="btnFactura1" runat="server" Text="Enviar" OnClick="btn_reenviar_Click" />
                                 </td>
-                                <td></td>
+                                <td>
+                                    <asp:Button ID="btn_reenviarpdf" CssClass ="btnFactura1" runat="server" Text="Enviar PDF" OnClick="btn_reenviarpdf_Click" />
+                                </td>
                                 <td align="right">
                                     <asp:Button ID="btn_cancelar" CssClass ="btnFactura1" runat="server" Text="Cancelar" OnClick="btn_cancelar_Click"  />
                                 </td>
