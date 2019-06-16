@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using RestSharp;
 using CapaProceso.Modelos;
 using CapaProceso.Consultas;
+using CapaDatos.Modelos;
 
 namespace CapaProceso.RestCliente
 {

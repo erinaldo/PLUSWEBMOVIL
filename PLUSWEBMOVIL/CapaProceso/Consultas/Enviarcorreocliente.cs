@@ -1,4 +1,5 @@
-﻿using CapaProceso.Modelos;
+﻿using CapaDatos.Modelos;
+using CapaProceso.Modelos;
 using System;
 using System.Collections.Generic;
 

@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Data;
+using CapaDatos.Modelos;
 
 namespace CapaDatos.Sql
 {
@@ -13,17 +14,35 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
 
-        public SqlDataReader ConsultaUsuarioEmpresa(string cod_emp)
+        public List<modeloUsuarioxempresa> ConsultaUsuarioEmpresa(string cod_emp)
         {
-            cn = conexion.genearConexion();
-            string consulta = "SELECT * FROM wm_userxemp WHERE cod_emp =@cod_emp";
-            SqlCommand conmand = new SqlCommand(consulta, cn);
+            using (cn = conexion.genearConexion())
+            {
+                List<modeloUsuarioxempresa> lista = new List<modeloUsuarioxempresa>();
 
-            conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                string consulta = "SELECT * FROM wm_userxemp WHERE cod_emp =@cod_emp";
+                SqlCommand conmand = new SqlCommand(consulta, cn);
 
-            SqlDataReader dr = conmand.ExecuteReader();
+                conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
 
-            return dr;
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    modeloUsuarioxempresa item = new modeloUsuarioxempresa();
+
+                    item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                    item.usuario = Convert.ToString(dr["usuario"]);
+                    item.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
+                    item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
+                    item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                    item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                    lista.Add(item);
+                }
+                return lista;
+            }
+            
+           
         }
     }
 }

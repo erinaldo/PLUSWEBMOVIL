@@ -1,4 +1,5 @@
-﻿using CapaProceso.Modelos;
+﻿using CapaDatos.Modelos;
+using CapaProceso.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,40 +13,55 @@ namespace CapaDatos.Sql
     {
             
         Conexion conexion = new Conexion();
-        public SqlConnection cn = null;
+        public SqlConnection cn = null;      
 
-        public SqlDataReader ConsultaEmpresa(string cod_emp, string tipo)
-        {
-            cn = conexion.genearConexion();
-
-            string consulta = "SELECT TOP 1  * FROM wmt_facturas_cab WHERE cod_emp = @cod_emp AND tipo = @tipo AND cod_docum = 'FV' AND estado = 'F' AND cod_docum = 'FV' AND serie_docum = 'S' AND nro_docum = '3948'";
-            SqlCommand conmand = new SqlCommand(consulta, cn);
-
-            conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
-            conmand.Parameters.Add("tipo", SqlDbType.VarChar).Value = tipo;
-
-
-            SqlDataReader dr = conmand.ExecuteReader();
-
-            return dr;
-
-        }
-
-        public SqlDataReader BuscarEmpresa(string Ven__usuario, string Ven__cod_emp)
+        public List<modelowmspcempresas> BuscarEmpresa(string Ven__usuario, string Ven__cod_emp)
         {
 
-            cn = conexion.genearConexion();
+            using (cn = conexion.genearConexion())
+            {
+                List<modelowmspcempresas> lista = new List<modelowmspcempresas>();
+                string consulta = ("wmspc_empresas");
+                SqlCommand conmand = new SqlCommand(consulta, cn);
 
-            string consulta = ("wmspc_empresas");
-            SqlCommand conmand = new SqlCommand(consulta, cn);
+                conmand.CommandType = CommandType.StoredProcedure;
+                conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = Ven__usuario;
+                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = Ven__cod_emp;
 
-            conmand.CommandType = CommandType.StoredProcedure;
-            conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = Ven__usuario;
-            conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = Ven__cod_emp;
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                while (dr.Read())
+                {
+
+                    modelowmspcempresas item = new modelowmspcempresas();
+                    item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                    item.nom_emp = Convert.ToString(dr["nom_emp"]);
+                    item.nro_dgi = Convert.ToString(dr["nro_dgi"]);
+                    item.nro_dgi1 = Convert.ToString(dr["nro_dgi1"]);
+                    item.nro_dgi2 = Convert.ToString(dr["nro_dgi2"]);
+                    item.dir_tit = Convert.ToString(dr["dir_tit"]);
+                    item.tel_tit = Convert.ToString(dr["tel_tit"]);
+                    item.fax_tit = Convert.ToString(dr["fax_tit"]);
+                    item.cod_pais = Convert.ToString(dr["cod_pais"]);
+                    item.nom_pais = Convert.ToString(dr["nom_pais"]);
+                    item.cod_provincia = Convert.ToString(dr["cod_provincia"]);
+                    item.nom_provincia = Convert.ToString(dr["nom_provincia"]);
+                    item.ciudad_tit = Convert.ToString(dr["ciudad_tit"]);
+                    item.nom_ciudad = Convert.ToString(dr["nom_ciudad"]);
+                    item.email_tit = Convert.ToString(dr["email_tit"]);
+                    item.dir_web = Convert.ToString(dr["dir_web"]);
+                    item.cod_tipo_emp_gan = Convert.ToString(dr["cod_tipo_emp_gan"]);
+                    item.nom_tipo_emp_gan = Convert.ToString(dr["nom_tipo_emp_gan"]);
+                    item.cod_tipo_emp_iva = Convert.ToString(dr["cod_tipo_emp_iva"]);
+                    item.nom_tipo_emp_iva = Convert.ToString(dr["nom_tipo_emp_iva"]);
+
+                    lista.Add(item);
+
+                }
+                return lista;
+            }
+
             
-            SqlDataReader dr = conmand.ExecuteReader();
-
-            return dr;
 
         }
 

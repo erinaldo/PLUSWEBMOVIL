@@ -1,4 +1,5 @@
-﻿using CapaDatos.Sql;
+﻿using CapaDatos.Modelos;
+using CapaDatos.Sql;
 using CapaProceso.Modelos;
 using System;
 using System.Collections.Generic;

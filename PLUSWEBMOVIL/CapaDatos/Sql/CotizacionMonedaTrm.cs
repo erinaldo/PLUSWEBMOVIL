@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CapaDatos.Modelos;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -12,47 +13,74 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
 
-        public SqlDataReader ListaMonedaTrm(string usuario, string cod_emp, string nro_trans)
+        public List<modelowmspctctrxCotizacion> ListaMonedaTrm(string usuario, string cod_emp, string nro_trans)
         {
             //Buscar cotizacion moneda trm
 
-            cn = conexion.genearConexion();
+            using (cn = conexion.genearConexion())
+            {
+                List<modelowmspctctrxCotizacion> lista = new List<modelowmspctctrxCotizacion>();
+                string consulta = ("wmspc_tctrx");
+                SqlCommand conmand = new SqlCommand(consulta, cn);
 
-            string consulta = ("wmspc_tctrx");
-            SqlCommand conmand = new SqlCommand(consulta, cn);
+                conmand.CommandType = CommandType.StoredProcedure;
+                conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
 
-            conmand.CommandType = CommandType.StoredProcedure;
-            conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
-            conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
-            conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                SqlDataReader dr = conmand.ExecuteReader();
 
-            SqlDataReader dr = conmand.ExecuteReader();
+                while (dr.Read())
+                {
 
-            return dr;
+                    modelowmspctctrxCotizacion item = new modelowmspctctrxCotizacion();
 
+                    item.tc_mov1c = Convert.ToString(dr["tc_mov1c"]);
+                    item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                    item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                    item.mone_mn = Convert.ToString(dr["mone_mn"]);
+                    item.mone_trad = Convert.ToString(dr["mone_trad"]);
+                    item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
+
+                    lista.Add(item);
+                }
+
+                return lista;
+            }
         }
 
         //tasa de la fecha actual
-        public SqlDataReader ActualMonedaTrm(string usuario, string cod_emp, string dia, string mes, string anio, string moneda)
+        public List<modelowmspctctrxCotizacion> ActualMonedaTrm(string usuario, string cod_emp, string dia, string mes, string anio, string moneda)
         {
             //Buscar cotizacion moneda trm
 
-            cn = conexion.genearConexion();
+            using (cn = conexion.genearConexion())
+            {
+                List<modelowmspctctrxCotizacion> lista = new List<modelowmspctctrxCotizacion>();
+                string consulta = ("wmspc_tcambio");
+                SqlCommand conmand = new SqlCommand(consulta, cn);
 
-            string consulta = ("wmspc_tcambio");
-            SqlCommand conmand = new SqlCommand(consulta, cn);
+                conmand.CommandType = CommandType.StoredProcedure;
+                conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                conmand.Parameters.Add("@dia", SqlDbType.VarChar).Value = dia;
+                conmand.Parameters.Add("@mes", SqlDbType.VarChar).Value = mes;
+                conmand.Parameters.Add("@anio", SqlDbType.VarChar).Value = anio;
+                conmand.Parameters.Add("@moneda", SqlDbType.VarChar).Value = moneda;
 
-            conmand.CommandType = CommandType.StoredProcedure;
-            conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
-            conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
-            conmand.Parameters.Add("@dia", SqlDbType.VarChar).Value = dia;
-            conmand.Parameters.Add("@mes", SqlDbType.VarChar).Value = mes;
-            conmand.Parameters.Add("@anio", SqlDbType.VarChar).Value = anio;
-            conmand.Parameters.Add("@moneda", SqlDbType.VarChar).Value = moneda;
+                SqlDataReader dr = conmand.ExecuteReader();
 
-            SqlDataReader dr = conmand.ExecuteReader();
+                while (dr.Read())
+                {
 
-            return dr;
+                    modelowmspctctrxCotizacion item = new modelowmspctctrxCotizacion();
+                    item.tc_mov = Convert.ToString(dr["tc_mov"]);
+                    item.tc_trad = Convert.ToString(dr["tc_trad"]);
+                    lista.Add(item);
+                }
+                return lista;
+            }           
+            
 
         }
 

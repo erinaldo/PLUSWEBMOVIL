@@ -1,4 +1,5 @@
-﻿using CapaProceso.Consultas;
+﻿using CapaDatos.Modelos;
+using CapaProceso.Consultas;
 using CapaProceso.Modelos;
 using Gma.QrCodeNet.Encoding;
 using Gma.QrCodeNet.Encoding.Windows.Render;

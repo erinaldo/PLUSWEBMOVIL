@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CapaProceso.Modelos
+namespace CapaDatos.Modelos
 {
   public   class modelowmtproformascab
     {

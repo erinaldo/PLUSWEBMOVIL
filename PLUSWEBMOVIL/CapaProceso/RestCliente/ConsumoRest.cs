@@ -13,6 +13,7 @@ using CapaProceso.Modelos;
 using CapaProceso.Consultas;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using CapaProceso.ReslClientePdf;
+using CapaDatos.Modelos;
 
 namespace CapaProceso.RestCliente
 {

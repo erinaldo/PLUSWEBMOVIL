@@ -4,7 +4,7 @@ using CapaProceso.Consultas;
 using CapaProceso.Modelos;
 using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
-
+using CapaDatos.Modelos;
 
 namespace CapaWeb.WebForms
 {

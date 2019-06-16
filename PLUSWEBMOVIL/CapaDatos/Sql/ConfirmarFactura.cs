@@ -1,4 +1,5 @@
-﻿using CapaProceso.Modelos;
+﻿using CapaDatos.Modelos;
+using CapaProceso.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -17,19 +18,21 @@ namespace CapaDatos.Sql
         {
             try
             {
-                cn = conexion.genearConexion();
+                using (cn = conexion.genearConexion())
+                {
+                    string insert = "INSERT INTO  wmt_facturas_ins  (nro_trans, cod_emp, usuario_mod, fecha_mod, nro_audit)VALUES( @nro_trans, @cod_emp, @usuario_mod, @fecha_mod, @nro_audit)";
 
-                string insert = "INSERT INTO  wmt_facturas_ins  (nro_trans, cod_emp, usuario_mod, fecha_mod, nro_audit)VALUES( @nro_trans, @cod_emp, @usuario_mod, @fecha_mod, @nro_audit)";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
 
-                SqlCommand conmand = new SqlCommand(insert, cn);
-
-                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = confirmarfactura.nro_trans;
-                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = confirmarfactura.cod_emp;
-                conmand.Parameters.Add("@usuario_mod", SqlDbType.VarChar).Value = confirmarfactura.usuario_mod;
-                conmand.Parameters.Add("@fecha_mod", SqlDbType.DateTime).Value = confirmarfactura.fecha_mod;
-                conmand.Parameters.Add("@nro_audit", SqlDbType.VarChar).Value = confirmarfactura.nro_audit;
-                int dr = conmand.ExecuteNonQuery();
-                return "Confirmación exitosa";
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = confirmarfactura.nro_trans;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = confirmarfactura.cod_emp;
+                    conmand.Parameters.Add("@usuario_mod", SqlDbType.VarChar).Value = confirmarfactura.usuario_mod;
+                    conmand.Parameters.Add("@fecha_mod", SqlDbType.DateTime).Value = confirmarfactura.fecha_mod;
+                    conmand.Parameters.Add("@nro_audit", SqlDbType.VarChar).Value = confirmarfactura.nro_audit;
+                    int dr = conmand.ExecuteNonQuery();
+                    return "Confirmación exitosa";
+                }               
+                
             }
             catch (Exception e)
             {

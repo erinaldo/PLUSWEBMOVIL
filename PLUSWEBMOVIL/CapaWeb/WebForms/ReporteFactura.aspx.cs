@@ -13,6 +13,7 @@ using System.Web.UI.WebControls;
 using CapaProceso.Consultas;
 using CapaProceso.Modelos;
 using CapaProceso.GenerarPDF.FacturaElectronica;
+using CapaDatos.Modelos;
 
 namespace CapaWeb.WebForms
 {

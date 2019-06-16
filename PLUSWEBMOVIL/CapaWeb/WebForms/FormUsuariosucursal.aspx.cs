@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
+using CapaDatos.Modelos;
 
 namespace CapaWeb.WebForms
 {

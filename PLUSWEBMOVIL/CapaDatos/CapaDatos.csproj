@@ -39,14 +39,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conexion\Conexion.cs" />
-    <Compile Include="Conexion\Modelos\JsonRespuestaDE.cs" />
-    <Compile Include="Conexion\Modelos\modelocabecerafactura.cs" />
-    <Compile Include="Conexion\Modelos\ModeloDetalleFactura.cs" />
-    <Compile Include="Conexion\Modelos\modeloinsertarconfirmar.cs" />
-    <Compile Include="Conexion\Modelos\modeloRemisionesFactura.cs" />
-    <Compile Include="Conexion\Modelos\modeloSucuralempresa.cs" />
-    <Compile Include="Conexion\Modelos\modeloUsuariosucursal.cs" />
-    <Compile Include="Conexion\Modelos\modelowmtproformascab.cs" />
+    <Compile Include="Modelos\JsonRespuestaDE.cs" />
+    <Compile Include="Modelos\modelocabecerafactura.cs" />
+    <Compile Include="Modelos\ModeloDetalleFactura.cs" />
+    <Compile Include="Modelos\modeloinsertarconfirmar.cs" />
+    <Compile Include="Modelos\modeloRemisionesFactura.cs" />
+    <Compile Include="Modelos\modeloSucuralempresa.cs" />
+    <Compile Include="Modelos\modeloUsuariosucursal.cs" />
+    <Compile Include="Modelos\modelowmtproformascab.cs" />
     <Compile Include="Modelos\modelobancos.cs" />
     <Compile Include="Modelos\modeloDetalleProforma.cs" />
     <Compile Include="Modelos\modeloDetalleRemision.cs" />
