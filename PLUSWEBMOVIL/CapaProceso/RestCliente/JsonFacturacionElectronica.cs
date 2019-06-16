@@ -232,7 +232,7 @@ namespace CapaProceso.RestCliente
             cliente = null;
             cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit);
 
-            tercero.apli1 = "";
+            tercero.apli1 = cliente.nom_tit;
             tercero.apl2 = "";
             tercero.comentarios = "";
             tercero.dv = cliente.nro_dgi1; //digito verificador

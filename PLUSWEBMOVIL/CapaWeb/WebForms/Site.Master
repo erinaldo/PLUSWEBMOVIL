@@ -60,7 +60,7 @@
                         <td class="Subtitulo1">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td><a href="Tablero_Control.asp">
+                                    <td><a href="<%Response.Write(Modelowmspclogo.sitio_app + "Tablero_Control.asp"); %>">
                                         <img src="../Tema/imagenes/application_search.png" alt="Tablero Control" width="32" height="32" border="0" /></a></td>
                                     <td><a href="<%Response.Write(Modelowmspclogo.sitio_app + "Tablero_Control.asp"); %>">TABLERO DE CONTROL</a></td>
                                 </tr>
@@ -70,7 +70,7 @@
                         <td class="Subtitulo1">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td><a href="MenuAdmin.asp">
+                                    <td><a href="<%Response.Write(Modelowmspclogo.sitio_app + "MenuAdmin.asp"); %>">
                                         <img src="../Tema/imagenes/lock.png" alt="Administracion" width="32" height="32" border="0" /></a></td>
                                     <td><a href="<%Response.Write(Modelowmspclogo.sitio_app + "MenuAdmin.asp"); %>">ADMINISTRACION</a></td>
                                 </tr>
@@ -79,7 +79,7 @@
                         <td class="Subtitulo1">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td><a href="Menu_Ppal.asp">
+                                    <td><a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>"">
                                         <img src="../Tema/imagenes/home.png" alt="Home" width="32" height="32" border="0" /></a></td>
                                     <td><a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">MENU PRINCIPAL</a></td>
                                 </tr>
@@ -88,7 +88,7 @@
                         <td class="Subtitulo1">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td><a href="Menu_Ppal.asp">
+                                    <td><a href="<%Response.Write(Modelowmspclogo.sitio_app + "Reg_MenuFacturasV.asp?MM_Logoutnow=1"); %>">
                                         <img src="../Tema/imagenes/block.png" alt="Log Off" width="32" height="32" border="0" /></a></td>
                                     <td><a href="<%Response.Write(Modelowmspclogo.sitio_app + "Reg_MenuFacturasV.asp?MM_Logoutnow=1"); %>">SALIR</a></td>
                                 </tr>

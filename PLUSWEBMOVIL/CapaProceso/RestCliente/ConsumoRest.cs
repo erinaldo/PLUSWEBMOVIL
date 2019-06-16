@@ -168,9 +168,8 @@ namespace CapaProceso.RestCliente
             jsonRespuestaDE = procesoRest.EnviarJSONDS(linkgenpdf, credentials, jsonResPdf);
             /*Volver a preguntar si error es igul a nulo*/
             Boolean respuesta = false;
-            if (jsonRespuestaDE.error.Trim() == null)
-            {
-                jsonRespuestaDE.error = "";
+            if (jsonRespuestaDE.error.Trim() == "")
+            {                
                 respuesta = false;
             }
             else
