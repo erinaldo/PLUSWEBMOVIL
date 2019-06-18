@@ -145,8 +145,8 @@
                                             </asp:TemplateColumn>
                                              <asp:TemplateColumn HeaderText="TOTAL">
                                                 <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="total" runat="server" class="textos" Text='<%#Eval("total") %>'></asp:Label>
+                                                    <span style="float: right;">
+                                                        <asp:Label ID="total" runat="server" class="textos" Text='<%#Eval("total", "{0:N}") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>

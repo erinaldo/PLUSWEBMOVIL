@@ -296,16 +296,6 @@ namespace CapaWeb.WebForms
             }
 
 
-           /* if (count > 1)
-            {
-
-                mensaje.Text = "No existe factura";
-
-
-            }
-            else
-            {*/
-
                 auditoria = conscabcera.nro_audit;
                 dniCliente.Text = conscabcera.nro_dgi2;
                 nombreCliente.Text = conscabcera.nom_tit;
@@ -321,12 +311,17 @@ namespace CapaWeb.WebForms
                 cod_costos.SelectedValue = conscabcera.cod_ccostos;
                 cmbCod_moneda.SelectedValue = conscabcera.cod_moneda;
                 cod_vendedor.SelectedValue = conscabcera.cod_vendedor;
-                txtSumaSubTo.Text = Convert.ToString(conscabcera.subtotal);
-                txtSumaTotal.Text = Convert.ToString(conscabcera.total);
-                txtSumaIva.Text = Convert.ToString(conscabcera.iva);
-                txtSumaDesc.Text = Convert.ToString(conscabcera.descuento);
+                //Formato totales
+                decimal formSubtot = Convert.ToDecimal(conscabcera.subtotal);
+                txtSumaSubTo.Text = String.Format("{0:N}", formSubtot).ToString();
+                decimal formTotal = Convert.ToDecimal(conscabcera.total);
+               txtSumaTotal.Text = String.Format("{0:N}", formTotal).ToString();
+               decimal formIva = Convert.ToDecimal(conscabcera.iva);
+                txtSumaIva.Text = String.Format("{0:N}", formIva).ToString();
+                decimal formDesc = Convert.ToDecimal(conscabcera.descuento);
+                txtSumaDesc.Text = String.Format("{0:N}", formDesc).ToString();
 
-                Session["sumaSubtotal"] = Convert.ToString(conscabcera.subtotal);
+            Session["sumaSubtotal"] = Convert.ToString(conscabcera.subtotal);
                 Session["sumaDescuento"] = Convert.ToString(conscabcera.descuento);
                 Session["sumaIva"] = Convert.ToString(conscabcera.iva);
                 Session["sumaTotal"] = Convert.ToString(conscabcera.total);
@@ -400,6 +395,7 @@ namespace CapaWeb.WebForms
 
         public void InsertarDetalle()
         {
+            //Insertar producto en la grilla calcular totales
             DateTime hoy = DateTime.Today;
             fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
             //Consultar tasa de cambio
@@ -468,8 +464,8 @@ namespace CapaWeb.WebForms
                         itemSuma.precio_unit = Math.Round(Convert.ToDecimal(precio.Text), 2);
 
 
-                        itemSuma.porc_iva = Math.Round(Convert.ToDecimal(iva.Text), 0);
-                        itemSuma.porc_descto = Math.Round(Convert.ToDecimal(porcdescto.Text), 0);
+                        itemSuma.porc_iva = Math.Round(Convert.ToDecimal(iva.Text), 2);
+                        itemSuma.porc_descto = Math.Round(Convert.ToDecimal(porcdescto.Text), 2);
                         itemSuma.subtotal = Math.Round((itemSuma.precio_unit * itemSuma.cantidad), 2);
                         itemSuma.poriva = itemSuma.porc_iva / 100;
 
@@ -477,7 +473,7 @@ namespace CapaWeb.WebForms
 
                         sumaSubtotal += itemSuma.subtotal;
                         Session["sumaSubtotal"] = sumaSubtotal.ToString();
-                        txtSumaSubTo.Text = sumaSubtotal.ToString();
+                        txtSumaSubTo.Text = String.Format("{0:N}", sumaSubtotal).ToString();
 
                         if (itemSuma.porc_descto == 0)
                         {
@@ -498,15 +494,15 @@ namespace CapaWeb.WebForms
 
                         sumaDescuento += itemSuma.detadescuento;
                         Session["sumaDescuento"] = sumaDescuento.ToString();
-                        txtSumaDesc.Text = sumaDescuento.ToString();
+                        txtSumaDesc.Text = String.Format("{0:N}", sumaDescuento).ToString();
 
                         sumaIva += itemSuma.detaiva;
                         Session["sumaIva"] = sumaIva.ToString();
-                        txtSumaIva.Text = sumaIva.ToString();
+                        txtSumaIva.Text = String.Format("{0:N}", sumaIva).ToString();
 
                         sumaTotal += itemSuma.total;
                         Session["sumaTotal"] = sumaTotal.ToString();
-                        txtSumaTotal.Text = sumaTotal.ToString();
+                        txtSumaTotal.Text = String.Format("{0:N}", sumaTotal).ToString();
 
                         /*Suma detalle*/
 
@@ -522,8 +518,8 @@ namespace CapaWeb.WebForms
                     item.cod_ccostos = cod_costos.SelectedValue;
                     item.cantidad = Convert.ToDecimal(cantidad.Text);
                     item.precio_unit = Math.Round(Convert.ToDecimal(precio.Text), 2);
-                    item.porc_iva = Math.Round(Convert.ToDecimal(iva.Text), 0);
-                    item.porc_descto = Math.Round(Convert.ToDecimal(porcdescto.Text), 0);
+                    item.porc_iva = Math.Round(Convert.ToDecimal(iva.Text), 2);
+                    item.porc_descto = Math.Round(Convert.ToDecimal(porcdescto.Text), 2);
                     item.subtotal = Math.Round(Convert.ToDecimal(precio.Text) * Convert.ToDecimal(cantidad.Text), 2);
                     item.poriva = item.porc_iva / 100;
 
@@ -534,20 +530,21 @@ namespace CapaWeb.WebForms
 
                     sumaSubtotal += item.subtotal;
                     Session["sumaSubtotal"] = sumaSubtotal.ToString();
-                    txtSumaSubTo.Text = sumaSubtotal.ToString();
+                    
+                    txtSumaSubTo.Text = String.Format("{0:N}", sumaSubtotal).ToString();
 
                     if (item.porc_descto == 0)
                     {
                         item.descuento = 0;
                         item.detadescuento = 0;
-                        item.detaiva = Math.Round(item.subtotal * item.poriva, 0);
-                        item.subdos = item.subtotal;
+                        item.detaiva = Math.Round(item.subtotal * item.poriva, 2);
+                        item.subdos = Math.Round(item.subtotal, 2);
                         item.total = Math.Round(item.subdos + item.detaiva, 2); //Suma total
                     }
                     else
                     {
                         item.descuento = item.porc_descto / 100;
-                        item.detadescuento = Math.Round(item.subtotal - item.descuento, 0);
+                        item.detadescuento = Math.Round(item.subtotal - item.descuento, 2);
                         item.detaiva = Math.Round(item.detadescuento * item.poriva, 2);
                         item.subdos = Math.Round(item.subtotal - item.descuento, 2);
                         item.total = Math.Round(item.subdos + item.detaiva, 2); //Suma total
@@ -559,7 +556,8 @@ namespace CapaWeb.WebForms
                     }
                     sumaIva += item.detaiva;
                     Session["sumaIva"] = sumaIva.ToString();
-                    txtSumaIva.Text = sumaIva.ToString();
+                    
+                    txtSumaIva.Text = String.Format("{0:N}", sumaIva).ToString();
 
                     if (Session["sumaDescuento"] != null)
                     {
@@ -568,7 +566,7 @@ namespace CapaWeb.WebForms
 
                     sumaDescuento += item.detadescuento;
                     Session["sumaDescuento"] = sumaDescuento.ToString();
-                    txtSumaDesc.Text = sumaDescuento.ToString();
+                    txtSumaDesc.Text = String.Format("{0:N}", sumaDescuento).ToString();
 
                     if (Session["sumaTotal"] != null)
                     {
@@ -577,7 +575,7 @@ namespace CapaWeb.WebForms
 
                     sumaTotal += item.total;
                     Session["sumaTotal"] = sumaTotal.ToString();
-                    txtSumaTotal.Text = sumaTotal.ToString();
+                    txtSumaTotal.Text = String.Format("{0:N}", sumaTotal).ToString();
                     item.cod_cta_cos = articulo.cod_cta_cos;
                     item.cod_cta_inve = articulo.cod_cta_inve;
                     item.cod_cta_vtas = articulo.cod_cta_vtas;
@@ -1045,7 +1043,7 @@ namespace CapaWeb.WebForms
 
                     sumaTotal -= Convert.ToDecimal(detalle.total);
                     Session["sumaTotal"] = sumaTotal.ToString();
-                    txtSumaTotal.Text = sumaTotal.ToString();
+                    txtSumaTotal.Text = String.Format("{0:N}", sumaTotal.ToString());
 
                     //Eliminar Subtotal
                     if (Session["sumaSubtotal"] != null)
@@ -1055,7 +1053,7 @@ namespace CapaWeb.WebForms
 
                     sumaSubtotal -= Convert.ToDecimal(detalle.subtotal);
                     Session["sumaSubtotal"] = sumaSubtotal.ToString();
-                    txtSumaSubTo.Text = sumaSubtotal.ToString();
+                    txtSumaSubTo.Text = String.Format("{0:N}", sumaSubtotal.ToString());
                     //Eliminar Descuento
                     if (Session["sumaDescuento"] != null)
                     {
@@ -1063,7 +1061,7 @@ namespace CapaWeb.WebForms
                     }
                     sumaDescuento -= Convert.ToDecimal(detalle.detadescuento);
                     Session["sumaDescuento"] = sumaDescuento.ToString();
-                    txtSumaDesc.Text = sumaDescuento.ToString();
+                    txtSumaDesc.Text = String.Format("{0:N}", sumaDescuento.ToString());
                     //Eliminar Iva
                     if (Session["sumaIva"] != null)
                     {
@@ -1071,7 +1069,7 @@ namespace CapaWeb.WebForms
                     }
                     sumaIva -= Convert.ToDecimal(detalle.detaiva);
                     Session["sumaIva"] = sumaIva.ToString();
-                    txtSumaIva.Text = sumaIva.ToString();
+                    txtSumaIva.Text = String.Format("{0:N}", sumaIva.ToString());
 
 
 
@@ -1167,7 +1165,7 @@ namespace CapaWeb.WebForms
 
                         sumaSubtotal += itemSuma.subtotal;
                         Session["sumaSubtotal"] = sumaSubtotal.ToString();
-                        txtSumaSubTo.Text = sumaSubtotal.ToString();
+                        txtSumaSubTo.Text = String.Format("{0:N}", sumaSubtotal).ToString();
 
                         if (itemSuma.porc_descto == 0)
                         {
@@ -1188,15 +1186,15 @@ namespace CapaWeb.WebForms
 
                         sumaDescuento += itemSuma.detadescuento;
                         Session["sumaDescuento"] = sumaDescuento.ToString();
-                        txtSumaDesc.Text = sumaDescuento.ToString();
+                        txtSumaDesc.Text = String.Format("{0:N}", sumaDescuento).ToString();
 
                         sumaIva += itemSuma.detaiva;
                         Session["sumaIva"] = sumaIva.ToString();
-                        txtSumaIva.Text = sumaIva.ToString();
+                        txtSumaIva.Text = String.Format("{0:N}", sumaIva).ToString();
 
                         sumaTotal += itemSuma.total;
                         Session["sumaTotal"] = sumaTotal.ToString();
-                        txtSumaTotal.Text = sumaTotal.ToString();
+                        txtSumaTotal.Text = String.Format("{0:N}", sumaTotal).ToString();
 
                         /*Suma detalle*/
 
@@ -1225,7 +1223,7 @@ namespace CapaWeb.WebForms
 
                     sumaSubtotal += item.subtotal;
                     Session["sumaSubtotal"] = sumaSubtotal.ToString();
-                    txtSumaSubTo.Text = sumaSubtotal.ToString();
+                    txtSumaSubTo.Text = String.Format("{0:N}", sumaSubtotal).ToString();
 
                     if (item.porc_descto == 0)
                     {
@@ -1250,7 +1248,7 @@ namespace CapaWeb.WebForms
                     }
                     sumaIva += item.detaiva;
                     Session["sumaIva"] = sumaIva.ToString();
-                    txtSumaIva.Text = sumaIva.ToString();
+                    txtSumaIva.Text = String.Format("{0:N}", sumaIva).ToString();
 
                     if (Session["sumaDescuento"] != null)
                     {
@@ -1259,7 +1257,7 @@ namespace CapaWeb.WebForms
 
                     sumaDescuento += item.detadescuento;
                     Session["sumaDescuento"] = sumaDescuento.ToString();
-                    txtSumaDesc.Text = sumaDescuento.ToString();
+                    txtSumaDesc.Text = String.Format("{0:N}", sumaDescuento).ToString();
 
                     if (Session["sumaTotal"] != null)
                     {
@@ -1267,7 +1265,7 @@ namespace CapaWeb.WebForms
                     }
 
                     sumaTotal += item.total;
-                    Session["sumaTotal"] = sumaTotal.ToString();
+                    Session["sumaTotal"] = String.Format("{0:N}", sumaTotal).ToString();
                     txtSumaTotal.Text = sumaTotal.ToString();
                     item.cod_cta_cos = articulo.cod_cta_cos;
                     item.cod_cta_inve = articulo.cod_cta_inve;
@@ -1409,7 +1407,7 @@ namespace CapaWeb.WebForms
 
                             sumaSubtotal += itemSuma.subtotal;
                             Session["sumaSubtotal"] = sumaSubtotal.ToString();
-                            txtSumaSubTo.Text = sumaSubtotal.ToString();
+                            txtSumaSubTo.Text = String.Format("{0:N}", sumaSubtotal).ToString();
 
                             if (itemSuma.porc_descto == 0)
                             {
@@ -1430,15 +1428,15 @@ namespace CapaWeb.WebForms
 
                             sumaDescuento += itemSuma.detadescuento;
                             Session["sumaDescuento"] = sumaDescuento.ToString();
-                            txtSumaDesc.Text = sumaDescuento.ToString();
+                            txtSumaDesc.Text = String.Format("{0:N}", sumaDescuento).ToString();
 
                             sumaIva += itemSuma.detaiva;
                             Session["sumaIva"] = sumaIva.ToString();
-                            txtSumaIva.Text = sumaIva.ToString();
+                            txtSumaIva.Text = String.Format("{0:N}", sumaIva).ToString();
 
                             sumaTotal += itemSuma.total;
                             Session["sumaTotal"] = sumaTotal.ToString();
-                            txtSumaTotal.Text = sumaTotal.ToString();
+                            txtSumaTotal.Text = String.Format("{0:N}", sumaTotal).ToString();
 
                             /*Suma detalle*/
 
@@ -1467,7 +1465,7 @@ namespace CapaWeb.WebForms
 
                         sumaSubtotal += item.subtotal;
                         Session["sumaSubtotal"] = sumaSubtotal.ToString();
-                        txtSumaSubTo.Text = sumaSubtotal.ToString();
+                        txtSumaSubTo.Text = String.Format("{0:N}", sumaSubtotal).ToString();
 
                         if (item.porc_descto == 0)
                         {
@@ -1492,7 +1490,7 @@ namespace CapaWeb.WebForms
                         }
                         sumaIva += item.detaiva;
                         Session["sumaIva"] = sumaIva.ToString();
-                        txtSumaIva.Text = sumaIva.ToString();
+                        txtSumaIva.Text = String.Format("{0:N}", sumaIva).ToString();
 
                         if (Session["sumaDescuento"] != null)
                         {
@@ -1501,7 +1499,7 @@ namespace CapaWeb.WebForms
 
                         sumaDescuento += item.detadescuento;
                         Session["sumaDescuento"] = sumaDescuento.ToString();
-                        txtSumaDesc.Text = sumaDescuento.ToString();
+                        txtSumaDesc.Text = String.Format("{0:N}", sumaDescuento).ToString();
 
                         if (Session["sumaTotal"] != null)
                         {
@@ -1509,7 +1507,7 @@ namespace CapaWeb.WebForms
                         }
 
                         sumaTotal += item.total;
-                        Session["sumaTotal"] = sumaTotal.ToString();
+                        Session["sumaTotal"] = String.Format("{0:N}", sumaTotal).ToString();
                         txtSumaTotal.Text = sumaTotal.ToString();
                         item.cod_cta_cos = articulo.cod_cta_cos;
                         item.cod_cta_inve = articulo.cod_cta_inve;

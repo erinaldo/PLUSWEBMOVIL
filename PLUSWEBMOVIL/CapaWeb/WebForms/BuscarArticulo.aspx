@@ -19,22 +19,26 @@
 
 
                        </div>
-        </br>
-        </br>
-                    <div >
+         <tr>
+                    <td>
+
+                        <hr />
+                    </td>
+                </tr>
+                    <div>
                             <table border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#0E748A">
                                 <tr>
                                     <td>
 
-                                        <asp:GridView ID="gvProducto"  runat="server" AutoGenerateColumns="False"
+                                             <asp:GridView ID="gvProducto"  runat="server" AutoGenerateColumns="False"
                                         CellPadding="4" BackColor="#DD6D29" DataKeyNames="cod_articulo"
                                          OnPageIndexChanging="gvProducto_PageIndexChanging" AllowPaging="true" OnSelectedIndexChanged="gvProducto_SelectedIndexChanged">
                                         <RowStyle BackColor="#EFF3FB" />
                                             <Columns>
-                                                <asp:BoundField  DataField="cod_articulo" HeaderText="Código" />
-                                                <asp:BoundField  DataField="nom_articulo" HeaderText="Descripción" />
+                                                <asp:BoundField  DataField="cod_articulo"  HeaderText="Código" />
+                                                <asp:BoundField  DataField="nom_articulo"  HeaderText="Descripción" />
                                                 <asp:BoundField  DataField="porc_impuesto" HeaderText="% IVA" />
-                                                <asp:BoundField  DataField="precio_total" HeaderText="P.V.P" />
+                                                <asp:BoundField  DataField="precio_total"  HeaderText="P.V.P" />
                                                 <asp:ButtonField ButtonType="Button"  ControlStyle-CssClass="botones" CommandName="Select" HeaderText="Seleccionar" ShowHeader="True" Text="Seleccionar" />
                                             </Columns>
                                               <FooterStyle BackColor="#CC0066" Font-Bold="True" ForeColor="White" />
@@ -46,13 +50,14 @@
 
                                         </asp:GridView> 
 
-
                                     </td>
                                 </tr>
                             </table>
 
     
     </div>
+     
+      </table>
     </form>
 </body>
 </html>
