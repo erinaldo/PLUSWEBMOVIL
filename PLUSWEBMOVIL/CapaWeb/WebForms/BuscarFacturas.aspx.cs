@@ -12,18 +12,22 @@ namespace CapaWeb.WebForms
     public partial class BuscarFacturas : System.Web.UI.Page
     {
         Consultaestadosfactura Consultaestados = new Consultaestadosfactura();
-        Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
-
-             
+        
+        public ConsultaRolesFactura ConsultaRoles = new ConsultaRolesFactura();
+        public modeloRolesFacturacion ModeloRoles = new modeloRolesFacturacion();
+        public List<modeloRolesFacturacion> ListaModelosRoles = null;
 
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
 
+        List<modelowmtfacturascab> listaConsCab = null;
         modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+        Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
 
         ConsumoRest consumoRest = new ConsumoRest();
-        List<modelowmtfacturascab> listaConsCab = null;
+        
+        
         List<modeloestadosfactura> Listaestados = null;
         EnviarCorreo correo = new EnviarCorreo();
         Consultawmsptitulares ConsultaTitulares = new Consultawmsptitulares();
@@ -68,6 +72,11 @@ namespace CapaWeb.WebForms
                 fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 fechafin.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 CargarGrillaInicial();
+                ModeloRoles = BuscarRolNuevo(AmUsrLog);
+                if(ModeloRoles.cod_rol != null)
+                {
+                    NuevaFactura.Visible = true;
+                }
             }
         }
 
@@ -305,5 +314,22 @@ namespace CapaWeb.WebForms
             }
             return conscabcera;
         }
+
+        public modeloRolesFacturacion BuscarRolNuevo(string usuario)
+        {
+            ListaModelosRoles = ConsultaRoles.BuscarRolNuevo(usuario);
+           
+            int count = 0;
+            ModeloRoles = null;
+            foreach (modeloRolesFacturacion item in ListaModelosRoles)
+            {
+                count++;
+                ModeloRoles = item;
+
+            }
+            return ModeloRoles;
+        }
+
+
     }
 }

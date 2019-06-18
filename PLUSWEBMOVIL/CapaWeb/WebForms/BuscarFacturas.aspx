@@ -18,7 +18,7 @@
                 <tr>
                     <td>
                         <p class="Subtitulo2">Para realizar una nueva factura 
-                                <asp:Button ID="NuevaFactura" OnClick="NuevaFactura_Click" class="botones" runat="server" Text="AQUI" />
+                                <asp:Button ID="NuevaFactura" OnClick="NuevaFactura_Click" Visible="false" class="botones" runat="server" Text="AQUI" />
                           </p>
                         </td>
                     </tr>
