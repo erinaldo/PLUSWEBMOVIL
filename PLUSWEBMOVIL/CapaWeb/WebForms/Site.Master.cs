@@ -12,6 +12,9 @@ namespace CapaWeb.WebForms
 {
     public partial class Site : System.Web.UI.MasterPage
     {
+        public ConsultaRolesFactura ConsultaRoles = new ConsultaRolesFactura();
+        public modeloRolesFacturacion ModeloRoles = new modeloRolesFacturacion();
+        public List<modeloRolesFacturacion> ListaModelosRoles = null;
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
@@ -52,6 +55,37 @@ namespace CapaWeb.WebForms
                 AmUsrLog = Request.Cookies["AmUsrLog"].Value;
 
             }
+        }
+
+        public void RolesUsuario()
+        {
+            //Rol Cargar tablero
+            ListaModelosRoles = ConsultaRoles.BuscarCargarTablero(AmUsrLog);
+            int count = 0;
+            foreach (var item in ListaModelosRoles)
+            {
+                count++;
+
+            }
+
+            if (count > 0)
+            {
+                tbl_tablero.Visible = true;
+            }
+            //Rol cargar admin otro tipo
+        /* ListaModelosRoles = ConsultaRoles.BuscarCargarAdmin(AmUsrLog);
+            int count1 = 0;
+            foreach (var item in ListaModelosRoles)
+            {
+                count1++;
+
+            }
+
+            if (count1 > 0)
+            {
+                tbl_admin.Visible = true;
+            }*/
+
         }
         }
 }

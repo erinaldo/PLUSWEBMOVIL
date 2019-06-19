@@ -11,8 +11,16 @@ namespace CapaWeb.WebForms
 {
     public partial class Factura : System.Web.UI.Page
     {
-        
-        
+
+        public ConsultaCodProceso ConsultaCodProceso = new ConsultaCodProceso();
+        public modeloCodProcesoFactura ModeloCodProceso = new modeloCodProcesoFactura();
+        public List<modeloCodProcesoFactura> ListaModeloCodProceso = null;
+
+        public ConsultaRolModPrecio ConsultaRolMod = new ConsultaRolModPrecio();
+        public modeloRolModificarPrecio ModeloRolMod = new modeloRolModificarPrecio();
+        public List<modeloRolModificarPrecio> ListaRolMod = null;
+
+
         Consultawmspccostos ConsultaCCostos = new Consultawmspccostos();
         List<modelowmspcccostos> listaCostos = null;
 
@@ -188,6 +196,11 @@ namespace CapaWeb.WebForms
                         fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
                         //Consultar tasa de cambio
                         ConsultarTasaCambioCanorus();
+                        ModeloRolMod = BuscarRolModificar( AmUsrLog, ComPwm, "VTA", "NA", "N");
+                        if (ModeloRolMod.control_uso == "readonly=\"readonly\"")
+                        {
+                            precio.Enabled = false;
+                        }
                         break;
 
                     case "UDP":
@@ -1567,6 +1580,44 @@ namespace CapaWeb.WebForms
 
               
             }
+        }
+
+        public modeloCodProcesoFactura BuscarCodProceso(string cod_proceso)
+        {
+            ListaModeloCodProceso = ConsultaCodProceso.DatosCodProceso(cod_proceso);
+
+            int count = 0;
+            ModeloCodProceso = null;
+            foreach (modeloCodProcesoFactura item in ListaModeloCodProceso)
+            {
+                count++;
+                ModeloCodProceso = item;
+
+            }
+            return ModeloCodProceso;
+        }
+
+        public modeloRolModificarPrecio BuscarRolModificar(string usuario, string cod_emp, string tipo, string campo, string accion)
+        {
+            ListaRolMod = ConsultaRolMod.BuscartaRolModificar(usuario, cod_emp, tipo, campo, accion);
+
+            int count = 0;
+            ModeloRolMod = null;
+            foreach (modeloRolModificarPrecio item in ListaRolMod)
+            {
+                count++;
+                ModeloRolMod = item;
+
+            }
+            
+            return ModeloRolMod;
+        }
+        protected void ImgAyuda_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            //Enviar codigo de porceso = nombre del proceso
+            //rEcibir de cookie
+            ModeloCodProceso = BuscarCodProceso(AmUsrLog);
+            Response.Redirect("Ayuda.asp");
         }
     }
 }

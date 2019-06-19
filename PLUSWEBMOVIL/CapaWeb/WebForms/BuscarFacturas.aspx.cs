@@ -76,28 +76,80 @@ namespace CapaWeb.WebForms
                 fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 fechafin.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 CargarGrillaInicial();
-
-                ModeloRoles = BuscarRolNuevo(AmUsrLog);
-                if(ModeloRoles.cod_rol != null)
-                {
-                    NuevaFactura.Visible = true;
-                }
-                ModeloRoles = BuscarAccesoFactura(AmUsrLog);
-                if (ModeloRoles.cod_rol == null)
-                {
-                    txtAcceso.Visible = true;
-                }
-
-                ModeloRoles = BuscarRolEditar(AmUsrLog);
-
-                if (ModeloRoles.cod_rol == null)
-                {
-                    Grid.Columns[6].Visible = false;
-                }
+                CargarRolesUsuario();
                
             }
         }
 
+        private void CargarRolesUsuario()
+        {
+            //Rol crear factura nueva
+            ListaModelosRoles = ConsultaRoles.BuscarRolNuevo(AmUsrLog);
+            int count1 = 0;
+            foreach (var item in ListaModelosRoles)
+            {
+                count1++;
+
+            }
+ 
+            if (count1 >0)
+            {
+                NuevaFactura.Visible = true;
+            }
+            //Rol acceso a la pantalla de Buscar facturas
+            ListaModelosRoles = ConsultaRoles.BuscarAccesoFactura(AmUsrLog);
+            int count2 = 0;
+            foreach (var item in ListaModelosRoles)
+            {
+                count2++;
+            }
+
+            if (count2 == 0)
+            {
+                txtAcceso.Visible = true;
+            }
+
+            //Rol editar factura
+            ListaModelosRoles = ConsultaRoles.BuscarRolEditar(AmUsrLog);
+            int count3 = 0;
+            foreach (var item in ListaModelosRoles)
+            {
+                count3++;
+            }
+
+            if (count3 == 0)
+            {
+                Grid.Columns[6].Visible = false;
+            }
+
+            //Rol eliminar factura
+            ListaModelosRoles = ConsultaRoles.BuscarRolEditar(AmUsrLog);
+            int count4 = 0;
+            foreach (var item in ListaModelosRoles)
+            {
+                count4++;
+            }
+
+            if (count4 == 0)
+            {
+                Grid.Columns[7].Visible = false;
+            }
+
+            //Rol imprimir factura
+            ListaModelosRoles = ConsultaRoles.BuscarRolEditar(AmUsrLog);
+            int count5 = 0;
+            foreach (var item in ListaModelosRoles)
+            {
+                count5++;
+            }
+
+            if (count5 == 0)
+            {
+                Grid.Columns[8].Visible = false;
+            }
+           
+
+        }
         private void CargarGrillaInicial()
         {
             DateTime Fechainicio = DateTime.Today;

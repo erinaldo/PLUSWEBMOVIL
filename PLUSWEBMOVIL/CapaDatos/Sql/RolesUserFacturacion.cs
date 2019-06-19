@@ -15,6 +15,32 @@ namespace CapaDatos.Sql
         public SqlConnection cn = null;
         modeloRolesFacturacion modelorol = new modeloRolesFacturacion();
 
+        //Cargar administracion
+        public List<modeloRolesFacturacion> RespuestaRolAdministracion(string usuario)
+        {
+
+            using (cn = conexion.genearConexion())
+            {
+                List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
+                string consulta = ("SELECT * FROM dbo.wmc_menu_ppal WHERE usuario= @usuario AND menu='A'");
+                SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                while (dr.Read())
+                {
+
+                    modeloRolesFacturacion item = new modeloRolesFacturacion();
+                    item.cod_rol = Convert.ToString("cod_rol");
+
+                    lista.Add(item);
+                }
+                return lista;
+            }
+        }
+
         //Cargar tablero
         public List<modeloRolesFacturacion> RespuestaRolTablero(string usuario)
         {

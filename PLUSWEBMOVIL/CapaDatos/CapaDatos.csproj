@@ -46,6 +46,7 @@
     <Compile Include="Modelos\modeloinsertarconfirmar.cs" />
     <Compile Include="Modelos\modeloRemisionesFactura.cs" />
     <Compile Include="Modelos\modeloRolesFacturacion.cs" />
+    <Compile Include="Modelos\modeloRolModificarPrecio.cs" />
     <Compile Include="Modelos\modeloSucuralempresa.cs" />
     <Compile Include="Modelos\modeloUsuariosucursal.cs" />
     <Compile Include="Modelos\modelowmtproformascab.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Sql\Fpagos.cs" />
     <Compile Include="Sql\FPagosPos.cs" />
     <Compile Include="Sql\ImpuestosRest.cs" />
+    <Compile Include="Sql\ModificarPrecioFactura.cs" />
     <Compile Include="Sql\Numeradores.cs" />
     <Compile Include="Sql\ParametroComercial.cs" />
     <Compile Include="Sql\RemisionesFactura.cs" />
