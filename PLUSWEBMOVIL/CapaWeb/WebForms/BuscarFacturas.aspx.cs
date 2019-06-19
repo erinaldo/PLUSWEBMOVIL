@@ -76,6 +76,7 @@ namespace CapaWeb.WebForms
                 fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 fechafin.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 CargarGrillaInicial();
+
                 ModeloRoles = BuscarRolNuevo(AmUsrLog);
                 if(ModeloRoles.cod_rol != null)
                 {
@@ -86,6 +87,14 @@ namespace CapaWeb.WebForms
                 {
                     txtAcceso.Visible = true;
                 }
+
+                ModeloRoles = BuscarRolEditar(AmUsrLog);
+
+                if (ModeloRoles.cod_rol == null)
+                {
+                    Grid.Columns[6].Visible = false;
+                }
+               
             }
         }
 

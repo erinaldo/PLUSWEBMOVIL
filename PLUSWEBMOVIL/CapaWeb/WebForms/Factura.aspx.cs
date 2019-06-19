@@ -160,6 +160,9 @@ namespace CapaWeb.WebForms
 
 
             }
+
+            ConsultarTasaCambioCanorus();
+
             if (!IsPostBack)
             {
                 Session.Remove("listaProducto");
@@ -206,7 +209,7 @@ namespace CapaWeb.WebForms
                         break;
                 }
 
-
+                
 
 
             }
@@ -220,11 +223,8 @@ namespace CapaWeb.WebForms
             string mes = string.Format("{0:00}", hoy.Month);
             string anio = hoy.Year.ToString();
             ModeloCotizacion = BuscarCotizacion(AmUsrLog, ComPwm, dia, mes, anio, "USD");
-            if (ModeloCotizacion != null)
-            {
-            }
-            else
-            {
+            if (ModeloCotizacion.tc_mov == null)
+            {            
                 lbl_trx.Text = " No existe Tipo de Cambio registrado para la fecha de la factura. Por favor registrar la tasa del dia y actualizar la pagina";
                 lbl_trx.Visible = true;
                 BloquearFactura();
