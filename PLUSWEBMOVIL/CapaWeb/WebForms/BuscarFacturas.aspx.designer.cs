@@ -22,6 +22,24 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// Control ImgAyuda.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgAyuda;
+        
+        /// <summary>
+        /// Control lblAyuda.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAyuda;
+        
+        /// <summary>
         /// Control NuevaFactura.
         /// </summary>
         /// <remarks>
@@ -29,6 +47,15 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button NuevaFactura;
+        
+        /// <summary>
+        /// Control txtAcceso.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label txtAcceso;
         
         /// <summary>
         /// Control txtCliente.

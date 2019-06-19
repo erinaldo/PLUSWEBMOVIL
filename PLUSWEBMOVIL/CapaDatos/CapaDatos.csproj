@@ -41,6 +41,7 @@
     <Compile Include="Conexion\Conexion.cs" />
     <Compile Include="Modelos\JsonRespuestaDE.cs" />
     <Compile Include="Modelos\modelocabecerafactura.cs" />
+    <Compile Include="Modelos\modeloCodProcesoFactura.cs" />
     <Compile Include="Modelos\ModeloDetalleFactura.cs" />
     <Compile Include="Modelos\modeloinsertarconfirmar.cs" />
     <Compile Include="Modelos\modeloRemisionesFactura.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Sql\Articulos.cs" />
     <Compile Include="Sql\CCostos.cs" />
     <Compile Include="Sql\CMonedas.cs" />
+    <Compile Include="Sql\CodProcesoFactura.cs" />
     <Compile Include="Sql\ConfirmarFactura.cs" />
     <Compile Include="Sql\ConsultaLogoSql.cs" />
     <Compile Include="Sql\ConsultaProformas.cs" />

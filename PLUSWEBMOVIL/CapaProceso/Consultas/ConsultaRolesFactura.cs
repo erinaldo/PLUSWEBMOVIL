@@ -13,6 +13,22 @@ namespace CapaProceso.Consultas
     {
         
         RolesUserFacturacion consultaRolesFacturacion = new RolesUserFacturacion();
+
+        //Rol consulta cargar opciones tablero
+        public List<modeloRolesFacturacion> BuscarCargarTablero(string usuario)
+        {
+            List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
+            lista = consultaRolesFacturacion.RespuestaRolTablero(usuario);
+            return lista;
+        }
+        //Rol consulta opcion facturacion general
+        public List<modeloRolesFacturacion> BuscarAccesoFactura(string usuario)
+        {
+            List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
+            lista = consultaRolesFacturacion.RespuestaAccesoFacturacion(usuario);
+            return lista;
+        }
+
         //Rol nuevo
         public List<modeloRolesFacturacion> BuscarRolNuevo(string usuario)
         {

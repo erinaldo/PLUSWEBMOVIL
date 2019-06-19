@@ -14,9 +14,34 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
         modeloRolesFacturacion modelorol = new modeloRolesFacturacion();
-       
 
-         //Consulta prar crear una imprimir factura
+        //Cargar tablero
+        public List<modeloRolesFacturacion> RespuestaRolTablero(string usuario)
+        {
+
+            using (cn = conexion.genearConexion())
+            {
+                List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
+                string consulta = ("SELECT cod_rol FROM dbo.wm_userroles WHERE usuario = @usuario AND cod_rol IN ('401','402')");
+                SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                while (dr.Read())
+                {
+
+                    modeloRolesFacturacion item = new modeloRolesFacturacion();
+                    item.cod_rol = Convert.ToString("cod_rol");
+
+                    lista.Add(item);
+                }
+                return lista;
+            }
+        }
+
+        //Consulta prar crear una imprimir factura
         public List<modeloRolesFacturacion> RespuestaRolPrint(string usuario)
         {
 
@@ -41,6 +66,33 @@ namespace CapaDatos.Sql
                 return lista;
             }
         }
+
+        //Consulta acceso rol para visualizar buscar factura una nueva factura
+        public List<modeloRolesFacturacion> RespuestaAccesoFacturacion(string usuario)
+        {
+
+            using (cn = conexion.genearConexion())
+            {
+                List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
+                string consulta = ("SELECT cod_rol FROM dbo.wm_userroles WHERE usuario = 'desarrollo' AND cod_rol IN ('30','31','312','3121','31211','31212','31213','31214','31215','31219')");
+                SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                while (dr.Read())
+                {
+
+                    modeloRolesFacturacion item = new modeloRolesFacturacion();
+                    item.cod_rol = Convert.ToString("cod_rol");
+
+                    lista.Add(item);
+                }
+                return lista;
+            }
+        }
+
         //Consulta prar crear una nueva factura
         public List<modeloRolesFacturacion> RespuestaRolNuevo(string usuario)
         {

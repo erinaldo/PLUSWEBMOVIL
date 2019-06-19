@@ -17,6 +17,10 @@ namespace CapaWeb.WebForms
         public modeloRolesFacturacion ModeloRoles = new modeloRolesFacturacion();
         public List<modeloRolesFacturacion> ListaModelosRoles = null;
 
+        public ConsultaCodProceso ConsultaCodProceso = new ConsultaCodProceso();
+        public modeloCodProcesoFactura ModeloCodProceso = new modeloCodProcesoFactura();
+        public List<modeloCodProcesoFactura> ListaModeloCodProceso = null;
+
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
@@ -77,6 +81,11 @@ namespace CapaWeb.WebForms
                 {
                     NuevaFactura.Visible = true;
                 }
+                ModeloRoles = BuscarAccesoFactura(AmUsrLog);
+                if (ModeloRoles.cod_rol == null)
+                {
+                    txtAcceso.Visible = true;
+                }
             }
         }
 
@@ -94,6 +103,7 @@ namespace CapaWeb.WebForms
 
 
             listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+            
             Grid.DataSource = listaConsCab;
             Grid.DataBind();
             Grid.Height = 100;
@@ -330,6 +340,99 @@ namespace CapaWeb.WebForms
             return ModeloRoles;
         }
 
+        public modeloRolesFacturacion BuscarRolEditar(string usuario)
+        {
+            ListaModelosRoles = ConsultaRoles.BuscarRolEditar(usuario);
 
+            int count = 0;
+            ModeloRoles = null;
+            foreach (modeloRolesFacturacion item in ListaModelosRoles)
+            {
+                count++;
+                ModeloRoles = item;
+
+            }
+            return ModeloRoles;
+        }
+
+        public modeloRolesFacturacion BuscarRolEliminar(string usuario)
+        {
+            ListaModelosRoles = ConsultaRoles.BuscarRolEditar(usuario);
+
+            int count = 0;
+            ModeloRoles = null;
+            foreach (modeloRolesFacturacion item in ListaModelosRoles)
+            {
+                count++;
+                ModeloRoles = item;
+
+            }
+            return ModeloRoles;
+        }
+
+        public modeloRolesFacturacion BuscarRolImprimir(string usuario)
+        {
+            ListaModelosRoles = ConsultaRoles.BuscarRolEditar(usuario);
+
+            int count = 0;
+            ModeloRoles = null;
+            foreach (modeloRolesFacturacion item in ListaModelosRoles)
+            {
+                count++;
+                ModeloRoles = item;
+
+            }
+            return ModeloRoles;
+        }
+        public modeloRolesFacturacion BuscarAccesoFactura(string usuario)
+        {
+            ListaModelosRoles = ConsultaRoles.BuscarAccesoFactura(usuario);
+
+            int count = 0;
+            ModeloRoles = null;
+            foreach (modeloRolesFacturacion item in ListaModelosRoles)
+            {
+                count++;
+                ModeloRoles = item;
+
+            }
+            return ModeloRoles;
+        }
+
+        public modeloCodProcesoFactura BuscarCodProceso(string cod_proceso)
+        {
+            ListaModeloCodProceso = ConsultaCodProceso.DatosCodProceso(cod_proceso);
+
+            int count = 0;
+            ModeloCodProceso = null;
+            foreach (modeloCodProcesoFactura item in ListaModeloCodProceso)
+            {
+                count++;
+                ModeloCodProceso = item;
+
+            }
+            return ModeloCodProceso;
+        }
+        public modeloRolesFacturacion BuscarCargarTablero(string usuario)
+        {
+            ListaModelosRoles = ConsultaRoles.BuscarCargarTablero(usuario);
+
+            int count = 0;
+            ModeloRoles = null;
+            foreach (modeloRolesFacturacion item in ListaModelosRoles)
+            {
+                count++;
+                ModeloRoles = item;
+
+            }
+            return ModeloRoles;
+        }
+        protected void ImgAyuda_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            //Enviar codigo de porceso = nombre del proceso
+            //rEcibir de cookie
+            ModeloCodProceso = BuscarCodProceso(AmUsrLog);
+            Response.Redirect("Ayuda.asp");
+        }
     }
 }

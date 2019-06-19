@@ -17,9 +17,24 @@
                     </tr>
                 <tr>
                     <td>
+                        <asp:ImageButton ID="ImgAyuda" onclick="ImgAyuda_Click" runat="server" src="../Tema/imagenes/help.png" width="16" height="16" />
+                        <asp:Label ID="lblAyuda" runat="server"  CssClass="Titulo" Text="Facturas de venta"></asp:Label>
+                        
+                        </td>
+                    </tr>
+                <tr>
+                    <td>
                         <p class="Subtitulo2">Para realizar una nueva factura 
                                 <asp:Button ID="NuevaFactura" OnClick="NuevaFactura_Click" Visible="false" class="botones" runat="server" Text="AQUI" />
                           </p>
+                        </td>
+                    </tr>
+                 
+                
+                 <tr>
+                    <td>
+                        <asp:Label ID="txtAcceso" runat="server" Visible="false" CssClass="Titulo" Text="El Usuario registrado no tiene permiso para ejecutar estos procesos"></asp:Label>
+                        
                         </td>
                     </tr>
                 <tr>
