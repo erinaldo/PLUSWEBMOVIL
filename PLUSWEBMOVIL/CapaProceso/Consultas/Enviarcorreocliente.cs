@@ -67,7 +67,7 @@ namespace CapaProceso.Consultas
 
         public Boolean EnviarCorreoCliente(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string pathPdf, string pathXml)
         {
-
+            
             //Consultamos los datos del cliente
             modelowmspctitulares cliente = new modelowmspctitulares();
             conscabcera = null;
@@ -99,7 +99,7 @@ namespace CapaProceso.Consultas
                     List<string> listaPath = new List<string>();// lista de archivos adjuntos
                     listaPath.Add(pathPdf);
                     listaPath.Add(pathXml);
-                    correo.enviarcorreo("Envio de  Factura Electronica", mensaje, email, listaPath);
+                   // correo.enviarcorreo("Envio de  Factura Electronica", mensaje, email, listaPath);
 
 
                     return true;
@@ -113,7 +113,7 @@ namespace CapaProceso.Consultas
                     List<string> listaPath = new List<string>();// lista de archivos adjuntos
                     listaPath.Add(pathPdf);
                     listaPath.Add(pathXml);
-                    correo.enviarcorreo("Envio de  Factura Electronica", mensaje, email, listaPath);
+                    //correo.enviarcorreo("Envio de  Factura Electronica", mensaje, email, listaPath);
                     return true;
 
 

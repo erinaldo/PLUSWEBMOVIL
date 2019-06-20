@@ -978,7 +978,7 @@ namespace CapaWeb.WebForms
 
              ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
 
-             ConsumoRest consumoRest = new ConsumoRest();
+             /*ConsumoRest consumoRest = new ConsumoRest();
              string respuesta = "";
              respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTA", conscabcera.nro_trans);
              if (respuesta == "")
@@ -995,7 +995,7 @@ namespace CapaWeb.WebForms
                  mensaje.Text = respuesta;
                  Response.Redirect("BuscarFacturas.aspx");
 
-             }
+             }*/
          }
 
          public void RecuperarCokie()
