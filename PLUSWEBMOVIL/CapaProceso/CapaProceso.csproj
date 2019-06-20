@@ -103,6 +103,7 @@
     <Compile Include="Consultas\ConsultaRemisionIns.cs" />
     <Compile Include="Consultas\ConsultaRolesFactura.cs" />
     <Compile Include="Consultas\ConsultaRolModPrecio.cs" />
+    <Compile Include="Consultas\ConsultasNC\ConsultaSaldosFacturas.cs" />
     <Compile Include="Consultas\ConsultaSucursalempresa.cs" />
     <Compile Include="Consultas\ConsultaUsuarioEmpresa.cs" />
     <Compile Include="Consultas\ConsultausuarioSucursal.cs" />

@@ -9,7 +9,7 @@ using CapaDatos.Modelos;
 
 namespace CapaWeb.WebForms
 {
-    public partial class BuscarFacturas : System.Web.UI.Page
+    public partial class FormBuscarNotaCredito : System.Web.UI.Page
     {
         Consultaestadosfactura Consultaestados = new Consultaestadosfactura();
         List<modeloestadosfactura> Listaestados = null;
@@ -31,14 +31,14 @@ namespace CapaWeb.WebForms
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
 
         ConsumoRest consumoRest = new ConsumoRest();
-       
+
         Consultawmsptitulares ConsultaTitulares = new Consultawmsptitulares();
         public List<modelowmspctitulares> lista = null;
         modelowmspctitulares cliente = new modelowmspctitulares();
         public string ComPwm;
-        public string AmUsrLog;        
+        public string AmUsrLog;
         public string Ccf_tipo1 = "C";
-        public string Ccf_tipo2 = "VTA";
+        public string Ccf_tipo2 = "NC";
         public string Ccf_nro_trans = " ";
         public string Ccf_estado = "0";
         public string Ccf_cliente = "0";
@@ -50,7 +50,7 @@ namespace CapaWeb.WebForms
         public string Ccf_anioi = "";
         public string Ccf_diaf = "";
         public string Ccf_mesf = "";
-        public string Ccf_aniof = "";     
+        public string Ccf_aniof = "";
         public string Ven__cod_tipotit = "cliente";
         public string Ven__cod_tit = " ";
 
@@ -58,7 +58,7 @@ namespace CapaWeb.WebForms
         public string EstF_proceso = "RCOMFACT";
         protected void Page_Load(object sender, EventArgs e)
         {
-            RecuperarCokie();           
+            RecuperarCokie();
 
             ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
             foreach (var item in ListaModelowmspclogo)
@@ -69,15 +69,16 @@ namespace CapaWeb.WebForms
 
             if (!IsPostBack)
             {
-                cargarListaDesplegables();   
-                           
+                cargarListaDesplegables();
+
                 fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 fechafin.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 CargarGrillaInicial();
                 CargarRolesUsuario();
-               
+
             }
         }
+
 
         private void CargarRolesUsuario()
         {
@@ -89,10 +90,10 @@ namespace CapaWeb.WebForms
                 count1++;
 
             }
- 
-            if (count1 >0)
+
+            if (count1 > 0)
             {
-                NuevaFactura.Visible = true;
+                NuevaNC.Visible = true;
             }
             //Rol acceso a la pantalla de Buscar facturas
             ListaModelosRoles = ConsultaRoles.BuscarAccesoFactura(AmUsrLog);
@@ -145,7 +146,7 @@ namespace CapaWeb.WebForms
             {
                 Grid.Columns[8].Visible = false;
             }
-           
+
 
         }
         private void CargarGrillaInicial()
@@ -162,7 +163,7 @@ namespace CapaWeb.WebForms
 
 
             listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-            
+
             Grid.DataSource = listaConsCab;
             Grid.DataBind();
             Grid.Height = 100;
@@ -174,7 +175,7 @@ namespace CapaWeb.WebForms
             //Lista Estados facturas
             Listaestados = Consultaestados.ConsultaEstadosFac(EstF_proceso);
             estados.DataSource = Listaestados;
-            
+
             estados.DataTextField = "nom_estado";
             estados.DataValueField = "estado";
             estados.DataBind();
@@ -184,7 +185,7 @@ namespace CapaWeb.WebForms
 
         }
 
-       
+
         protected void Grid_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
         {
             // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
@@ -202,7 +203,7 @@ namespace CapaWeb.WebForms
             qs.Add("TRN", "INS");
             qs.Add("Id", "");
             Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
-           
+
         }
         private void CargarGrilla()
         {
@@ -241,7 +242,7 @@ namespace CapaWeb.WebForms
             string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
             string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
             string Ccf_aniof = Fechafin.Year.ToString();
-      
+
 
             listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
             Grid.DataSource = listaConsCab;
@@ -249,11 +250,11 @@ namespace CapaWeb.WebForms
             Grid.Height = 100;
         }
 
-       
+
 
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
-          
+
             //1 primero creo un objeto Clave/Valor de QueryString 
             QueryString qs = new QueryString();
             //Escoger opcion
@@ -263,28 +264,28 @@ namespace CapaWeb.WebForms
             switch (e.CommandName) //ultilizo la variable para la opcion
             {
 
-                case "Editar": 
+                case "Editar":
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                     estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
 
                     switch (estadoM)
                     {
-                         case "PENDIENTE":
-                           
+                        case "PENDIENTE":
+
                             qs.Add("TRN", "UDP");
                             qs.Add("Id", Id.ToString());
 
                             Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
                             break;
                         default:
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA "+ estadoM  + "')+ error;</script>");
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
                             break;
-                        
-                    }
-                   
-                    break;                
 
-                case "Imprimir": 
+                    }
+
+                    break;
+
+                case "Imprimir":
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                     estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
                     switch (estadoM)
@@ -299,45 +300,45 @@ namespace CapaWeb.WebForms
                             break;
 
                     }
-                    
+
                     break;
 
-                case "Eliminar": 
+                case "Eliminar":
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
-                    Encabezado encabezado = new Encabezado();                  
+                    Encabezado encabezado = new Encabezado();
 
                     conscabcera = null;
                     conscabcera = buscarCabezeraFactura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Convert.ToString(Id));
-                    Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans="+ Convert.ToString(Id)+ "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo=VTA");
+                    Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans=" + Convert.ToString(Id) + "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo=VTA");
                     break;
 
-                case "Ver": 
+                case "Ver":
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
 
-                   
+
                     qs.Add("TRN", "VER");
                     qs.Add("Id", Id.ToString());
                     Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
                     break;
 
-                case "Mostrar": 
+                case "Mostrar":
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                     estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
 
                     qs.Add("TRN", "MTR");
                     qs.Add("Id", Id.ToString());
                     Response.Redirect("PortalFacturas.aspx" + Encryption.EncryptQueryString(qs).ToString());
-                
+
                     break;
 
-                case "Reenviar": 
+                case "Reenviar":
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                     estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
 
                     switch (estadoM)
                     {
                         case "CONTABILIZADO":
-                            
+
                             qs.Add("Id", Id.ToString());
                             Response.Redirect("ReenviarFacturaJson.aspx" + Encryption.EncryptQueryString(qs).ToString());
                             break;
@@ -346,16 +347,16 @@ namespace CapaWeb.WebForms
                             break;
 
                     }
-                    
+
                     break;
             }
-    }
+        }
         public void RecuperarCokie()
         {
             if (Request.Cookies["ComPwm"] != null)
             {
                 ComPwm = Request.Cookies["ComPwm"].Value;
-                
+
             }
             else
             {
@@ -387,7 +388,7 @@ namespace CapaWeb.WebForms
         public modeloRolesFacturacion BuscarRolNuevo(string usuario)
         {
             ListaModelosRoles = ConsultaRoles.BuscarRolNuevo(usuario);
-           
+
             int count = 0;
             ModeloRoles = null;
             foreach (modeloRolesFacturacion item in ListaModelosRoles)
@@ -493,5 +494,16 @@ namespace CapaWeb.WebForms
             ModeloCodProceso = BuscarCodProceso(AmUsrLog);
             Response.Redirect("Ayuda.asp");
         }
+
+        protected void NuevaNC_Click(object sender, EventArgs e)
+        {
+            //1 primero creo un objeto Clave/Valor de QueryString 
+            QueryString qs = new QueryString();
+
+            //2 voy a agregando los valores que deseo
+            qs.Add("TRN", "INS");
+            qs.Add("Id", "");
+            Response.Redirect("FormNotaCredito.aspx" + Encryption.EncryptQueryString(qs).ToString());
+        }
     }
-}
+    }
