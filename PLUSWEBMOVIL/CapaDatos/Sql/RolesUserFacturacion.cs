@@ -74,7 +74,7 @@ namespace CapaDatos.Sql
             using (cn = conexion.genearConexion())
             {
                 List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
-                string consulta = ("SELECT cod_rol FROM dbo.wm_userroles WHERE usuario = 'desarrollo' AND cod_rol IN ('30','31','312','3121','31214')");
+                string consulta = ("SELECT cod_rol FROM dbo.wm_userroles WHERE usuario = @usuario AND cod_rol IN ('30','31','312','3121','31214')");
                 SqlCommand conmand = new SqlCommand(consulta, cn);
 
                 conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
@@ -100,7 +100,7 @@ namespace CapaDatos.Sql
             using (cn = conexion.genearConexion())
             {
                 List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
-                string consulta = ("SELECT cod_rol FROM dbo.wm_userroles WHERE usuario = 'desarrollo' AND cod_rol IN ('30','31','312','3121','31211','31212','31213','31214','31215','31219')");
+                string consulta = ("SELECT cod_rol FROM dbo.wm_userroles WHERE usuario = @usuario AND cod_rol IN ('30','31','312','3121','31211','31212','31213','31214','31215','31219')");
                 SqlCommand conmand = new SqlCommand(consulta, cn);
 
                 conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
@@ -137,7 +137,7 @@ namespace CapaDatos.Sql
                 {
 
                     modeloRolesFacturacion item = new modeloRolesFacturacion();
-                    item.cod_rol = Convert.ToString("cod_rol");
+                    item.cod_rol = Convert.ToString(dr["cod_rol"]);
 
                     lista.Add(item);
                 }
@@ -152,7 +152,7 @@ namespace CapaDatos.Sql
             using (cn = conexion.genearConexion())
             {
                 List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
-                string consulta = ("SELECT cod_rol FROM dbo.wm_userroles WHERE usuario = 'desarrollo' AND cod_rol IN ('30','31','312','3121','31212')");
+                string consulta = ("SELECT cod_rol FROM dbo.wm_userroles WHERE usuario = @usuario AND cod_rol IN ('30','31','312','3121','31212')");
                 SqlCommand conmand = new SqlCommand(consulta, cn);
 
                 conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
@@ -163,7 +163,7 @@ namespace CapaDatos.Sql
                 {
 
                     modeloRolesFacturacion item = new modeloRolesFacturacion();
-                    item.cod_rol = Convert.ToString("cod_rol");
+                    item.cod_rol = Convert.ToString(dr["cod_rol"]);
 
                     lista.Add(item);
                 }
@@ -178,7 +178,7 @@ namespace CapaDatos.Sql
             using (cn = conexion.genearConexion())
             {
                 List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
-                string consulta = ("SELECT cod_rol FROM dbo.wm_userroles WHERE usuario = 'desarrollo' AND cod_rol IN ('30','31','312','3121','31212')");
+                string consulta = ("SELECT cod_rol FROM dbo.wm_userroles WHERE usuario = @usuario AND cod_rol IN ('30','31','312','3121','31212')");
                 SqlCommand conmand = new SqlCommand(consulta, cn);
 
                 conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
@@ -189,7 +189,7 @@ namespace CapaDatos.Sql
                 {
 
                     modeloRolesFacturacion item = new modeloRolesFacturacion();
-                    item.cod_rol = Convert.ToString("cod_rol");
+                    item.cod_rol = Convert.ToString(dr["cod_rol"]);
 
                     lista.Add(item);
                 }
@@ -203,7 +203,7 @@ namespace CapaDatos.Sql
             using (cn = conexion.genearConexion())
             {
                 List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
-                string consulta = ("SELECT cod_rol FROM dbo.wm_userroles WHERE usuario = 'desarrollo' AND cod_rol IN ('30','31','312','3121','31212')");
+                string consulta = ("SELECT cod_rol FROM dbo.wm_userroles WHERE usuario = @usuario AND cod_rol IN ('30','31','312','3121','31212')");
                 SqlCommand conmand = new SqlCommand(consulta, cn);
 
                 conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
@@ -214,7 +214,7 @@ namespace CapaDatos.Sql
                 {
 
                     modeloRolesFacturacion item = new modeloRolesFacturacion();
-                    item.cod_rol = Convert.ToString("cod_rol");
+                    item.cod_rol = Convert.ToString(dr["cod_rol"]);
 
                     lista.Add(item);
                 }
