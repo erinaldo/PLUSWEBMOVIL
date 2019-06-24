@@ -492,6 +492,14 @@
                               </tr>
                             <tr>
                                 <td>
+                                    <asp:Label  CssClass="busqueda" ID="Label7" runat="server" Text="Impuestos:"></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:ImageButton ID="btnImpuestos" OnClick="btnImpuestos_Click" ImageAlign="left" src="../Tema/imagenes/search.png"  runat="server" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <asp:Label  CssClass="busqueda" ID="Label6" runat="server" Text="Iva:"></asp:Label>
                                 </td>
                                 <td>

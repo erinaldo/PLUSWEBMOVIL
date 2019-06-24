@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
+    <Content Include="WebForms\FormDetalleImpuestos.aspx" />
     <Content Include="WebForms\FormListaUsuarioSucursal.aspx" />
     <Content Include="Tema\css\modal.css" />
     <Content Include="Tema\css\reset.min.css" />
@@ -176,6 +177,13 @@
     </Compile>
     <Compile Include="WebForms\FormBuscarNotaCredito.aspx.designer.cs">
       <DependentUpon>FormBuscarNotaCredito.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormDetalleImpuestos.aspx.cs">
+      <DependentUpon>FormDetalleImpuestos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormDetalleImpuestos.aspx.designer.cs">
+      <DependentUpon>FormDetalleImpuestos.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormListaUsuarioSucursal.aspx.cs">
       <DependentUpon>FormListaUsuarioSucursal.aspx</DependentUpon>

@@ -20,6 +20,9 @@ namespace CapaWeb.WebForms
         public modeloRolModificarPrecio ModeloRolMod = new modeloRolModificarPrecio();
         public List<modeloRolModificarPrecio> ListaRolMod = null;
 
+        public List<modelowmspcfacturasWMimpuRest> ListaModeloimpuesto = new List<modelowmspcfacturasWMimpuRest>();
+        public modelowmspcfacturasWMimpuRest ModeloImpuesto = new modelowmspcfacturasWMimpuRest();
+        public ConsultawmspcfacturasWMimpuRest consultaImpuesto = new ConsultawmspcfacturasWMimpuRest();
 
         Consultawmspccostos ConsultaCCostos = new Consultawmspccostos();
         List<modelowmspcccostos> listaCostos = null;
@@ -1634,6 +1637,16 @@ namespace CapaWeb.WebForms
         protected void area_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        protected void btnImpuestos_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            //
+            string transa = Session["valor_asignado"].ToString();
+            ListaModeloimpuesto = consultaImpuesto.BuscarImpuestoRest(AmUsrLog, ComPwm, transa, "0");
+            Session["listaImpuestos"] = ListaModeloimpuesto;
+            this.Page.Response.Write("<script language='JavaScript'>window.open('./FormDetalleImpuestos.aspx', 'Detalle Impuesto', 'top=100,width=800 ,height=400, left=400');</script>");
+            
         }
     }
 }
