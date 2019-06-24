@@ -148,12 +148,12 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             PdfPTable tablaLogo = new PdfPTable(3);//cantidad de columnas que va tener la tabla
             tablaLogo.WidthPercentage = 100;
             // Creamos la imagen y le ajustamos el tamaño
-            //iTextSharp.text.Image imagen = iTextSharp.text.Image.GetInstance(AppDomain.CurrentDomain.BaseDirectory + "/Logo/" + Modelowmspclogo.logo);
-            //imagen.BorderWidth = 0;
-            //imagen.Alignment = Element.ALIGN_RIGHT;
+            //iTextSharp.text.Image imagen1 = iTextSharp.text.Image.GetInstance(AppDomain.CurrentDomain.BaseDirectory + "/Logo/" + Modelowmspclogo.logo);
+            //imagen1.BorderWidth = 0;
+            //imagen1.Alignment = Element.ALIGN_RIGHT;
             //float percentage = 0.0f;
-            //percentage = 150 / imagen.Width;
-            //imagen.ScalePercent(percentage * 100);
+            //percentage = 150 / imagen1.Width;
+            //imagen1.ScalePercent(percentage * 100);
 
             cell = new PdfPCell(new Phrase(""));
             cell.Border = 0;
@@ -228,7 +228,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 0;
             tablaCab.AddCell(cell);
 
-            cell = celdas("FECHA FACTURA: " + conscabcera.fec_doc);
+            cell = celdas("FECHA FACTURA: " + conscabcera.fec_doc_str);
             cell.Colspan = 1;
             cell.HorizontalAlignment = 0;
             tablaCab.AddCell(cell);
@@ -238,7 +238,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 0;
             tablaCab.AddCell(cell);
 
-            cell = celdas("VENCIMIENTO: " + conscabcera.fec_venc);
+            cell = celdas("VENCIMIENTO: " + conscabcera.fec_venc_str);
             cell.Colspan = 1;
             cell.HorizontalAlignment = 0;
             tablaCab.AddCell(cell);
@@ -291,7 +291,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             float[] values = new float[7];
             values[0] = 90;
             values[1] = 300;
-            values[2] = 70;
+            values[2] = 80;
             values[3] = 70;
             values[4] = 70;
             values[5] = 70;
@@ -352,13 +352,13 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             foreach (ModeloDetalleFactura item in listaConsDet)
             {
 
-                detalle.AddCell(new Paragraph(item.cod_articulo, fontText));
+                detalle.AddCell(new Paragraph( item.cod_articulo, fontText));
                 detalle.AddCell(new Paragraph(item.nom_articulo, fontText));
-                detalle.AddCell(new Paragraph(item.cantidad.ToString(), fontText));
-                detalle.AddCell(new Paragraph(item.precio_unit.ToString(), fontText));
-                detalle.AddCell(new Paragraph(item.porc_descto.ToString(), fontText));
-                detalle.AddCell(new Paragraph(item.subtotal.ToString(), fontText));
-                detalle.AddCell(new Paragraph(item.total.ToString(), fontText));
+                detalle.AddCell(new Paragraph(String.Format("{0:N3}", item.cantidad).ToString(), fontText));
+                detalle.AddCell(new Paragraph(String.Format("{0:N5}", item.precio_unit).ToString(), fontText));
+                detalle.AddCell(new Paragraph(Math.Round( item.porc_descto, 2).ToString(), fontText));
+                detalle.AddCell(new Paragraph(Math.Round(item.subtotal, 2).ToString(), fontText));
+                detalle.AddCell(new Paragraph(Math.Round(item.total, 2).ToString(), fontText));
 
             }
 
@@ -412,28 +412,28 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             PdfPTable numtot = new PdfPTable(1);//cantidad de columnas que va tener la tabla
             numtot.WidthPercentage = 100;
 
-            cell = total(conscabcera.suman.ToString());
-            cell.HorizontalAlignment = 0;
+            cell = total((String.Format("{0:N}",  conscabcera.suman).ToString()));
+            cell.HorizontalAlignment = 2;
             numtot.AddCell(cell);
 
-            cell = total(conscabcera.descuento.ToString());
-            cell.HorizontalAlignment = 0;
+            cell = total((String.Format("{0:N}", conscabcera.descuento).ToString()));
+            cell.HorizontalAlignment = 2;
             numtot.AddCell(cell);
 
-            cell = total(conscabcera.subtotal.ToString());
-            cell.HorizontalAlignment = 0;
+            cell = total((String.Format("{0:N}", conscabcera.subtotal).ToString()));
+            cell.HorizontalAlignment = 2;
             numtot.AddCell(cell);
 
-            cell = total(conscabcera.monto_imponible.ToString());
-            cell.HorizontalAlignment = 0;
+            cell = total((String.Format("{0:N}", conscabcera.monto_imponible).ToString()));
+            cell.HorizontalAlignment = 2;
             numtot.AddCell(cell);
 
-            cell = total(conscabcera.iva.ToString());
-            cell.HorizontalAlignment = 0;
+            cell = total((String.Format("{0:N}", conscabcera.iva).ToString()));
+            cell.HorizontalAlignment = 2;
             numtot.AddCell(cell);
 
-            cell = total(conscabcera.total.ToString());
-            cell.HorizontalAlignment = 0;
+            cell = total((String.Format("{0:N}", conscabcera.total).ToString()));
+            cell.HorizontalAlignment = 2;
             numtot.AddCell(cell);
 
             cell = new PdfPCell(numtot);//this line made the difference
@@ -481,11 +481,11 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 1;
             detainfotri.AddCell(cell);
 
-            cell = total("desde " + conscabcera.fres_ini + " " + "hasta " + conscabcera.fres_fin);
+            cell = total("desde " + conscabcera.fres_ini_str + " " + "hasta " + conscabcera.fres_fin_str);
             cell.HorizontalAlignment = 1;
             detainfotri.AddCell(cell);
 
-            cell = total("Tipo " + conscabcera.mes_char + " " + "Factura " + conscabcera.ntipo);
+            cell = total("Prefijo " + conscabcera.mes_char + " " + "Factura " + conscabcera.ntipo);
             cell.HorizontalAlignment = 1;
             detainfotri.AddCell(cell);
 
@@ -543,16 +543,20 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 1;
             pagos2.AddCell(cell);
 
-            foreach (modelobancos item in ListaModelobancos)
-            {
-
-                pagos2.AddCell(new Paragraph((item.nomtcta_banco)+ ("Nro " + (item.nrocta_banco))+ "de " +(item.nom_tit.ToString())));
-                /* pagos2.AddCell(new Paragraph("Nro " + (item.nrocta_banco), fontText));
-                 pagos2.AddCell(new Paragraph("de " + item.nom_tit.ToString(), fontText));*/
-                break;
-            }
-
+            cell = total(ModeloBancos.nomtcta_banco+" " + "Nro" +" "+ ModeloBancos.nrocta_banco+" "+ "de "+" "+ModeloBancos.nom_tit);
+            cell.HorizontalAlignment = 1;
             pagos2.AddCell(cell);
+
+            /*  foreach (modelobancos item in ListaModelobancos)
+              {
+
+                  pagos2.AddCell(new Paragraph((item.nomtcta_banco)+ ("Nro " + (item.nrocta_banco))+ "de " +(item.nom_tit.ToString())));
+                  /* pagos2.AddCell(new Paragraph("Nro " + (item.nrocta_banco), fontText));
+                   pagos2.AddCell(new Paragraph("de " + item.nom_tit.ToString(), fontText));
+                  break;
+          }*/
+
+            
 
             cell = new PdfPCell(pagos2);//agrega las nuevas celdas a la tabla principal
 
@@ -576,7 +580,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             pie1.AddCell(cell);
 
             cell = total(conscabcera.observaciones);
-            cell.HorizontalAlignment = 1;
+            cell.HorizontalAlignment = 0;
             pie1.AddCell(cell);
 
             cell = total(" ");
@@ -729,7 +733,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             contenido.Font = FontFactory.GetFont(FontFactory.TIMES, 11f, BaseColor.BLACK);
 
             contenido.Add(mensaje);
-            contenido.Alignment = Element.ALIGN_CENTER;
+            contenido.Alignment = Element.ALIGN_RIGHT;
 
             PdfPCell cell = new PdfPCell(contenido);
 
@@ -743,10 +747,10 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
         public PdfPCell celdasD(string mensaje)
         {
             Paragraph contenido = new Paragraph();
-            contenido.Font = FontFactory.GetFont(FontFactory.TIMES, 9f, BaseColor.BLACK);
+            contenido.Font = FontFactory.GetFont(FontFactory.TIMES, 10f, BaseColor.BLACK);
 
             contenido.Add(mensaje);
-            contenido.Alignment = Element.ALIGN_CENTER;
+            contenido.Alignment = Element.ALIGN_LEFT;
 
             PdfPCell cell = new PdfPCell(contenido);
 

@@ -146,6 +146,8 @@ namespace CapaDatos.Sql
                         item.plazo_libre = Convert.ToString(dr["plazo_libre"]);
                         item.observaciones = Convert.ToString(dr["observaciones"]);
                         item.fec_venc = Convert.ToDateTime(dr["fec_venc"]);
+                        DateTime fec_venc_str = Convert.ToDateTime(dr["fec_venc"]);
+                        item.fec_venc_str = fec_venc_str.ToString("yyyy-MM-dd");
                         item.cod_vendedor = Convert.ToString(dr["cod_vendedor"]);
                         item.nom_vendedor = Convert.ToString(dr["nom_vend"]);
                         item.estado = Convert.ToString(dr["estado"]);
@@ -169,7 +171,12 @@ namespace CapaDatos.Sql
                         item.ini = Convert.ToString(dr["ini"]);
                         item.fin = Convert.ToString(dr["fin"]);
                         item.fres_ini = Convert.ToDateTime(dr["fres_ini"]);
+                        DateTime fres_ini_str = Convert.ToDateTime(dr["fres_ini"]);
+                        item.fres_ini_str = fres_ini_str.ToString("yyyy-MM-dd");
+
                         item.fres_fin = Convert.ToDateTime(dr["fres_fin"]);
+                        DateTime fres_fin_str = Convert.ToDateTime(dr["fres_fin"]);
+                        item.fres_fin_str = fres_fin_str.ToString("yyyy-MM-dd");
                         item.mes_char = Convert.ToString(dr["mes_char"]);
                         item.pagina_edicion = Convert.ToString(dr["pagina_edicion"]);
                         item.nom_edicion = Convert.ToString(dr["nom_edicion"]);

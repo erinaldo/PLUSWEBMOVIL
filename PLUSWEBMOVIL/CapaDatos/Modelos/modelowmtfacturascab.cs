@@ -31,6 +31,7 @@ namespace CapaDatos.Modelos
         public string plazo_libre { get; set; }
         public string observaciones { get; set; }
         public DateTime fec_venc { get; set; }
+        public string fec_venc_str { get; set; }
         public string cod_vendedor { get; set; }
         public string nom_vendedor { get; set; }
         public string estado { get; set; }
@@ -54,7 +55,9 @@ namespace CapaDatos.Modelos
         public string ini { get; set; }
         public string fin { get; set; }
         public DateTime fres_ini { get; set; }
+        public string fres_ini_str { get; set; }
         public DateTime fres_fin { get; set; }
+        public string fres_fin_str { get; set; }
         public string mes_char { get; set; }
         public string pagina_edicion { get; set; }
         public string nom_edicion { get; set; }
