@@ -265,6 +265,7 @@ namespace CapaWeb.WebForms
 
             int Id;
             string estadoM = "";
+            string estadoIM = "";
             switch (e.CommandName) //ultilizo la variable para la opcion
             {
 
@@ -309,16 +310,33 @@ namespace CapaWeb.WebForms
 
                 case "Eliminar": 
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
-                    Encabezado encabezado = new Encabezado();                  
+                   
+                    estadoIM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
 
-                    conscabcera = null;
-                    conscabcera = buscarCabezeraFactura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Convert.ToString(Id));
-                    Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans="+ Convert.ToString(Id)+ "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo=VTA");
+                    switch (estadoIM)
+                    {
+                        case "CONTABILIZADO":
+
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('LA  FACTURA EN ESTADO " + estadoIM + " ,DEBE ANULARSE MEDIANTE NOTA DE CRÉDITO')+ error;</script>");
+                            break;
+                        case "FINALIZADO":
+
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('LA  FACTURA EN ESTADO " + estadoIM + " ,DEBE ANULARSE MEDIANTE NOTA DE CRÉDITO')+ error;</script>");
+                            break;
+                        default:
+                            Encabezado encabezado = new Encabezado();
+                            conscabcera = null;
+                            conscabcera = buscarCabezeraFactura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Convert.ToString(Id));
+                            Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans=" + Convert.ToString(Id) + "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo=VTA");
+                            break;
+
+                    }
                     break;
+                    
 
                 case "Impuestos":
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
-
+                   
                     ListaModeloimpuesto = consultaImpuesto.BuscarImpuestoRest(AmUsrLog, ComPwm, Id.ToString(), "0");
                     Session["listaImpuestos"] = ListaModeloimpuesto;
                     this.Page.Response.Write("<script language='JavaScript'>window.open('./FormDetalleImpuestos.aspx', 'Detalle Impuesto', 'top=100,width=800 ,height=400, left=400');</script>");

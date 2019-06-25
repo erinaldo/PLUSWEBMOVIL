@@ -55,10 +55,10 @@ namespace CapaDatos.Sql
                     item.cod_tipo_emp_gan = Convert.ToString(dr["cod_tipo_emp_gan"]);
                     item.nom_tipo_emp_gan = Convert.ToString(dr["nom_tipo_emp_gan"]);
                     item.cod_tipo_emp_iva = Convert.ToString(dr["cod_tipo_emp_iva"]);
-                    item.nom_aux = Convert.ToString(dr["nom_aux"]);
-                    item.nom_aux2 = Convert.ToString(dr["nom_aux2"]);
-                    item.nom_aux3 = Convert.ToString(dr["nom_aux3"]);
-                    item.nom_aux4 = Convert.ToString(dr["nom_aux4"]);
+                    //item.nom_aux = Convert.ToString(dr["nom_aux"]);
+                    //item.nom_aux2 = Convert.ToString(dr["nom_aux2"]);
+                    //item.nom_aux3 = Convert.ToString(dr["nom_aux3"]);
+                    //item.nom_aux4 = Convert.ToString(dr["nom_aux4"]);
                     item.razon_social = Convert.ToString(dr["razon_social"]);
                     item.control_tit = Convert.ToString(dr["control_tit"]);
                     item.control_uso = Convert.ToString(dr["control_uso"]);

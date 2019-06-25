@@ -297,6 +297,8 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\Prueba.pubxml" />
+    <Content Include="Tema\fonts\verdana.ttf" />
+    <Content Include="Tema\fonts\VerdanaVf.ttf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -306,7 +308,6 @@
     <Content Include="WebForms\Site.Master" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Tema\fonts\" />
     <Folder Include="Tema\js\" />
   </ItemGroup>
   <ItemGroup>
