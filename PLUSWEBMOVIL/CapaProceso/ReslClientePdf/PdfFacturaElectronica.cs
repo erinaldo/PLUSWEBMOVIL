@@ -177,7 +177,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             }
             else
             {
-                 pathLogo = HttpContext.Current.Server.MapPath(Modelowmspclogo.sitio_app + "/Logo/" + Modelowmspclogo.logo);
+                 pathLogo = HttpContext.Current.Server.MapPath("~/Logo/" + Modelowmspclogo.logo);
             }
             
             iTextSharp.text.Image imagen1 = iTextSharp.text.Image.GetInstance(pathLogo);
