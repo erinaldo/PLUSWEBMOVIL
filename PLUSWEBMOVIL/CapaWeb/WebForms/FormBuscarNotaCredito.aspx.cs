@@ -94,6 +94,7 @@ namespace CapaWeb.WebForms
             if (count1 > 0)
             {
                 NuevaNC.Visible = true;
+                notaCreditoFinan.Visible = true;
             }
             //Rol acceso a la pantalla de Buscar facturas
             ListaModelosRoles = ConsultaRoles.BuscarAccesoFactura(AmUsrLog);
@@ -504,6 +505,18 @@ namespace CapaWeb.WebForms
             qs.Add("TRN", "INS");
             qs.Add("Id", "");
             Response.Redirect("FormNotaCredito.aspx" + Encryption.EncryptQueryString(qs).ToString());
+        }
+
+        protected void notaCreditoFinan_Click(object sender, EventArgs e)
+        {
+            //1 primero creo un objeto Clave/Valor de QueryString 
+            QueryString qs = new QueryString();
+
+            //2 voy a agregando los valores que deseo
+            qs.Add("TRN", "INS");
+            qs.Add("Id", "");
+            Response.Redirect("FormNotaCreditoFin.aspx" + Encryption.EncryptQueryString(qs).ToString());
+
         }
     }
     }

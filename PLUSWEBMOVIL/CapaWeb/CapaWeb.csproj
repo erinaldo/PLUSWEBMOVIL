@@ -163,6 +163,7 @@
     <Content Include="WebForms\Factura.aspx" />
     <Content Include="WebForms\FormListaSucursalEmpresa.aspx" />
     <Content Include="WebForms\FormNotaCredito.aspx" />
+    <Content Include="WebForms\FormNotaCreditoFin.aspx" />
     <Content Include="WebForms\FormRespuestaJson.aspx" />
     <Content Include="WebForms\FormSucursalempresa.aspx" />
     <Content Include="WebForms\FormUsuariosucursal.aspx" />
@@ -236,6 +237,13 @@
     </Compile>
     <Compile Include="WebForms\FormNotaCredito.aspx.designer.cs">
       <DependentUpon>FormNotaCredito.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormNotaCreditoFin.aspx.cs">
+      <DependentUpon>FormNotaCreditoFin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormNotaCreditoFin.aspx.designer.cs">
+      <DependentUpon>FormNotaCreditoFin.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormRespuestaJson.aspx.cs">
       <DependentUpon>FormRespuestaJson.aspx</DependentUpon>

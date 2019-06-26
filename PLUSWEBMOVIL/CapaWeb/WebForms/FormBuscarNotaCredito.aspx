@@ -19,11 +19,18 @@
                         <asp:Label ID="lblAyuda" runat="server"  CssClass="Titulo" Text="Notas de Crédito"></asp:Label>
                         
                         </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="Subtitulo2">Para realizar una nueva Nota de crédito 
+                                <asp:Button ID="NuevaNC" onclick="NuevaNC_Click" Visible="false" class="botones" runat="server" Text="AQUI" />
+                          </p>
+                        </td>
                     </tr>
                 <tr>
                     <td>
-                        <p class="Subtitulo2">Para realizar una nueva nota de crédito 
-                                <asp:Button ID="NuevaNC" onclick="NuevaNC_Click" Visible="false" class="botones" runat="server" Text="AQUI" />
+                        <p class="Subtitulo2">Para realizar una nueva Nota de crédito Financiera 
+                                <asp:Button ID="notaCreditoFinan" onclick="notaCreditoFinan_Click" Visible="false" class="botones" runat="server" Text="AQUI" />
                           </p>
                         </td>
                     </tr>
