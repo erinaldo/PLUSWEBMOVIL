@@ -1646,11 +1646,14 @@ namespace CapaWeb.WebForms
 
         protected void btnImpuestos_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            //
-            string transa = Session["valor_asignado"].ToString();
-            ListaModeloimpuesto = consultaImpuesto.BuscarImpuestoRest(AmUsrLog, ComPwm, transa, "0");
-            Session["listaImpuestos"] = ListaModeloimpuesto;
-            this.Page.Response.Write("<script language='JavaScript'>window.open('./FormDetalleImpuestos.aspx', 'Detalle Impuesto', 'top=100,width=800 ,height=400, left=400');</script>");
+            if (Session["valor_asignado"] != null)
+            {
+                string transa = Session["valor_asignado"].ToString();
+                ListaModeloimpuesto = consultaImpuesto.BuscarImpuestoRest(AmUsrLog, ComPwm, transa, "0");
+                Session["listaImpuestos"] = ListaModeloimpuesto;
+                this.Page.Response.Write("<script language='JavaScript'>window.open('./FormDetalleImpuestos.aspx', 'Detalle Impuesto', 'top=100,width=800 ,height=400, left=400');</script>");
+            }
+            
             
         }
 
