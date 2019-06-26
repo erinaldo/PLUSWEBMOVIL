@@ -31,22 +31,25 @@ namespace CapaDatos.Modelos
         public string cod_tipo_emp_gan { get; set; }
         public string nom_tipo_emp_gan { get; set; }
         public string cod_tipo_emp_iva { get; set; }
-        public string nom_aux { get; set; }
-        public string nom_aux2 { get; set; }
-        public string nom_aux3{ get; set; }
-        public string nom_aux4 { get; set; }
+        public string nom_tipo_emp_iva { get; set; }
+        
+        public string primer_nombre { get; set; }
+        public string segundo_nombre { get; set; }
+        public string primer_apellido { get; set; }
+        public string segundo_apellido { get; set; }
         public string razon_social { get; set; }
         public string control_tit { get; set; }
         public string control_uso { get; set; }
         public string control_uso2 { get; set; }
         public string cod_sop { get; set; }
+        public string moncli { get; set; }
 
         public  modelowmspctitulares()
         {
 
         }
 
-          public  modelowmspctitulares(string cod_tit, string nom_tit, string cod_dgi, string nro_dgi, string nro_dgi1, string nro_dgi2, string dir_tit, string tel_tit, string fax_tit, string email_tit, string dir_web, string cod_pais, string nom_pais, string cod_provincia, string nom_provincia, string ciudad_tit, string nom_ciudad, string cod_tipo_emp_gan, string nom_tipo_emp_gan, string cod_tipo_emp_iva, string nom_aux, string nom_aux2, string nom_aux3, string nom_aux4, string razon_social, string control_tit, string control_uso, string control_uso2, string cod_sop)
+          public  modelowmspctitulares(string cod_tit, string nom_tit, string cod_dgi, string nro_dgi, string nro_dgi1, string nro_dgi2, string dir_tit, string tel_tit, string fax_tit, string email_tit, string dir_web, string cod_pais, string nom_pais, string cod_provincia, string nom_provincia, string ciudad_tit, string nom_ciudad, string cod_tipo_emp_gan, string nom_tipo_emp_gan, string cod_tipo_emp_iva, string nom_tipo_emp_iva, string primer_nombre, string segundo_nombre, string primer_apellido, string segundo_apellido, string razon_social, string control_tit, string control_uso, string control_uso2, string cod_sop, string moncli)
         {
             this.cod_tit = cod_tit;
             this.nom_tit = nom_tit;
@@ -68,15 +71,17 @@ namespace CapaDatos.Modelos
             this.cod_tipo_emp_gan = cod_tipo_emp_gan;
             this.nom_tipo_emp_gan = nom_tipo_emp_gan;
             this.cod_tipo_emp_iva = cod_tipo_emp_iva;
-            this.nom_aux = nom_aux;
-            this.nom_aux2 = nom_aux2;
-            this.nom_aux3 = nom_aux3;
-            this.nom_aux4 = nom_aux4;
+            this.nom_tipo_emp_iva = nom_tipo_emp_iva;
+            this.primer_nombre = primer_nombre;
+            this.segundo_nombre = segundo_nombre;
+            this.primer_apellido = primer_apellido;
+            this.segundo_apellido = segundo_apellido;
             this.razon_social = razon_social;
             this.control_tit = control_tit;
             this.control_uso = control_uso;
             this.control_uso2 = control_uso2;
             this.cod_sop = cod_sop;
+            this.moncli = moncli;
         }
         }
 }

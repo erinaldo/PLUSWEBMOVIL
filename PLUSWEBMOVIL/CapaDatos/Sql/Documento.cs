@@ -13,7 +13,7 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
 
-        public List<modelowmspctitulares> ListaBuscaTitulares(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit)
+        public List<modelowmspctitulares> ListaBuscaTitulares(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi, string Ven__fono)
         {
 
             using (cn = conexion.genearConexion())
@@ -27,6 +27,8 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = Ven__cod_emp;
                 conmand.Parameters.Add("@cod_tipotit", SqlDbType.VarChar).Value = Ven__cod_tipotit;
                 conmand.Parameters.Add("@cod_tit", SqlDbType.VarChar).Value = Ven__cod_tit;
+                conmand.Parameters.Add("@cod_dgi", SqlDbType.VarChar).Value = Ven__cod_dgi;
+                conmand.Parameters.Add("@telefono", SqlDbType.VarChar).Value = Ven__fono;
 
 
                 SqlDataReader dr = conmand.ExecuteReader();
@@ -34,7 +36,9 @@ namespace CapaDatos.Sql
                 while (dr.Read())
                 {
 
-                    modelowmspctitulares item = new modelowmspctitulares(Convert.ToString(dr["cod_tit"]), Convert.ToString(dr["nom_tit"]), Convert.ToString(dr["cod_dgi"]), Convert.ToString(dr["nro_dgi"]), Convert.ToString(dr["nro_dgi1"]), Convert.ToString(dr["nro_dgi2"]), Convert.ToString(dr["dir_tit"]), Convert.ToString(dr["tel_tit"]), Convert.ToString(dr["fax_tit"]), Convert.ToString(dr["email_tit"]), Convert.ToString(dr["dir_web"]), Convert.ToString(dr["cod_pais"]), Convert.ToString(dr["nom_pais"]), Convert.ToString(dr["cod_provincia"]), Convert.ToString(dr["nom_provincia"]), Convert.ToString(dr["ciudad_tit"]), Convert.ToString(dr["nom_ciudad"]), Convert.ToString(dr["cod_tipo_emp_gan"]), Convert.ToString(dr["nom_tipo_emp_gan"]), Convert.ToString(dr["cod_tipo_emp_iva"]), Convert.ToString(dr["nom_aux"]), Convert.ToString(dr["nom_aux2"]), Convert.ToString(dr["nom_aux3"]), Convert.ToString(dr["nom_aux4"]), Convert.ToString(dr["razon_social"]), Convert.ToString(dr["control_tit"]), Convert.ToString(dr["control_uso"]), Convert.ToString(dr["control_uso2"]), Convert.ToString(dr["cod_sop"]));
+                    modelowmspctitulares item = new modelowmspctitulares(Convert.ToString(dr["cod_tit"]), Convert.ToString(dr["nom_tit"]), Convert.ToString(dr["cod_dgi"]), Convert.ToString(dr["nro_dgi"]), Convert.ToString(dr["nro_dgi1"]), Convert.ToString(dr["nro_dgi2"]), Convert.ToString(dr["dir_tit"]), Convert.ToString(dr["tel_tit"]), Convert.ToString(dr["fax_tit"]), Convert.ToString(dr["email_tit"]), Convert.ToString(dr["dir_web"]), Convert.ToString(dr["cod_pais"]), Convert.ToString(dr["nom_pais"]), Convert.ToString(dr["cod_provincia"]), Convert.ToString(dr["nom_provincia"]), Convert.ToString(dr["ciudad_tit"]), Convert.ToString(dr["nom_ciudad"]), Convert.ToString(dr["cod_tipo_emp_gan"]), Convert.ToString(dr["nom_tipo_emp_gan"]), Convert.ToString(dr["cod_tipo_emp_iva"]), Convert.ToString(dr["nom_tipo_emp_iva"]), Convert.ToString(dr["primer_nombre"]), Convert.ToString(dr["segundo_nombre"]), Convert.ToString(dr["primer_apellido"]), Convert.ToString(dr["segundo_apellido"]), Convert.ToString(dr["razon_social"]), Convert.ToString(dr["control_tit"]),
+                        
+                        Convert.ToString(dr["control_uso"]), Convert.ToString(dr["control_uso2"]), Convert.ToString(dr["cod_sop"]), Convert.ToString(dr["moncli"]));
 
                     lista.Add(item);
 

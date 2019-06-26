@@ -29,14 +29,21 @@ namespace CapaDatos.Modelos
         public string cod_tipo_emp_gan { get; set; }
         public string nom_tipo_emp_gan { get; set; }
         public string cod_tipo_emp_iva { get; set; }
+        public string nom_tipo_emp_iva { get; set; }
         public string nom_aux { get; set; }
         public string nom_aux2 { get; set; }
         public string nom_aux3 { get; set; }
         public string nom_aux4 { get; set; }
+        public string primer_nombre { get; set; }
+        public string segundo_nombre { get; set; }
+        public string primer_apellido { get; set; }
+        public string segundo_apellido { get; set; }
         public string razon_social { get; set; }
         public string control_tit { get; set; }
         public string control_uso { get; set; }
         public string control_uso2 { get; set; }
         public string cod_sop { get; set; }
+        public string moncli { get; set; }
+       
     }
 }

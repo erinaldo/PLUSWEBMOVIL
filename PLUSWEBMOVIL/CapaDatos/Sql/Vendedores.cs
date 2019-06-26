@@ -13,7 +13,7 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
 
-        public List<modelovendedores> ListaBuscaVendedores(string Vend__usuario, string Vend__cod_emp, string Vend__cod_tipotit, string Vend__cod_tit)
+        public List<modelovendedores> ListaBuscaVendedores(string Vend__usuario, string Vend__cod_emp, string Vend__cod_tipotit, string Vend__cod_tit, string Ven__cod_dgi, string Ven__fono)
         {
 
             using (cn = conexion.genearConexion())
@@ -28,6 +28,8 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = Vend__cod_emp;
                 conmand.Parameters.Add("@cod_tipotit", SqlDbType.VarChar).Value = Vend__cod_tipotit;
                 conmand.Parameters.Add("@cod_tit", SqlDbType.VarChar).Value = Vend__cod_tit;
+                conmand.Parameters.Add("@cod_dgi", SqlDbType.VarChar).Value = Ven__cod_dgi;
+                conmand.Parameters.Add("@telefono", SqlDbType.VarChar).Value = Ven__fono;
 
                 SqlDataReader dr = conmand.ExecuteReader();
 
@@ -55,15 +57,17 @@ namespace CapaDatos.Sql
                     item.cod_tipo_emp_gan = Convert.ToString(dr["cod_tipo_emp_gan"]);
                     item.nom_tipo_emp_gan = Convert.ToString(dr["nom_tipo_emp_gan"]);
                     item.cod_tipo_emp_iva = Convert.ToString(dr["cod_tipo_emp_iva"]);
-                    //item.nom_aux = Convert.ToString(dr["nom_aux"]);
-                    //item.nom_aux2 = Convert.ToString(dr["nom_aux2"]);
-                    //item.nom_aux3 = Convert.ToString(dr["nom_aux3"]);
-                    //item.nom_aux4 = Convert.ToString(dr["nom_aux4"]);
+                    item.nom_tipo_emp_iva = Convert.ToString(dr["nom_tipo_emp_iva"]);
+                    item.primer_nombre = Convert.ToString(dr["primer_nombre"]);
+                    item.segundo_nombre = Convert.ToString(dr["segundo_nombre"]);
+                    item.primer_apellido = Convert.ToString(dr["primer_apellido"]);
+                    item.segundo_apellido = Convert.ToString(dr["segundo_apellido"]);
                     item.razon_social = Convert.ToString(dr["razon_social"]);
                     item.control_tit = Convert.ToString(dr["control_tit"]);
                     item.control_uso = Convert.ToString(dr["control_uso"]);
                     item.control_uso2 = Convert.ToString(dr["control_uso2"]);
                     item.cod_sop = Convert.ToString(dr["cod_sop"]);
+                    item.moncli = Convert.ToString(dr["moncli"]);
 
                     lista.Add(item);
 

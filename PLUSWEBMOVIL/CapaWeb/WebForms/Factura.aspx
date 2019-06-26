@@ -154,7 +154,7 @@
                                 </td>
                                 <td valign="top">
                                     <label>
-                                        <asp:TextBox ID="nro_pedido" class="textos" Width="202" name="nro_pedido" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="nro_pedido" class="textos" Width="202" name="nro_pedido" runat="server" ></asp:TextBox>
 
                                     </label>
                                 </td>

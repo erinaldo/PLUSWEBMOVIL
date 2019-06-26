@@ -31,6 +31,8 @@ namespace CapaProceso.Consultas
         public string nro_trans = null;
         public string Ven__cod_tipotit = "cliente";
         public string Ven__cod_tit = " ";
+        public string Ven__cod_dgi = "0";
+        public string Ven__fono = "0";
 
         public modelowmtfacturascab buscarCabezeraFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
@@ -48,11 +50,11 @@ namespace CapaProceso.Consultas
             return conscabcera;
         }
 
-        public modelowmspctitulares buscarCliente(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit)
+        public modelowmspctitulares buscarCliente(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi, string Ven__fono)
         {
 
 
-            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit);
+            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, Ven__fono);
             int count = 0;
             cliente = null;
             foreach (modelowmspctitulares item in lista)
@@ -77,7 +79,7 @@ namespace CapaProceso.Consultas
 
             string Ven__cod_tit = conscabcera.cod_cliente;
             cliente = null;
-            cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit);
+            cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, Ven__fono);
 
             if(cliente != null)
             {

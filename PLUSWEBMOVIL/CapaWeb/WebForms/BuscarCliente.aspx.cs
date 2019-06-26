@@ -20,6 +20,8 @@ namespace CapaWeb.WebForms
         public string Ven__cod_emp = "04";
         public string Ven__cod_tipotit = "cliente";
         public string Ven__cod_tit = " ";
+        public string Ven__cod_dgi = "0";
+        public string Ven__fono = "0";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -59,7 +61,7 @@ namespace CapaWeb.WebForms
         private void CargarGrilla(string Ven__cod_tit)
         {
             
-            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit);
+            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, Ven__fono);
 
             Session["lista"] = lista;
             gvPerson.DataSource = lista;

@@ -102,7 +102,9 @@ namespace CapaWeb.WebForms
         public string ComPwm;
         public string AmUsrLog;
         public string valor_asignado = null;
-        public string Ven__cod_tipotit = "cliente";
+        public string Ven__cod_tipotit = "clientes";
+        public string Ven__cod_dgi = "0";
+        public string Ven__fono = "0";
         public string ResF_estado = "S";
         public string ResF_serie = "0";
         public string ResF_tipo = "F";
@@ -393,7 +395,7 @@ namespace CapaWeb.WebForms
             cmbCod_moneda.DataBind();
 
             //lissta vendedores
-            listaVendedores = ConsultaVendedores.ConsultaVendedores(AmUsrLog, ComPwm, Vend__cod_tipotit, Vend__cod_tit);
+            listaVendedores = ConsultaVendedores.ConsultaVendedores(AmUsrLog, ComPwm, Vend__cod_tipotit, Vend__cod_tit, Ven__cod_dgi, Ven__fono);
             cod_vendedor.DataSource = listaVendedores;
             cod_vendedor.DataTextField = "nom_tit";
             cod_vendedor.DataValueField = "cod_tit";
@@ -668,7 +670,7 @@ namespace CapaWeb.WebForms
             string error = "";
             string Ven__cod_tit = dniCliente.Text;
 
-            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit);
+            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, Ven__fono);
             
             cliente = null;
             foreach (modelowmspctitulares item in lista)
@@ -707,6 +709,7 @@ namespace CapaWeb.WebForms
             cabecerafactura.anior = "2019";
             cabecerafactura.cod_proc_aud = "RCOMFACT";
             cabecerafactura.cod_sucursal = ModeloUsuSucursal.cod_sucursal;
+            cabecerafactura.nro_pedido = nro_pedido.Text;
 
             error = GuardarCabezera.InsertarCabezeraFactura(cabecerafactura);
             if (string.IsNullOrEmpty(error))
@@ -774,6 +777,7 @@ namespace CapaWeb.WebForms
                     detallefactura.tasa_iva = item.tasa_iva;
                     detallefactura.cod_ccostos = item.cod_ccostos;
 
+
                     error = GuardarDetalles.InsertarDetalleFactura(detallefactura);
                     if (string.IsNullOrEmpty(error))
                     {
@@ -795,7 +799,7 @@ namespace CapaWeb.WebForms
         {
             string Ven__cod_tit = dniCliente.Text;
 
-            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit);
+            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, Ven__fono);
 
             int contar = 0;
             cliente = null;
@@ -831,6 +835,7 @@ namespace CapaWeb.WebForms
                     fonoCliente.Text = cliente.tel_tit;
                     dniCliente.Text = cliente.nro_dgi2;
                     txtcorreo.Text = cliente.email_tit;
+                    cmbCod_moneda.SelectedValue = cliente.moncli.Trim();
                     //Consulta las proofrmas de ese cliente
                     ListaProofrmas = ConsultaProformas.BuscarProformas(cliente.cod_tit, "A", "PF");
                     cbx_proformas.DataSource = ListaProofrmas;
@@ -1648,6 +1653,8 @@ namespace CapaWeb.WebForms
             this.Page.Response.Write("<script language='JavaScript'>window.open('./FormDetalleImpuestos.aspx', 'Detalle Impuesto', 'top=100,width=800 ,height=400, left=400');</script>");
             
         }
+
+       
     }
 }
 

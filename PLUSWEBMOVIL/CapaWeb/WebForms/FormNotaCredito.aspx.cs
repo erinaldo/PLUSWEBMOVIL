@@ -132,6 +132,8 @@ namespace CapaWeb.WebForms
         public decimal sumaSubtotal = 0;
         public string auditoria = null;
         public string nro_trans = null;
+        public string Ven__cod_dgi = "0";
+        public string Ven__fono = "0";
         protected void Page_Load(object sender, EventArgs e)
         {
             RecuperarCokie();
@@ -247,7 +249,7 @@ namespace CapaWeb.WebForms
         {
             string Ven__cod_tit = dniCliente.Text;
 
-            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit);
+            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, Ven__fono);
 
             int contar = 0;
             cliente = null;
@@ -448,7 +450,7 @@ namespace CapaWeb.WebForms
             cmbCod_moneda.DataBind();
 
             //lissta vendedores
-            listaVendedores = ConsultaVendedores.ConsultaVendedores(AmUsrLog, ComPwm, Vend__cod_tipotit, Vend__cod_tit);
+            listaVendedores = ConsultaVendedores.ConsultaVendedores(AmUsrLog, ComPwm, Vend__cod_tipotit, Vend__cod_tit, Ven__cod_dgi, Ven__fono);
             cod_vendedor.DataSource = listaVendedores;
             cod_vendedor.DataTextField = "nom_tit";
             cod_vendedor.DataValueField = "cod_tit";
