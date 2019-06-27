@@ -339,7 +339,7 @@ namespace CapaWeb.WebForms
                 decimal formDesc = Convert.ToDecimal(conscabcera.descuento);
                 txtSumaDesc.Text = String.Format("{0:N}", formDesc).ToString();
 
-            Session["sumaSubtotal"] = Convert.ToString(conscabcera.subtotal);
+                Session["sumaSubtotal"] = Convert.ToString(conscabcera.subtotal);
                 Session["sumaDescuento"] = Convert.ToString(conscabcera.descuento);
                 Session["sumaIva"] = Convert.ToString(conscabcera.iva);
                 Session["sumaTotal"] = Convert.ToString(conscabcera.total);

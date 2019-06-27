@@ -18,7 +18,7 @@ namespace CapaWeb.WebForms
 
         public string Ven__usuario = "desarrollo";
         public string Ven__cod_emp = "04";
-        public string Ven__cod_tipotit = "cliente";
+        public string Ven__cod_tipotit = "clientes";
         public string Ven__cod_tit = " ";
         public string Ven__cod_dgi = "0";
         public string Ven__fono = "0";
