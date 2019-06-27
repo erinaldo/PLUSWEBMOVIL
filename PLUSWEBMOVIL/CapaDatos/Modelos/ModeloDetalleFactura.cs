@@ -61,6 +61,7 @@ namespace CapaProceso.Modelos
         public string cod_ccostos { get; set; }
         public decimal detadescuento { get; set; }
         public decimal detaiva { get; set; }
+     
 
     }
 }

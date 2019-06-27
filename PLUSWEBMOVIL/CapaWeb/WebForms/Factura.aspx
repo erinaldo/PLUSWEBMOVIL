@@ -1,6 +1,19 @@
 ﻿<%@ Page EnableEventValidation="false" Title="" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeBehind="Factura.aspx.cs" Inherits="CapaWeb.WebForms.Factura" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
+
+        function cuentaCaracteres() {
+            var cantidadCaracteresPermitidos = 250;
+            var cantidadCaracteres = document.getElementById("<%= area.ClientID %>").value.length;
+            var caracteresRestantes = cantidadCaracteresPermitidos - cantidadCaracteres;
+            myCounter.innerHTML = caracteresRestantes;
+            if (caracteresRestantes == 0) {
+                document.getElementById("<%= area.ClientID %>").value = texto
+            } else {
+                 texto = document.getElementById("<%= area.ClientID %>").value
+            }
+        }
+
         function validarCamposArticulo(){
             var BuscarArticulo = document.getElementById("<%= BuscarArticulo.ClientID %>").value;
             var precio = document.getElementById("<%= precio.ClientID %>").value;
@@ -260,7 +273,7 @@
                                     <div align="left">Observaciones:</div>
                                 </td>
                                 <td colspan="5">
-                                    <asp:TextBox ID="area" runat="server" Width="900"  class="textos" MaxLength="250" TextMode="MultiLine" cols="150" Rows="3"></asp:TextBox>
+                                    <asp:TextBox ID="area" runat="server" Width="900"  class="textos" MaxLength="250" TextMode="MultiLine" onKeyDown="cuentaCaracteres()" onKeyUp="cuentaCaracteres()" cols="150" Rows="3"></asp:TextBox>
                                     <div class="textos2" align="left">Caracteres disponibles: <b><span id="myCounter">250</span></b></div>
                                 </td>
                             </tr>
@@ -384,7 +397,7 @@
                                             <asp:TemplateColumn HeaderText="Cantidad">
                                                 <ItemTemplate>
                                                     <span style="float: right;">
-                                                        <asp:Label ID="cantidad" runat="server" class="textos" Text='<%#Eval("cantidad") %>'></asp:Label>
+                                                        <asp:Label ID="cantidad" runat="server" class="textos" Text='<%#Eval("cantidad",  "{0:N}") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -415,7 +428,7 @@
                                            <asp:TemplateColumn HeaderText="Base IVA">
                                                 <ItemTemplate>
                                                     <span style="float: right;">
-                                                        <asp:Label ID="baseIva" runat="server" class="textos" Text='<%#Eval("base_iva", "{0:N}") %>'></asp:Label>
+                                                        <asp:Label ID="baseIva" runat="server" class="textos" Text='<%#Eval("subtotal", "{0:N}") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -500,10 +513,10 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <asp:Label  CssClass="busqueda" ID="Label6" runat="server" Text="Iva:"></asp:Label>
+                                    <asp:Label  CssClass="busqueda" ID="Label6" Visible="false" runat="server" Text="Iva:"></asp:Label>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtSumaIva" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="txtSumaIva" CssClass="textos" Visible="false" ReadOnly="true" runat="server"></asp:TextBox>
                                 </td>
                             </tr>
                              <tr>

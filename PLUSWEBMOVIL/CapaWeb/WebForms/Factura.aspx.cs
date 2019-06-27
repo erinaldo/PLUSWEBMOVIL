@@ -136,6 +136,10 @@ namespace CapaWeb.WebForms
         public decimal sumaIva = 0;
         public decimal sumaDescuento = 0;
         public decimal sumaSubtotal = 0;
+        public decimal sumaBase19 = 0;
+        public decimal sumaBase15 = 0;
+        public decimal sumaIva19 = 0;
+        public decimal sumaIva15 = 0;
         public string auditoria = null;
         public string nro_trans = null;
 
@@ -351,6 +355,35 @@ namespace CapaWeb.WebForms
             listaConsDetalle = ConsultaDeta.ConsultaDetalleFacura(nro_trans);
             Session["detalle"] = listaConsDetalle;
 
+            //Consulta de bases e ivas
+            decimal baseiva19 = 0;
+            decimal iva19 = 0;
+            decimal baseiva15 = 0;
+            decimal iva15 = 0;
+            foreach (ModeloDetalleFactura item in listaConsDetalle)
+            {
+                if (item.porc_iva == 19)
+                {
+                    baseiva19 += item.base_iva;
+                    iva19 += item.valor_iva;
+                }
+                if (item.porc_iva == 15)
+                {
+                    baseiva15 += item.base_iva;
+                    iva15 += item.valor_iva;
+                }
+            }
+            txtBaseIva19.Text = String.Format("{0:N}", baseiva19).ToString();
+            txtBase15.Text = String.Format("{0:N}", baseiva15).ToString();
+            txtIva19.Text = String.Format("{0:N}", iva19).ToString();
+            txtIva15.Text = String.Format("{0:N}", iva15).ToString();
+
+            //Llenar variables de seccion de bae e ivas
+
+            Session["sumaBase19"] = baseiva19;
+            Session["sumaBase15"] = baseiva15;
+            Session["sumaIva19"] = iva19;
+            Session["sumaIva15"] = iva15;
             gv_Producto.DataSource = listaConsDetalle;
             gv_Producto.DataBind();
             gv_Producto.Height = 100;
@@ -471,12 +504,46 @@ namespace CapaWeb.WebForms
                         {
                             sumaTotal = Convert.ToDecimal(Session["sumaTotal"]);
                         }
+                        //Base iva nuevos campos
+                        if (Session["sumaBase19"] != null)
+                        {
+                            sumaBase19 = Convert.ToDecimal(Session["sumaBase19"]);
+                        }
+                        if (Session["sumaBase15"] != null)
+                        {
+                            sumaBase15 = Convert.ToDecimal(Session["sumaBase15"]);
+                        }
+                        if (Session["sumaIva19"] != null)
+                        {
+                            sumaIva19 = Convert.ToDecimal(Session["sumaIva19"]);
+                        }
+                        if (Session["sumaIva15"] != null)
+                        {
+                            sumaIva15 = Convert.ToDecimal(Session["sumaIva15"]);
+                        }
+                        //Fin nuevos campos totales
                         /* Resto los totales antes de agregar un nuevo por que puede haber variado el precio*/
                         sumaSubtotal -= itemSuma.subtotal;
                         sumaDescuento -= itemSuma.detadescuento;
                         sumaIva -= itemSuma.detaiva;
                         sumaTotal -= itemSuma.total;
 
+                        if (itemSuma.poriva.ToString() == "0.19")
+                        {
+                            sumaBase19 -= itemSuma.subtotal;
+                        }
+                        if (itemSuma.poriva.ToString() == "0.15")
+                        {
+                            sumaBase15 -= itemSuma.subtotal;
+                        }
+                        if (itemSuma.poriva.ToString() == "0.19")
+                        {
+                            sumaIva19 -= itemSuma.detaiva;
+                        }
+                        if (itemSuma.poriva.ToString() == "0.15")
+                        {
+                            sumaIva15 -= itemSuma.detaiva;
+                        }
                         /* sumo los numebos valores agregados al producto*/
                         itemSuma.cantidad += Convert.ToDecimal(cantidad.Text);
                         itemSuma.precio_unit = Math.Round(Convert.ToDecimal(precio.Text), 2);
@@ -522,6 +589,33 @@ namespace CapaWeb.WebForms
                         Session["sumaTotal"] = sumaTotal.ToString();
                         txtSumaTotal.Text = String.Format("{0:N}", sumaTotal).ToString();
 
+                        //Suma base ivas
+                        if (itemSuma.poriva.ToString() == "0.19")
+                        {
+                            sumaBase19 += itemSuma.subtotal;
+                            Session["sumaBase19"] = sumaBase19.ToString();
+                            txtBaseIva19.Text = String.Format("{0:N}", sumaBase19).ToString();
+                        }
+
+                        if (itemSuma.poriva.ToString() == "0.15")
+                        {
+                            sumaBase15 += itemSuma.subtotal;
+                            Session["sumaBase15"] = sumaBase15.ToString();
+                            txtBase15.Text = String.Format("{0:N}", sumaBase15).ToString();
+                        }
+                        //Ivas
+                        if (itemSuma.poriva.ToString() == "0.19")
+                        {
+                            sumaIva19 += itemSuma.detaiva;
+                            Session["sumaIva19"] = sumaIva19.ToString();
+                            txtIva19.Text = String.Format("{0:N}", sumaIva19).ToString();
+                        }
+                        if (itemSuma.poriva.ToString() == "0.15")
+                        {
+                            sumaIva15 += itemSuma.detaiva;
+                            Session["sumaIva15"] = sumaIva15.ToString();
+                            txtIva15.Text = String.Format("{0:N}", sumaIva15).ToString();
+                        }
                         /*Suma detalle*/
 
                         break;
@@ -590,10 +684,57 @@ namespace CapaWeb.WebForms
                     {
                         sumaTotal = Convert.ToDecimal(Session["sumaTotal"]);
                     }
-
                     sumaTotal += item.total;
                     Session["sumaTotal"] = sumaTotal.ToString();
                     txtSumaTotal.Text = String.Format("{0:N}", sumaTotal).ToString();
+                    //base iva 19 totales
+
+                        if (Session["sumaBase19"] != null)
+                        {
+                            sumaBase19 = Convert.ToDecimal(Session["sumaBase19"]);
+                        }
+                    if (item.poriva.ToString() == "0.19")
+                    {
+                        sumaBase19 += item.subtotal;
+                        Session["sumaBase19"] = sumaBase19.ToString();
+                        txtBaseIva19.Text = String.Format("{0:N}", sumaBase19).ToString();
+                    }
+                    //base iva 15 totales
+                    if (Session["sumaBase15"] != null)
+                    {
+                        sumaBase15 = Convert.ToDecimal(Session["sumaBase15"]);
+                    }
+                    if (item.poriva.ToString() == "0.15")
+                    {
+                        sumaBase15 += item.subtotal;
+                        Session["sumaBase15"] = sumaBase15.ToString();
+                        txtBase15.Text = String.Format("{0:N}", sumaBase15).ToString();
+                    }
+                    //Iva 19 totales
+
+                    if (Session["sumaIva19"] != null)
+                    {
+                        sumaIva19 = Convert.ToDecimal(Session["sumaIva19"]);
+                    }
+                    if (item.poriva.ToString() == "0.19")
+                    {
+                        sumaIva19 += item.detaiva;
+                        Session["sumaIva19"] = sumaIva19.ToString();
+                        txtIva19.Text = String.Format("{0:N}", sumaIva19).ToString();
+                    }
+
+                    //Iva 15 totales
+
+                    if (Session["sumaIva15"] != null)
+                    {
+                        sumaIva15 = Convert.ToDecimal(Session["sumaIva15"]);
+                    }
+                    if (item.poriva.ToString() == "0.15")
+                    {
+                        sumaIva15 += item.detaiva;
+                        Session["sumaIva15"] = sumaIva15.ToString();
+                        txtIva15.Text = String.Format("{0:N}", sumaIva15).ToString();
+                    }
                     item.cod_cta_cos = articulo.cod_cta_cos;
                     item.cod_cta_inve = articulo.cod_cta_inve;
                     item.cod_cta_vtas = articulo.cod_cta_vtas;
@@ -1087,7 +1228,54 @@ namespace CapaWeb.WebForms
                     sumaTotal -= Convert.ToDecimal(detalle.total);
                     Session["sumaTotal"] = sumaTotal.ToString();
                     txtSumaTotal.Text = String.Format("{0:N}", sumaTotal.ToString());
+                    //base iva 19 totales
 
+                    if (Session["sumaBase19"] != null)
+                    {
+                        sumaBase19 = Convert.ToDecimal(Session["sumaBase19"]);
+                    }
+                    if (Math.Round(detalle.porc_iva, 0).ToString() == "19")
+                    {
+                        sumaBase19 -= detalle.subtotal;
+                        Session["sumaBase19"] = sumaBase19.ToString();
+                        txtBaseIva19.Text = String.Format("{0:N}", sumaBase19).ToString();
+                    }
+                    //base iva 15 totales
+
+                    if (Session["sumaBase15"] != null)
+                    {
+                        sumaBase15 = Convert.ToDecimal(Session["sumaBase15"]);
+                    }
+                    if (Math.Round(detalle.porc_iva, 0).ToString() == "15")
+                    {
+                        sumaBase15 -= detalle.subtotal;
+                        Session["sumaBase15"] = sumaBase15.ToString();
+                        txtBase15.Text = String.Format("{0:N}", sumaBase15).ToString();
+                    }
+                    //iva 19% totales
+
+                    if (Session["sumaIva19"] != null)
+                    {
+                        sumaIva19 = Convert.ToDecimal(Session["sumaIva19"]);
+                    }
+                    if (Math.Round(detalle.porc_iva, 0).ToString() == "19")
+                    {
+                        sumaIva19 -= detalle.valor_iva;
+                        Session["sumaIva19"] = sumaIva19.ToString();
+                        txtIva19.Text = String.Format("{0:N}", sumaIva19).ToString();
+                    }
+                    //iva 15% totales
+
+                    if (Session["sumaIva15"] != null)
+                    {
+                        sumaIva15 = Convert.ToDecimal(Session["sumaIva15"]);
+                    }
+                    if (Math.Round(detalle.porc_iva, 0).ToString() == "15")
+                    {
+                        sumaIva15 -= detalle.valor_iva;
+                        Session["sumaIva15"] = sumaIva15.ToString();
+                        txtIva15.Text = String.Format("{0:N}", sumaIva15).ToString();
+                    }
                     //Eliminar Subtotal
                     if (Session["sumaSubtotal"] != null)
                     {
@@ -1097,6 +1285,7 @@ namespace CapaWeb.WebForms
                     sumaSubtotal -= Convert.ToDecimal(detalle.subtotal);
                     Session["sumaSubtotal"] = sumaSubtotal.ToString();
                     txtSumaSubTo.Text = String.Format("{0:N}", sumaSubtotal.ToString());
+
                     //Eliminar Descuento
                     if (Session["sumaDescuento"] != null)
                     {
@@ -1113,6 +1302,8 @@ namespace CapaWeb.WebForms
                     sumaIva -= Convert.ToDecimal(detalle.detaiva);
                     Session["sumaIva"] = sumaIva.ToString();
                     txtSumaIva.Text = String.Format("{0:N}", sumaIva.ToString());
+                    //Eliminar base 19 y 15
+                    
 
 
 
@@ -1188,14 +1379,49 @@ namespace CapaWeb.WebForms
                         {
                             sumaTotal = Convert.ToDecimal(Session["sumaTotal"]);
                         }
-                        /* Resto los totales antes de agregar un nuevo por que puede haber variado el precio*/
-                        sumaSubtotal -= itemSuma.subtotal;
+                            //Base iva nuevos campos
+                            if (Session["sumaBase19"] != null)
+                            {
+                                sumaBase19 = Convert.ToDecimal(Session["sumaBase19"]);
+                            }
+                            if (Session["sumaBase15"] != null)
+                            {
+                                sumaBase15 = Convert.ToDecimal(Session["sumaBase15"]);
+                            }
+                            if (Session["sumaIva19"] != null)
+                            {
+                                sumaIva19 = Convert.ToDecimal(Session["sumaIva19"]);
+                            }
+                            if (Session["sumaIva15"] != null)
+                            {
+                                sumaIva15 = Convert.ToDecimal(Session["sumaIva15"]);
+                            }
+                            /* Resto los totales antes de agregar un nuevo por que puede haber variado el precio*/
+                            sumaSubtotal -= itemSuma.subtotal;
                         sumaDescuento -= itemSuma.detadescuento;
                         sumaIva -= itemSuma.detaiva;
                         sumaTotal -= itemSuma.total;
 
-                        /* sumo los numebos valores agregados al producto*/
-                        itemSuma.cantidad += Convert.ToDecimal(cantidad.Text);
+                            //Ivas y bases
+                            if (itemSuma.poriva.ToString() == "0.19")
+                            {
+                                sumaBase19 -= itemSuma.subtotal;
+                            }
+                            if (itemSuma.poriva.ToString() == "0.15")
+                            {
+                                sumaBase15 -= itemSuma.subtotal;
+                            }
+                            if (itemSuma.poriva.ToString() == "0.19")
+                            {
+                                sumaIva19 -= itemSuma.detaiva;
+                            }
+                            if (itemSuma.poriva.ToString() == "0.15")
+                            {
+                                sumaIva15 -= itemSuma.detaiva;
+                            }
+
+                            /* sumo los numebos valores agregados al producto*/
+                            itemSuma.cantidad += Convert.ToDecimal(cantidad.Text);
                         itemSuma.precio_unit = Math.Round(Convert.ToDecimal(precio.Text), 2);
 
 
@@ -1239,9 +1465,37 @@ namespace CapaWeb.WebForms
                         Session["sumaTotal"] = sumaTotal.ToString();
                         txtSumaTotal.Text = String.Format("{0:N}", sumaTotal).ToString();
 
-                        /*Suma detalle*/
+                            //Suma base ivas
+                            if (itemSuma.poriva.ToString() == "0.19")
+                            {
+                                sumaBase19 += itemSuma.subtotal;
+                                Session["sumaBase19"] = sumaBase19.ToString();
+                                txtBaseIva19.Text = String.Format("{0:N}", sumaBase19).ToString();
+                            }
 
-                        break;
+                            if (itemSuma.poriva.ToString() == "0.15")
+                            {
+                                sumaBase15 += itemSuma.subtotal;
+                                Session["sumaBase15"] = sumaBase15.ToString();
+                                txtBase15.Text = String.Format("{0:N}", sumaBase15).ToString();
+                            }
+                            //Ivas
+                            if (itemSuma.poriva.ToString() == "0.19")
+                            {
+                                sumaIva19 += itemSuma.detaiva;
+                                Session["sumaIva19"] = sumaIva19.ToString();
+                                txtIva19.Text = String.Format("{0:N}", sumaIva19).ToString();
+                            }
+                            if (itemSuma.poriva.ToString() == "0.15")
+                            {
+                                sumaIva15 += itemSuma.detaiva;
+                                Session["sumaIva15"] = sumaIva15.ToString();
+                                txtIva15.Text = String.Format("{0:N}", sumaIva15).ToString();
+                            }
+
+                            /*Suma detalle*/
+
+                            break;
                     }
 
                 }
@@ -1310,7 +1564,56 @@ namespace CapaWeb.WebForms
                     sumaTotal += item.total;
                     Session["sumaTotal"] = String.Format("{0:N}", sumaTotal).ToString();
                     txtSumaTotal.Text = sumaTotal.ToString();
-                    item.cod_cta_cos = articulo.cod_cta_cos;
+
+                        //base iva 19 totales
+
+                        if (Session["sumaBase19"] != null)
+                        {
+                            sumaBase19 = Convert.ToDecimal(Session["sumaBase19"]);
+                        }
+                        if (item.poriva.ToString() == "0.19")
+                        {
+                            sumaBase19 += item.subtotal;
+                            Session["sumaBase19"] = sumaBase19.ToString();
+                            txtBaseIva19.Text = String.Format("{0:N}", sumaBase19).ToString();
+                        }
+                        //base iva 15 totales
+                        if (Session["sumaBase15"] != null)
+                        {
+                            sumaBase15 = Convert.ToDecimal(Session["sumaBase15"]);
+                        }
+                        if (item.poriva.ToString() == "0.15")
+                        {
+                            sumaBase15 += item.subtotal;
+                            Session["sumaBase15"] = sumaBase15.ToString();
+                            txtBase15.Text = String.Format("{0:N}", sumaBase15).ToString();
+                        }
+                        //Iva 19 totales
+
+                        if (Session["sumaIva19"] != null)
+                        {
+                            sumaIva19 = Convert.ToDecimal(Session["sumaIva19"]);
+                        }
+                        if (item.poriva.ToString() == "0.19")
+                        {
+                            sumaIva19 += item.detaiva;
+                            Session["sumaIva19"] = sumaIva19.ToString();
+                            txtIva19.Text = String.Format("{0:N}", sumaIva19).ToString();
+                        }
+
+                        //Iva 15 totales
+
+                        if (Session["sumaIva15"] != null)
+                        {
+                            sumaIva15 = Convert.ToDecimal(Session["sumaIva15"]);
+                        }
+                        if (item.poriva.ToString() == "0.15")
+                        {
+                            sumaIva15 += item.detaiva;
+                            Session["sumaIva15"] = sumaIva15.ToString();
+                            txtIva15.Text = String.Format("{0:N}", sumaIva15).ToString();
+                        }
+                        item.cod_cta_cos = articulo.cod_cta_cos;
                     item.cod_cta_inve = articulo.cod_cta_inve;
                     item.cod_cta_vtas = articulo.cod_cta_vtas;
                     item.base_imp = articulo.volumen_art;
@@ -1429,12 +1732,47 @@ namespace CapaWeb.WebForms
                             if (Session["sumaTotal"] != null)
                             {
                                 sumaTotal = Convert.ToDecimal(Session["sumaTotal"]);
+
+                            }
+                            //Base iva nuevos campos
+                            if (Session["sumaBase19"] != null)
+                            {
+                                sumaBase19 = Convert.ToDecimal(Session["sumaBase19"]);
+                            }
+                            if (Session["sumaBase15"] != null)
+                            {
+                                sumaBase15 = Convert.ToDecimal(Session["sumaBase15"]);
+                            }
+                            if (Session["sumaIva19"] != null)
+                            {
+                                sumaIva19 = Convert.ToDecimal(Session["sumaIva19"]);
+                            }
+                            if (Session["sumaIva15"] != null)
+                            {
+                                sumaIva15 = Convert.ToDecimal(Session["sumaIva15"]);
                             }
                             /* Resto los totales antes de agregar un nuevo por que puede haber variado el precio*/
                             sumaSubtotal -= itemSuma.subtotal;
                             sumaDescuento -= itemSuma.detadescuento;
                             sumaIva -= itemSuma.detaiva;
                             sumaTotal -= itemSuma.total;
+
+                            if (itemSuma.poriva.ToString() == "0.19")
+                            {
+                                sumaBase19 -= itemSuma.subtotal;
+                            }
+                            if (itemSuma.poriva.ToString() == "0.15")
+                            {
+                                sumaBase15 -= itemSuma.subtotal;
+                            }
+                            if (itemSuma.poriva.ToString() == "0.19")
+                            {
+                                sumaIva19 -= itemSuma.detaiva;
+                            }
+                            if (itemSuma.poriva.ToString() == "0.15")
+                            {
+                                sumaIva15 -= itemSuma.detaiva;
+                            }
 
                             /* sumo los numebos valores agregados al producto*/
                             itemSuma.cantidad += Convert.ToDecimal(cantidad.Text);
@@ -1480,6 +1818,33 @@ namespace CapaWeb.WebForms
                             sumaTotal += itemSuma.total;
                             Session["sumaTotal"] = sumaTotal.ToString();
                             txtSumaTotal.Text = String.Format("{0:N}", sumaTotal).ToString();
+                            //Suma base ivas
+                            if (itemSuma.poriva.ToString() == "0.19")
+                            {
+                                sumaBase19 += itemSuma.subtotal;
+                                Session["sumaBase19"] = sumaBase19.ToString();
+                                txtBaseIva19.Text = String.Format("{0:N}", sumaBase19).ToString();
+                            }
+
+                            if (itemSuma.poriva.ToString() == "0.15")
+                            {
+                                sumaBase15 += itemSuma.subtotal;
+                                Session["sumaBase15"] = sumaBase15.ToString();
+                                txtBase15.Text = String.Format("{0:N}", sumaBase15).ToString();
+                            }
+                            //Ivas
+                            if (itemSuma.poriva.ToString() == "0.19")
+                            {
+                                sumaIva19 += itemSuma.detaiva;
+                                Session["sumaIva19"] = sumaIva19.ToString();
+                                txtIva19.Text = String.Format("{0:N}", sumaIva19).ToString();
+                            }
+                            if (itemSuma.poriva.ToString() == "0.15")
+                            {
+                                sumaIva15 += itemSuma.detaiva;
+                                Session["sumaIva15"] = sumaIva15.ToString();
+                                txtIva15.Text = String.Format("{0:N}", sumaIva15).ToString();
+                            }
 
                             /*Suma detalle*/
 
@@ -1552,6 +1917,54 @@ namespace CapaWeb.WebForms
                         sumaTotal += item.total;
                         Session["sumaTotal"] = String.Format("{0:N}", sumaTotal).ToString();
                         txtSumaTotal.Text = sumaTotal.ToString();
+                        //base iva 19 totales
+
+                        if (Session["sumaBase19"] != null)
+                        {
+                            sumaBase19 = Convert.ToDecimal(Session["sumaBase19"]);
+                        }
+                        if (item.poriva.ToString() == "0.19")
+                        {
+                            sumaBase19 += item.subtotal;
+                            Session["sumaBase19"] = sumaBase19.ToString();
+                            txtBaseIva19.Text = String.Format("{0:N}", sumaBase19).ToString();
+                        }
+                        //base iva 15 totales
+                        if (Session["sumaBase15"] != null)
+                        {
+                            sumaBase15 = Convert.ToDecimal(Session["sumaBase15"]);
+                        }
+                        if (item.poriva.ToString() == "0.15")
+                        {
+                            sumaBase15 += item.subtotal;
+                            Session["sumaBase15"] = sumaBase15.ToString();
+                            txtBase15.Text = String.Format("{0:N}", sumaBase15).ToString();
+                        }
+                        //Iva 19 totales
+
+                        if (Session["sumaIva19"] != null)
+                        {
+                            sumaIva19 = Convert.ToDecimal(Session["sumaIva19"]);
+                        }
+                        if (item.poriva.ToString() == "0.19")
+                        {
+                            sumaIva19 += item.detaiva;
+                            Session["sumaIva19"] = sumaIva19.ToString();
+                            txtIva19.Text = String.Format("{0:N}", sumaIva19).ToString();
+                        }
+
+                        //Iva 15 totales
+
+                        if (Session["sumaIva15"] != null)
+                        {
+                            sumaIva15 = Convert.ToDecimal(Session["sumaIva15"]);
+                        }
+                        if (item.poriva.ToString() == "0.15")
+                        {
+                            sumaIva15 += item.detaiva;
+                            Session["sumaIva15"] = sumaIva15.ToString();
+                            txtIva15.Text = String.Format("{0:N}", sumaIva15).ToString();
+                        }
                         item.cod_cta_cos = articulo.cod_cta_cos;
                         item.cod_cta_inve = articulo.cod_cta_inve;
                         item.cod_cta_vtas = articulo.cod_cta_vtas;

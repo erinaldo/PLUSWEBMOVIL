@@ -121,7 +121,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                     baseiva19 += item.base_iva;
                     iva19 += item.valor_iva;
                 }
-                  if(item.porc_iva == 5)
+                  if(item.porc_iva == 15)
                 {
                     baseiva5 += item.base_iva;
                     iva5 += item.valor_iva;

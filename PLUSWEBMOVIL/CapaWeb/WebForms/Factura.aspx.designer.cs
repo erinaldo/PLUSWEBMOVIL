@@ -75,7 +75,11 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox fecha;
-        
+        protected global::System.Web.UI.WebControls.TextBox txtBaseIva19;
+        protected global::System.Web.UI.WebControls.TextBox txtBase15;
+        protected global::System.Web.UI.WebControls.TextBox txtIva19;
+        protected global::System.Web.UI.WebControls.TextBox txtIva15;
+
         /// <summary>
         /// Control cod_costos.
         /// </summary>
