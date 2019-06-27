@@ -113,7 +113,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             decimal iva19 = 0;
             decimal baseiva5 = 0;
             decimal iva5 = 0;
-            //Obtener totales y base de ivas 19 y 5
+            //Obtener totales y base de ivas 19 y 15
             foreach (ModeloDetalleFactura item in listaConsDet)
             {
                   if(item.porc_iva == 19)
@@ -159,9 +159,11 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
 
             document.Open();
+            /*Tipo de letra y tamaño del documento pdf*/
             var path = HttpContext.Current.Server.MapPath("~/Tema/fonts/VerdanaVf.ttf");
             BaseFont bf = BaseFont.CreateFont(path, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             iTextSharp.text.Font fontText = new iTextSharp.text.Font(bf, 9, iTextSharp.text.Font.NORMAL);
+            iTextSharp.text.Font fontText1 = new iTextSharp.text.Font(bf, 8, iTextSharp.text.Font.NORMAL);
 
             PdfPCell cell = new PdfPCell();//creo variable de celda
 
@@ -366,11 +368,11 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             float[] values = new float[7];
             values[0] = 90;
             values[1] = 300;
-            values[2] = 80;
-            values[3] = 70;
+            values[2] = 70;
+            values[3] = 110;
             values[4] = 70;
-            values[5] = 70;
-            values[6] = 70;
+            values[5] = 90;
+            values[6] = 90;
             detacab.SetWidths(values);
 
             float[] detacabs = { 0.55f };
@@ -381,7 +383,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.BorderWidthLeft = 1;
             cell.BorderWidthTop = 1;
             cell.BorderWidthRight = 1;
-            cell.HorizontalAlignment = 0;
+            cell.HorizontalAlignment = 1;
             detacab.AddCell(cell);
 
             cell = new PdfPCell(new Paragraph("DESCRIPCION", fontText));
@@ -389,15 +391,15 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.BorderWidthLeft = 1;
             cell.BorderWidthTop = 1;
             cell.BorderWidthRight = 1;
-            cell.HorizontalAlignment = 0;
+            cell.HorizontalAlignment = 1;
             detacab.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph("CANTIDAD", fontText));
+            cell = new PdfPCell(new Paragraph("CANT", fontText));
             cell.BorderWidthBottom = 1;
             cell.BorderWidthLeft = 1;
             cell.BorderWidthTop = 1;
             cell.BorderWidthRight = 1;
-            cell.HorizontalAlignment = 0;
+            cell.HorizontalAlignment = 1;
             detacab.AddCell(cell);
 
             cell = new PdfPCell(new Paragraph("P.UNIT", fontText));
@@ -405,15 +407,15 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.BorderWidthLeft = 1;
             cell.BorderWidthTop = 1;
             cell.BorderWidthRight = 1;
-            cell.HorizontalAlignment = 0;
+            cell.HorizontalAlignment = 1;
             detacab.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph("% DSCTO", fontText));
+            cell = new PdfPCell(new Paragraph("% DCTO", fontText));
             cell.BorderWidthBottom = 1;
             cell.BorderWidthLeft = 1;
             cell.BorderWidthTop = 1;
             cell.BorderWidthRight = 1;
-            cell.HorizontalAlignment = 0;
+            cell.HorizontalAlignment = 1;
             detacab.AddCell(cell);
 
             cell = new PdfPCell(new Paragraph("NETO ", fontText));
@@ -424,7 +426,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 0;
             detacab.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph("V/GRAV ", fontText));
+            cell = new PdfPCell(new Paragraph("V/GRAV. ", fontText));
             cell.BorderWidthBottom = 1;
             cell.BorderWidthLeft = 1;
             cell.BorderWidthTop = 1;
@@ -441,7 +443,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             PdfPTable detalle = new PdfPTable(7);//cantidad de columnas que va tener la tabla
             detalle.WidthPercentage = 100f;
             detalle.SpacingAfter = 10;
-           
+            
 
             values = new float[7];
             values[0] = 90;
@@ -459,13 +461,13 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             foreach (ModeloDetalleFactura item in listaConsDet)
             {
                 
-                detalle.AddCell(new Paragraph( item.cod_articulo, fontText));
-                detalle.AddCell(new Paragraph(item.nom_articulo, fontText));
-                detalle.AddCell(new Paragraph(String.Format("{0:N3}", item.cantidad).ToString(), fontText));
-                detalle.AddCell(new Paragraph(String.Format("{0:N5}", item.precio_unit).ToString(), fontText));
-                detalle.AddCell(new Paragraph(String.Format("{0:N}", (Math.Round( item.porc_descto, 2))).ToString(), fontText));
-                detalle.AddCell(new Paragraph(String.Format("{0:N2}", (Math.Round(item.subtotal, 2))).ToString(), fontText));
-                detalle.AddCell(new Paragraph(String.Format("{0:N2}",(Math.Round(item.total, 2))).ToString(), fontText));
+                detalle.AddCell(new Paragraph( item.cod_articulo, fontText1));
+                detalle.AddCell(new Paragraph(item.nom_articulo, fontText1));
+                detalle.AddCell(new Paragraph(String.Format("{0:N3}", item.cantidad).ToString(), fontText1));
+                detalle.AddCell(new Paragraph(String.Format("{0:N5}", item.precio_unit).ToString(), fontText1));
+                detalle.AddCell(new Paragraph(String.Format("{0:N}", (Math.Round( item.porc_descto, 2))).ToString(), fontText1));
+                detalle.AddCell(new Paragraph(String.Format("{0:N2}", (Math.Round(item.subtotal, 2))).ToString(), fontText1));
+                detalle.AddCell(new Paragraph(String.Format("{0:N2}",(Math.Round(item.total, 2))).ToString(), fontText1));
 
             }
 

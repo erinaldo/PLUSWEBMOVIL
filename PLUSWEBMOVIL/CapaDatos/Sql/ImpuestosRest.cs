@@ -44,9 +44,18 @@ namespace CapaDatos.Sql
                     item.nom_impuesto = Convert.ToString(dr["nom_impuesto"]);
                     item.cod_tasa_impu = Convert.ToString(dr["cod_tasa_impu"]);
                     item.nom_tasa = Convert.ToString(dr["nom_tasa"]);
+
                     item.porc_impu = Convert.ToString(dr["porc_impu"]);
+                    decimal impuesto = Convert.ToDecimal(dr["porc_impu"]);
+                    item.porc_impu1 = String.Format("{0:N2}", impuesto);
+
+                    decimal baseimpu = Convert.ToDecimal(dr["base_impu"]);
                     item.base_impu = Convert.ToString(dr["base_impu"]);
+                    item.base_impu1 = String.Format("{0:N2}", baseimpu);
+
+                    decimal valorimpu = Convert.ToDecimal(dr["valor_impu"]);
                     item.valor_impu = Convert.ToString(dr["valor_impu"]);
+                    item.valor_impu1 = String.Format("{0:N2}", valorimpu);
 
                     lista.Add(item);
                 }

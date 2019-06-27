@@ -54,7 +54,7 @@ namespace CapaProceso.Consultas
         {
 
 
-            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, Ven__fono);
+            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
             int count = 0;
             cliente = null;
             foreach (modelowmspctitulares item in lista)

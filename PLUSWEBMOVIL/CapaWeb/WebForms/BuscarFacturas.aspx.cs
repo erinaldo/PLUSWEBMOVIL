@@ -317,11 +317,11 @@ namespace CapaWeb.WebForms
                     {
                         case "CONTABILIZADO":
 
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('LA  FACTURA EN ESTADO " + estadoIM + " ,DEBE ANULARSE MEDIANTE NOTA DE CRÉDITO')+ error;</script>");
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('LA  FACTURA ESTA EN ESTADO " + estadoIM + " , POR FAVOR ANULARLA MEDIANTE NOTA DE CRÉDITO')+ error;</script>");
                             break;
                         case "FINALIZADO":
 
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('LA  FACTURA EN ESTADO " + estadoIM + " ,DEBE ANULARSE MEDIANTE NOTA DE CRÉDITO')+ error;</script>");
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('LA  FACTURA EN ESTADO " + estadoIM + " , POR FAVOR ANULARLA MEDIANTE NOTA DE CRÉDITO')+ error;</script>");
                             break;
                         default:
                             Encabezado encabezado = new Encabezado();

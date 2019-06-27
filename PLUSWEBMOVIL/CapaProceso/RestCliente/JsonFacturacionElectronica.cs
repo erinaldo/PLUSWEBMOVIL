@@ -204,7 +204,7 @@ namespace CapaProceso.RestCliente
             ModeloUsuSucursal  = BuscarUsuarioSucursal (Ccf_cod_emp, Ccf_usuario);
           
             vendedor = null;
-            vendedor = buscarCliente(Ccf_usuario, Ccf_cod_emp, "VEN", conscabcera.cod_vendedor, Ven__cod_dgi, Ven__fono);
+            vendedor = buscarCliente(Ccf_usuario, Ccf_cod_emp, "VEN", conscabcera.cod_vendedor, Ven__cod_dgi);
 
             sucursal.ciudad = vendedor.nom_ciudad;
             sucursal.codcliente = conscabcera.cod_cliente;
@@ -232,7 +232,7 @@ namespace CapaProceso.RestCliente
 
             string Ven__cod_tit = conscabcera.cod_cliente;
             cliente = null;
-            cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit,  Ven__cod_dgi,  Ven__fono);
+            cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit,  Ven__cod_dgi);
 
             tercero.apli1 = cliente.nom_tit;
             tercero.apl2 = "";
@@ -250,11 +250,11 @@ namespace CapaProceso.RestCliente
             return tercero;
         }
 
-        public modelowmspctitulares buscarCliente(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi, string Ven__fono)
+        public modelowmspctitulares buscarCliente(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi)
         {
 
 
-            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit,  Ven__cod_dgi,  Ven__fono);
+            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit,  Ven__cod_dgi);
             int count = 0;
             cliente = null;
             foreach (modelowmspctitulares item in lista)

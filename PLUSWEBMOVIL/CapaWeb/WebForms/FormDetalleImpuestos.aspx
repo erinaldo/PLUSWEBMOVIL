@@ -39,11 +39,11 @@
                                             <Columns>
                                                 <asp:BoundField  DataField="cod_tipo_impu"  HeaderText="IMPUESTO" />
                                                 <asp:BoundField  DataField="nom_impuesto"  HeaderText="DESCRIPCION"  />
-                                                <asp:BoundField  DataField="cod_tasa_impu" HeaderText="TASA"  />
-                                                <asp:BoundField  DataField="nom_tasa"  HeaderText="NOMBRE" />
-                                                <asp:BoundField  DataField="base_impu"  HeaderText="BASE" />
-                                                <asp:BoundField  DataField="porc_impu"  HeaderText="%" DataFormatString="{0:N}"/>
-                                                <asp:BoundField  DataField="valor_impu"  HeaderText="VALOR" />
+                                                <asp:BoundField  DataField="cod_tasa_impu" HeaderText="TASA"   />
+                                                <asp:BoundField  DataField="nom_tasa"  HeaderText="NOMBRE"   />
+                                                <asp:BoundField  DataField="base_impu1"  HeaderText="BASE" DataFormatString="{0:N}" />
+                                                <asp:BoundField  DataField="porc_impu1"  HeaderText="%" DataFormatString="{0:N}"/>
+                                                <asp:BoundField  DataField="valor_impu1"  HeaderText="VALOR"  DataFormatString="{0:N}" />
                                                 
                                             </Columns>
                                               <FooterStyle BackColor="#CC0066" Font-Bold="True" ForeColor="White" />

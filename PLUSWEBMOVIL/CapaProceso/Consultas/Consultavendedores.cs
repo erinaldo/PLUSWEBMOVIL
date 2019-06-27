@@ -14,10 +14,10 @@ namespace CapaProceso.Consultas
         Vendedores vendedores = new Vendedores();
         modelovendedores modevendedores = new modelovendedores();
         
-        public List<modelovendedores> ConsultaVendedores(string Vend__usuario, string Vend__cod_emp, string Vend__cod_tipotit, string Vend__cod_tit, string Ven__cod_dgi, string Ven__fono)
+        public List<modelovendedores> ConsultaVendedores(string Vend__usuario, string Vend__cod_emp, string Vend__cod_tipotit, string Vend__cod_tit, string Ven__cod_dgi)
         {
             List<modelovendedores> lista = new List<modelovendedores>();
-            lista = vendedores.ListaBuscaVendedores(Vend__usuario, Vend__cod_emp, Vend__cod_tipotit, Vend__cod_tit, Ven__cod_dgi, Ven__fono);
+            lista = vendedores.ListaBuscaVendedores(Vend__usuario, Vend__cod_emp, Vend__cod_tipotit, Vend__cod_tit, Ven__cod_dgi);
 
             
             return lista;

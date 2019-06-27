@@ -92,7 +92,7 @@ namespace CapaDatos.Sql
         public List<modelowmtfacturascab> ConsultaFacturaNroTran(  string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string Ccf_estado, string Ccf_cliente, string Ccf_cod_docum,string Ccf_serie_docum, string Ccf_nro_docum ,string Ccf_diai, string Ccf_mesi, string Ccf_anioi, string Ccf_diaf,string Ccf_mesf, string Ccf_aniof)
         {
             try
-            {
+            { 
                 using (cn = conexion.genearConexion())
                 {
                     List<modelowmtfacturascab> lista = new List<modelowmtfacturascab>();
@@ -189,8 +189,9 @@ namespace CapaDatos.Sql
                         item.nom_moneda = Convert.ToString(dr["nom_moneda"]);
                         item.nro_doc_inve = Convert.ToString(dr["nro_doc_inve"]);
                         item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
-                        item.cod_sucursal = Convert.ToString(dr["cod_sucursal"]);
-                       // item.nro_pedido = Convert.ToString(dr["nro_pedido"]);
+                       //item.cod_sucursal = Convert.ToString(dr["cod_sucursal"]);
+                       item.nro_pedido = Convert.ToString(dr["nro_pedido"]);
+                        item.email_tit = Convert.ToString(dr["email_tit"]);
 
                         lista.Add(item);
 

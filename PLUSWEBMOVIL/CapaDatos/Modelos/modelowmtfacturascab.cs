@@ -73,5 +73,6 @@ namespace CapaDatos.Modelos
         public string cod_proc_aud { get; set; }
         public string cod_sucursal { get; set; }
         public string nro_pedido { get; set; }
+        public string email_tit { get; set; }
     }
 }

@@ -249,7 +249,7 @@ namespace CapaWeb.WebForms
         {
             string Ven__cod_tit = dniCliente.Text;
 
-            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, Ven__fono);
+            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
 
             int contar = 0;
             cliente = null;
@@ -450,7 +450,7 @@ namespace CapaWeb.WebForms
             cmbCod_moneda.DataBind();
 
             //lissta vendedores
-            listaVendedores = ConsultaVendedores.ConsultaVendedores(AmUsrLog, ComPwm, Vend__cod_tipotit, Vend__cod_tit, Ven__cod_dgi, Ven__fono);
+            listaVendedores = ConsultaVendedores.ConsultaVendedores(AmUsrLog, ComPwm, Vend__cod_tipotit, Vend__cod_tit, Ven__cod_dgi);
             cod_vendedor.DataSource = listaVendedores;
             cod_vendedor.DataTextField = "nom_tit";
             cod_vendedor.DataValueField = "cod_tit";

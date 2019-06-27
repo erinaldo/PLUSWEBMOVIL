@@ -322,11 +322,11 @@ namespace CapaWeb.WebForms
                 dniCliente.Text = conscabcera.nro_dgi2;
                 nombreCliente.Text = conscabcera.nom_tit;
                 fonoCliente.Text = conscabcera.tel_tit;
-                //txtcorreo.Text = conscabcera.e
+                txtcorreo.Text = conscabcera.email_tit;
                 DateTime dtfec_doc = Convert.ToDateTime(conscabcera.fec_doc);
                 fecha.Text = dtfec_doc.ToString("yyyy-MM-dd");
                 cod_fpago.SelectedValue = conscabcera.cod_fpago;
-                // nro_pedido.Text = conscabcera.pe
+                nro_pedido.Text = conscabcera.nro_pedido;
                 area.Text = conscabcera.observaciones;
                 ocompra.Text = conscabcera.ocompra;
                 porc_descto.Text = Convert.ToString(conscabcera.porc_descto);
@@ -428,7 +428,7 @@ namespace CapaWeb.WebForms
             cmbCod_moneda.DataBind();
 
             //lissta vendedores
-            listaVendedores = ConsultaVendedores.ConsultaVendedores(AmUsrLog, ComPwm, Vend__cod_tipotit, Vend__cod_tit, Ven__cod_dgi, Ven__fono);
+            listaVendedores = ConsultaVendedores.ConsultaVendedores(AmUsrLog, ComPwm, Vend__cod_tipotit, Vend__cod_tit, Ven__cod_dgi);
             cod_vendedor.DataSource = listaVendedores;
             cod_vendedor.DataTextField = "nom_tit";
             cod_vendedor.DataValueField = "cod_tit";
@@ -811,7 +811,7 @@ namespace CapaWeb.WebForms
             string error = "";
             string Ven__cod_tit = dniCliente.Text;
 
-            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, Ven__fono);
+            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
             
             cliente = null;
             foreach (modelowmspctitulares item in lista)
@@ -940,7 +940,7 @@ namespace CapaWeb.WebForms
         {
             string Ven__cod_tit = dniCliente.Text;
 
-            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, Ven__fono);
+            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
 
             int contar = 0;
             cliente = null;

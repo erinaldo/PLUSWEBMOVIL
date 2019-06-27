@@ -61,7 +61,7 @@ namespace CapaWeb.WebForms
         private void CargarGrilla(string Ven__cod_tit)
         {
             
-            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, Ven__fono);
+            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
 
             Session["lista"] = lista;
             gvPerson.DataSource = lista;

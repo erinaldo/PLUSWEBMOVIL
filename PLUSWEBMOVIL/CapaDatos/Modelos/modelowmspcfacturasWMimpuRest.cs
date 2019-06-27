@@ -17,6 +17,10 @@ namespace CapaDatos.Modelos
         public string porc_impu { get; set; }
         public string base_impu { get; set; }
         public string valor_impu { get; set; }
+        public string porc_impu1 { get; set; }
+        public string base_impu1{ get; set; }
+        public string valor_impu1 { get; set; }
+
 
     }
 }
