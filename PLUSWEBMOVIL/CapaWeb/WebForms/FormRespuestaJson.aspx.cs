@@ -109,6 +109,7 @@ namespace CapaWeb.WebForms
             txt_cufe.Text = ModeloResQr.cufe;
             txt_error.Text = ModeloResQr.error;
             txt_json.Text = ModeloResQr.json;
+            txt_result.Text = ModeloResQr.result;
             FormularioRes.Visible = true;
 
         }

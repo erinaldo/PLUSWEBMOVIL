@@ -102,6 +102,14 @@
                                 </td>
                                 </tr>
                             <tr valign="top">
+                                <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Result:</div>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txt_result" Width="880" class="textos" ReadOnly="true" TextMode="MultiLine" cols="100" Rows="3" runat="server"></asp:TextBox>
+                                </td>
+                                </tr>
+                            <tr valign="top">
                                <td align="right" nowrap="nowrap" class="busqueda">
                                     <div align="left">Json:</div>
                                 </td>

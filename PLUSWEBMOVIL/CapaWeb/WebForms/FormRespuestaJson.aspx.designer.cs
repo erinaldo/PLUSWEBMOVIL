@@ -103,6 +103,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox txt_error;
         
         /// <summary>
+        /// Control txt_result.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_result;
+        
+        /// <summary>
         /// Control txt_json.
         /// </summary>
         /// <remarks>

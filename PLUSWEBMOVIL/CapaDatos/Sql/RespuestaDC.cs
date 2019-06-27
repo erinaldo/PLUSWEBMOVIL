@@ -36,6 +36,7 @@ namespace CapaDatos.Sql
                     item.cufe = Convert.ToString(dr["cufe"]);
                     item.error = Convert.ToString(dr["error"]);
                     item.json = Convert.ToString(dr["json"]);
+                    item.result = Convert.ToString(dr["result"]);
                     lista.Add(item);
                 }
 
@@ -69,6 +70,7 @@ namespace CapaDatos.Sql
                     item.cufe = Convert.ToString(dr["cufe"]);
                     item.error = Convert.ToString(dr["error"]);
                     item.json = Convert.ToString(dr["json"]);
+                    item.result = Convert.ToString(dr["result"]);
                     lista.Add(item);
                 }
 
