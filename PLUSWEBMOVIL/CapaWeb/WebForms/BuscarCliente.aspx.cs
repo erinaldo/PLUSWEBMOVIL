@@ -16,8 +16,8 @@ namespace CapaWeb.WebForms
         public List<modelowmspctitulares> lista = null;
         modelowmspctitulares cliente = new modelowmspctitulares();
 
-        public string Ven__usuario = "desarrollo";
-        public string Ven__cod_emp = "04";
+        public string ComPwm;
+        public string AmUsrLog;        
         public string Ven__cod_tipotit = "clientes";
         public string Ven__cod_tit = " ";
         public string Ven__cod_dgi = "0";
@@ -25,7 +25,7 @@ namespace CapaWeb.WebForms
 
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+            RecuperarCokie();
             if (!IsPostBack)
             {
                
@@ -61,7 +61,7 @@ namespace CapaWeb.WebForms
         private void CargarGrilla(string Ven__cod_tit)
         {
             
-            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
 
             Session["lista"] = lista;
             gvPerson.DataSource = lista;
@@ -112,6 +112,25 @@ namespace CapaWeb.WebForms
             CargarGrilla(TxtBuscarCliente.Text);
         }
 
-       
+        public void RecuperarCokie()
+        {
+            if (Request.Cookies["ComPwm"] != null)
+            {
+                ComPwm = Request.Cookies["ComPwm"].Value;
+            }
+            else
+            {
+                Response.Redirect("../Inicio.asp");
+            }
+
+
+            if (Request.Cookies["AmUsrLog"] != null)
+            {
+                AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+
+            }
+        }
+
+
     }
 }

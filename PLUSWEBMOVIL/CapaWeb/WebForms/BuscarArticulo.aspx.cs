@@ -15,14 +15,17 @@ namespace CapaWeb.WebForms
         Cosnsultawmspcarticulos ConsultaArticulo = new Cosnsultawmspcarticulos();
        public List<modelowmspcarticulos> listaArticulos = null;
         modelowmspcarticulos articulo = new modelowmspcarticulos();
-        public string ArtB__usuario = "desarrollo";
-        public string ArtB__cod_emp = "04";
+
+        public string ComPwm;
+        public string AmUsrLog;      
         public string ArtB__articulo = " ";
         public string ArtB__tipo = "0";
         public string ArtB__compras = "0";
         public string ArtB__ventas = "S";
         protected void Page_Load(object sender, EventArgs e)
         {
+            RecuperarCokie();
+
             if (!IsPostBack)
             {
 
@@ -57,7 +60,7 @@ namespace CapaWeb.WebForms
 
         public void CargarGrilla(string ArtB__articulo)
         {
-            listaArticulos = ConsultaArticulo.ConsultaArticulos(ArtB__usuario, ArtB__cod_emp, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
+            listaArticulos = ConsultaArticulo.ConsultaArticulos(AmUsrLog, ComPwm, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
             Session["listaArticulos"] = listaArticulos;
 
             /*gv_Producto.DataSource = listaArticulos;
@@ -150,5 +153,24 @@ namespace CapaWeb.WebForms
 
 
          }
+
+        public void RecuperarCokie()
+        {
+            if (Request.Cookies["ComPwm"] != null)
+            {
+                ComPwm = Request.Cookies["ComPwm"].Value;
+            }
+            else
+            {
+                Response.Redirect("../Inicio.asp");
+            }
+
+
+            if (Request.Cookies["AmUsrLog"] != null)
+            {
+                AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+
+            }
+        }
     }
 }
