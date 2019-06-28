@@ -1,5 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="FormRespuestaJson.aspx.cs" Inherits="CapaWeb.WebForms.FormRespuestaJson" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master"  AutoEventWireup="true" CodeBehind="FormRespuestaJson.aspx.cs" Inherits="CapaWeb.WebForms.FormRespuestaJson" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    
          <form id="form1" class="forms-sample" runat="server" method="post">
           <div style="align-items: center">
             <table>
@@ -138,7 +139,7 @@
                                <tr>
        
                                 <td >
-                                    <asp:Button ID="Cancelar" Class="botones"  runat="server" onclick="Cancelar_Click" UseSubmitBehavior="False" Text="Cancelar" />
+                                    <input Class="botones" type="button" onclick="javascript: window.history.back();"     value="Cancelar">
                                     
                                 </td>
                     

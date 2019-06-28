@@ -28,6 +28,7 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@cod_tipotit", SqlDbType.VarChar).Value = Ven__cod_tipotit;
                 conmand.Parameters.Add("@cod_tit", SqlDbType.VarChar).Value = Ven__cod_tit;
                 conmand.Parameters.Add("@cod_dgi", SqlDbType.VarChar).Value = Ven__cod_dgi;
+
                
 
 

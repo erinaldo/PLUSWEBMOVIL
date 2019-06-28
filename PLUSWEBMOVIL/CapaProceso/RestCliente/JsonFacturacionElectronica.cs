@@ -70,7 +70,7 @@ namespace CapaProceso.RestCliente
         public string Ccf_mesf = null;
         public string Ccf_aniof = null;
         public string nro_trans = null;
-        public string Ven__cod_tipotit = "cliente";
+        public string Ven__cod_tipotit = "clientes";
         public string Ven__cod_tit = " ";
         public string impuesto_rest = "0";
         public string Ven__cod_dgi = "0";
@@ -118,7 +118,7 @@ namespace CapaProceso.RestCliente
             encabezado.nit = Convert.ToInt64(conscabcera.nro_dgi2);
             encabezado.numero = Convert.ToInt32(conscabcera.nro_docum);
             encabezado.ordencompra = Convert.ToString(conscabcera.ocompra);
-            encabezado.prefijo = Convert.ToString(conscabcera.serie_docum.Trim()); ;  // va quemado por defecto para los comprobantes de factura
+            encabezado.prefijo = Convert.ToString(conscabcera.serie_docum.Trim()); ; 
             encabezado.subtotal = Convert.ToInt32(conscabcera.subtotal);
             encabezado.sucursal = Convert.ToInt16(conscabcera.cod_sucursal); 
             encabezado.total = Convert.ToInt32(conscabcera.total);
@@ -204,7 +204,7 @@ namespace CapaProceso.RestCliente
             ModeloUsuSucursal  = BuscarUsuarioSucursal (Ccf_cod_emp, Ccf_usuario);
           
             vendedor = null;
-            vendedor = buscarCliente(Ccf_usuario, Ccf_cod_emp, "VEN", conscabcera.cod_vendedor, Ven__cod_dgi);
+            vendedor = buscarCliente(Ccf_usuario, Ccf_cod_emp, "vendedores", conscabcera.cod_vendedor, Ven__cod_dgi);
 
             sucursal.ciudad = vendedor.nom_ciudad;
             sucursal.codcliente = conscabcera.cod_cliente;
@@ -234,15 +234,15 @@ namespace CapaProceso.RestCliente
             cliente = null;
             cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit,  Ven__cod_dgi);
 
-            tercero.apli1 = cliente.nom_tit;
-            tercero.apl2 = "";
+            tercero.apli1 = cliente.primer_apellido;
+            tercero.apl2 = cliente.segundo_apellido;
             tercero.comentarios = "";
             tercero.dv = cliente.nro_dgi1; //digito verificador
             tercero.identificacion = Convert.ToInt64(cliente.nro_dgi2);
             tercero.idtipoempresa = Convert.ToInt16(Modeloempresa.cod_emp);
             tercero.nit = Convert.ToInt64(cliente.nro_dgi2);
-            tercero.nom1 = cliente.nom_tit;
-            tercero.nom2 = "";
+            tercero.nom1 = cliente.primer_nombre;
+            tercero.nom2 = cliente.segundo_nombre;
             tercero.razonsocial = cliente.razon_social;
             tercero.tdoc = Convert.ToInt16(cliente.cod_dgi);           
             tercero.tipopersona = cliente.control_tit;

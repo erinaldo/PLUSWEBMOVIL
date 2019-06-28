@@ -147,7 +147,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             
             string pathtmpfac = Modelowmspclogo.pathtmpfac;  //Traemos el path, la ruta 
             string qrPath = pathtmpfac + Ccf_cod_emp.Trim() + Ccf_nro_trans.Trim() + "qrcode.png";
-            string bpathPdfGenrado = pathtmpfac + Ccf_cod_emp.Trim() + Ccf_nro_trans.Trim() + "factura.pdf";
+            string bpathPdfGenrado = pathtmpfac + Ccf_cod_emp.Trim() + Ccf_nro_trans.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + "factura.pdf" ;
             string qr = ImagenQR(qrPath, Ccf_nro_trans);
 
 

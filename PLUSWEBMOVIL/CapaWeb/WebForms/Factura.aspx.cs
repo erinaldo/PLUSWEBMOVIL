@@ -1145,7 +1145,7 @@ namespace CapaWeb.WebForms
                   confirmarinsertar.nro_audit = conscabcera.nro_audit;
 
                   ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
-                     Response.Redirect("BuscarFacturas.aspx");
+                  //Response.Redirect("BuscarFacturas.aspx");
 
                      ConsumoRest consumoRest = new ConsumoRest();
                      string respuesta = "";
