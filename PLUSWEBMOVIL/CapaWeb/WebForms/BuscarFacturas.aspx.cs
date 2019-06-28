@@ -406,7 +406,11 @@ namespace CapaWeb.WebForms
             else
             {
                 cod_proceso = Convert.ToString(Request.QueryString["cod_proceso"]);
-                Request.Cookies["ProcAud"].Value = cod_proceso;
+                if (cod_proceso != null)
+                {
+                    Response.Cookies["ProcAud"].Value = cod_proceso;
+                }
+                
             }
 
             
