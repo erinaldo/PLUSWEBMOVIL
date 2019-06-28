@@ -403,6 +403,13 @@ namespace CapaWeb.WebForms
             {
                 cod_proceso = Request.Cookies["ProcAud"].Value;
             }
+            else
+            {
+                cod_proceso = Convert.ToString(Request.QueryString["cod_proceso"]);
+                Request.Cookies["ProcAud"].Value = cod_proceso;
+            }
+
+            
         }
 
         public modelowmtfacturascab buscarCabezeraFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
