@@ -274,6 +274,10 @@ namespace CapaWeb.WebForms
             txtSumaIva.Enabled = false;
             txtSumaDesc.Enabled = false;
             gv_Producto.Enabled = false;
+            txtBase15.Enabled = false;
+            txtBaseIva19.Enabled = false;
+            txtIva15.Enabled = false;
+            txtIva19.Enabled = false;
             //botones
             AgregarProducto.Enabled = false;
             Confirmar.Visible = false;
@@ -331,7 +335,7 @@ namespace CapaWeb.WebForms
                 ocompra.Text = conscabcera.ocompra;
                 porc_descto.Text = Convert.ToString(conscabcera.porc_descto);
                 cod_costos.SelectedValue = conscabcera.cod_ccostos;
-                cmbCod_moneda.SelectedValue = conscabcera.cod_moneda;
+                cmbCod_moneda.SelectedValue = conscabcera.cod_moneda.Trim();
                 cod_vendedor.SelectedValue = conscabcera.cod_vendedor;
                 //Formato totales
                 decimal formSubtot = Convert.ToDecimal(conscabcera.subtotal);

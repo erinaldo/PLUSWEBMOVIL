@@ -41,7 +41,8 @@ namespace CapaWeb.WebForms
         public ConsultawmspcfacturasWMimpuRest consultaImpuesto = new ConsultawmspcfacturasWMimpuRest();
 
         public string ComPwm;
-        public string AmUsrLog;        
+        public string AmUsrLog;
+        public string cod_proceso;     
         public string Ccf_tipo1 = "C";
         public string Ccf_tipo2 = "VTA";
         public string Ccf_nro_trans = " ";
@@ -398,6 +399,10 @@ namespace CapaWeb.WebForms
                 AmUsrLog = Request.Cookies["AmUsrLog"].Value;
 
             }
+            if(Request.Cookies["ProcAud"] != null)
+            {
+                cod_proceso = Request.Cookies["ProcAud"].Value;
+            }
         }
 
         public modelowmtfacturascab buscarCabezeraFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
@@ -521,8 +526,8 @@ namespace CapaWeb.WebForms
         {
             //Enviar codigo de porceso = nombre del proceso
             //rEcibir de cookie
-            ModeloCodProceso = BuscarCodProceso(AmUsrLog);
-            Response.Redirect("Ayuda.asp");
+            ModeloCodProceso = BuscarCodProceso(cod_proceso);
+            Response.Redirect("Ayuda.asp" + "?cod_proceso="+cod_proceso);
         }
     }
 }
