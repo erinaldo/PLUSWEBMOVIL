@@ -200,6 +200,11 @@ namespace CapaProceso.RestCliente
             Sucursal sucursal = new Sucursal();
             Tercero tercero = new Tercero();
             modelowmspctitulares vendedor = new modelowmspctitulares();
+            modelowmspctitulares cliente = new modelowmspctitulares();
+
+            string Ven__cod_tit = conscabcera.cod_cliente;
+            cliente = null;
+            cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
 
             ModeloUsuSucursal  = BuscarUsuarioSucursal (Ccf_cod_emp, Ccf_usuario);
           
@@ -212,7 +217,7 @@ namespace CapaProceso.RestCliente
             sucursal.direccion1 = vendedor.dir_tit;
             sucursal.dpto = vendedor.cod_provincia;
             sucursal.email = vendedor.email_tit;
-            sucursal.emailfe = vendedor.email_tit;
+            sucursal.emailfe = cliente.email_tit;
             sucursal.idsuc = Convert.ToInt16(ModeloUsuSucursal.cod_sucursal.Trim());
             sucursal.idvendedor = Convert.ToInt64(conscabcera.cod_vendedor);
             sucursal.movil = "";
