@@ -76,30 +76,11 @@ namespace CapaWeb
 
         private void CargarGrilla(string ComPwm)
         {
-            //Empresa y cod_sucursal
-
-
-            ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
-            int count = 0;
-            UsuarioSucursal = null;
-            foreach ( modeloUsuariosucursal item in ListaModeloUsuarioSucursal)
-            {
-                count++;
-                UsuarioSucursal = item;
-
-            }
-            if (UsuarioSucursal == null)
-            {
-                mensaje.Text = "La sucursal no tiene usuarios, por favor cree un usuario";
-            }
-            else
-            {
-
-                ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ListaUsuarioSucursal(ComPwm, UsuarioSucursal.cod_sucursal);
-                Grid.DataSource = ListaModeloUsuarioSucursal;
-                Grid.DataBind();
-                Grid.Height = 100;
-            }
+           
+            ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ListaUsuarioSucursal(ComPwm);
+            Grid.DataSource = ListaModeloUsuarioSucursal;
+            Grid.DataBind();
+            Grid.Height = 100;
         }
         protected void Grid_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
         {

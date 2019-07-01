@@ -39,7 +39,7 @@ namespace CapaWeb.WebForms
         public string ComPwm;
         public string AmUsrLog;
         public string usuario;
-        public string cod_proceso = "AUSRXSUC";
+        public string cod_proceso ;
         protected void Page_Load(object sender, EventArgs e)
         {
             RecuperarCokie();

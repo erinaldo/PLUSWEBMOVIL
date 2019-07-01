@@ -36,11 +36,11 @@ namespace CapaProceso.Consultas
         //Lista de usuarios por sucursal
         UsuarioSucursal ListaUsuario = new UsuarioSucursal();
         modeloUsuariosucursal ModeloUsuarioSucursal = new modeloUsuariosucursal();
-        public List<modeloUsuariosucursal> ListaUsuarioSucursal(string Ccf_cod_emp, string cod_sucursal)
+        public List<modeloUsuariosucursal> ListaUsuarioSucursal(string Ccf_cod_emp)
         {
 
             List<modeloUsuariosucursal> lista = new List<modeloUsuariosucursal>();
-            lista = ListaUsuario.ListaUsuarioxSucursal(Ccf_cod_emp, cod_sucursal);            
+            lista = ListaUsuario.ListaUsuarioxSucursal(Ccf_cod_emp);            
             return lista;
         }
     }
