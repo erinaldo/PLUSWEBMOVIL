@@ -190,7 +190,12 @@ namespace CapaWeb.WebForms
                 Session.Remove("sumaDescuento");
                 Session.Remove("cliente");
                 Session.Remove("detalle");
-             
+                Session.Remove("sumaBase19");
+                Session.Remove("sumaBase15");
+                Session.Remove("sumaIva19");
+                Session.Remove("sumaIva15");
+
+                
                 QueryString qs = ulrDesencriptada();
 
                 //Recibir opciones
@@ -371,7 +376,7 @@ namespace CapaWeb.WebForms
                     baseiva19 += item.base_iva;
                     iva19 += item.valor_iva;
                 }
-                if (item.porc_iva == 15)
+                if (item.porc_iva == 5)
                 {
                     baseiva15 += item.base_iva;
                     iva15 += item.valor_iva;
@@ -536,7 +541,7 @@ namespace CapaWeb.WebForms
                         {
                             sumaBase19 -= itemSuma.subtotal;
                         }
-                        if (itemSuma.poriva.ToString() == "0.15")
+                        if (itemSuma.poriva.ToString() == "0.05")
                         {
                             sumaBase15 -= itemSuma.subtotal;
                         }
@@ -544,7 +549,7 @@ namespace CapaWeb.WebForms
                         {
                             sumaIva19 -= itemSuma.detaiva;
                         }
-                        if (itemSuma.poriva.ToString() == "0.15")
+                        if (itemSuma.poriva.ToString() == "0.05")
                         {
                             sumaIva15 -= itemSuma.detaiva;
                         }
@@ -601,7 +606,7 @@ namespace CapaWeb.WebForms
                             txtBaseIva19.Text = String.Format("{0:N}", sumaBase19).ToString();
                         }
 
-                        if (itemSuma.poriva.ToString() == "0.15")
+                        if (itemSuma.poriva.ToString() == "0.05")
                         {
                             sumaBase15 += itemSuma.subtotal;
                             Session["sumaBase15"] = sumaBase15.ToString();
@@ -614,7 +619,7 @@ namespace CapaWeb.WebForms
                             Session["sumaIva19"] = sumaIva19.ToString();
                             txtIva19.Text = String.Format("{0:N}", sumaIva19).ToString();
                         }
-                        if (itemSuma.poriva.ToString() == "0.15")
+                        if (itemSuma.poriva.ToString() == "0.05")
                         {
                             sumaIva15 += itemSuma.detaiva;
                             Session["sumaIva15"] = sumaIva15.ToString();
@@ -1032,13 +1037,19 @@ namespace CapaWeb.WebForms
 
          protected void BuscarArticulo_TextChanged(object sender, EventArgs e)
          {
+            int count = 0;
+            articulo = null;
 
-             string ArtB__articulo = BuscarArticulo.Text;
+            if (Session["articulo"] == null)
+            { 
+
+                         
+
+                string ArtB__articulo = BuscarArticulo.Text;
 
              listaArticulos = ConsultaArticulo.ConsultaArticulos(AmUsrLog, ComPwm, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
 
-             int count = 0;
-             articulo = null;
+           
              foreach (modelowmspcarticulos item in listaArticulos)
              {
                  count++;
@@ -1046,8 +1057,14 @@ namespace CapaWeb.WebForms
 
              }
 
+            }
+            else
+            {
+                articulo = (modelowmspcarticulos)Session["articulo"];
+            }
 
-             if (count > 1)
+
+            if (count > 1)
              {
                  Session["listaProducto"] = listaArticulos;
                  this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarArticulo.aspx', 'Buscar Articulo', 'top=100,width=800 ,height=600, left=400');</script>");
@@ -1070,9 +1087,9 @@ namespace CapaWeb.WebForms
                      precio.Text = articulo.precio;
                      iva.Text = articulo.porc_impuesto;
                      porcdescto.Text = "0";
+                     Session.Remove("articulo");
 
-
-                 }
+                    }
              }
          }
 
@@ -1264,7 +1281,7 @@ namespace CapaWeb.WebForms
                     }
                     if (Math.Round(detalle.porc_iva, 0).ToString() == "19")
                     {
-                        sumaIva19 -= detalle.valor_iva;
+                        sumaIva19 -= detalle.detaiva;
                         Session["sumaIva19"] = sumaIva19.ToString();
                         txtIva19.Text = String.Format("{0:N}", sumaIva19).ToString();
                     }
@@ -1276,7 +1293,7 @@ namespace CapaWeb.WebForms
                     }
                     if (Math.Round(detalle.porc_iva, 0).ToString() == "5")
                     {
-                        sumaIva15 -= detalle.valor_iva;
+                        sumaIva15 -= detalle.detaiva;
                         Session["sumaIva15"] = sumaIva15.ToString();
                         txtIva15.Text = String.Format("{0:N}", sumaIva15).ToString();
                     }
