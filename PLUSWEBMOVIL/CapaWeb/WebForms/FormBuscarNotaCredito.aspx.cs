@@ -51,8 +51,9 @@ namespace CapaWeb.WebForms
         public string Ccf_diaf = "";
         public string Ccf_mesf = "";
         public string Ccf_aniof = "";
-        public string Ven__cod_tipotit = "cliente";
+        public string Ven__cod_tipotit = "clientes";
         public string Ven__cod_tit = " ";
+        public string cod_proceso;
 
 
         public string EstF_proceso = "RCOMFACT";
@@ -369,6 +370,19 @@ namespace CapaWeb.WebForms
                 AmUsrLog = Request.Cookies["AmUsrLog"].Value;
 
             }
+            if (Request.Cookies["ProcAud"] != null)
+            {
+                cod_proceso = Request.Cookies["ProcAud"].Value;
+            }
+            else
+            {
+                cod_proceso = Convert.ToString(Request.QueryString["cod_proceso"]);
+                if (cod_proceso != null)
+                {
+                    //Crear cookie de cod_proceso
+                    Response.Cookies["ProcAud"].Value = cod_proceso;
+                }
+            }
         }
 
         public modelowmtfacturascab buscarCabezeraFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
@@ -386,79 +400,7 @@ namespace CapaWeb.WebForms
             return conscabcera;
         }
 
-        public modeloRolesFacturacion BuscarRolNuevo(string usuario)
-        {
-            ListaModelosRoles = ConsultaRoles.BuscarRolNuevo(usuario);
-
-            int count = 0;
-            ModeloRoles = null;
-            foreach (modeloRolesFacturacion item in ListaModelosRoles)
-            {
-                count++;
-                ModeloRoles = item;
-
-            }
-            return ModeloRoles;
-        }
-
-        public modeloRolesFacturacion BuscarRolEditar(string usuario)
-        {
-            ListaModelosRoles = ConsultaRoles.BuscarRolEditar(usuario);
-
-            int count = 0;
-            ModeloRoles = null;
-            foreach (modeloRolesFacturacion item in ListaModelosRoles)
-            {
-                count++;
-                ModeloRoles = item;
-
-            }
-            return ModeloRoles;
-        }
-
-        public modeloRolesFacturacion BuscarRolEliminar(string usuario)
-        {
-            ListaModelosRoles = ConsultaRoles.BuscarRolEditar(usuario);
-
-            int count = 0;
-            ModeloRoles = null;
-            foreach (modeloRolesFacturacion item in ListaModelosRoles)
-            {
-                count++;
-                ModeloRoles = item;
-
-            }
-            return ModeloRoles;
-        }
-
-        public modeloRolesFacturacion BuscarRolImprimir(string usuario)
-        {
-            ListaModelosRoles = ConsultaRoles.BuscarRolEditar(usuario);
-
-            int count = 0;
-            ModeloRoles = null;
-            foreach (modeloRolesFacturacion item in ListaModelosRoles)
-            {
-                count++;
-                ModeloRoles = item;
-
-            }
-            return ModeloRoles;
-        }
-        public modeloRolesFacturacion BuscarAccesoFactura(string usuario)
-        {
-            ListaModelosRoles = ConsultaRoles.BuscarAccesoFactura(usuario);
-
-            int count = 0;
-            ModeloRoles = null;
-            foreach (modeloRolesFacturacion item in ListaModelosRoles)
-            {
-                count++;
-                ModeloRoles = item;
-
-            }
-            return ModeloRoles;
-        }
+        
 
         public modeloCodProcesoFactura BuscarCodProceso(string cod_proceso)
         {

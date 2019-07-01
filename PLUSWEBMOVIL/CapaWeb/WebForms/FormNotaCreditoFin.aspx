@@ -182,39 +182,7 @@
                                    <asp:Button ID="btn_Facturas" CssClass="botones" Visible="false" Width="125" runat="server" Text="Cargar Factura" />
                                   </td>
                                </tr>
-                            <tr>
-                                <td align="right" valign="top" nowrap="nowrap" class="busqueda">
-                                    <asp:Label align="center" ID="lbl_proforma" Visible="false" runat="server" Text="Proformas:"></asp:Label>
-                                </td>
-                                <td valign="top">
-                                    <label>
-                                        <asp:DropDownList class="textos" Visible="false" name="cbx_proformas" Width="200" ID="cbx_proformas" runat="server">
-                                        </asp:DropDownList>
-
-                                    </label>
-                                </td>
-                               
-                               <td>
-                                   <asp:Button ID="btn_Proforma" CssClass="botones" Visible="false"  runat="server" Text="Cargar Proforma" />
-                                  </td>
-                               <td align="right"  valign="top" nowrap="nowrap" class="busqueda">
-                                   <asp:Label ID="lbl_remision" Visible="false" runat="server" Text="Remisiones:"></asp:Label>
-                                    
-                                </td>
-                                <td valign="top">
-                                    <label>
-                                       <asp:DropDownList class="textos" Visible="false" name="cbx_remisiones" Width="150" ID="cbx_remisiones" runat="server">
-                                        </asp:DropDownList>
-
-                                    </label>
-                                </td>
-                               <td valign="top">
-                                   <label>
-                                   <asp:Button ID="btn_Remision" CssClass="botones" Visible="false"  runat="server" Text="Cargar Remision" />
-                                       </label>
-                                  </td>
-
-                           </tr>
+                           
                             <tr>
                                 
                                 <td align="right" valign="top" nowrap="nowrap" class="busqueda">
@@ -246,63 +214,26 @@
                 <tr>
                     <td>
 
-                        <div class="Subtitulo1">Nuevos Productos o Servicios</div>
+                        <div class="Subtitulo1">Observación Nota Crédito Financiera</div>
                     </td>
                 </tr>
                 <tr>
                     <td>
 
-
-                        <table border="0" id="MostrarDetalle" align="center" >
+                        <table border="0" id="AgregarObservacion" align="center" >
                             <tr>
                                 <td class="busqueda">
-                                    <asp:Label ID="Articulo" class="busqueda" runat="server" Text="Label">Articulo</asp:Label></td>
+                                    <asp:Label ID="Observacion" class="busqueda" runat="server" Text="Label">Observacion</asp:Label></td>
                                 <td>
-                                    <asp:Label ID="Producto" class="busqueda" runat="server" Text="Label">Descripción</asp:Label>
-                                </td>
-                                
-                                <td>
-                                    <asp:Label ID="lblCantidad" runat="server" class="busqueda" Text="Label">Cantidad</asp:Label>
+                                    <asp:TextBox ID="txt_Observacion" CssClass="textos" Width="300" runat="server"></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:Label ID="pvp" runat="server" class="busqueda" Text="Label">Precio</asp:Label>
-                                </td>
-                                <td>
-                                    <asp:Label ID="Label1" runat="server" class="busqueda" Text="Label">% Descto</asp:Label>
-                                </td>
-                                <td>
-                                    <asp:Label ID="Label2" runat="server" class="busqueda" Text="Label">% IVA</asp:Label>
-                                </td>
-                              
-                            </tr>
-                            <tr>
-
-                                <td>
-                                    <asp:TextBox ID="BuscarArticulo" runat="server" placeholder="Buscar..."  size="20" MaxLength="50" AutoPostBack="True" OnTextChanged="BuscarArticulo_TextChanged"></asp:TextBox>
-                                </td>
-
-                                <td>
-                                    <asp:TextBox ID="articulos" CssClass="textos" runat="server" Rows="2" Size="40" ReadOnly="true"></asp:TextBox>
-                                </td>
-                                
-                                <td>
-                                    <asp:TextBox ID="cantidad" CssClass="textos"  min="1" step="0.01" type="number" value="1" Width="60px" runat="server"></asp:TextBox>
-                                </td>
-                                <td>
-                                    <asp:TextBox ID="precio"   CssClass="textos"  type="number"  step="0.01" value="0" runat="server" Width="100px"></asp:TextBox>
-                                </td>
-                                 <td>
-                                    <asp:TextBox ID="porcdescto" CssClass="textos" min="0" step="0.01" type="number" value="0"  Width="60px" runat="server"></asp:TextBox>
-                                </td>
-                                <td>
-                                    <asp:TextBox ID="iva" CssClass="textos" type="number" readonly="true" Width="60px" runat="server"></asp:TextBox>
-                                </td>
-                                <td>
-                                    <asp:Button ID="AgregarProducto"  CssClass="botones" runat="server" Text="Agregar" OnClick="AgregarProducto_Click" OnClientClick="return validarCamposArticulo();" />
+                                    <asp:Button ID="AgregarNC" onclick="AgregarNC_Click" runat="server" CssClass="botones" Text="Agregar" />
                                 </td>
                             </tr>
-
-                        </table>
+                            
+                            </table>
+                        
 
                     </td>
                 </tr>
@@ -312,114 +243,7 @@
                         <hr />
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <table border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#0E748A">
-                            <tr>
-                                <td>
-                                    <asp:Panel ID="Panel1" runat="server" Height="250px" Width="100%" ScrollBars="Auto">
-                                        <asp:DataGrid ID="gv_Producto" runat="server" 
-                                        
-                                        AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
-                                         AllowSorting="True" ShowFooter="True"
-                                          CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" OnItemCommand="gv_Producto_ItemCommand">
-
-
-                                        <Columns>
-                                            <asp:TemplateColumn HeaderText="Código" >
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="cod_articulo" runat="server" class="textos" Text='<%#Eval("cod_articulo") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-
-                                            <asp:TemplateColumn HeaderText="Descripción">
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="nom_articulo" runat="server" class="textos" Text='<%#Eval("nom_articulo") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-
-                                            <asp:TemplateColumn HeaderText="Cantidad">
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="cantidad" runat="server" class="textos" Text='<%#Eval("cantidad") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-
-                                            <asp:TemplateColumn HeaderText="Precio">
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="precio_unit" runat="server" class="textos" Text='<%#Eval("precio_unit", "{0:N}") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                                <ItemStyle Font-Bold="False" Font-Italic="False" Font-Overline="False" Font-Strikeout="False" Font-Underline="False" HorizontalAlign="Center" />
-                                            </asp:TemplateColumn>
-
-                                            <asp:TemplateColumn HeaderText="Sub total">
-                                                <ItemTemplate> 
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="subtotal" runat="server" class="textos"  Text='<%#Eval("subtotal", "{0:N}") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-                                            <asp:TemplateColumn HeaderText="Descto">
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="detadescuento" runat="server" class="textos" Text='<%#Eval("detadescuento", "{0:N}") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-                                           
-                                             <asp:TemplateColumn HeaderText="IVA">
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="detaiva" runat="server" class="textos" Text='<%#Eval("detaiva", "{0:N}") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-                                            <asp:TemplateColumn HeaderText="Total">
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="total" runat="server" class="textos" Text='<%#Eval("total", "{0:N}") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-
-                                            <asp:TemplateColumn>
-                                                <ItemTemplate>
-                                                    <asp:ImageButton ID="imgEditar" runat="server" CausesValidation="false" CommandName="Editar"
-                                                        ImageUrl="~/Tema/imagenes/edit.png" ToolTip="Editar" Width="16" />
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-
-                                            <asp:TemplateColumn>
-                                                <ItemTemplate>
-                                                    <asp:ImageButton ID="imgEliminar" runat="server" CausesValidation="false" CommandName="Eliminar"
-                                                        ImageUrl="~/Tema/imagenes/trash.png" ToolTip="Eliminar" Width="16" />
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-                                                                                                                                    
-                                        </Columns>
-
-                                        <FooterStyle BackColor="White" ForeColor="#00000f" />
-                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />
-                                        <ItemStyle ForeColor="#00000f" />
-                                        <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" Mode="NumericPages" />
-                                        <SelectedItemStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
-
-
-                                    </asp:DataGrid>
-                                        </asp:Panel>
-                                        
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+              
                    <tr>
                     <td>
 
@@ -439,13 +263,21 @@
                               </tr>
                             <tr>
                                 <td>
-                                    <asp:Label  CssClass="busqueda" ID="Label6" runat="server" Text="Iva:"></asp:Label>
+                                    <asp:Label  CssClass="busqueda" ID="Label7" runat="server" Text="Impuestos:"></asp:Label>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtSumaIva" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                    <asp:ImageButton ID="btnImpuestos" ImageAlign="left" src="../Tema/imagenes/search.png"  runat="server" />
                                 </td>
                             </tr>
                             <tr>
+                                <td>
+                                    <asp:Label  CssClass="busqueda" ID="Label6" Visible="false" runat="server" Text="Iva:"></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtSumaIva" CssClass="textos" Visible="false" ReadOnly="true" runat="server"></asp:TextBox>
+                                </td>
+                            </tr>
+                             <tr>
                                 <td>
                                     <asp:Label CssClass="busqueda"  ID="Label4" runat="server" Text="Sub Total:"></asp:Label>
                                 </td>
@@ -453,6 +285,40 @@
                                     <asp:TextBox ID="txtSumaSubTo" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
                                 </td>
                               </tr>
+                            <tr>
+                                <td>
+                                    <asp:Label  CssClass="busqueda" ID="Label8" runat="server" Text="Base Iva 19%:"></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtBaseIva19" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <asp:Label  CssClass="busqueda" ID="Label9" runat="server" Text="Base Iva 5%:"></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtBase15" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <asp:Label  CssClass="busqueda" ID="Label10" runat="server" Text="Iva 19%:"></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtIva19" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <asp:Label  CssClass="busqueda" ID="Label11" runat="server" Text="Iva 5%:"></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtIva15" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                </td>
+                            </tr>
+
+                           
                             <tr>
                                 <td>
                                     <asp:Label CssClass="busqueda" ID="Label3" runat="server" Text="Total:"></asp:Label>
@@ -471,11 +337,11 @@
                         <table>
                                <tr>
                                 <td >
-                                    <asp:Button ID="btnGuardarDetalle" Class="btnFactura1" visible="false" runat="server" OnClick="GuardarDetalle_Click"  Text="Salvar" />
+                                    <asp:Button ID="btnGuardarDetalle" Class="btnFactura1" visible="false" runat="server"   Text="Salvar" />
                                 </td>
                                 <td >
-                                    <asp:Button ID="Cancelar" Class="btnFactura1"  runat="server" onclick="Cancelar_Click" UseSubmitBehavior="False" Text="Cancelar" />
-                                    <asp:Button ID="Confirmar"  Class="btnFactura1" runat="server" OnClientClick="return confirm('¿Desea guardar la factura?');" OnClick="Confirmar_Click" Text="Confirmar" />
+                                    <asp:Button ID="Cancelar" Class="btnFactura1"  runat="server"  UseSubmitBehavior="False" Text="Cancelar" />
+                                    <asp:Button ID="Confirmar"  Class="btnFactura1" runat="server" OnClientClick="return confirm('¿Desea guardar la factura?');"  Text="Confirmar" />
                                 </td>
                     
                             </tr>

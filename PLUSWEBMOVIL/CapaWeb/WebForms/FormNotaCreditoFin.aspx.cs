@@ -98,7 +98,7 @@ namespace CapaWeb.WebForms
         public string ComPwm;
         public string AmUsrLog;
         public string valor_asignado = null;
-        public string Ven__cod_tipotit = "cliente";
+        public string Ven__cod_tipotit = "clientes";
         public string ResF_estado = "S";
         public string ResF_serie = "0";
         public string ResF_tipo = "F";
@@ -130,10 +130,15 @@ namespace CapaWeb.WebForms
         public decimal sumaIva = 0;
         public decimal sumaDescuento = 0;
         public decimal sumaSubtotal = 0;
+        public decimal sumaBase19 = 0;
+        public decimal sumaBase15 = 0;
+        public decimal sumaIva19 = 0;
+        public decimal sumaIva15 = 0;
         public string auditoria = null;
         public string nro_trans = null;
         public string Ven__cod_dgi = "0";
         public string Ven__fono = "0";
+        public string cod_proceso;
         protected void Page_Load(object sender, EventArgs e)
         {
             RecuperarCokie();
@@ -143,6 +148,23 @@ namespace CapaWeb.WebForms
                 Modelowmspclogo = item;
                 break;
             }
+
+
+            if (Session["cliente"] != null)
+            {
+                // recupera la variable de secion con el objeto persona
+                cliente = (modelowmspctitulares)Session["cliente"];
+                nombreCliente.Text = cliente.nom_tit;
+                dniCliente.Text = cliente.nro_dgi2;
+                fonoCliente.Text = cliente.tel_tit;
+                txtcorreo.Text = cliente.email_tit;
+
+            }
+
+         
+
+            ConsultarTasaCambioCanorus();
+
             if (!IsPostBack)
             {
                 Session.Remove("listaProducto");
@@ -153,6 +175,11 @@ namespace CapaWeb.WebForms
                 Session.Remove("sumaDescuento");
                 Session.Remove("cliente");
                 Session.Remove("detalle");
+                Session.Remove("sumaBase19");
+                Session.Remove("sumaBase15");
+                Session.Remove("sumaIva19");
+                Session.Remove("sumaIva15");
+
 
                 QueryString qs = ulrDesencriptada();
 
@@ -168,11 +195,11 @@ namespace CapaWeb.WebForms
                         fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
                         //Consultar tasa de cambio
                         ConsultarTasaCambioCanorus();
-                        ModeloRolMod = BuscarRolModificar(AmUsrLog, ComPwm, "VTA", "NA", "N");
-                        if (ModeloRolMod.control_uso == "readonly=\"readonly\"")
-                        {
-                            precio.Enabled = false;
-                        }
+                        /* ModeloRolMod = BuscarRolModificar( AmUsrLog, ComPwm, "VTA", "NA", "N");
+                         if (ModeloRolMod.control_uso == "readonly=\"readonly\"")
+                         {
+                             precio.Enabled = false;
+                         }*/
                         break;
 
                     case "UDP":
@@ -194,56 +221,9 @@ namespace CapaWeb.WebForms
                         break;
                 }
 
-
-
-
             }
         }
-        protected void BuscarArticulo_TextChanged(object sender, EventArgs e)
-        {
-
-            string ArtB__articulo = BuscarArticulo.Text;
-
-            listaArticulos = ConsultaArticulo.ConsultaArticulos(AmUsrLog, ComPwm, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
-
-            int count = 0;
-            articulo = null;
-            foreach (modelowmspcarticulos item in listaArticulos)
-            {
-                count++;
-                articulo = item;
-
-            }
-
-
-            if (count > 1)
-            {
-                Session["listaProducto"] = listaArticulos;
-                this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarArticulo.aspx', 'Buscar Articulo', 'top=100,width=800 ,height=600, left=400');</script>");
-
-            }
-            else
-            {
-
-                if (articulo == null)
-                {
-                    BuscarArticulo.Text = "No existe el producto/ servicio";
-                }
-                else
-                {
-                    lblCantidad.Visible = true;
-                    cantidad.Visible = true;
-                    Session.Remove("articulo");
-                    BuscarArticulo.Text = articulo.cod_articulo;
-                    articulos.Text = articulo.nom_articulo;
-                    precio.Text = articulo.precio;
-                    iva.Text = articulo.porc_impuesto;
-                    porcdescto.Text = "0";
-
-
-                }
-            }
-        }
+  
 
         protected void dniCliente_TextChanged(object sender, EventArgs e)
         {
@@ -293,12 +273,6 @@ namespace CapaWeb.WebForms
                     cbx_facturas.DataValueField = "nro_trans";
                     cbx_facturas.DataBind();
 
-                    ListaProofrmas = ConsultaProformas.BuscarProformas(cliente.cod_tit, "A", "PF");
-                    cbx_proformas.DataSource = ListaProofrmas;
-                    cbx_proformas.DataTextField = "proformas";
-                    cbx_proformas.DataValueField = "nro_trans";
-                    cbx_proformas.DataBind();
-
                     if (listaConsCab.Count > 0)
                     {
                         lbl_factura.Visible = true;
@@ -312,32 +286,8 @@ namespace CapaWeb.WebForms
                         cbx_facturas.Visible = false;
                     }
 
-                    //Consulta remisiones
-                    ListaRemision = ConsultaRemisiones.BuscarRemisiones(cliente.cod_tit, "A", "GR");
-                    cbx_remisiones.DataSource = ListaRemision;
-                    cbx_remisiones.DataTextField = "proformas";
-                    cbx_remisiones.DataValueField = "nro_trans";
-                    cbx_remisiones.DataBind();
-
-                    if (ListaRemision.Count > 0)
-                    {
-                        lbl_remision.Visible = true;
-                        btn_Remision.Visible = true;
-                        cbx_remisiones.Visible = true;
-                    }
-                    else
-                    {
-                        lbl_remision.Visible = false;
-                        btn_Remision.Visible = false;
-                        cbx_remisiones.Visible = false;
-                    }
-
-
                 }
             }
-
-
-
         }
         public modelowmspctctrxCotizacion BuscarCotizacion(string Ccf_usuario, string Ccf_cod_emp, string dia, string mes, string anio, string moneda)
         {
@@ -369,6 +319,19 @@ namespace CapaWeb.WebForms
             {
                 AmUsrLog = Request.Cookies["AmUsrLog"].Value;
 
+            }
+            if (Request.Cookies["ProcAud"] != null)
+            {
+                cod_proceso = Request.Cookies["ProcAud"].Value;
+            }
+            else
+            {
+                cod_proceso = Convert.ToString(Request.QueryString["cod_proceso"]);
+                if (cod_proceso != null)
+                {
+                    //Crear cookie de cod_proceso
+                    Response.Cookies["ProcAud"].Value = cod_proceso;
+                }
             }
 
         }
@@ -417,18 +380,13 @@ namespace CapaWeb.WebForms
             txtSumaTotal.Enabled = false;
             txtSumaIva.Enabled = false;
             txtSumaDesc.Enabled = false;
-            gv_Producto.Enabled = false;
+            
             //botones
-            AgregarProducto.Enabled = false;
+            AgregarNC.Enabled = false;
             Confirmar.Visible = false;
             btnGuardarDetalle.Visible = false;
             //detalle producto
-            BuscarArticulo.Enabled = false;
-            articulos.Enabled = false;
-            cantidad.Enabled = false;
-            precio.Enabled = false;
-            porcdescto.Enabled = false;
-            iva.Enabled = false;
+            txt_Observacion.Enabled = false;
         }
         public void cargarListaDesplegables()
         {
@@ -525,12 +483,8 @@ namespace CapaWeb.WebForms
             listaConsDetalle = ConsultaDeta.ConsultaDetalleFacura(nro_trans);
             Session["detalle"] = listaConsDetalle;
 
-            gv_Producto.DataSource = listaConsDetalle;
-            gv_Producto.DataBind();
-            gv_Producto.Height = 100;
-
-
         }
+        
         public modeloCodProcesoFactura BuscarCodProceso(string cod_proceso)
         {
             ListaModeloCodProceso = ConsultaCodProceso.DatosCodProceso(cod_proceso);
@@ -560,6 +514,11 @@ namespace CapaWeb.WebForms
             }
 
             return ModeloRolMod;
+        }
+
+        protected void AgregarNC_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

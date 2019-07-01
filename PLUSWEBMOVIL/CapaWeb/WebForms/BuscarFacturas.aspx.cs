@@ -59,6 +59,7 @@ namespace CapaWeb.WebForms
         public string Ccf_aniof = "";     
         public string Ven__cod_tipotit = "cliente";
         public string Ven__cod_tit = " ";
+     
 
 
         public string EstF_proceso = "RCOMFACT";
