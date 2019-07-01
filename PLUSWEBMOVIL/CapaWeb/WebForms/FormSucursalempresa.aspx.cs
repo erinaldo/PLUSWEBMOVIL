@@ -21,9 +21,15 @@ namespace CapaWeb.WebForms
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
+
+        ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
+        modelonumerador nrotrans = new modelonumerador();
+
         public string ComPwm;
         public string AmUsrLog;
         public string cod_sucursal = null;
+        public string cod_proceso = "AEMPSUC";
+        public string numerador = "auditoria";
         protected void Page_Load(object sender, EventArgs e)
         {
             RecuperarCokie();
@@ -107,6 +113,19 @@ namespace CapaWeb.WebForms
                 AmUsrLog = Request.Cookies["AmUsrLog"].Value;
 
             }
+            if (Request.Cookies["ProcAud"] != null)
+            {
+                cod_proceso = Request.Cookies["ProcAud"].Value;
+            }
+            else
+            {
+                cod_proceso = Convert.ToString(Request.QueryString["cod_proceso"]);
+                if (cod_proceso != null)
+                {
+                    //Crear cookie de cod_proceso
+                    Response.Cookies["ProcAud"].Value = cod_proceso;
+                }
+            }
         }
         protected void btn_guardar_Click(object sender, EventArgs e)
         {
@@ -131,6 +150,9 @@ namespace CapaWeb.WebForms
                     }
                     else
                     {
+                        //obtener numero de transaccion
+                        nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
+                        string nro_audit = nrotrans.valor_asignado;
                         DateTime hoy = DateTime.Today;
                         ModelosucursalEmpresa.cod_emp = ComPwm;
                         ModelosucursalEmpresa.cod_sucursal = txt_cod_sucursal.Text;
@@ -140,7 +162,9 @@ namespace CapaWeb.WebForms
                         ModelosucursalEmpresa.tel_sucursal = txt_tel_sucursal.Text;
                         ModelosucursalEmpresa.fecha_mod = hoy;
                         ModelosucursalEmpresa.usuario_mod = AmUsrLog;
-                        error = ConsultaSucEmpresa.ActualizarSucursalEmpresa(ModelosucursalEmpresa);
+                        ModelosucursalEmpresa.nro_audit = nro_audit;
+                        ModelosucursalEmpresa.cod_proc_aud = "AEMPSUC";
+                        error = ConsultaSucEmpresa.InsertarSucursalEmpresa(ModelosucursalEmpresa);
 
                         if (string.IsNullOrEmpty(error))
                         {
@@ -154,7 +178,7 @@ namespace CapaWeb.WebForms
                         }
                     }
                     break;
-                case "UPD":
+                case "UDP":
 
                     DateTime hoy1 = DateTime.Today;
                     ModelosucursalEmpresa.cod_emp = ComPwm;

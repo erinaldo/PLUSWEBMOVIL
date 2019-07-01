@@ -32,9 +32,14 @@ namespace CapaWeb.WebForms
         public ConsultausuarioSucursal consultaUsuarioSucursal= new ConsultausuarioSucursal();
         public ConsultawmusuarioSucursal ConsultaUsuxSuc = new ConsultawmusuarioSucursal();
         public modeloUsuariosucursal UsuarioSucursal = new modeloUsuariosucursal();
+
+        ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
+        modelonumerador nrotrans = new modelonumerador();
+        public string numerador = "auditoria";
         public string ComPwm;
         public string AmUsrLog;
         public string usuario;
+        public string cod_proceso = "AUSRXSUC";
         protected void Page_Load(object sender, EventArgs e)
         {
             RecuperarCokie();
@@ -141,6 +146,19 @@ namespace CapaWeb.WebForms
                 AmUsrLog = Request.Cookies["AmUsrLog"].Value;
 
             }
+            if (Request.Cookies["ProcAud"] != null)
+            {
+                cod_proceso = Request.Cookies["ProcAud"].Value;
+            }
+            else
+            {
+                cod_proceso = Convert.ToString(Request.QueryString["cod_proceso"]);
+                if (cod_proceso != null)
+                {
+                    //Crear cookie de cod_proceso
+                    Response.Cookies["ProcAud"].Value = cod_proceso;
+                }
+            }
         }
 
         protected void btn_guardar_Click(object sender, EventArgs e)
@@ -167,14 +185,17 @@ namespace CapaWeb.WebForms
                     }
                     else
                     {
-
+                        //obtener numero de auditoria
+                        nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
+                        string nro_audit = nrotrans.valor_asignado;
                         DateTime hoy = DateTime.Today;
                         ModelousuarioSucursal.cod_emp = ComPwm;
-                        ModelousuarioSucursal.cod_sucursal = cbx_sucursal.SelectedValue;
-                        ModelousuarioSucursal.usuario = cbx_usuarios.SelectedValue;
+                        ModelousuarioSucursal.cod_sucursal = cbx_sucursal.SelectedValue.Trim();
+                        ModelousuarioSucursal.usuario = cbx_usuarios.SelectedValue.Trim();
                         ModelousuarioSucursal.fecha_mod = hoy;
                         ModelousuarioSucursal.usuario_mod = AmUsrLog;
-
+                        ModelousuarioSucursal.nro_audit = nro_audit;
+                        ModelousuarioSucursal.cod_proc_aud = "AUSRXSUC";
                         error = consultaUsuarioSucursal.InsertarUsuarioSucursal(ModelousuarioSucursal);
 
                         if (string.IsNullOrEmpty(error))
@@ -189,15 +210,17 @@ namespace CapaWeb.WebForms
                         }
                     }
                     break;
-                case "UPD":
-
+                case "UDP":
+                    string ide = (qs["Id"].ToString());
+                    string usuario = ide.ToString();
                     DateTime hoy1 = DateTime.Today;
                     ModelousuarioSucursal.cod_emp = ComPwm;
-                    ModelousuarioSucursal.cod_sucursal = cbx_sucursal.SelectedValue;
-                    ModelousuarioSucursal.usuario = cbx_usuarios.SelectedValue;
+                    ModelousuarioSucursal.cod_sucursal = cbx_sucursal.SelectedValue.Trim();
+                    ModelousuarioSucursal.usuario = cbx_usuarios.SelectedValue.Trim();
                     ModelousuarioSucursal.fecha_mod = hoy1;
                     ModelousuarioSucursal.usuario_mod = AmUsrLog;
-                    error = consultaUsuarioSucursal.InsertarUsuarioSucursal(ModelousuarioSucursal);
+                    ModelousuarioSucursal.usu_ante = usuario;
+                    error = consultaUsuarioSucursal.ActualizarUsuarioSucursal(ModelousuarioSucursal);
 
                     if (string.IsNullOrEmpty(error))
                     {

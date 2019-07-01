@@ -19,6 +19,7 @@ namespace CapaWeb.WebForms
         public string ComPwm;
         public string AmUsrLog;
         public string nro_trans = null;
+        public string cod_proceso;
         protected void Page_Load(object sender, EventArgs e)
         {
             RecuperarCokie();
@@ -101,6 +102,19 @@ namespace CapaWeb.WebForms
             {
                 AmUsrLog = Request.Cookies["AmUsrLog"].Value;
 
+            }
+            if (Request.Cookies["ProcAud"] != null)
+            {
+                cod_proceso = Request.Cookies["ProcAud"].Value;
+            }
+            else
+            {
+                cod_proceso = Convert.ToString(Request.QueryString["cod_proceso"]);
+                if (cod_proceso != null)
+                {
+                    //Crear cookie de cod_proceso
+                    Response.Cookies["ProcAud"].Value = cod_proceso;
+                }
             }
         }
 
