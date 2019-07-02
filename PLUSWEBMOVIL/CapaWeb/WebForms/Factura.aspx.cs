@@ -1140,7 +1140,7 @@ namespace CapaWeb.WebForms
          protected void Confirmar_Click(object sender, EventArgs e)
          {
             //Consultar si el vendedor tiene asignada una sucursal
-            ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm,cod_vendedor.SelectedValue.Trim());
+            ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm,AmUsrLog);
             int count = 0;
             foreach (var item in ListaModeloUsuarioSucursal)
             {
@@ -1150,7 +1150,7 @@ namespace CapaWeb.WebForms
             }
             if (count == 0)
             {
-                this.Page.Response.Write("<script language='JavaScript'>window.alert('Vendedor no tiene asignada sucursal, por favor asignar para continuar con el proceso ')+ error;</script>");
+                this.Page.Response.Write("<script language='JavaScript'>window.alert('Usuario no tiene asignada sucursal, por favor asignar para continuar con el proceso ')+ error;</script>");
             }
             else
                 //Preguntar si existe detalle antes de confirmar
