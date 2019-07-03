@@ -218,7 +218,7 @@ namespace CapaProceso.RestCliente
             sucursal.dpto = vendedor.cod_provincia;
             sucursal.email = vendedor.email_tit;
             sucursal.emailfe = cliente.email_tit;
-            sucursal.idsuc = Convert.ToInt16(ModeloUsuSucursal.cod_sucursal.Trim());
+            sucursal.idsuc = Convert.ToInt16(conscabcera.cod_sucursal.Trim());
             sucursal.idvendedor = Convert.ToInt64(conscabcera.cod_vendedor);
             sucursal.movil = "";
             sucursal.mun = vendedor.ciudad_tit;            
