@@ -99,6 +99,10 @@ namespace CapaWeb.WebForms
         public modelowmspctctrxCotizacion ModeloCotizacion = new modelowmspctctrxCotizacion();
         public ConsultawmspctctrxCotizacion consultaMoneda = new ConsultawmspctctrxCotizacion();
 
+        public List<modeloUsuariosucursal> ListaModeloUsuarioSucursal = new List<modeloUsuariosucursal>();
+        public ConsultawmusuarioSucursal ConsultaUsuxSuc = new ConsultawmusuarioSucursal();
+        public modeloUsuariosucursal ModelousuarioSucursal = new modeloUsuariosucursal();
+
         public string ComPwm;
         public string AmUsrLog;
         public string valor_asignado = null;
@@ -1135,8 +1139,22 @@ namespace CapaWeb.WebForms
 
          protected void Confirmar_Click(object sender, EventArgs e)
          {
-            //Preguntar si existe detalle antes de confirmar
-            if (txtSumaTotal.Text == "")
+            //Consultar si el vendedor tiene asignada una sucursal
+            ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm,AmUsrLog);
+            int count = 0;
+            foreach (var item in ListaModeloUsuarioSucursal)
+            {
+                ModelousuarioSucursal = item;
+                count++;
+                break;
+            }
+            if (count == 0)
+            {
+                this.Page.Response.Write("<script language='JavaScript'>window.alert('Usuario no tiene asignada sucursal, por favor asignar para continuar con el proceso ')+ error;</script>");
+            }
+            else
+                //Preguntar si existe detalle antes de confirmar
+                if (txtSumaTotal.Text == "")
             {
                 this.Page.Response.Write("<script language='JavaScript'>window.alert('No existen productos para facturar')+ error;</script>");
             }
@@ -1598,7 +1616,7 @@ namespace CapaWeb.WebForms
                             Session["sumaBase19"] = sumaBase19.ToString();
                             txtBaseIva19.Text = String.Format("{0:N}", sumaBase19).ToString();
                         }
-                        //base iva 15 totales
+                        //base iva 5 totales
                         if (Session["sumaBase15"] != null)
                         {
                             sumaBase15 = Convert.ToDecimal(Session["sumaBase15"]);
@@ -1622,7 +1640,7 @@ namespace CapaWeb.WebForms
                             txtIva19.Text = String.Format("{0:N}", sumaIva19).ToString();
                         }
 
-                        //Iva 15 totales
+                        //Iva 5 totales
 
                         if (Session["sumaIva15"] != null)
                         {

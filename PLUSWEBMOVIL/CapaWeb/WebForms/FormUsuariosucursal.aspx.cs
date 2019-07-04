@@ -29,8 +29,9 @@ namespace CapaWeb.WebForms
 
         public modeloUsuariosucursal ModelousuarioSucursal = new modeloUsuariosucursal();
         public List<modeloUsuariosucursal> ListaModeloUsuarioSucursal = new List<modeloUsuariosucursal>();
-        public ConsultausuarioSucursal consultaUsuarioSucursal= new ConsultausuarioSucursal();
         public ConsultawmusuarioSucursal ConsultaUsuxSuc = new ConsultawmusuarioSucursal();
+        public ConsultausuarioSucursal consultaUsuarioSucursal= new ConsultausuarioSucursal();
+        
         public modeloUsuariosucursal UsuarioSucursal = new modeloUsuariosucursal();
 
         ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
@@ -171,7 +172,7 @@ namespace CapaWeb.WebForms
             {
                 case "INS":
                     //verificar si es unico
-                    ListaModeloUsuarioSucursal = ConsultaUsuxSuc.UnicoUsuarioSucursal(ComPwm, cbx_usuarios.SelectedValue, cbx_sucursal.SelectedValue);
+                    ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, cbx_usuarios.SelectedValue);
                     int count = 0;
                     foreach (var item in ListaModeloUsuarioSucursal)
                     {

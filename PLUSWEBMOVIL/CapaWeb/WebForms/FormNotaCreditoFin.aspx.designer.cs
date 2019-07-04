@@ -184,6 +184,24 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Button btn_Facturas;
         
         /// <summary>
+        /// Control lbl_fac1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_fac1;
+        
+        /// <summary>
+        /// Control btn_Fac.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_Fac;
+        
+        /// <summary>
         /// Control area.
         /// </summary>
         /// <remarks>

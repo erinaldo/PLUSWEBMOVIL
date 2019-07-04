@@ -125,6 +125,8 @@ namespace CapaDatos.Sql
             
            
         }
+
+        //Consultar si el vendedor tiene asignado una sucursal
         public List<modeloUsuariosucursal> ConsultaUsuarioxSucursal(string cod_emp, string usuario)
         {
             using (cn = conexion.genearConexion())
@@ -185,5 +187,6 @@ namespace CapaDatos.Sql
             }            
             
         }
+        
     }
 }

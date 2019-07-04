@@ -21,6 +21,7 @@
             var porcdescto = document.getElementById("<%= porcdescto.ClientID %>").value;
             var area = document.getElementById("<%= area.ClientID %>").value;
             var txt = document.getElementById("<%= area.ClientID %>").value;
+             var txtcorreo = document.getElementById("<%= txtcorreo.ClientID %>").value;
             var n = txt.length;
             var respuesta;
             if (BuscarArticulo == null || BuscarArticulo == "") {
@@ -48,7 +49,12 @@
             } else {
                 respuesta = true;
             }
-
+            if (txtcorreo == null || txtcorreo == "" || txtcorreo == 0) {
+                alert("Ingrese correo electrónico");
+                respuesta = false;
+            } else {
+                respuesta = true;
+            }
            
             if (n > 250) {
                 alert("La observación excede el limite, total de " + n + " caracteres");
@@ -137,7 +143,7 @@
                                 </td>
                                 <td>
                                     <label>
-                                        <asp:TextBox ID="txtcorreo"  Width="202" class="textos" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtcorreo"  type="email" required="required" title="correo@gmail.com" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" Width="202" class="textos" runat="server"></asp:TextBox>
 
                                     </label>
                                 </td>

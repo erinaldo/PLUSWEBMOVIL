@@ -179,10 +179,21 @@
                                 </td>
                                
                                <td>
-                                   <asp:Button ID="btn_Facturas" CssClass="botones" Visible="false" Width="125" runat="server" Text="Cargar Factura" />
+                                   <asp:Button ID="btn_Facturas" OnClick="btn_Facturas_Click" CssClass="botones" Visible="false" Width="125" runat="server" Text="Cargar Factura" />
                                   </td>
                                </tr>
-                           
+
+                           <tr>
+                               <td class="busqueda">
+                                    <asp:Label align="center" ID="lbl_fac1"  Width="100" runat="server" Text="Facturas:"></asp:Label>
+                                  </td>
+                               
+                               
+                               <td>
+                                   <asp:Button ID="btn_Fac" onclick="btn_Fac_Click" CssClass="botones"  Width="125" runat="server" Text="Buscar Factura" />
+                                  </td>
+                              
+                             </tr>
                             <tr>
                                 
                                 <td align="right" valign="top" nowrap="nowrap" class="busqueda">
