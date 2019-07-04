@@ -1616,7 +1616,7 @@ namespace CapaWeb.WebForms
                             Session["sumaBase19"] = sumaBase19.ToString();
                             txtBaseIva19.Text = String.Format("{0:N}", sumaBase19).ToString();
                         }
-                        //base iva 15 totales
+                        //base iva 5 totales
                         if (Session["sumaBase15"] != null)
                         {
                             sumaBase15 = Convert.ToDecimal(Session["sumaBase15"]);
@@ -1640,7 +1640,7 @@ namespace CapaWeb.WebForms
                             txtIva19.Text = String.Format("{0:N}", sumaIva19).ToString();
                         }
 
-                        //Iva 15 totales
+                        //Iva 5 totales
 
                         if (Session["sumaIva15"] != null)
                         {
