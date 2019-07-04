@@ -30,14 +30,15 @@
             } else {             
                 respuesta = true;
             }
+           
             if (cantidad == null || cantidad == "" || cantidad <= 0) {
                 alert("Ingrese cantidad");
                 respuesta = false;
             } else {
                 respuesta = true;
             }
-            
-            if (porcdescto < 0 || porcdescto == "" || porcdescto == null ) {
+
+            if (porcdescto < 0 || porcdescto == "" || porcdescto == null) {
                 alert("Descuento no puede ser menor que cero");
                 respuesta = false;
             } else {
@@ -55,11 +56,11 @@
             } else {
                 respuesta = true;
             }
-           
+
             if (n > 250) {
                 alert("La observación excede el limite, total de " + n + " caracteres");
                 respuesta = false;
-               
+
             }
 
 

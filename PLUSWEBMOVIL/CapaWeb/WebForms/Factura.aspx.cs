@@ -558,7 +558,7 @@ namespace CapaWeb.WebForms
                             sumaIva15 -= itemSuma.detaiva;
                         }
                         /* sumo los numebos valores agregados al producto*/
-                        itemSuma.cantidad += Convert.ToDecimal(cantidad.Text);
+                        itemSuma.cantidad = Convert.ToDecimal(cantidad.Text);
                         itemSuma.precio_unit = Math.Round(Convert.ToDecimal(precio.Text), 2);
 
 
@@ -569,7 +569,7 @@ namespace CapaWeb.WebForms
 
 
 
-                        sumaSubtotal += itemSuma.subtotal;
+                        sumaSubtotal = itemSuma.subtotal;
                         Session["sumaSubtotal"] = sumaSubtotal.ToString();
                         txtSumaSubTo.Text = String.Format("{0:N}", sumaSubtotal).ToString();
 
@@ -577,7 +577,7 @@ namespace CapaWeb.WebForms
                         {
                             itemSuma.descuento = 0;
                             itemSuma.detadescuento = 0;
-                            itemSuma.detaiva = Math.Round((itemSuma.subtotal * itemSuma.poriva), 0);
+                            itemSuma.detaiva = Math.Round((itemSuma.subtotal * itemSuma.poriva), 2);
                             itemSuma.subdos = itemSuma.subtotal;
                             itemSuma.total = itemSuma.subdos + itemSuma.detaiva; //Suma total
                         }
@@ -1232,127 +1232,131 @@ namespace CapaWeb.WebForms
 
          protected void gv_Producto_ItemCommand(object source, DataGridCommandEventArgs e)
          {
-             ModeloDetalleFactura detalle = new ModeloDetalleFactura();
-             ModeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);// tomo la variable de secion 
-             foreach (var item in ModeloDetalleFactura)
-             {
-                 if (item.cod_articulo == Convert.ToString(((Label)e.Item.Cells[2].FindControl("cod_articulo")).Text))// comparo si la lista el cosigo de producto es igual al selecionado
-                 {
-                     detalle = item; // saco el item seleccionado
-                     break;
-                 }
-             }
+            if (Session["detalle"] != null)
+            {
+                ModeloDetalleFactura detalle = new ModeloDetalleFactura();
+                ModeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);// tomo la variable de secion 
+                foreach (var item in ModeloDetalleFactura)
+                {
+                    if (item.cod_articulo == Convert.ToString(((Label)e.Item.Cells[2].FindControl("cod_articulo")).Text))// comparo si la lista el cosigo de producto es igual al selecionado
+                    {
+                        detalle = item; // saco el item seleccionado
+                        break;
+                    }
+                }
 
-             switch (e.CommandName) //ultilizo la variable para la opcion            
-             {
-                 case "Editar":// lleno las cajas de texto con los datos para la edicon del item seleccionado
-                     BuscarArticulo.Text = detalle.cod_articulo;
-                     articulos.Text = detalle.nom_articulo;
-                     cantidad.Text = Convert.ToString(detalle.cantidad);
-                     porcdescto.Text = Convert.ToString(detalle.porc_descto);
-                     precio.Text = Convert.ToString(detalle.precio_unit);
-                     iva.Text = detalle.porc_iva.ToString();
+                switch (e.CommandName) //ultilizo la variable para la opcion            
+                {
+                    case "Editar":// lleno las cajas de texto con los datos para la edicon del item seleccionado
+                        BuscarArticulo.Text = detalle.cod_articulo;
+                        articulos.Text = detalle.nom_articulo;
+                        cantidad.Text = Convert.ToString(detalle.cantidad);
+                        porcdescto.Text = Convert.ToString(detalle.porc_descto);
+                        precio.Text = Convert.ToString(detalle.precio_unit);
+                        iva.Text = detalle.porc_iva.ToString();
 
-                     break;
+                        break;
 
-                 case "Eliminar":
-                     /*Eliminar item de la grilla*/
+                    case "Eliminar":
+                        /*Eliminar item de la grilla*/
 
                         //Eliminar Total
                         if (Session["sumaTotal"] != null)
-                    {
-                        sumaTotal = Convert.ToDecimal(Session["sumaTotal"]);
-                    }
+                        {
+                            sumaTotal = Convert.ToDecimal(Session["sumaTotal"]);
+                        }
 
-                    sumaTotal -= Convert.ToDecimal(detalle.total);
-                    Session["sumaTotal"] = sumaTotal.ToString();
-                    txtSumaTotal.Text = String.Format("{0:N}", sumaTotal.ToString());
-                    //base iva 19 totales
+                        sumaTotal -= Convert.ToDecimal(detalle.total);
+                        Session["sumaTotal"] = sumaTotal.ToString();
+                        txtSumaTotal.Text = String.Format("{0:N}", sumaTotal.ToString());
+                        //base iva 19 totales
 
-                    if (Session["sumaBase19"] != null)
-                    {
-                        sumaBase19 = Convert.ToDecimal(Session["sumaBase19"]);
-                    }
-                    if (Math.Round(detalle.porc_iva, 0).ToString() == "19")
-                    {
-                        sumaBase19 -= detalle.subtotal;
-                        Session["sumaBase19"] = sumaBase19.ToString();
-                        txtBaseIva19.Text = String.Format("{0:N}", sumaBase19).ToString();
-                    }
-                    //base iva 15 totales
+                        if (Session["sumaBase19"] != null)
+                        {
+                            sumaBase19 = Convert.ToDecimal(Session["sumaBase19"]);
+                        }
+                        if (Math.Round(detalle.porc_iva, 0).ToString() == "19")
+                        {
+                            sumaBase19 -= detalle.subtotal;
+                            Session["sumaBase19"] = sumaBase19.ToString();
+                            txtBaseIva19.Text = String.Format("{0:N}", sumaBase19).ToString();
+                        }
+                        //base iva 15 totales
 
-                    if (Session["sumaBase15"] != null)
-                    {
-                        sumaBase15 = Convert.ToDecimal(Session["sumaBase15"]);
-                    }
-                    if (Math.Round(detalle.porc_iva, 0).ToString() == "5")
-                    {
-                        sumaBase15 -= detalle.subtotal;
-                        Session["sumaBase15"] = sumaBase15.ToString();
-                        txtBase15.Text = String.Format("{0:N}", sumaBase15).ToString();
-                    }
-                    //iva 19% totales
+                        if (Session["sumaBase15"] != null)
+                        {
+                            sumaBase15 = Convert.ToDecimal(Session["sumaBase15"]);
+                        }
+                        if (Math.Round(detalle.porc_iva, 0).ToString() == "5")
+                        {
+                            sumaBase15 -= detalle.subtotal;
+                            Session["sumaBase15"] = sumaBase15.ToString();
+                            txtBase15.Text = String.Format("{0:N}", sumaBase15).ToString();
+                        }
+                        //iva 19% totales
 
-                    if (Session["sumaIva19"] != null)
-                    {
-                        sumaIva19 = Convert.ToDecimal(Session["sumaIva19"]);
-                    }
-                    if (Math.Round(detalle.porc_iva, 0).ToString() == "19")
-                    {
-                        sumaIva19 -= detalle.detaiva;
-                        Session["sumaIva19"] = sumaIva19.ToString();
-                        txtIva19.Text = String.Format("{0:N}", sumaIva19).ToString();
-                    }
-                    //iva 15% totales
+                        if (Session["sumaIva19"] != null)
+                        {
+                            sumaIva19 = Convert.ToDecimal(Session["sumaIva19"]);
+                        }
+                        if (Math.Round(detalle.porc_iva, 0).ToString() == "19")
+                        {
+                            sumaIva19 -= detalle.detaiva;
+                            Session["sumaIva19"] = sumaIva19.ToString();
+                            txtIva19.Text = String.Format("{0:N}", sumaIva19).ToString();
+                        }
+                        //iva 15% totales
 
-                    if (Session["sumaIva15"] != null)
-                    {
-                        sumaIva15 = Convert.ToDecimal(Session["sumaIva15"]);
-                    }
-                    if (Math.Round(detalle.porc_iva, 0).ToString() == "5")
-                    {
-                        sumaIva15 -= detalle.detaiva;
-                        Session["sumaIva15"] = sumaIva15.ToString();
-                        txtIva15.Text = String.Format("{0:N}", sumaIva15).ToString();
-                    }
-                    //Eliminar Subtotal
-                    if (Session["sumaSubtotal"] != null)
-                    {
-                        sumaSubtotal = Convert.ToDecimal(Session["sumaSubtotal"]);
-                    }
+                        if (Session["sumaIva15"] != null)
+                        {
+                            sumaIva15 = Convert.ToDecimal(Session["sumaIva15"]);
+                        }
+                        if (Math.Round(detalle.porc_iva, 0).ToString() == "5")
+                        {
+                            sumaIva15 -= detalle.detaiva;
+                            Session["sumaIva15"] = sumaIva15.ToString();
+                            txtIva15.Text = String.Format("{0:N}", sumaIva15).ToString();
+                        }
+                        //Eliminar Subtotal
+                        if (Session["sumaSubtotal"] != null)
+                        {
+                            sumaSubtotal = Convert.ToDecimal(Session["sumaSubtotal"]);
+                        }
 
-                    sumaSubtotal -= Convert.ToDecimal(detalle.subtotal);
-                    Session["sumaSubtotal"] = sumaSubtotal.ToString();
-                    txtSumaSubTo.Text = String.Format("{0:N}", sumaSubtotal.ToString());
+                        sumaSubtotal -= Convert.ToDecimal(detalle.subtotal);
+                        Session["sumaSubtotal"] = sumaSubtotal.ToString();
+                        txtSumaSubTo.Text = String.Format("{0:N}", sumaSubtotal.ToString());
 
-                    //Eliminar Descuento
-                    if (Session["sumaDescuento"] != null)
-                    {
-                        sumaDescuento = Convert.ToDecimal(Session["sumaDescuento"]);
-                    }
-                    sumaDescuento -= Convert.ToDecimal(detalle.detadescuento);
-                    Session["sumaDescuento"] = sumaDescuento.ToString();
-                    txtSumaDesc.Text = String.Format("{0:N}", sumaDescuento.ToString());
-                    //Eliminar Iva
-                    if (Session["sumaIva"] != null)
-                    {
-                        sumaIva = Convert.ToDecimal(Session["sumaIva"]);
-                    }
-                    sumaIva -= Convert.ToDecimal(detalle.detaiva);
-                    Session["sumaIva"] = sumaIva.ToString();
-                    txtSumaIva.Text = String.Format("{0:N}", sumaIva.ToString());
-                    //Eliminar base 19 y 15
-                    
-
+                        //Eliminar Descuento
+                        if (Session["sumaDescuento"] != null)
+                        {
+                            sumaDescuento = Convert.ToDecimal(Session["sumaDescuento"]);
+                        }
+                        sumaDescuento -= Convert.ToDecimal(detalle.detadescuento);
+                        Session["sumaDescuento"] = sumaDescuento.ToString();
+                        txtSumaDesc.Text = String.Format("{0:N}", sumaDescuento.ToString());
+                        //Eliminar Iva
+                        if (Session["sumaIva"] != null)
+                        {
+                            sumaIva = Convert.ToDecimal(Session["sumaIva"]);
+                        }
+                        sumaIva -= Convert.ToDecimal(detalle.detaiva);
+                        Session["sumaIva"] = sumaIva.ToString();
+                        txtSumaIva.Text = String.Format("{0:N}", sumaIva.ToString());
+                        //Eliminar base 19 y 15
 
 
-                    ModeloDetalleFactura.RemoveAt(e.Item.ItemIndex);
-                    Session["detalle"] = ModeloDetalleFactura;
-                    ModeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);
-                    gv_Producto.DataSource = ModeloDetalleFactura;
-                    gv_Producto.DataBind();
-                    break;
+
+
+                        ModeloDetalleFactura.RemoveAt(e.Item.ItemIndex);
+                        Session["detalle"] = ModeloDetalleFactura;
+                        ModeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);
+                        gv_Producto.DataSource = ModeloDetalleFactura;
+                        gv_Producto.DataBind();
+                        break;
+                }
             }
+             
 
 
         }
