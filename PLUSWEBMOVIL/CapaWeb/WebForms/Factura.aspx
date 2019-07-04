@@ -50,20 +50,7 @@
             } else {
                 respuesta = true;
             }
-            if (txtcorreo == null || txtcorreo == "" || txtcorreo == 0) {
-                alert("Ingrese correo electrónico");
-                respuesta = false;
-            } else {
-                respuesta = true;
-            }
-
-            if (n > 250) {
-                alert("La observación excede el limite, total de " + n + " caracteres");
-                respuesta = false;
-
-            }
-
-
+           
             return respuesta
         }
         
