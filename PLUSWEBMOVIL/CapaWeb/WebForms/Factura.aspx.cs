@@ -541,19 +541,19 @@ namespace CapaWeb.WebForms
                         sumaIva -= itemSuma.detaiva;
                         sumaTotal -= itemSuma.total;
 
-                        if (itemSuma.poriva.ToString() == "0.19")
+                        if (itemSuma.detaiva.ToString() == "0.19")
                         {
                             sumaBase19 -= itemSuma.subtotal;
                         }
-                        if (itemSuma.poriva.ToString() == "0.05")
+                        if (itemSuma.detaiva.ToString() == "0.05")
                         {
                             sumaBase15 -= itemSuma.subtotal;
                         }
-                        if (itemSuma.poriva.ToString() == "0.19")
+                        if (itemSuma.detaiva.ToString() == "0.19")
                         {
                             sumaIva19 -= itemSuma.detaiva;
                         }
-                        if (itemSuma.poriva.ToString() == "0.05")
+                        if (itemSuma.detaiva.ToString() == "0.05")
                         {
                             sumaIva15 -= itemSuma.detaiva;
                         }
