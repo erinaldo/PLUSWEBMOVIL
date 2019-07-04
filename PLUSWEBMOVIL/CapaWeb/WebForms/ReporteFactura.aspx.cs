@@ -51,8 +51,8 @@ namespace CapaWeb.WebForms
             PdfFacturaElectronica pdf = new PdfFacturaElectronica();
             string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
-            Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
-            Boolean error = enviarcorreocliente.EnviarCorreoCliente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, "");
+           /* Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
+            Boolean error = enviarcorreocliente.EnviarCorreoCliente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, ""); */
 
             Response.ContentType = "application/pdf";
             Response.WriteFile(pathPdf);            
