@@ -13,7 +13,7 @@ namespace CapaDatos.Sql
     {
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
-        public List<modelobancos> ConsultaBancos(string usuario, string cod_emp)
+        public List<modelobancos> ConsultaBancos(string usuario, string cod_emp, string banco, string tipo, string cuenta, string imprime)
         {
             using (cn = conexion.genearConexion())
             {
@@ -24,6 +24,10 @@ namespace CapaDatos.Sql
                 conmand.CommandType = CommandType.StoredProcedure;
                 conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
                 conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                conmand.Parameters.Add("@banco", SqlDbType.VarChar).Value = banco;
+                conmand.Parameters.Add("@tipo", SqlDbType.VarChar).Value = tipo;
+                conmand.Parameters.Add("@cuenta", SqlDbType.VarChar).Value = cuenta;
+                conmand.Parameters.Add("@imprime", SqlDbType.VarChar).Value = imprime;
 
 
                 SqlDataReader dr = conmand.ExecuteReader();

@@ -138,7 +138,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             Modelocomercial = BuscarParametro(Ccf_cod_emp);
 
             ModeloBancos = null;
-            ModeloBancos = BuscarBancos(Ccf_usuario, Ccf_cod_emp);
+            ModeloBancos = BuscarBancos(Ccf_usuario, Ccf_cod_emp, "0","0","0","s");
 
             ModeloCotizacion = null;
             ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
@@ -812,22 +812,19 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 1;
             pagos2.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph(ModeloBancos.nomtcta_banco+" " + "Nro" +" "+ ModeloBancos.nrocta_banco+" "+ "de "+" "+ModeloBancos.nom_tit, fontText));
-            cell.BorderWidthBottom = 0;
-            cell.BorderWidthLeft = 0;
-            cell.BorderWidthTop = 0;
-            cell.BorderWidthRight = 1;
-            cell.HorizontalAlignment = 1;
-            pagos2.AddCell(cell);
 
-            /*  foreach (modelobancos item in ListaModelobancos)
+              foreach (modelobancos item in ListaModelobancos)
               {
+                cell.BorderWidthBottom = 1;
+                cell.BorderWidthLeft = 1;
+                cell.BorderWidthTop = 1;
+                cell.BorderWidthRight = 1;
+                cell.HorizontalAlignment = 1;
 
-                  pagos2.AddCell(new Paragraph((item.nomtcta_banco)+ ("Nro " + (item.nrocta_banco))+ "de " +(item.nom_tit.ToString())));
-                  /* pagos2.AddCell(new Paragraph("Nro " + (item.nrocta_banco), fontText));
-                   pagos2.AddCell(new Paragraph("de " + item.nom_tit.ToString(), fontText));
-                  break;
-          }*/
+                pagos2.AddCell(new Paragraph((item.nomtcta_banco) + (" "+"Nro " + (item.nrocta_banco))+" " + "de " +" "+ (item.nom_tit.ToString()), fontText));
+                   
+                
+          }
 
             
 
@@ -1074,7 +1071,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
             return Modelowmspclogo;
         }
-        public modelowmspctctrxCotizacion BuscarCotizacion(string usuario, string empresa, string nro_trans)
+        public modelowmspctctrxCotizacion BuscarCotizacion(string usuario, string empresa,string nro_trans)
         {
             ListaModelocotizacion = consultaMoneda.BuscartatrmCotizacion(usuario,empresa, nro_trans);
             foreach (var item in ListaModelocotizacion)
@@ -1086,9 +1083,9 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             return ModeloCotizacion;
         }
 
-        public modelobancos BuscarBancos(string empresa, string usuario)
+        public modelobancos BuscarBancos(string empresa, string usuario,  string banco, string tipo, string cuenta, string imprime)
         {
-            ListaModelobancos = consultabanco.BuscartaBancos(empresa, usuario);
+            ListaModelobancos = consultabanco.BuscartaBancos(empresa, usuario,  banco, tipo, cuenta, imprime);
             foreach (var item in ListaModelobancos)
             {
                 ModeloBancos = item;
