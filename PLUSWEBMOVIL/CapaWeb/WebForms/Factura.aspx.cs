@@ -951,7 +951,8 @@ namespace CapaWeb.WebForms
                     }
                     else
                     {
-                       // this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+                        //this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+                        lbl_trx.Text = error;
 
                     }
 
