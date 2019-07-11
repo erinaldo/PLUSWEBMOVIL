@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Conexion\Conexion.cs" />
     <Compile Include="Modelos\JsonRespuestaDE.cs" />
+    <Compile Include="Modelos\modeloActualizarDatosTitular.cs" />
     <Compile Include="Modelos\modelocabecerafactura.cs" />
     <Compile Include="Modelos\modeloCodProcesoFactura.cs" />
     <Compile Include="Modelos\ModeloDetalleFactura.cs" />
@@ -83,8 +84,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Sql\ActualizarDatosTitular.cs" />
     <Compile Include="Sql\Articulos.cs" />
-    <Compile Include="Sql\ArticuloUnico.cs" />
     <Compile Include="Sql\CCostos.cs" />
     <Compile Include="Sql\CMonedas.cs" />
     <Compile Include="Sql\CodProcesoFactura.cs" />

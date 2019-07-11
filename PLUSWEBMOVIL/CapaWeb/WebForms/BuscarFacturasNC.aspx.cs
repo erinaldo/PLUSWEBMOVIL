@@ -68,20 +68,14 @@ namespace CapaWeb.WebForms
 
             RecuperarCokie();
 
-            ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
-            foreach (var item in ListaModelowmspclogo)
-            {
-                Modelowmspclogo = item;
-                break;
-            }
-
-            if (!IsPostBack)
+             if (!IsPostBack)
             {
                
+                
+                Session.Remove("listaFacturas");
+                Session.Remove("usuario");
 
-                    Session.Remove("cliente");
-
-                    if (Request.Cookies["ComPwm"] != null)
+                if (Request.Cookies["ComPwm"] != null)
                     {
                         string ComPwm = Request.Cookies["ComPwm"].Value;
 
@@ -89,9 +83,10 @@ namespace CapaWeb.WebForms
 
                     if (Session["listaClienteFac"] != null)
                     {
-                    // recupera la variable de secion con el objeto persona   
-                        listaConsCab = (List<modelowmtfacturascab>)Session["listaClienteFac"];
-                        Session["listaConsCab"] = listaConsCab;
+                    // recupera la variable de secion con el objeto persona 
+                      
+                     listaConsCab = (List<modelowmtfacturascab>)Session["listaClienteFac"];
+                     Session["listaConsCab"] = listaConsCab;
                     foreach (var item in listaConsCab)
                     {
                         Session["usuario"] = item.cod_cliente;
@@ -99,12 +94,12 @@ namespace CapaWeb.WebForms
                     }
 
                     Grid.DataSource = listaConsCab;
-                        Grid.DataBind();
+                    Grid.DataBind();
                 }
 
                 fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 fechafin.Text = DateTime.Today.ToString("yyyy-MM-dd");
-               // CargarGrillaInicial();
+              
               
 
             }
@@ -140,14 +135,12 @@ namespace CapaWeb.WebForms
             //Escoger opcion
 
             int Id;
-            string estadoM = "";
-           
+                      
             switch (e.CommandName) //ultilizo la variable para la opcion
             {
 
                 case "Select":
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
-                    estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
                     //Consultamos la opcion seleccionada
 
 
@@ -164,19 +157,12 @@ namespace CapaWeb.WebForms
                     }
                     // Crea la variable de sessión
                     Session["listaFacturas"] = conscabcera;
-
+                   
                     // Refrescamos el formuario padre
                     ClientScript.RegisterClientScriptBlock(GetType(), "Refresca", "window.opener.location.reload(); window.close();", true);
 
-
-
                     break;
 
-
-
-               
-
-           
             }
         }
 
@@ -251,6 +237,7 @@ namespace CapaWeb.WebForms
 
 
             listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+            Session["listaConsCab"] = listaConsCab;
             Grid.DataSource = listaConsCab;
             Grid.DataBind();
             Grid.Height = 100;

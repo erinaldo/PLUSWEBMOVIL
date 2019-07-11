@@ -103,6 +103,8 @@ namespace CapaWeb.WebForms
         public ConsultawmusuarioSucursal ConsultaUsuxSuc = new ConsultawmusuarioSucursal();
         public modeloUsuariosucursal ModelousuarioSucursal = new modeloUsuariosucursal();
 
+        public modeloActualizarDatosTitular ModeloActualizarEmail = new modeloActualizarDatosTitular();
+        public ConsultaActualizarTitular ConsultaDatosTitular = new ConsultaActualizarTitular();
         public string ComPwm;
         public string AmUsrLog;
         public string valor_asignado = null;
@@ -832,6 +834,16 @@ namespace CapaWeb.WebForms
                 cliente = item;
                 break;
             }
+
+            //Procedimiento para actualizar email del titular
+            ModeloActualizarEmail.usuario = AmUsrLog;
+            ModeloActualizarEmail.empresa = ComPwm;
+            ModeloActualizarEmail.cod_tit = cliente.cod_tit.Trim();
+            ModeloActualizarEmail.parametro = "email";
+            ModeloActualizarEmail.valor = txtcorreo.Text;
+          //Envio de datos para actualizar email en RP  
+            ConsultaDatosTitular.ActualizarDatosTitulares(ModeloActualizarEmail);
+
             cabecerafactura.cod_cliente = cliente.cod_tit;
             cabecerafactura.dia = string.Format("{0:00}", Fecha.Day);
             cabecerafactura.mes = string.Format("{0:00}", Fecha.Month);
@@ -851,7 +863,7 @@ namespace CapaWeb.WebForms
             cabecerafactura.monto_imponible = Convert.ToDecimal("0.00");
             cabecerafactura.total = Convert.ToDecimal("0.00");
             cabecerafactura.estado = "P";
-            cabecerafactura.usuario_mod = "04";
+            cabecerafactura.usuario_mod = AmUsrLog;
             cabecerafactura.nro_audit = "0"; // por defecto va cero s disapra triger
             cabecerafactura.ocompra = ocompra.Text;
             cabecerafactura.cod_moneda = cmbCod_moneda.SelectedValue;

@@ -138,6 +138,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             Modelocomercial = BuscarParametro(Ccf_cod_emp);
 
             ModeloBancos = null;
+
             ModeloBancos = BuscarBancos(Ccf_usuario, Ccf_cod_emp, "0","0","0","s");
 
             ModeloCotizacion = null;

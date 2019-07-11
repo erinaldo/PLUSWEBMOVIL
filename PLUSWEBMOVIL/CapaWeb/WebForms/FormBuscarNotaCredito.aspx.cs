@@ -38,8 +38,8 @@ namespace CapaWeb.WebForms
         public string ComPwm;
         public string AmUsrLog;
         public string Ccf_tipo1 = "C";
-        public string Ccf_tipo2 = "NC";
-        public string Ccf_nro_trans = " ";
+        public string Ccf_tipo2 = "NCV";
+        public string Ccf_nro_trans = "0";
         public string Ccf_estado = "0";
         public string Ccf_cliente = "0";
         public string Ccf_cod_docum = "0";
@@ -96,6 +96,7 @@ namespace CapaWeb.WebForms
             {
                 NuevaNC.Visible = true;
                 notaCreditoFinan.Visible = true;
+                btn_AnularFactura.Visible = true;
             }
             //Rol acceso a la pantalla de Buscar facturas
             ListaModelosRoles = ConsultaRoles.BuscarAccesoFactura(AmUsrLog);
@@ -459,6 +460,17 @@ namespace CapaWeb.WebForms
             qs.Add("Id", "");
             Response.Redirect("FormNotaCreditoFin.aspx" + Encryption.EncryptQueryString(qs).ToString());
 
+        }
+
+        protected void btn_AnularFactura_Click(object sender, EventArgs e)
+        {
+            //Anular Factura
+            QueryString qs = new QueryString();
+
+            //2 voy a agregando los valores que deseo
+            qs.Add("TRN", "AFA");
+            qs.Add("Id", "");
+            Response.Redirect("FormNotaCreditoFin.aspx" + Encryption.EncryptQueryString(qs).ToString());
         }
     }
     }

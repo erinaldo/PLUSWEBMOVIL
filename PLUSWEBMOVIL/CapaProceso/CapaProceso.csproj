@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Consultas\CabezeraFactura.cs" />
+    <Compile Include="Consultas\ConsultaActualizarTitular.cs" />
     <Compile Include="Consultas\ConsultaBancos.cs" />
     <Compile Include="Consultas\ConsultaCodProceso.cs" />
     <Compile Include="Consultas\Consultaconfirmarfactura.cs" />

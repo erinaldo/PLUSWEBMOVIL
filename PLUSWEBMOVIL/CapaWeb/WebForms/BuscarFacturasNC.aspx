@@ -135,7 +135,7 @@
                                             </asp:TemplateColumn>
 
                                                                                   
-                                            <asp:ButtonColumn ButtonType="PushButton" CommandName="Select" Text="Seleccionar"></asp:ButtonColumn>
+                                            <asp:ButtonColumn ButtonType="PushButton" FooterStyle-CssClass="botones" CommandName="Select" Text="Seleccionar"></asp:ButtonColumn>
                                         </Columns>
 
 

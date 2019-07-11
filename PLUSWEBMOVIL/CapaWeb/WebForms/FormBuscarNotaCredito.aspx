@@ -22,6 +22,13 @@
                 </tr>
                 <tr>
                     <td>
+                        <p class="Subtitulo2">Para realizar anulación de Factura
+                                <asp:Button ID="btn_AnularFactura" OnClick="btn_AnularFactura_Click" Visible="false" class="botones" runat="server" Text="AQUI" />
+                          </p>
+                        </td>
+                    </tr>
+                <tr>
+                    <td>
                         <p class="Subtitulo2">Para realizar una nueva Nota de crédito 
                                 <asp:Button ID="NuevaNC" onclick="NuevaNC_Click" Visible="false" class="botones" runat="server" Text="AQUI" />
                           </p>
@@ -34,7 +41,7 @@
                           </p>
                         </td>
                     </tr>
-                 
+                  
                 
                  <tr>
                     <td>
