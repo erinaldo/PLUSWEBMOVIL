@@ -1,4 +1,5 @@
 ﻿using CapaDatos.Modelos;
+using CapaDatos.Modelos.ModelosNC;
 using CapaProceso.Consultas;
 using CapaProceso.Modelos;
 using System;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace CapaProceso.RestCliente
 {
-    public class JsonFacturacionElectronica
+    public class JsonNCFinancieraElectronica
     {
         public modelowmtfacturascab conscabcera = new modelowmtfacturascab();
         public List<modelowmtfacturascab> listaConsCab = null;
@@ -50,10 +51,10 @@ namespace CapaProceso.RestCliente
         public modelowmspcfacturasWMimpuRest ModeloImpuesto = new modelowmspcfacturasWMimpuRest();
         public ConsultawmspcfacturasWMimpuRest consultaImpuesto = new ConsultawmspcfacturasWMimpuRest();
 
-        public List<JsonRespuestaDE> ListaModelorespuestaDs = new List<JsonRespuestaDE>();
-        public List<JsonRespuestaDE> ListaBuscarQr = null;
-        public JsonRespuestaDE ModeloResQr = new JsonRespuestaDE();
-        public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
+        public List<JsonRespuestaNC> ListaModelorespuestaDs = new List<JsonRespuestaNC>();
+        public List<JsonRespuestaNC> ListaBuscarQr = null;
+        public JsonRespuestaNC ModeloResQr = new JsonRespuestaNC();
+        public ConsultawmtrespuestaNC consultaRespuestaDS = new ConsultawmtrespuestaNC();
 
         public GuardarrespuestaDS guardarResJson = new GuardarrespuestaDS();
 
@@ -75,25 +76,25 @@ namespace CapaProceso.RestCliente
         public string impuesto_rest = "0";
         public string Ven__cod_dgi = "0";
         public string Ven__fono = "0";
-        public ComprobanteFacturaJSON LlenarJSONFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        public ComprobanteNCJSON LlenarJSONNC(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
-            ComprobanteFacturaJSON comprobanteFacturaJSON = new ComprobanteFacturaJSON();
-            Documento documento = new Documento();
+            ComprobanteNCJSON comprobanteNCJSON = new ComprobanteNCJSON();
+            DocumentoNC documento = new DocumentoNC();
             /* Datos de encabezado de la factura */
 
-            documento.encabezado = LlenarEnacabezadoFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-            documento.detalle = LlenarDetalleFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_nro_trans);
-            documento.impuesto = LlenarImpuestoFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_nro_trans, impuesto_rest);
-            documento.sucursal = LlenarSucursalFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-            documento.tercero = LlenarTerceroFacturaJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+            documento.encabezado = LlenarEnacabezadoNCJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+            documento.detalle = LlenarDetalleNCJSON(Ccf_cod_emp, Ccf_usuario, Ccf_nro_trans);
+            documento.impuesto = LlenarImpuestoNCJSON(Ccf_cod_emp, Ccf_usuario, Ccf_nro_trans, impuesto_rest);
+            documento.sucursal = LlenarSucursalNCJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+            documento.tercero = LlenarTerceroNCJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
-            comprobanteFacturaJSON.documento = documento;
-            return comprobanteFacturaJSON;
+            comprobanteNCJSON.documento = documento;
+            return comprobanteNCJSON;
         }
 
-        public Encabezado LlenarEnacabezadoFacturaJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        public EncabezadoNC LlenarEnacabezadoNCJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
-            Encabezado encabezado = new Encabezado();
+            EncabezadoNC encabezado = new EncabezadoNC();
 
             listaConsDet = ConsultaDeta.ConsultaDetalleFacura(Ccf_nro_trans);
 
@@ -119,30 +120,33 @@ namespace CapaProceso.RestCliente
             encabezado.nit = Convert.ToInt64(conscabcera.nro_dgi2);
             encabezado.numero = Convert.ToInt32(conscabcera.nro_docum);
             encabezado.ordencompra = Convert.ToString(conscabcera.ocompra);
-            // para pruebas: encabezado.prefijo = Convert.ToString(conscabcera.serie_docum.Trim()); 
-            encabezado.prefijo = "FVE";
+            // para pruebas (DV): encabezado.prefijo = Convert.ToString(conscabcera.serie_docum.Trim()); 
+            encabezado.prefijo = "DV"; // para pruebas (DV)
             encabezado.subtotal = Convert.ToInt32(conscabcera.subtotal);
             encabezado.sucursal = Convert.ToInt16(conscabcera.cod_sucursal); 
             encabezado.total = Convert.ToInt32(conscabcera.total);
             encabezado.usuario = Ccf_usuario;  //Usuario que facturo
             encabezado.totalDet = listaConsDet.Count; //la cantidad de lineas del detalle de la factura
             encabezado.totalImp = 1; //la cantidad de lineas de los impuestos
-            
+            encabezado.ref_doc = "FVE"; //prefijo de la factura 
+           // encabezado.ref_num = ""; //numero de la factura
+           // encabezado.ref_cufe = ""; //CUFE Factura emitida
+            encabezado.tlmotivodv = 2;//NC PARA ANULAR FACTURA (2)
             return encabezado;
         }
 
-        public List<Detalle> LlenarDetalleFacturaJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_nro_trans)
+        public List<DetalleNC> LlenarDetalleNCJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_nro_trans)
         {
 
             
             listaConsDet = ConsultaDeta.ConsultaDetalleFacura(Ccf_nro_trans);
-            List<Detalle> detalle = new List<Detalle>();
+            List<DetalleNC> detalle = new List<DetalleNC>();
             ModeloCotizacion = null;
             ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
 
             foreach (var item in listaConsDet)
             {
-                Detalle itemDetalle = new Detalle();
+                DetalleNC itemDetalle = new DetalleNC();
                 itemDetalle.adicional = "";
                 itemDetalle.cantidad = Convert.ToInt32(item.cantidad);
                 itemDetalle.idproducto = item.cod_articulo.Trim();
@@ -176,10 +180,10 @@ namespace CapaProceso.RestCliente
             return detalle;
         }
 
-        public List<Impuesto> LlenarImpuestoFacturaJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_nro_trans, string impuesto_rest)
+        public List<ImpuestoNC> LlenarImpuestoNCJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_nro_trans, string impuesto_rest)
         {
-            List<Impuesto> impuesto = new List<Impuesto>();
-            Impuesto item = new Impuesto();
+            List<ImpuestoNC> impuesto = new List<ImpuestoNC>();
+            ImpuestoNC item = new ImpuestoNC();
             //Buscamos todos los impuestos de la factura
             ModeloImpuesto = null;
             ModeloImpuesto = BuscarImpuestosREst(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans, impuesto_rest);
@@ -196,11 +200,11 @@ namespace CapaProceso.RestCliente
         }
 
 
-        public Sucursal LlenarSucursalFacturaJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        public SucursalNC LlenarSucursalNCJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
 
-            Sucursal sucursal = new Sucursal();
-            Tercero tercero = new Tercero();
+            SucursalNC sucursal = new SucursalNC();
+            TerceroNC tercero = new TerceroNC();
             modelowmspctitulares vendedor = new modelowmspctitulares();
             modelowmspctitulares cliente = new modelowmspctitulares();
 
@@ -230,10 +234,10 @@ namespace CapaProceso.RestCliente
             return sucursal;
         }
 
-        public Tercero LlenarTerceroFacturaJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        public TerceroNC LlenarTerceroNCJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
 
-            Tercero tercero = new Tercero();
+            TerceroNC tercero = new TerceroNC();
 
             modelowmspctitulares cliente = new modelowmspctitulares();
 
@@ -338,7 +342,7 @@ namespace CapaProceso.RestCliente
 
             return ModeloCotizacion;
         }
-        public JsonRespuestaDE BuscarRespuestaDS(string Ccf_nro_trans)
+        public JsonRespuestaNC BuscarRespuestaDS(string Ccf_nro_trans)
         {
             ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(Ccf_nro_trans);
 

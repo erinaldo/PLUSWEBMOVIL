@@ -14,6 +14,13 @@ namespace CapaProceso.Consultas
         FacturACab factura = new FacturACab();
         modelocabecerafactura modelocabfactura = new modelocabecerafactura();
 
+        //Insertar cabecera NC Financiera
+        public string InsertarCabezeraNotaCredito(modelocabecerafactura cabezeraFactura)
+        {
+            string respuesta = factura.InsertarCabeceraNCFinan(cabezeraFactura);
+            return respuesta;
+        }
+        //Insertar cabecera de la factura
         public string InsertarCabezeraFactura(modelocabecerafactura cabezeraFactura)
         {
             string respuesta = factura.InsertarCabecera(cabezeraFactura);

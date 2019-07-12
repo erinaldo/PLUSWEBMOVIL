@@ -175,31 +175,40 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Button btn_Fac;
         
         /// <summary>
-        /// Control lbl_factura.
+        /// Control txt_cod_docum.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_factura;
+        protected global::System.Web.UI.WebControls.TextBox txt_cod_docum;
         
         /// <summary>
-        /// Control cbx_facturas.
+        /// Control txt_nro_docum.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cbx_facturas;
+        protected global::System.Web.UI.WebControls.TextBox txt_nro_docum;
         
         /// <summary>
-        /// Control btn_Facturas.
+        /// Control txt_serie_docum.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_Facturas;
+        protected global::System.Web.UI.WebControls.TextBox txt_serie_docum;
+        
+        /// <summary>
+        /// Control txt_nro_trans_padre.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_nro_trans_padre;
         
         /// <summary>
         /// Control area.

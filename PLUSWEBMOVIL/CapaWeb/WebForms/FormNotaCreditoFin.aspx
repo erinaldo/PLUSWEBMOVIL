@@ -243,26 +243,22 @@
                                <td>
                                    <asp:Button ID="btn_Fac" onclick="btn_Fac_Click" CssClass="botones"  Width="125" runat="server" Text="Buscar Factura" />
                                   </td>
-                              
+                               <td>
+                                   <asp:TextBox ID="txt_cod_docum" Visible="false" runat="server"></asp:TextBox>
+                                  
+                               </td>
+                              <td>
+                                  <asp:TextBox ID="txt_nro_docum" Visible="false" runat="server"></asp:TextBox>
+                              </td>
+                               <td>
+                                   <asp:TextBox ID="txt_serie_docum" Visible="false" runat="server"></asp:TextBox>
+                               </td>
+                               <td>
+                                   <asp:TextBox ID="txt_nro_trans_padre" Visible="false" runat="server"></asp:TextBox>
+                               </td>
                                </tr>
 
-                           <tr>
-                              
-                               <td align="left" valign="top" nowrap="nowrap" class="busqueda">
-                                    <asp:Label align="center" ID="lbl_factura" Visible="false" Width="100" runat="server" Text="Facturas:"></asp:Label>
-                                </td>
-                                <td valign="top">
-                                    <label>
-                                        <asp:DropDownList class="textos" Visible="false" name="cbx_facturas" Width="250" ID="cbx_facturas" runat="server">
-                                        </asp:DropDownList>
-
-                                    </label>
-                                </td>
-                               
-                               <td>
-                                   <asp:Button ID="btn_Facturas" OnClick="btn_Facturas_Click" CssClass="botones" Visible="false" Width="125" runat="server" Text="Cargar Factura" />
-                                  </td>
-                             </tr>
+                          
                             <tr>
                                 
                                 <td align="right" valign="top" nowrap="nowrap" class="busqueda">

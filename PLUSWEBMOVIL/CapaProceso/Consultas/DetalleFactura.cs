@@ -19,5 +19,11 @@ namespace CapaProceso.Consultas
             string respuesta = detalleFacturas.InsertarDetalle(detalleFactura);
             return respuesta;
         }
+        /*Detalle NC Financiera afectacion total*/
+        public string InsertarDetallNCFina(ModeloDetalleFactura detalleFactura)
+        {
+            string respuesta = detalleFacturas.InsertarDetalleNCFinanciera(detalleFactura);
+            return respuesta;
+        }
     }
 }

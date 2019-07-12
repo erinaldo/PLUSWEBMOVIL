@@ -870,9 +870,9 @@ namespace CapaWeb.WebForms
             cabecerafactura.tipo = "VTA";
             cabecerafactura.porc_descto = Convert.ToDecimal("0.00");
             cabecerafactura.descuento = Convert.ToDecimal("0.00");
-            cabecerafactura.diar = "10";
-            cabecerafactura.mesr = "05";
-            cabecerafactura.anior = "2019";
+            cabecerafactura.diar = "0";
+            cabecerafactura.mesr = "0";
+            cabecerafactura.anior = "0";
             cabecerafactura.cod_proc_aud = "RCOMFACT";
             cabecerafactura.cod_sucursal = ModeloUsuSucursal.cod_sucursal;
             cabecerafactura.nro_pedido = nro_pedido.Text;
