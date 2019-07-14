@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="BuscarFacturasNC.aspx.cs" Inherits="CapaWeb.WebForms.BuscarFacturasNC" %>
 
-<link href="../Tema/css/Style.css" rel="stylesheet" />
+<link href="../Tema/css/StylePront.css" rel="stylesheet" />
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">

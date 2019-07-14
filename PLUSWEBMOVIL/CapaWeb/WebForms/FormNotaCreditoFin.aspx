@@ -77,7 +77,7 @@
                         <td valign="top">
                             <table width="100%" border="0" cellspacing="0">
                                 <tr>
-                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="BuscarFacturasNC.aspx">Nota Crédito financiera</a>---&gt;Nuevo</td>
+                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="BuscarFacturasNC.aspx">Nota de Crédito</a>---&gt;Nuevo</td>
                                 </tr>
                             </table>
                         </td>
@@ -118,7 +118,7 @@
                                 </td>
 
                                 <td class="textos">
-                                    <asp:TextBox ID="dniCliente" required="required" placeholder="Buscar..." size="25" runat="server" AutoPostBack="True" OnTextChanged="dniCliente_TextChanged"></asp:TextBox>
+                                    <asp:TextBox ID="dniCliente" required="required" placeholder="Buscar..." size="25" title="Ingrese el cliente" runat="server" AutoPostBack="True" OnTextChanged="dniCliente_TextChanged"></asp:TextBox>
 
 
                                 </td>
@@ -290,13 +290,13 @@
                 <tr>
                     <td>
 
-                        <div class="Subtitulo1">Detalle Nota Crédito Financiera</div>
+                        <div class="Subtitulo1">Detalle Nota de Crédito</div>
                     </td>
-                </tr>
+                </tr
                 <tr>
                     <td>
 
-                        <table border="0" id="AgregarObservacion" align="center" >
+                        <table border="0" id="AgregarObservacion" style="visibility: hidden" align="center" >
                             <tr>
                                  <td class="busqueda">
                                     <asp:Label ID="lblCod" class="busqueda" runat="server" Text="Label">Código</asp:Label></td>
@@ -571,7 +571,7 @@
                                 </td>
                                 <td >
                                     <asp:Button ID="Cancelar" Class="btnFactura1" OnClick="Cancelar_Click"  runat="server"  UseSubmitBehavior="False" Text="Cancelar" />
-                                    <asp:Button ID="Confirmar"  Class="btnFactura1" OnClick="Confirmar_Click" runat="server" OnClientClick="return confirm('¿Desea guardar la factura?');"  Text="Confirmar" />
+                                    <asp:Button ID="Confirmar"  Class="btnFactura1" OnClick="Confirmar_Click" runat="server" OnClientClick="return confirm('¿Desea guardar la nota de crédito?');"  Text="Confirmar" />
                                 </td>
                     
                             </tr>

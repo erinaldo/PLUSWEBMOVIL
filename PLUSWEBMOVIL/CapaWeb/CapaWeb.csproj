@@ -109,6 +109,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Tema\css\StylePront.css" />
     <Content Include="WebForms\BuscarFacturasNC.aspx" />
     <Content Include="WebForms\FormBuscarFacturasNC.aspx" />
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />

@@ -22,23 +22,24 @@
                 </tr>
                 <tr>
                     <td>
-                        <p class="Subtitulo2">Para realizar anulación de Factura
-                                <asp:Button ID="btn_AnularFactura" OnClick="btn_AnularFactura_Click" Visible="false" class="botones" runat="server" Text="AQUI" />
-                          </p>
-                        </td>
-                    </tr>
-                <tr>
-                    <td>
-                        <p class="Subtitulo2">Para realizar una nueva Nota de crédito 
-                                <asp:Button ID="NuevaNC" onclick="NuevaNC_Click" Visible="false" class="botones" runat="server" Text="AQUI" />
-                          </p>
-                        </td>
-                    </tr>
-                <tr>
-                    <td>
-                        <p class="Subtitulo2">Para realizar una nueva Nota de crédito Financiera 
-                                <asp:Button ID="notaCreditoFinan" onclick="notaCreditoFinan_Click" Visible="false" class="botones" runat="server" Text="AQUI" />
-                          </p>
+             <table style="width:100%;">
+                                <tr>
+                                    <td><p class="Subtitulo2">Para realizar una nueva Nota de Crédito: </p></td>
+                                    <td> 
+                                <asp:Button ID="notaCreditoFinan" onclick="notaCreditoFinan_Click" Visible="false" class="botones" runat="server" Text="FINANCIERA" />
+                                    &nbsp;
+                                <asp:Button ID="btn_AnularFactura" OnClick="btn_AnularFactura_Click" Visible="false" class="botones" runat="server" Text="POR ANULACIÓN DE FACTURA" />
+                                    &nbsp;
+                        
+                                <asp:Button ID="NuevaNC" onclick="NuevaNC_Click" Visible="false" class="botones" runat="server" Text="POR DEVOLUCIÓN" />
+                                    </td>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                        
+                                        &nbsp;</td>
+                                </tr>
+                                </table>                         
                         </td>
                     </tr>
                   

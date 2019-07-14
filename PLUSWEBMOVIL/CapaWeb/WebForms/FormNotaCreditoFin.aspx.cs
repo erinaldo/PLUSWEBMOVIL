@@ -339,7 +339,8 @@ namespace CapaWeb.WebForms
             cod_costos.Enabled = false;
             serie_docum.Enabled = false;
             ocompra.Enabled = false;
-            area.Enabled = false;
+            //area.Enabled = false;
+            
             porc_descto.Enabled = false;
             cmbCod_moneda.Enabled = false;
             cod_vendedor.Enabled = false;
@@ -1237,8 +1238,12 @@ namespace CapaWeb.WebForms
             }
             else
              {
-                Session["listaClienteFac"] = listaConsCab;
-                this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarFacturasNC.aspx', 'Buscar Facturas', 'top=100,width=800 ,height=400, left=400');</script>");
+                if (Session["listaFacturas"] == null)
+                {
+                    Session["listaClienteFac"] = listaConsCab;
+                    this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarFacturasNC.aspx', 'Buscar Facturas', 'top=100,width=800 ,height=400, left=400');</script>");
+
+                }
             }
             
            
@@ -1298,7 +1303,7 @@ namespace CapaWeb.WebForms
                             confirmarinsertar.nro_audit = conscabcera.nro_audit;
 
                             ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
-                            //Response.Redirect("BuscarFacturas.aspx");
+                            Response.Redirect("FormBuscarNotaCredito.aspx");
 
                             /*  ConsumoRest consumoRest = new ConsumoRest();
                               string respuesta = "";

@@ -40,6 +40,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label lblAyuda;
         
         /// <summary>
+        /// Control notaCreditoFinan.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button notaCreditoFinan;
+        
+        /// <summary>
         /// Control btn_AnularFactura.
         /// </summary>
         /// <remarks>
@@ -56,15 +65,6 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button NuevaNC;
-        
-        /// <summary>
-        /// Control notaCreditoFinan.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button notaCreditoFinan;
         
         /// <summary>
         /// Control txtAcceso.

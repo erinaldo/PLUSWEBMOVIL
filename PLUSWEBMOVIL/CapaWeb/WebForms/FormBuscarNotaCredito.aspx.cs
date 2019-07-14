@@ -38,7 +38,7 @@ namespace CapaWeb.WebForms
         public string ComPwm;
         public string AmUsrLog;
         public string Ccf_tipo1 = "C";
-        public string Ccf_tipo2 = "NCV";
+        public string Ccf_tipo2 = "NC";
         public string Ccf_nro_trans = "0";
         public string Ccf_estado = "0";
         public string Ccf_cliente = "0";
