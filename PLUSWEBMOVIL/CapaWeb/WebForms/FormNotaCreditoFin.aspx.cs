@@ -1303,26 +1303,26 @@ namespace CapaWeb.WebForms
                             confirmarinsertar.nro_audit = conscabcera.nro_audit;
 
                             ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
-                            Response.Redirect("FormBuscarNotaCredito.aspx");
+                           // Response.Redirect("FormBuscarNotaCredito.aspx");
 
-                            /*  ConsumoRest consumoRest = new ConsumoRest();
+                             ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
                               string respuesta = "";
-                              respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTA", conscabcera.nro_trans);
+                              respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTA", conscabcera.nro_trans, txt_nro_trans_padre.Text);
                               if (respuesta == "")
                               {
                                   mensaje.Text = "Su factura fue procesada exitosamente";
                                   Confirmar.Enabled = false;
                                   GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
-                                  Response.Redirect("BuscarFacturas.aspx");
+                                  Response.Redirect("FormBuscarNotaCredito.aspx");
 
                               }
                               else
                               {
                                   GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
                                   mensaje.Text = respuesta;
-                                  Response.Redirect("BuscarFacturas.aspx");
+                                  Response.Redirect("FormBuscarNotaCredito.aspx");
 
-                              }*/
+                              }
                         }
                     }
                 }

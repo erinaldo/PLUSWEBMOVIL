@@ -24,13 +24,13 @@ namespace CapaProceso.RestCliente
         public ConsultaLogo consultaLogo = new ConsultaLogo(); 
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
-        public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
+        public ConsultawmtrespuestaNC consultaRespuestaDS = new ConsultawmtrespuestaNC();
         public GuardarrespuestaNCDS guardarResJson = new GuardarrespuestaNCDS();
-        public JsonFacturacionElectronica consultaResJson = new JsonFacturacionElectronica();
+        public JsonNCFinancieraElectronica consultaResJson = new JsonNCFinancieraElectronica();
         public ProcesoRestNC procesoRest = new ProcesoRestNC();
         public JsonNCPDF jsonFacturapdf = new JsonNCPDF();
 
-        public string EnviarFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        public string EnviarFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string nro_factura)
         {
             //Consultar usuario y contraseña
             Modelowmspclogo = null;
@@ -51,7 +51,7 @@ namespace CapaProceso.RestCliente
 
             //Consultar datos para enviar el json arma la consulta y la estructura de json factura
             string jsonRes = "";
-            jsonRes = JsonConvert.SerializeObject(consultaResJson.LlenarJSONFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans), Formatting.Indented);
+            jsonRes = JsonConvert.SerializeObject(consultaResJson.LlenarJSONNC(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, nro_factura), Formatting.Indented);
            
             JsonRespuestaNC jsonRespuestaDE = new JsonRespuestaNC();
             //Envia el json armado para y obtiene la respuesta

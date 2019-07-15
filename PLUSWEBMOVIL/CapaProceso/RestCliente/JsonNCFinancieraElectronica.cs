@@ -12,6 +12,9 @@ namespace CapaProceso.RestCliente
     public class JsonNCFinancieraElectronica
     {
         public modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+        public modelowmtfacturascab conscabceraNC = new modelowmtfacturascab();
+        public List<modelowmtfacturascab> listaConsCabNC = null;
+        public Consultawmtfacturascab ConsultaCabeNC = new Consultawmtfacturascab();
         public List<modelowmtfacturascab> listaConsCab = null;
         public Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
 
@@ -76,13 +79,13 @@ namespace CapaProceso.RestCliente
         public string impuesto_rest = "0";
         public string Ven__cod_dgi = "0";
         public string Ven__fono = "0";
-        public ComprobanteNCJSON LlenarJSONNC(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        public ComprobanteNCJSON LlenarJSONNC(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string nro_factura)
         {
             ComprobanteNCJSON comprobanteNCJSON = new ComprobanteNCJSON();
             DocumentoNC documento = new DocumentoNC();
-            /* Datos de encabezado de la factura */
+            /* Datos de encabezado de la nc */
 
-            documento.encabezado = LlenarEnacabezadoNCJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+            documento.encabezado = LlenarEnacabezadoNCJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, nro_factura);
             documento.detalle = LlenarDetalleNCJSON(Ccf_cod_emp, Ccf_usuario, Ccf_nro_trans);
             documento.impuesto = LlenarImpuestoNCJSON(Ccf_cod_emp, Ccf_usuario, Ccf_nro_trans, impuesto_rest);
             documento.sucursal = LlenarSucursalNCJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
@@ -92,14 +95,33 @@ namespace CapaProceso.RestCliente
             return comprobanteNCJSON;
         }
 
-        public EncabezadoNC LlenarEnacabezadoNCJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        public EncabezadoNC LlenarEnacabezadoNCJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string nro_factura)
         {
             EncabezadoNC encabezado = new EncabezadoNC();
+            //Recuperar el cufe ce la factura
+            ListaModelorespuestaDs = consultaRespuestaDS.RespuestaLineaQr(nro_factura, "1");
+            int count = 0;
+            foreach (var item in ListaModelorespuestaDs)
+            {
+                ModeloResQr = item;
+                count++;
+                break;
+            }
 
+            //Detalle nc
             listaConsDet = ConsultaDeta.ConsultaDetalleFacura(Ccf_nro_trans);
-
+            foreach (var item1 in listaConsDet)
+            {
+                consdetalle = item1;
+                count++;
+                break;
+            }
+            //CABECERA de la FACTURA
             conscabcera = null;
-            conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+            conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, nro_factura);
+            //CABECERA NC
+            conscabceraNC = null;
+            conscabceraNC = buscarCabezeraNC(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, "NC", Ccf_nro_trans);
 
             Modeloempresa = null;
             Modeloempresa = BuscarCabEmpresa(Ccf_usuario, Ccf_cod_emp);
@@ -109,28 +131,29 @@ namespace CapaProceso.RestCliente
             //Pruebas emisor 830106032
             //Produccion emisor =Convert.ToInt32(Modeloempresa.nro_dgi2);
             encabezado.emisor = 830106032; 
-            encabezado.codmoneda = conscabcera.cod_moneda.Trim();
-            encabezado.comentarios = conscabcera.observaciones;
+            encabezado.codmoneda = conscabceraNC.cod_moneda.Trim();
+            encabezado.comentarios = conscabceraNC.observaciones;
             encabezado.factortrm = Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
-            encabezado.fecha = conscabcera.fec_doc.ToString("yyyy-MM-dd");
-            encabezado.fvence = conscabcera.fec_venc.ToString("yyyy-MM-dd");
+            encabezado.fecha = conscabceraNC.fec_doc.ToString("yyyy-MM-dd");
+            encabezado.fvence = conscabceraNC.fec_venc.ToString("yyyy-MM-dd");
             encabezado.idsuc = 1;
-            encabezado.idvendedor = Convert.ToInt32(conscabcera.cod_vendedor);
-            encabezado.iva = Convert.ToDecimal(conscabcera.iva);
-            encabezado.nit = Convert.ToInt64(conscabcera.nro_dgi2);
-            encabezado.numero = Convert.ToInt32(conscabcera.nro_docum);
-            encabezado.ordencompra = Convert.ToString(conscabcera.ocompra);
+            encabezado.idvendedor = Convert.ToInt32(conscabceraNC.cod_vendedor);
+            encabezado.iva = Convert.ToDecimal(conscabceraNC.iva);
+            encabezado.nit = Convert.ToInt64(conscabceraNC.nro_dgi2);
+            encabezado.numero = Convert.ToInt32(conscabceraNC.nro_docum);
+            encabezado.ordencompra = Convert.ToString(conscabceraNC.ocompra);
             // para pruebas (DV): encabezado.prefijo = Convert.ToString(conscabcera.serie_docum.Trim()); 
             encabezado.prefijo = "DV"; // para pruebas (DV)
-            encabezado.subtotal = Convert.ToInt32(conscabcera.subtotal);
-            encabezado.sucursal = Convert.ToInt16(conscabcera.cod_sucursal); 
-            encabezado.total = Convert.ToInt32(conscabcera.total);
+            encabezado.subtotal = Convert.ToInt32(conscabceraNC.subtotal);
+            encabezado.sucursal = Convert.ToInt16(conscabceraNC.cod_sucursal); 
+            encabezado.total = Convert.ToInt32(conscabceraNC.total);
             encabezado.usuario = Ccf_usuario;  //Usuario que facturo
             encabezado.totalDet = listaConsDet.Count; //la cantidad de lineas del detalle de la factura
             encabezado.totalImp = 1; //la cantidad de lineas de los impuestos
             encabezado.ref_doc = "FVE"; //prefijo de la factura 
-           // encabezado.ref_num = ""; //numero de la factura
-           // encabezado.ref_cufe = ""; //CUFE Factura emitida
+            encabezado.ref_fecha = conscabcera.fec_doc.ToString("yyyy-MM-dd");
+           encabezado.ref_num =Convert.ToInt64(consdetalle.nro_doca); //numero de la factura
+            encabezado.ref_cufe = ModeloResQr.cufe; //CUFE Factura emitida
             encabezado.tlmotivodv = 2;//NC PARA ANULAR FACTURA (2)
             return encabezado;
         }
@@ -289,6 +312,21 @@ namespace CapaProceso.RestCliente
 
             }
             return consdetalle;
+        }
+        //Consulta NC CABECERA
+        public modelowmtfacturascab buscarCabezeraNC(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        {
+
+            listaConsCabNC = ConsultaCabeNC.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+            int count = 0;
+            conscabceraNC = null;
+            foreach (modelowmtfacturascab item in listaConsCabNC)
+            {
+                count++;
+                conscabceraNC = item;
+
+            }
+            return conscabceraNC;
         }
         public modelowmtfacturascab buscarCabezeraFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {

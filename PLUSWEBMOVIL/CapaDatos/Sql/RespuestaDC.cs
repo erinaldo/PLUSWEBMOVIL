@@ -51,7 +51,7 @@ namespace CapaDatos.Sql
             using (cn = conexion.genearConexion())
             {
                 List<JsonRespuestaDE> lista = new List<JsonRespuestaDE>();
-                string consulta = "SELECT * FROM dbo.wmt_respuestaDS WHERE nro_trans =@nro_trans AND linea = @linea";
+                string consulta = "SELECT * FROM wmt_respuestaDS WHERE nro_trans =@nro_trans AND linea = @linea";
                 SqlCommand conmand = new SqlCommand(consulta, cn);
 
                 conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
