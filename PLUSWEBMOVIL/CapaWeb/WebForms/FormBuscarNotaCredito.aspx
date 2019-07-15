@@ -202,6 +202,13 @@
 
                                             <asp:TemplateColumn>
                                                 <ItemTemplate>
+                                                    <asp:ImageButton ID="imgImpuestos" runat="server" CausesValidation="false" CommandName="Impuestos"
+                                                        ImageUrl="~/Tema/imagenes/notebook_search.png" ToolTip="Impuestos" Width="16" />
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+
+                                            <asp:TemplateColumn>
+                                                <ItemTemplate>
                                                     <asp:ImageButton ID="imgVisualizar" runat="server" CausesValidation="false" CommandName="Ver"
                                                         ImageUrl="~/Tema/imagenes/search.png" ToolTip="Visualizar" Width="16" />
                                                 </ItemTemplate>

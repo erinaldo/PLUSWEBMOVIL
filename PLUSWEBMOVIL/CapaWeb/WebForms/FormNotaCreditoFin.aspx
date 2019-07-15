@@ -450,7 +450,7 @@
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
 
-                                            <asp:TemplateColumn>
+                                              <asp:TemplateColumn>
                                                 <ItemTemplate>
                                                     <asp:ImageButton ID="imgEliminar" runat="server" CausesValidation="false" CommandName="Eliminar"
                                                         ImageUrl="~/Tema/imagenes/trash.png" ToolTip="Eliminar" Width="16" />
@@ -496,7 +496,7 @@
                                     <asp:Label  CssClass="busqueda" ID="Label7" runat="server" Text="Impuestos:"></asp:Label>
                                 </td>
                                 <td>
-                                    <asp:ImageButton ID="btnImpuestos" ImageAlign="left" src="../Tema/imagenes/search.png"  runat="server" />
+                                    <asp:ImageButton ID="btnImpuestos" OnClick="btnImpuestos_Click" ImageAlign="left" src="../Tema/imagenes/search.png"  runat="server" />
                                 </td>
                             </tr>
                             <tr>

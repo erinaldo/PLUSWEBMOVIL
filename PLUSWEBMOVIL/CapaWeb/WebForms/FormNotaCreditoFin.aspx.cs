@@ -19,6 +19,10 @@ namespace CapaWeb.WebForms
         public modeloRolModificarPrecio ModeloRolMod = new modeloRolModificarPrecio();
         public List<modeloRolModificarPrecio> ListaRolMod = null;
 
+        public List<modelowmspcfacturasWMimpuRest> ListaModeloimpuesto = new List<modelowmspcfacturasWMimpuRest>();
+        public modelowmspcfacturasWMimpuRest ModeloImpuesto = new modelowmspcfacturasWMimpuRest();
+        public ConsultawmspcfacturasWMimpuRest consultaImpuesto = new ConsultawmspcfacturasWMimpuRest();
+
 
         Consultawmspccostos ConsultaCCostos = new Consultawmspccostos();
         List<modelowmspcccostos> listaCostos = null;
@@ -45,24 +49,7 @@ namespace CapaWeb.WebForms
         modelowmspcresfact resolucion = new modelowmspcresfact();
         List<modelowmspcresfact> listaRes = null;
 
-        ConsultaDetalleProforma ConsultaDetallePro = new ConsultaDetalleProforma();
-        modeloDetalleProforma ModeloDetallePro = new modeloDetalleProforma();
-        List<modeloDetalleProforma> ListaDetaProforma = null;
-
-        ConsultaDetalleRemision ConsultaDetalleRemision = new ConsultaDetalleRemision();
-        modeloDetalleRemision ModeloDetalleRemision = new modeloDetalleRemision();
-        List<modeloDetalleRemision> ListaDetalleRemision = null;
-
-        ConsultaProformasFac ConsultaProformas = new ConsultaProformasFac();
-        modelowmtproformascab ModeloProformas = new modelowmtproformascab();
-        List<modelowmtproformascab> ListaProofrmas = null;
-        ConsultaProformaIns InsertarProIns = new ConsultaProformaIns();
-
-        ConsultaRemisionesFac ConsultaRemisiones = new ConsultaRemisionesFac();
-        modeloRemisionesFactura ModeloRemision = new modeloRemisionesFactura();
-        List<modeloRemisionesFactura> ListaRemision = null;
-        ConsultaRemisionIns InsertarRemiIns = new ConsultaRemisionIns();
-
+        
         ConsultawmusuarioSucursal consultaUsuarioSucursal = new ConsultawmusuarioSucursal();
         modeloUsuariosucursal ModeloUsuSucursal = new modeloUsuariosucursal();
         List<modeloUsuariosucursal> ListaUsuSucursal = null;
@@ -98,6 +85,9 @@ namespace CapaWeb.WebForms
         public List<modeloUsuariosucursal> ListaModeloUsuarioSucursal = new List<modeloUsuariosucursal>();
         public ConsultawmusuarioSucursal ConsultaUsuxSuc = new ConsultawmusuarioSucursal();
         public modeloUsuariosucursal ModelousuarioSucursal = new modeloUsuariosucursal();
+
+        public modeloActualizarDatosTitular ModeloActualizarEmail = new modeloActualizarDatosTitular();
+        public ConsultaActualizarTitular ConsultaDatosTitular = new ConsultaActualizarTitular();
         public string ComPwm;
         public string AmUsrLog;
         public string valor_asignado = null;
@@ -276,14 +266,9 @@ namespace CapaWeb.WebForms
                         Session["Tipo"] = "Anular";
                         DateTime hoy1 = DateTime.Today;
                         fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
-
-                        //Consultar tasa de cambio
+                                               
                         ConsultarTasaCambioCanorus();
-                        /* ModeloRolMod = BuscarRolModificar( AmUsrLog, ComPwm, "VTA", "NA", "N");
-                         if (ModeloRolMod.control_uso == "readonly=\"readonly\"")
-                         {
-                             precio.Enabled = false;
-                         }*/
+                        
                         break;
 
                     case "INS":
@@ -319,7 +304,7 @@ namespace CapaWeb.WebForms
 
                         cargarListaDesplegables();
                         LlenarFactura();
-                        BloquearFactura();
+                        BloquearNCVer();
                         break;
                 }
 
@@ -356,6 +341,46 @@ namespace CapaWeb.WebForms
             //botones
             AgregarNC.Enabled = false;
             Confirmar.Visible = true;
+            btnGuardarDetalle.Visible = false;
+            btn_Fac.Enabled = false;
+            //detalle producto
+            txt_Codigo.Enabled = false;
+            txt_Cantidad.Enabled = false;
+            txt_Descripcion.Enabled = false;
+            txt_Precio.Enabled = false;
+            txt_Desc.Enabled = false;
+            txt_Iva.Enabled = false;
+        }
+        protected void BloquearNCVer()
+        {
+            //inhabilitar cajas de texto cabecera factura
+            dniCliente.Enabled = false;
+            nombreCliente.Enabled = false;
+            fonoCliente.Enabled = false;
+            txtcorreo.Enabled = false;
+            fecha.Enabled = false;
+            cod_fpago.Enabled = false;
+            nro_pedido.Enabled = false;
+            cod_costos.Enabled = false;
+            serie_docum.Enabled = false;
+            ocompra.Enabled = false;
+            area.Enabled = false;
+            porc_descto.Enabled = false;
+            cmbCod_moneda.Enabled = false;
+            cod_vendedor.Enabled = false;
+            txtSumaSubTo.Enabled = false;
+            txtSumaTotal.Enabled = false;
+            txtSumaIva.Enabled = false;
+            txtSumaDesc.Enabled = false;
+            gv_Producto.Enabled = false;
+            txtBase15.Enabled = false;
+            txtBaseIva19.Enabled = false;
+            txtIva15.Enabled = false;
+            txtIva19.Enabled = false;
+            //botones
+            AgregarNC.Enabled = false;
+            Confirmar.Visible = false;
+            btnImpuestos.Enabled = false;
             btnGuardarDetalle.Visible = false;
             btn_Fac.Enabled = false;
             //detalle producto
@@ -1080,6 +1105,14 @@ namespace CapaWeb.WebForms
                 cliente = item;
                 break;
             }
+
+            //Procedimiento para actualizar email del titular
+            ModeloActualizarEmail.usuario = AmUsrLog;
+            ModeloActualizarEmail.empresa = ComPwm;
+            ModeloActualizarEmail.cod_tit = cliente.cod_tit.Trim();
+            ModeloActualizarEmail.parametro = "email";
+            ModeloActualizarEmail.valor = txtcorreo.Text;
+            //Envio de datos para actualizar email en RP  
             cabecerafactura.cod_cliente = cliente.cod_tit;
             cabecerafactura.dia = string.Format("{0:00}", Fecha.Day);
             cabecerafactura.mes = string.Format("{0:00}", Fecha.Month);
@@ -1326,6 +1359,26 @@ namespace CapaWeb.WebForms
                         }
                     }
                 }
+            }
+        }
+
+        protected void btnImpuestos_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            if (Session["valor_asignado"] != null)
+            {
+                //Despues de confirmar puede usar el valor asignado
+                string transa = Session["valor_asignado"].ToString();
+                ListaModeloimpuesto = consultaImpuesto.BuscarImpuestoRest(AmUsrLog, ComPwm, transa, "0");
+                Session["listaImpuestos"] = ListaModeloimpuesto;
+                this.Page.Response.Write("<script language='JavaScript'>window.open('./FormDetalleImpuestos.aspx', 'Detalle Impuesto', 'top=100,width=800 ,height=400, left=400');</script>");
+            }
+            else
+            {
+                //Si no confirma toma los datos de la factura para consultar los impuestos
+                string transa = txt_nro_trans_padre.Text;
+                ListaModeloimpuesto = consultaImpuesto.BuscarImpuestoRest(AmUsrLog, ComPwm, transa, "0");
+                Session["listaImpuestos"] = ListaModeloimpuesto;
+                this.Page.Response.Write("<script language='JavaScript'>window.open('./FormDetalleImpuestos.aspx', 'Detalle Impuesto', 'top=100,width=800 ,height=400, left=400');</script>");
             }
         }
     }

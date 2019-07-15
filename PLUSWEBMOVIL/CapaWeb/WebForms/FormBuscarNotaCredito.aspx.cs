@@ -35,6 +35,10 @@ namespace CapaWeb.WebForms
         Consultawmsptitulares ConsultaTitulares = new Consultawmsptitulares();
         public List<modelowmspctitulares> lista = null;
         modelowmspctitulares cliente = new modelowmspctitulares();
+
+        public List<modelowmspcfacturasWMimpuRest> ListaModeloimpuesto = new List<modelowmspcfacturasWMimpuRest>();
+        public modelowmspcfacturasWMimpuRest ModeloImpuesto = new modelowmspcfacturasWMimpuRest();
+        public ConsultawmspcfacturasWMimpuRest consultaImpuesto = new ConsultawmspcfacturasWMimpuRest();
         public string ComPwm;
         public string AmUsrLog;
         public string Ccf_tipo1 = "C";
@@ -278,7 +282,7 @@ namespace CapaWeb.WebForms
                             qs.Add("TRN", "UDP");
                             qs.Add("Id", Id.ToString());
 
-                            Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                            Response.Redirect("FormNotaCreditoFin.aspx" + Encryption.EncryptQueryString(qs).ToString());
                             break;
                         default:
                             this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
@@ -286,6 +290,14 @@ namespace CapaWeb.WebForms
 
                     }
 
+                    break;
+
+                case "Impuestos":
+                    Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+
+                    ListaModeloimpuesto = consultaImpuesto.BuscarImpuestoRest(AmUsrLog, ComPwm, Id.ToString(), "0");
+                    Session["listaImpuestos"] = ListaModeloimpuesto;
+                    this.Page.Response.Write("<script language='JavaScript'>window.open('./FormDetalleImpuestos.aspx', 'Detalle Impuesto', 'top=100,width=800 ,height=400, left=400');</script>");
                     break;
 
                 case "Imprimir":
@@ -312,7 +324,7 @@ namespace CapaWeb.WebForms
 
                     conscabcera = null;
                     conscabcera = buscarCabezeraFactura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Convert.ToString(Id));
-                    Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans=" + Convert.ToString(Id) + "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo=VTA");
+                    Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans=" + Convert.ToString(Id) + "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo=NC");
                     break;
 
                 case "Ver":
@@ -321,7 +333,7 @@ namespace CapaWeb.WebForms
 
                     qs.Add("TRN", "VER");
                     qs.Add("Id", Id.ToString());
-                    Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    Response.Redirect("FormNotaCreditoFin.aspx" + Encryption.EncryptQueryString(qs).ToString());
                     break;
 
                 case "Mostrar":

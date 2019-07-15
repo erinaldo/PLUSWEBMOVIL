@@ -132,6 +132,7 @@
     <Compile Include="GenerarPDF\FacturaElectronica\JsonPdfNCElectronica.cs" />
     <Compile Include="ReslClientePdf\JsonNCPDF.cs" />
     <Compile Include="ReslClientePdf\JsonFacturaPDF.cs" />
+    <Compile Include="ReslClientePdf\PdfNotaCreditoElectronica.cs" />
     <Compile Include="ReslClientePdf\PdfFacturaElectronica.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestCliente\ComprobanteNCJSON.cs" />
