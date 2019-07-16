@@ -111,7 +111,6 @@
   <ItemGroup>
     <Content Include="Tema\css\StylePront.css" />
     <Content Include="WebForms\BuscarFacturasNC.aspx" />
-    <Content Include="WebForms\FormBuscarFacturasNC.aspx" />
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
     <Content Include="WebForms\FormDetalleImpuestos.aspx" />
     <Content Include="WebForms\FormListaUsuarioSucursal.aspx" />
@@ -167,11 +166,15 @@
     <Content Include="WebForms\FormListaSucursalEmpresa.aspx" />
     <Content Include="WebForms\FormNotaCredito.aspx" />
     <Content Include="WebForms\FormNotaCreditoFin.aspx" />
+    <Content Include="WebForms\FormRespuestaJsonNC.aspx" />
     <Content Include="WebForms\FormRespuestaJson.aspx" />
     <Content Include="WebForms\FormSucursalempresa.aspx" />
     <Content Include="WebForms\FormUsuariosucursal.aspx" />
+    <Content Include="WebForms\ListaRespuestaNCDS.aspx" />
     <Content Include="WebForms\PortalFacturas.aspx" />
     <Content Include="WebForms\ReenviarFacturaJson.aspx" />
+    <Content Include="WebForms\ReenviarNCJson.aspx" />
+    <Content Include="WebForms\ReporteNCAnuFac.aspx" />
     <Content Include="WebForms\ReporteFactura.aspx" />
   </ItemGroup>
   <ItemGroup>
@@ -181,13 +184,6 @@
     </Compile>
     <Compile Include="WebForms\BuscarFacturasNC.aspx.designer.cs">
       <DependentUpon>BuscarFacturasNC.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WebForms\FormBuscarFacturasNC.aspx.cs">
-      <DependentUpon>FormBuscarFacturasNC.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebForms\FormBuscarFacturasNC.aspx.designer.cs">
-      <DependentUpon>FormBuscarFacturasNC.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormBuscarNotaCredito.aspx.cs">
       <DependentUpon>FormBuscarNotaCredito.aspx</DependentUpon>
@@ -262,12 +258,47 @@
     <Compile Include="WebForms\FormNotaCreditoFin.aspx.designer.cs">
       <DependentUpon>FormNotaCreditoFin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\FormRespuestaJsonNC.aspx.cs">
+      <DependentUpon>FormRespuestaJsonNC.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormRespuestaJsonNC.aspx.designer.cs">
+      <DependentUpon>FormRespuestaJsonNC.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\FormRespuestaJson.aspx.cs">
       <DependentUpon>FormRespuestaJson.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\FormRespuestaJson.aspx.designer.cs">
       <DependentUpon>FormRespuestaJson.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\ListaRespuestaNCDS.aspx.cs">
+      <DependentUpon>ListaRespuestaNCDS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\ListaRespuestaNCDS.aspx.designer.cs">
+      <DependentUpon>ListaRespuestaNCDS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\ReenviarNCJson.aspx.cs">
+      <DependentUpon>ReenviarNCJson.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\ReenviarNCJson.aspx.designer.cs">
+      <DependentUpon>ReenviarNCJson.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\ReporteNCAnuFac.aspx.cs">
+      <DependentUpon>ReporteNCAnuFac.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\ReporteNCAnuFac.aspx.designer.cs">
+      <DependentUpon>ReporteNCAnuFac.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\ReporteNotaCredito.aspx.cs">
+      <DependentUpon>ReporteNotaCredito.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\ReporteNotaCredito.aspx.designer.cs">
+      <DependentUpon>ReporteNotaCredito.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
@@ -330,6 +361,7 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="WebForms\ReporteNotaCredito.aspx" />
     <Content Include="WebForms\Site.Master" />
   </ItemGroup>
   <ItemGroup>

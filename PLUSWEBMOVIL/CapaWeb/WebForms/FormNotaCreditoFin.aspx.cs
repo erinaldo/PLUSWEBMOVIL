@@ -1258,7 +1258,7 @@ namespace CapaWeb.WebForms
 
         protected void btn_Fac_Click(object sender, EventArgs e)
         {
-            
+            /* SP wmspc_facturasWM_saldo*/
             string Ccf_estado = "F";
             string Ccf_cliente = dniCliente.Text;
             string Ccf_tipo2 = "VTA";
@@ -1340,7 +1340,7 @@ namespace CapaWeb.WebForms
 
                              ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
                               string respuesta = "";
-                              respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTA", conscabcera.nro_trans, txt_nro_trans_padre.Text);
+                              respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", conscabcera.nro_trans, txt_nro_trans_padre.Text);
                               if (respuesta == "")
                               {
                                   mensaje.Text = "Su factura fue procesada exitosamente";

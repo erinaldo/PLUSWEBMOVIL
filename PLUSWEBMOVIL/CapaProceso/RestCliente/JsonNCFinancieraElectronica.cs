@@ -118,10 +118,10 @@ namespace CapaProceso.RestCliente
             }
             //CABECERA de la FACTURA
             conscabcera = null;
-            conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, nro_factura);
+            conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, "VTA", nro_factura);
             //CABECERA NC
             conscabceraNC = null;
-            conscabceraNC = buscarCabezeraNC(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, "NC", Ccf_nro_trans);
+            conscabceraNC = buscarCabezeraNC(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
             Modeloempresa = null;
             Modeloempresa = BuscarCabEmpresa(Ccf_usuario, Ccf_cod_emp);
@@ -137,7 +137,7 @@ namespace CapaProceso.RestCliente
             encabezado.fecha = conscabceraNC.fec_doc.ToString("yyyy-MM-dd");
             encabezado.fvence = conscabceraNC.fec_venc.ToString("yyyy-MM-dd");
             encabezado.idsuc = 1;
-            encabezado.idvendedor = Convert.ToInt32(conscabceraNC.cod_vendedor);
+            encabezado.idvendedor = 0;//Convert.ToInt32(conscabceraNC.cod_vendedor);
             encabezado.iva = Convert.ToDecimal(conscabceraNC.iva);
             encabezado.nit = Convert.ToInt64(conscabceraNC.nro_dgi2);
             encabezado.numero = Convert.ToInt32(conscabceraNC.nro_docum);
@@ -231,24 +231,24 @@ namespace CapaProceso.RestCliente
             modelowmspctitulares vendedor = new modelowmspctitulares();
             modelowmspctitulares cliente = new modelowmspctitulares();
 
-            string Ven__cod_tit = conscabcera.cod_cliente;
+            string Ven__cod_tit = conscabceraNC.cod_cliente;
             cliente = null;
             cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
 
             ModeloUsuSucursal  = BuscarUsuarioSucursal (Ccf_cod_emp, Ccf_usuario);
           
             vendedor = null;
-            vendedor = buscarCliente(Ccf_usuario, Ccf_cod_emp, "vendedores", conscabcera.cod_vendedor, Ven__cod_dgi);
+            vendedor = buscarCliente(Ccf_usuario, Ccf_cod_emp, "vendedores", conscabceraNC.cod_vendedor, Ven__cod_dgi);
 
             sucursal.ciudad = vendedor.nom_ciudad;
-            sucursal.codcliente = conscabcera.cod_cliente;
+            sucursal.codcliente = conscabceraNC.cod_cliente;
             sucursal.departamento = vendedor.nom_provincia;
             sucursal.direccion1 = vendedor.dir_tit;
             sucursal.dpto = vendedor.cod_provincia;
             sucursal.email = vendedor.email_tit;
             sucursal.emailfe = cliente.email_tit;
-            sucursal.idsuc = Convert.ToInt16(conscabcera.cod_sucursal.Trim());
-            sucursal.idvendedor = Convert.ToInt64(conscabcera.cod_vendedor);
+            sucursal.idsuc = Convert.ToInt16(conscabceraNC.cod_sucursal.Trim());
+            sucursal.idvendedor = 0;//Convert.ToInt64(conscabceraNC.cod_vendedor);
             sucursal.movil = "";
             sucursal.mun = vendedor.ciudad_tit;            
             sucursal.razonsocial = vendedor.razon_social;
@@ -264,7 +264,7 @@ namespace CapaProceso.RestCliente
 
             modelowmspctitulares cliente = new modelowmspctitulares();
 
-            string Ven__cod_tit = conscabcera.cod_cliente;
+            string Ven__cod_tit = conscabceraNC.cod_cliente;
             cliente = null;
             cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit,  Ven__cod_dgi);
 

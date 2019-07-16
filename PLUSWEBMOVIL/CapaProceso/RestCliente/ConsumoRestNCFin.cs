@@ -75,7 +75,7 @@ namespace CapaProceso.RestCliente
 
                 string linkgenpdf = Modelowmspclogo.linkgenpdf;//Obtengo link para enviara pdf
                 
-                PdfFacturaElectronica pdf = new PdfFacturaElectronica();
+                PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
                 string pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);//Genero el pdf
 
                 byte[] pdfBytes = File.ReadAllBytes(pathPdf);
@@ -153,7 +153,7 @@ namespace CapaProceso.RestCliente
 
             string linkgenpdf = Modelowmspclogo.linkgenpdf;//Obtengo link para enviara pdf
 
-            PdfFacturaElectronica pdf = new PdfFacturaElectronica();
+            PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
             string pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);//Genero el pdf
 
             byte[] pdfBytes = File.ReadAllBytes(pathPdf);

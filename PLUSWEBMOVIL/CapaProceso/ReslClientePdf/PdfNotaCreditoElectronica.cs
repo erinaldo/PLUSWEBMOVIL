@@ -105,7 +105,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
         public string generarPdf(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
             conscabcera = null;
-            conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+            conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, "NC", Ccf_nro_trans);
 
             consdetalle = null;
             consdetalle = buscarDetalleFactura(Ccf_nro_trans);
@@ -251,7 +251,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             PdfPTable table = new PdfPTable(1);//cantidad de columnas que va tener la tabla
             table.WidthPercentage = 100;
             table.SpacingAfter = 10;
-            cell = new PdfPCell();
+           cell = new PdfPCell();
             cell = new PdfPCell(new Paragraph("NOTA DE CRÉDITO: " + conscabcera.serie_docum + " - " + conscabcera.nro_docum, fontText));
             cell.Colspan = 3;
             cell.Border = 0;

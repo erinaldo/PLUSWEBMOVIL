@@ -10,7 +10,7 @@
 namespace CapaWeb.WebForms {
     
     
-    public partial class FormBuscarFacturasNC {
+    public partial class ReenviarNCJson {
         
         /// <summary>
         /// Control form1.
@@ -22,75 +22,57 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// Control txtCliente.
+        /// Control mensaje.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCliente;
+        protected global::System.Web.UI.WebControls.Label mensaje;
         
         /// <summary>
-        /// Control txtSerie.
+        /// Control lbl_nro_trans.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSerie;
+        protected global::System.Web.UI.WebControls.Label lbl_nro_trans;
         
         /// <summary>
-        /// Control txtDocumento.
+        /// Control lbl_nro_factura.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDocumento;
+        protected global::System.Web.UI.WebControls.Label lbl_nro_factura;
         
         /// <summary>
-        /// Control fechainicio.
+        /// Control btn_reenviar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fechainicio;
+        protected global::System.Web.UI.WebControls.Button btn_reenviar;
         
         /// <summary>
-        /// Control fechafin.
+        /// Control btn_reenviarpdf.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fechafin;
+        protected global::System.Web.UI.WebControls.Button btn_reenviarpdf;
         
         /// <summary>
-        /// Control estados.
+        /// Control btn_cancelar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList estados;
-        
-        /// <summary>
-        /// Control Buscar.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Buscar;
-        
-        /// <summary>
-        /// Control Grid.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DataGrid Grid;
+        protected global::System.Web.UI.WebControls.Button btn_cancelar;
     }
 }

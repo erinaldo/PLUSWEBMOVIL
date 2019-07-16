@@ -89,6 +89,45 @@ namespace CapaDatos.Sql
             return dr;
 
         }
+
+        //Consultar datos solo de laNC PARA Q EN NULL no de error
+        public List<modelowmtfacturascab> ConsultaDatosNCPadre(string nro_trans)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modelowmtfacturascab> lista = new List<modelowmtfacturascab>();
+                    string consulta = ("select nro_trans_padre from wmt_facturas_cab where nro_trans = @nro_trans");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+                    
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                    
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modelowmtfacturascab item = new modelowmtfacturascab();
+                        
+                        item.nro_trans_padre = Convert.ToString(dr["nro_trans_padre"]);
+
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+                List<modelowmtfacturascab> lista = new List<modelowmtfacturascab>();
+                return lista;
+            }
+
+
+        }
         public List<modelowmtfacturascab> ConsultaFacturaNroTran(  string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string Ccf_estado, string Ccf_cliente, string Ccf_cod_docum,string Ccf_serie_docum, string Ccf_nro_docum ,string Ccf_diai, string Ccf_mesi, string Ccf_anioi, string Ccf_diaf,string Ccf_mesf, string Ccf_aniof)
         {
             try
@@ -250,7 +289,8 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@cod_proc_aud", SqlDbType.VarChar).Value = cabezeraFactura.cod_proc_aud;
                     conmand.Parameters.Add("@cod_sucursal", SqlDbType.VarChar).Value = cabezeraFactura.cod_sucursal.Trim();
                     conmand.Parameters.Add("@nro_pedido", SqlDbType.VarChar).Value = cabezeraFactura.nro_pedido;
-                    
+                   
+
                     int dr = conmand.ExecuteNonQuery();
                     cn.Close();
                     return "";

@@ -308,7 +308,7 @@ namespace CapaWeb.WebForms
                         case "FINALIZADO":
 
                             qs.Add("Id", Id.ToString());
-                            Response.Write("<script>window.open('" + "ReporteFactura.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
+                            Response.Write("<script>window.open('" + "ReporteNotaCredito.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
                             break;
                         default:
                             this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
@@ -342,7 +342,7 @@ namespace CapaWeb.WebForms
 
                     qs.Add("TRN", "MTR");
                     qs.Add("Id", Id.ToString());
-                    Response.Redirect("PortalFacturas.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    Response.Redirect("ListaRespuestaNCDS.aspx" + Encryption.EncryptQueryString(qs).ToString());
 
                     break;
 
@@ -355,10 +355,10 @@ namespace CapaWeb.WebForms
                         case "CONTABILIZADO":
 
                             qs.Add("Id", Id.ToString());
-                            Response.Redirect("ReenviarFacturaJson.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                            Response.Redirect("ReenviarNCJson.aspx" + Encryption.EncryptQueryString(qs).ToString());
                             break;
                         default:
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('SU NOTA CRÉDITO ESTA " + estadoM + "')+ error;</script>");
                             break;
 
                     }
