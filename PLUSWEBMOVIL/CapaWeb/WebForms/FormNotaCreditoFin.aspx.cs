@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
 using CapaProceso.RestCliente;
 using CapaDatos.Modelos;
+using CapaDatos.Modelos.ModelosNC;
 
 namespace CapaWeb.WebForms
 {
@@ -81,6 +82,10 @@ namespace CapaWeb.WebForms
         public List<modelowmspctctrxCotizacion> ListaModelocotizacion = new List<modelowmspctctrxCotizacion>();
         public modelowmspctctrxCotizacion ModeloCotizacion = new modelowmspctctrxCotizacion();
         public ConsultawmspctctrxCotizacion consultaMoneda = new ConsultawmspctctrxCotizacion();
+
+        public List<modeloSaldosFacturas> ListaSaldoFacturas = null;
+        public modeloSaldosFacturas ModeloSaldoFactura = new modeloSaldosFacturas();
+        public ConsultaSaldosFacturas consultaSaldoFactura = new ConsultaSaldosFacturas();
 
         public List<modeloUsuariosucursal> ListaModeloUsuarioSucursal = new List<modeloUsuariosucursal>();
         public ConsultawmusuarioSucursal ConsultaUsuxSuc = new ConsultawmusuarioSucursal();
@@ -1258,14 +1263,21 @@ namespace CapaWeb.WebForms
 
         protected void btn_Fac_Click(object sender, EventArgs e)
         {
-            /* SP wmspc_facturasWM_saldo*/
-            string Ccf_estado = "F";
-            string Ccf_cliente = dniCliente.Text;
-            string Ccf_tipo2 = "VTA";
+            /* SP wmspc_facturasWM_saldo TRAE SOLO FACTURAS CON SALDO DIFERENTE DE 0*/
+            string Ven__cod_tit = dniCliente.Text;
+
+            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+
+            cliente = null;
+            foreach (modelowmspctitulares item in lista)
+            {
+                cliente = item;
+                break;
+            }
 
 
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-            if(listaConsCab.Count == 0)
+            ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos( AmUsrLog, ComPwm, cliente.cod_tit, "C");
+            if(ListaSaldoFacturas.Count == 0)
              {
                 mensaje.Text = "El cliente no tiene facturas disponibles";
             }
@@ -1273,7 +1285,7 @@ namespace CapaWeb.WebForms
              {
                 if (Session["listaFacturas"] == null)
                 {
-                    Session["listaClienteFac"] = listaConsCab;
+                    Session["listaClienteFac"] = ListaSaldoFacturas;
                     this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarFacturasNC.aspx', 'Buscar Facturas', 'top=100,width=800 ,height=400, left=400');</script>");
 
                 }

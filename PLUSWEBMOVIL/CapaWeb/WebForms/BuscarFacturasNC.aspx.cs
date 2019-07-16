@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
 using CapaProceso.RestCliente;
 using CapaDatos.Modelos;
+using CapaDatos.Modelos.ModelosNC;
 
 namespace CapaWeb.WebForms
 {
@@ -40,10 +41,14 @@ namespace CapaWeb.WebForms
         public modelowmspcfacturasWMimpuRest ModeloImpuesto = new modelowmspcfacturasWMimpuRest();
         public ConsultawmspcfacturasWMimpuRest consultaImpuesto = new ConsultawmspcfacturasWMimpuRest();
 
+        public List<modeloSaldosFacturas> ListaSaldoFacturas = null;
+        public modeloSaldosFacturas ModeloSaldoFactura = new modeloSaldosFacturas();
+        public ConsultaSaldosFacturas consultaSaldoFactura = new ConsultaSaldosFacturas();
+
         public string ComPwm;
         public string AmUsrLog;
         public string cod_proceso;
-        public string Ccf_tipo1 = "C";
+        public string Ccf_tipo1 = "CLIENTES";
         public string Ccf_tipo2 = "VTA";
         public string Ccf_nro_trans = " ";
         public string Ccf_estado = "0";
@@ -85,15 +90,15 @@ namespace CapaWeb.WebForms
                     {
                     // recupera la variable de secion con el objeto persona 
                       
-                     listaConsCab = (List<modelowmtfacturascab>)Session["listaClienteFac"];
-                     Session["listaConsCab"] = listaConsCab;
-                    foreach (var item in listaConsCab)
+                     ListaSaldoFacturas = (List<modeloSaldosFacturas>)Session["listaClienteFac"];
+                     Session["listaConsCab"] = ListaSaldoFacturas;
+                    foreach (var item in ListaSaldoFacturas)
                     {
                         Session["usuario"] = item.cod_cliente;
 
                     }
 
-                    Grid.DataSource = listaConsCab;
+                    Grid.DataSource = ListaSaldoFacturas;
                     Grid.DataBind();
                 }
 
@@ -142,10 +147,10 @@ namespace CapaWeb.WebForms
                 case "Select":
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                     //Consultamos la opcion seleccionada
-
-
-                    listaConsCab = (List<modelowmtfacturascab>)Session["listaConsCab"];
-                    foreach (var item in listaConsCab)
+                    //Consulta de cabeecra
+                    listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Id.ToString(), Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                   
+                    foreach (modelowmtfacturascab item in listaConsCab)
                     {
                         if (item.nro_trans == Id.ToString())
                         {
@@ -153,9 +158,11 @@ namespace CapaWeb.WebForms
 
                             break;
                         }
-
+                        
                     }
-                    // Crea la variable de sessión
+
+
+                      // Crea la variable de sessión
                     Session["listaFacturas"] = conscabcera;
                    
                     // Refrescamos el formuario padre
