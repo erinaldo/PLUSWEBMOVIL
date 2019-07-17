@@ -62,12 +62,7 @@ namespace CapaWeb.WebForms
         public string Ccf_diaf = "";
         public string Ccf_mesf = "";
         public string Ccf_aniof = "";
-        public string Ven__cod_tipotit = "cliente";
-        public string Ven__cod_tit = " ";
-
-
-
-        public string EstF_proceso = "RCOMFACT";
+        
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -102,36 +97,11 @@ namespace CapaWeb.WebForms
                     Grid.DataBind();
                 }
 
-                fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
-                fechafin.Text = DateTime.Today.ToString("yyyy-MM-dd");
-              
-              
-
             }
 
         }
 
-        protected void Buscar_Click(object sender, EventArgs e)
-        {
-            DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
-            DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
-            string Ccf_estado = "F";
-            string Ccf_cliente = Session["usuario"].ToString();
-            string Ccf_serie_docum = txtSerie.Text;
-            string Ccf_nro_docum = txtDocumento.Text;
-            string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);
-            string Ccf_mesi = string.Format("{0:00}", Fechainicio.Month);
-            string Ccf_anioi = Fechainicio.Year.ToString();
-            string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
-            string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
-            string Ccf_aniof = Fechafin.Year.ToString();
-
-
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-            Grid.DataSource = listaConsCab;
-            Grid.DataBind();
-            Grid.Height = 100;
-        }
+      
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
 
@@ -230,22 +200,12 @@ namespace CapaWeb.WebForms
 
         private void CargarGrilla()
         {
-            DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
-            DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
-            string Ccf_cliente = Session["usuario"].ToString();
-            string Ccf_serie_docum = txtSerie.Text;
-            string Ccf_nro_docum = txtDocumento.Text;
-            string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);
-            string Ccf_mesi = string.Format("{0:00}", Fechainicio.Month);
-            string Ccf_anioi = Fechainicio.Year.ToString();
-            string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
-            string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
-            string Ccf_aniof = Fechafin.Year.ToString();
 
 
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-            Session["listaConsCab"] = listaConsCab;
-            Grid.DataSource = listaConsCab;
+            ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C");
+            
+            Session["listaConsCab"] = ListaSaldoFacturas;
+            Grid.DataSource = ListaSaldoFacturas;
             Grid.DataBind();
             Grid.Height = 100;
 

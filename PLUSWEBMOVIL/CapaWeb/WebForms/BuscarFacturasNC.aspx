@@ -13,50 +13,8 @@
          <div style="align-items: left">
             <table  width="95%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="white">
        <tr>
-                    <td>
-                         <p class="Subtitulo1">Busque el registro deseado por:</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                         
-                      <table align="center">
-                        <tr >
-                          
-                             <td width="20%" class="busqueda">Prefijo:</td>
-                          <td>
-                              <asp:TextBox ID="txtSerie"  class="textos" value="xxx" width="203" runat="server"></asp:TextBox>
-                          <div class="textos_sm">xxx = Todos</div></td>
-                           <td class="busqueda">Documento:</td>
-                             <td>
-                            <asp:TextBox ID="txtDocumento" class="textos" width="215" value="0" runat="server"></asp:TextBox>
-                          <div class="textos_sm">0 = Todos</div></td> 
-                        </tr>
-                         
-                        
-                        
-                        <tr valign="top">
-                         <td width="20%" class="busqueda">Fecha inicio:</td>
-                          <td>
-                                <asp:TextBox ID="fechainicio" type="date"  Width="202"   runat="server"></asp:TextBox>
-                            </td>
-                            <td width="20%" class="busqueda">Fecha fin:</td>
-                          <td>
-                                <asp:TextBox ID="fechafin" type="date"  Width="202"  runat="server"></asp:TextBox>
-                            </td>
-
-                           
-                        </tr>
-                        <tr valign="top">
-                          
-                            
-                            <td> </td>
-                            <td aling="rigth"><asp:Button ID="Buscar" runat="server" OnClick="Buscar_Click" class="botones" Text="Buscar" /></td>
-                        </tr>
-                        
-                      </table>
-                  </td>
-                        </tr>
+                    
+                   
                       <tr>
                     <td>
 
@@ -131,7 +89,7 @@
                                             </asp:TemplateColumn>
 
                                                                                   
-                                            <asp:ButtonColumn ButtonType="PushButton" FooterStyle-CssClass="botones" CommandName="Select" Text="Seleccionar"></asp:ButtonColumn>
+                                            <asp:ButtonColumn ButtonType="PushButton" ItemStyle-CssClass="botones" CommandName="Select" Text="Seleccionar"></asp:ButtonColumn>
                                         </Columns>
 
 
