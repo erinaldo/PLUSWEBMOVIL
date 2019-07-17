@@ -1,6 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="FormNotaCreditoFin.aspx.cs" Inherits="CapaWeb.WebForms.FormNotaCreditoFin" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="FormNotaCreditoFinanciera.aspx.cs" Inherits="CapaWeb.WebForms.FormNotaCreditoFinanciera" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-     <script type="text/javascript">
+         <script type="text/javascript">
 
         function cuentaCaracteres() {
             var cantidadCaracteresPermitidos = 250;
@@ -67,7 +67,7 @@
         }
           
     </script>
-     <form id="form1" class="forms-sample" runat="server" method="post">
+      <form id="form1" class="forms-sample" runat="server" method="post">
        
 
        
@@ -443,7 +443,20 @@
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
 
-                                                                                                                                                                              
+                                            <asp:TemplateColumn>
+                                                <ItemTemplate>
+                                                    <asp:ImageButton ID="imgEditar" runat="server" CausesValidation="false" CommandName="Editar"
+                                                        ImageUrl="~/Tema/imagenes/edit.png" ToolTip="Editar" Width="16" />
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+
+                                              <asp:TemplateColumn>
+                                                <ItemTemplate>
+                                                    <asp:ImageButton ID="imgEliminar" runat="server" CausesValidation="false" CommandName="Eliminar"
+                                                        ImageUrl="~/Tema/imagenes/trash.png" ToolTip="Eliminar" Width="16" />
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+                                                                                                                                    
                                         </Columns>
 
                                         <FooterStyle BackColor="White" ForeColor="#00000f" />

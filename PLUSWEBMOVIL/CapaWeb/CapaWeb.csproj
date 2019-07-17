@@ -165,7 +165,9 @@
     <Content Include="WebForms\Factura.aspx" />
     <Content Include="WebForms\FormListaSucursalEmpresa.aspx" />
     <Content Include="WebForms\FormNotaCredito.aspx" />
+    <Content Include="WebForms\FormNotaCreditoDevolucion.aspx" />
     <Content Include="WebForms\FormNotaCreditoFin.aspx" />
+    <Content Include="WebForms\FormNotaCreditoFinanciera.aspx" />
     <Content Include="WebForms\FormRespuestaJsonNC.aspx" />
     <Content Include="WebForms\FormRespuestaJson.aspx" />
     <Content Include="WebForms\FormSucursalempresa.aspx" />
@@ -251,12 +253,26 @@
     <Compile Include="WebForms\FormNotaCredito.aspx.designer.cs">
       <DependentUpon>FormNotaCredito.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\FormNotaCreditoDevolucion.aspx.cs">
+      <DependentUpon>FormNotaCreditoDevolucion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormNotaCreditoDevolucion.aspx.designer.cs">
+      <DependentUpon>FormNotaCreditoDevolucion.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\FormNotaCreditoFin.aspx.cs">
       <DependentUpon>FormNotaCreditoFin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\FormNotaCreditoFin.aspx.designer.cs">
       <DependentUpon>FormNotaCreditoFin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormNotaCreditoFinanciera.aspx.cs">
+      <DependentUpon>FormNotaCreditoFinanciera.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormNotaCreditoFinanciera.aspx.designer.cs">
+      <DependentUpon>FormNotaCreditoFinanciera.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormRespuestaJsonNC.aspx.cs">
       <DependentUpon>FormRespuestaJsonNC.aspx</DependentUpon>

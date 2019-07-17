@@ -10,7 +10,7 @@ using CapaDatos.Modelos.ModelosNC;
 
 namespace CapaWeb.WebForms
 {
-    public partial class FormNotaCreditoFin : System.Web.UI.Page
+    public partial class FormNotaCreditoDevolucion : System.Web.UI.Page
     {
         public ConsultaCodProceso ConsultaCodProceso = new ConsultaCodProceso();
         public modeloCodProcesoFactura ModeloCodProceso = new modeloCodProcesoFactura();
@@ -50,7 +50,7 @@ namespace CapaWeb.WebForms
         modelowmspcresfact resolucion = new modelowmspcresfact();
         List<modelowmspcresfact> listaRes = null;
 
-        
+
         ConsultawmusuarioSucursal consultaUsuarioSucursal = new ConsultawmusuarioSucursal();
         modeloUsuariosucursal ModeloUsuSucursal = new modeloUsuariosucursal();
         List<modeloUsuariosucursal> ListaUsuSucursal = null;
@@ -171,8 +171,8 @@ namespace CapaWeb.WebForms
                 cod_costos.SelectedValue = conscabcera.cod_ccostos;
                 cmbCod_moneda.SelectedValue = conscabcera.cod_moneda.Trim();
                 cod_vendedor.SelectedValue = conscabcera.cod_vendedor;
-                
-               // serie_docum.SelectedValue = conscabcera.serie_docum.Trim();
+
+                // serie_docum.SelectedValue = conscabcera.serie_docum.Trim();
                 //Agregarbcampos de factura para NC
                 txt_cod_docum.Text = conscabcera.cod_docum;
                 txt_serie_docum.Text = conscabcera.serie_docum;
@@ -257,7 +257,7 @@ namespace CapaWeb.WebForms
                 Session.Remove("sumaBase15");
                 Session.Remove("sumaIva19");
                 Session.Remove("sumaIva15");
-                Session.Remove("Tipo");
+
 
                 QueryString qs = ulrDesencriptada();
 
@@ -267,14 +267,13 @@ namespace CapaWeb.WebForms
                     case "AFA":
                         cargarListaDesplegables();
                         Session.Remove("listaCliente");
-                        Session.Remove("listaFacturas");
                         Session.Remove("valor_asignado");
                         Session["Tipo"] = "Anular";
                         DateTime hoy1 = DateTime.Today;
                         fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
-                                               
+
                         ConsultarTasaCambioCanorus();
-                        
+
                         break;
 
                     case "INS":
@@ -317,6 +316,7 @@ namespace CapaWeb.WebForms
             }
         }
 
+
         protected void BloquearFactura()
         {
             //inhabilitar cajas de texto cabecera factura
@@ -331,7 +331,7 @@ namespace CapaWeb.WebForms
             serie_docum.Enabled = false;
             ocompra.Enabled = false;
             //area.Enabled = false;
-            
+
             porc_descto.Enabled = false;
             cmbCod_moneda.Enabled = false;
             cod_vendedor.Enabled = false;
@@ -437,7 +437,7 @@ namespace CapaWeb.WebForms
                     fonoCliente.Text = cliente.tel_tit;
                     dniCliente.Text = cliente.nro_dgi2;
                     txtcorreo.Text = cliente.email_tit;
-                    
+
 
 
                 }
@@ -999,7 +999,7 @@ namespace CapaWeb.WebForms
         }
         public void AgregarCabeceraDetalle()
         {
-            
+
             //Consultar si el vendedor tiene asignada una sucursal
             ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
             int count = 0;
@@ -1049,24 +1049,24 @@ namespace CapaWeb.WebForms
                             ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
                             //Response.Redirect("BuscarFacturas.aspx");
 
-                          /*  ConsumoRest consumoRest = new ConsumoRest();
-                            string respuesta = "";
-                            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTA", conscabcera.nro_trans);
-                            if (respuesta == "")
-                            {
-                                mensaje.Text = "Su factura fue procesada exitosamente";
-                                Confirmar.Enabled = false;
-                                GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
-                                Response.Redirect("BuscarFacturas.aspx");
+                            /*  ConsumoRest consumoRest = new ConsumoRest();
+                              string respuesta = "";
+                              respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTA", conscabcera.nro_trans);
+                              if (respuesta == "")
+                              {
+                                  mensaje.Text = "Su factura fue procesada exitosamente";
+                                  Confirmar.Enabled = false;
+                                  GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
+                                  Response.Redirect("BuscarFacturas.aspx");
 
-                            }
-                            else
-                            {
-                                GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
-                                mensaje.Text = respuesta;
-                                Response.Redirect("BuscarFacturas.aspx");
+                              }
+                              else
+                              {
+                                  GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
+                                  mensaje.Text = respuesta;
+                                  Response.Redirect("BuscarFacturas.aspx");
 
-                            }*/
+                              }*/
                         }
                     }
                 }
@@ -1165,7 +1165,7 @@ namespace CapaWeb.WebForms
 
                 //  this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
                 Session["cabecera"] = cabecerafactura;
-               
+
 
             }
 
@@ -1258,9 +1258,9 @@ namespace CapaWeb.WebForms
             }
             return conscabcera;
         }
-       
 
-        
+
+
 
         protected void btn_Fac_Click(object sender, EventArgs e)
         {
@@ -1277,13 +1277,13 @@ namespace CapaWeb.WebForms
             }
 
 
-            ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos( AmUsrLog, ComPwm, cliente.cod_tit, "C");
-            if(ListaSaldoFacturas.Count == 0)
-             {
+            ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C");
+            if (ListaSaldoFacturas.Count == 0)
+            {
                 mensaje.Text = "El cliente no tiene facturas disponibles";
             }
             else
-             {
+            {
                 if (Session["listaFacturas"] == null)
                 {
                     Session["listaClienteFac"] = ListaSaldoFacturas;
@@ -1291,8 +1291,8 @@ namespace CapaWeb.WebForms
 
                 }
             }
-            
-           
+
+
         }
 
         protected void Cancelar_Click(object sender, EventArgs e)
@@ -1349,29 +1349,24 @@ namespace CapaWeb.WebForms
                             confirmarinsertar.nro_audit = conscabcera.nro_audit;
 
                             ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
+                            // Response.Redirect("FormBuscarNotaCredito.aspx");
 
-                           // Response.Redirect("FormBuscarNotaCredito.aspx");
-
-                             ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
-                              string respuesta = "";
-                              respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", conscabcera.nro_trans, txt_nro_trans_padre.Text);
-                              if (respuesta == "")
-                              {
-                                Session.Remove("listaFacturas");
+                            ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
+                            string respuesta = "";
+                            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", conscabcera.nro_trans, txt_nro_trans_padre.Text);
+                            if (respuesta == "")
+                            {
                                 mensaje.Text = "Su factura fue procesada exitosamente";
-                                  Confirmar.Enabled = false;
-                                  GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
-                                  Response.Redirect("FormBuscarNotaCredito.aspx");
-                                
+                                Confirmar.Enabled = false;
+                                GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
+                                Response.Redirect("FormBuscarNotaCredito.aspx");
 
-                              }
-                              else
-                              {
-                                Session.Remove("listaFacturas");
+                            }
+                            else
+                            {
                                 GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
-                                  mensaje.Text = respuesta;
-                                  Response.Redirect("FormBuscarNotaCredito.aspx");
-                                
+                                mensaje.Text = respuesta;
+                                Response.Redirect("FormBuscarNotaCredito.aspx");
 
                             }
                         }
