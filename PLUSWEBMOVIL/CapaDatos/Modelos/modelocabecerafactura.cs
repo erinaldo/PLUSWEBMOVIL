@@ -47,6 +47,7 @@ namespace CapaDatos.Modelos
         public string cod_sucursal { get; set; }
         public string nro_pedido { get; set; }
         public string nro_trans_padre { get; set; }
+        public string tipo_nce { get; set; }
 
     }
 }

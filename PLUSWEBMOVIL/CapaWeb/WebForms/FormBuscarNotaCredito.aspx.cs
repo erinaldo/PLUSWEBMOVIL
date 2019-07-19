@@ -459,7 +459,7 @@ namespace CapaWeb.WebForms
             //2 voy a agregando los valores que deseo
             qs.Add("TRN", "INS");
             qs.Add("Id", "");
-            Response.Redirect("FormNotaCredito.aspx" + Encryption.EncryptQueryString(qs).ToString());
+            Response.Redirect("FormNotaCreditoDevolucion.aspx" + Encryption.EncryptQueryString(qs).ToString());
         }
 
         protected void notaCreditoFinan_Click(object sender, EventArgs e)

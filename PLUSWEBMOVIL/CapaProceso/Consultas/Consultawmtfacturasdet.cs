@@ -73,5 +73,70 @@ namespace CapaProceso.Consultas
             }
             return lista;
         }
+
+        //Consulta detalle factura para NC por devolucion
+        public List<ModeloDetalleFactura> ConsultaDetFacNCDev(string nro_trans, string articulo)
+        {
+            List<ModeloDetalleFactura> lista = new List<ModeloDetalleFactura>();
+            SqlDataReader dr = consulta.ConsultaDetalleFacNCDev(nro_trans, articulo);
+
+            while (dr.Read())
+            {
+                ModeloDetalleFactura item = new ModeloDetalleFactura();
+                item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                item.linea = Convert.ToInt16(dr["linea"]);
+                item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                item.cod_doca = Convert.ToString(dr["cod_doca"]);
+                item.nro_doca = Convert.ToString(dr["nro_doca"]);
+                item.serie_doca = Convert.ToString(dr["serie_doca"]);
+                item.cod_articulo = Convert.ToString(dr["cod_articulo"]);
+                item.nom_articulo = Convert.ToString(dr["nom_articulo"]);
+                item.nom_articulo2 = Convert.ToString(dr["nom_articulo2"]);
+                item.cantidad = Convert.ToDecimal(dr["cantidad"]);
+                item.precio_unit = Convert.ToDecimal(dr["precio_unit"]);
+                item.base_imp = Convert.ToDecimal(dr["base_imp"]);
+                item.cod_concepret = Convert.ToString(dr["cod_concepret"]);
+                item.subtotal = Convert.ToDecimal(dr["subtotal"]);
+                item.cod_impu1 = Convert.ToString(dr["cod_impu1"]);
+                item.tasa_iva = Convert.ToString(dr["tasa_iva"]);
+                item.porc_iva = Convert.ToDecimal(dr["porc_iva"]);
+                item.base_iva = Convert.ToDecimal(dr["base_iva"]);
+                item.valor_iva = Convert.ToDecimal(dr["valor_iva"]);
+                item.cod_impu2 = Convert.ToString(dr["cod_impu2"]);
+                item.tasa_impu2 = Convert.ToString(dr["tasa_impu2"]);
+                item.porc_impu2 = Convert.ToDecimal(dr["porc_impu2"]);
+                item.valor_impu2 = Convert.ToDecimal(dr["valor_impu2"]);
+                item.cod_impu3 = Convert.ToString(dr["cod_impu3"]);
+                item.tasa_impu3 = Convert.ToString(dr["tasa_impu3"]);
+                item.porc_impu3 = Convert.ToDecimal(dr["porc_impu3"]);
+                item.valor_impu3 = Convert.ToDecimal(dr["valor_impu3"]);
+                item.cod_impu4 = Convert.ToString(dr["cod_impu4"]);
+                item.tasa_impu4 = Convert.ToString(dr["tasa_impu4"]);
+                item.porc_impu4 = Convert.ToDecimal(dr["porc_impu4"]);
+                item.valor_impu4 = Convert.ToDecimal(dr["valor_impu4"]);
+                item.cod_impu5 = Convert.ToString(dr["cod_impu5"]);
+                item.tasa_impu5 = Convert.ToString(dr["tasa_impu5"]);
+                item.porc_impu5 = Convert.ToDecimal(dr["porc_impu5"]);
+                item.valor_impu5 = Convert.ToDecimal(dr["valor_impu5"]);
+                item.total = Convert.ToDecimal(dr["total"]);
+                item.porc_descto = Convert.ToDecimal(dr["porc_descto"]);
+                item.valor_descto = Convert.ToDecimal(dr["valor_descto"]);
+                item.cod_cta_vtas = Convert.ToString(dr["cod_cta_vtas"]);
+                item.cod_cta_cos = Convert.ToString(dr["cod_cta_cos"]);
+                item.cod_cta_inve = Convert.ToString(dr["cod_cta_inve"]);
+                item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                item.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
+                item.cod_ccostos = Convert.ToString(dr["cod_ccostos"]);
+                item.detadescuento = Convert.ToDecimal(dr["valor_descto"]);
+                item.detaiva = Convert.ToDecimal(dr["valor_iva"]);
+               
+                item.nc_pvp = String.Format("{0:N}", Math.Round(item.precio_unit, 2)).ToString();
+                item.nc_iva = String.Format("{0:N}", Math.Round(item.porc_iva, 2)).ToString();
+                lista.Add(item);
+            }
+            return lista;
+        }
     }
+
 }

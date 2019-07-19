@@ -1152,6 +1152,7 @@ namespace CapaWeb.WebForms
             cabecerafactura.cod_sucursal = ModeloUsuSucursal.cod_sucursal;
             cabecerafactura.nro_pedido = nro_pedido.Text;
             cabecerafactura.nro_trans_padre = txt_nro_trans_padre.Text;
+            cabecerafactura.tipo_nce = "NCAE"; //NC por anulacion electronica
 
 
             error = GuardarCabezera.InsertarCabezeraNotaCredito(cabecerafactura);
@@ -1297,6 +1298,8 @@ namespace CapaWeb.WebForms
 
         protected void Cancelar_Click(object sender, EventArgs e)
         {
+            Session.Remove("ListaFacturas");
+
             Response.Redirect("FormBuscarNotaCredito.aspx");
         }
 

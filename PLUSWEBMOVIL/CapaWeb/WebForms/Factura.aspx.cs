@@ -719,7 +719,7 @@ namespace CapaWeb.WebForms
                     {
                         sumaBase15 = Convert.ToDecimal(Session["sumaBase15"]);
                     }
-                    if (item.poriva.ToString() == "0.15")
+                    if (item.poriva.ToString() == "0.05")
                     {
                         sumaBase15 += item.subtotal;
                         Session["sumaBase15"] = sumaBase15.ToString();
@@ -744,7 +744,7 @@ namespace CapaWeb.WebForms
                     {
                         sumaIva15 = Convert.ToDecimal(Session["sumaIva15"]);
                     }
-                    if (item.poriva.ToString() == "0.15")
+                    if (item.poriva.ToString() == "0.05")
                     {
                         sumaIva15 += item.detaiva;
                         Session["sumaIva15"] = sumaIva15.ToString();

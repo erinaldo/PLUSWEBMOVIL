@@ -100,12 +100,26 @@ namespace CapaDatos.Sql
         public SqlDataReader ConsultaDetalleFactura(string nro_trans)
         {
             cn = conexion.genearConexion();
-            string consulta = "SELECT * FROM dbo.wmt_facturas_det WHERE nro_trans =@nro_trans ORDER BY linea ASC";
+            string consulta = "SELECT * FROM wmt_facturas_det WHERE nro_trans =@nro_trans ORDER BY linea ASC";
             SqlCommand conmand = new SqlCommand(consulta, cn);
 
             conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
-           
 
+
+
+            SqlDataReader dr = conmand.ExecuteReader();
+
+            return dr;
+        }
+        //Consulta detalle Factura para NC por devolucion 
+        public SqlDataReader ConsultaDetalleFacNCDev(string nro_trans, string articulo)
+        {
+            cn = conexion.genearConexion();
+            string consulta = "SELECT * FROM wmt_facturas_det WHERE nro_trans =@nro_trans AND  cod_articulo like @articulo or nro_trans =@nro_trans AND nom_articulo like @articulo";
+            SqlCommand conmand = new SqlCommand(consulta, cn);
+
+            conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
+            conmand.Parameters.Add("articulo", SqlDbType.VarChar).Value = articulo;
 
             SqlDataReader dr = conmand.ExecuteReader();
 

@@ -61,7 +61,10 @@ namespace CapaProceso.Modelos
         public string cod_ccostos { get; set; }
         public decimal detadescuento { get; set; }
         public decimal detaiva { get; set; }
-     
+        //Campos para NC DEOLUCION
+        public string  nc_pvp { get; set; }
+        public string nc_iva { get; set; }
+
 
     }
 }
