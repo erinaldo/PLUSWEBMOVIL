@@ -30,7 +30,7 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@fecha_mod", SqlDbType.DateTime).Value = confirmarfactura.fecha_mod;
                     conmand.Parameters.Add("@nro_audit", SqlDbType.VarChar).Value = confirmarfactura.nro_audit;
                     int dr = conmand.ExecuteNonQuery();
-                    return "Confirmación exitosa";
+                    return "";
                 }               
                 
             }

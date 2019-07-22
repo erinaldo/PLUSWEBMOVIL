@@ -1189,6 +1189,7 @@ namespace CapaWeb.WebForms
                         }
                         else
                         {
+                            string respuestaConfirmacionFAC = "";
                             //Boton Coonfirmar hace lo mismo que el salvar solo aumenta la insercion a la tabla wmt_facturas_ins
                             conscabcera = null;
                             conscabcera = GuardarDetalle();
@@ -1199,27 +1200,34 @@ namespace CapaWeb.WebForms
                             confirmarinsertar.fecha_mod = DateTime.Now;
                             confirmarinsertar.nro_audit = conscabcera.nro_audit;
 
-                            ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
-                            //Response.Redirect("BuscarFacturas.aspx");
-
-                            ConsumoRest consumoRest = new ConsumoRest();
-                            string respuesta = "";
-                            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTA", conscabcera.nro_trans);
-                            if (respuesta == "")
+                            respuestaConfirmacionFAC = ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
+                            if (respuestaConfirmacionFAC == "")
                             {
-                                mensaje.Text = "Su factura fue procesada exitosamente";
-                                Confirmar.Enabled = false;
-                                GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
-                                Response.Redirect("BuscarFacturas.aspx");
+                                ConsumoRest consumoRest = new ConsumoRest();
+                                string respuesta = "";
+                                respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTA", conscabcera.nro_trans);
+                                if (respuesta == "")
+                                {
+                                    mensaje.Text = "Su factura fue procesada exitosamente";
+                                    Confirmar.Enabled = false;
+                                    GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
+                                    Response.Redirect("BuscarFacturas.aspx");
 
+                                }
+                                else
+                                {
+                                    GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
+                                    mensaje.Text = respuesta;
+                                    Response.Redirect("BuscarFacturas.aspx");
+
+                                }
                             }
                             else
                             {
-                                GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
-                                mensaje.Text = respuesta;
-                                Response.Redirect("BuscarFacturas.aspx");
-
+                                lbl_trx.Visible = true;
+                                lbl_trx.Text = respuestaConfirmacionFAC;
                             }
+                            
                         }
                     }
                 }
