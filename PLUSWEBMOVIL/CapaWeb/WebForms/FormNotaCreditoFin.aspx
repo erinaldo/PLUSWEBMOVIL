@@ -243,6 +243,44 @@
                                <td>
                                    <asp:Button ID="btn_Fac" onclick="btn_Fac_Click" CssClass="botones"  Width="125" runat="server" Text="Buscar Factura" />
                                   </td>
+                                <td class="busqueda">
+                                    <asp:Label align="center" Visible="false" ID="lbl_nro_factura"  Width="100" runat="server" Text="Nro Factura:"></asp:Label>
+                                  </td>
+                                <td>
+                                    <asp:TextBox ID="txt_nro_factura" Visible="false"  Enabled="false" runat="server" Width="202px"></asp:TextBox>
+                                </td>
+                               </tr>
+                             <tr>
+                                
+                                <td class="busqueda" align="left" valign="top" nowrap="nowrap">
+                                    <asp:Label align="center" Visible="False" ID="lbl_subtotal_factura"  Width="124px" runat="server" Text="Subtotal Factura:"></asp:Label>
+                                  </td>
+                                <td>
+                                    <asp:TextBox ID="txt_subtotal_factura" Visible="false" Enabled="false" runat="server" Width="200px"></asp:TextBox>
+                                </td>
+                                <td class="busqueda" align="left" valign="top" nowrap="nowrap">
+                                    <asp:Label align="center" ID="lbl_descuento_factura" Visible="False"  Width="129px" runat="server" Text="Descuento Factura:"></asp:Label>
+                                  </td>
+                                <td>
+                                    <asp:TextBox ID="txt_descuento_factura" Visible="false" Enabled="false" runat="server" Width="247px"></asp:TextBox>
+                                </td>
+                                <td class="busqueda">
+                                    <asp:Label align="center" ID="lbl_iva_factura" Visible="false" Width="100" runat="server" Text="Iva Factura:"></asp:Label>
+                                  </td>
+                                <td>
+                                    <asp:TextBox ID="txt_iva_factura" Enabled="false" Visible="false" runat="server" Width="201px"></asp:TextBox>
+                                </td>
+                                 
+                             </tr>
+                             <tr>
+                                <td class="busqueda">
+                                    <asp:Label align="center" ID="lbl_total_factura" Visible="false"  Width="100" runat="server" Text="Total Factura:"></asp:Label>
+                                  </td>
+                                <td>
+                                    <asp:TextBox ID="txt_total_factura" Visible="false" Enabled="false" runat="server" Width="200px"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
                                <td>
                                    <asp:TextBox ID="txt_cod_docum" Visible="false" runat="server"></asp:TextBox>
                                   

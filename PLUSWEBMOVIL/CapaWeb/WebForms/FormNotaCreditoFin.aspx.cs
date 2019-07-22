@@ -171,9 +171,10 @@ namespace CapaWeb.WebForms
                 cod_costos.SelectedValue = conscabcera.cod_ccostos;
                 cmbCod_moneda.SelectedValue = conscabcera.cod_moneda.Trim();
                 cod_vendedor.SelectedValue = conscabcera.cod_vendedor;
-                
-               // serie_docum.SelectedValue = conscabcera.serie_docum.Trim();
+
+                // serie_docum.SelectedValue = conscabcera.serie_docum.Trim();
                 //Agregarbcampos de factura para NC
+                txt_nro_factura.Text = conscabcera.observacion;
                 txt_cod_docum.Text = conscabcera.cod_docum;
                 txt_serie_docum.Text = conscabcera.serie_docum;
                 txt_nro_docum.Text = conscabcera.nro_docum;
@@ -181,18 +182,26 @@ namespace CapaWeb.WebForms
                 //Formato totales
                 decimal formSubtot = Convert.ToDecimal(conscabcera.subtotal);
                 txtSumaSubTo.Text = String.Format("{0:N}", formSubtot).ToString();
+                txt_subtotal_factura.Text = String.Format("{0:N}", formSubtot).ToString();
                 decimal formTotal = Convert.ToDecimal(conscabcera.total);
-                txtSumaTotal.Text = String.Format("{0:N}", formTotal).ToString();
+                 txtSumaTotal.Text = String.Format("{0:N}", formTotal).ToString();
+                txt_total_factura.Text = String.Format("{0:N}", formTotal).ToString();
                 decimal formIva = Convert.ToDecimal(conscabcera.iva);
                 txtSumaIva.Text = String.Format("{0:N}", formIva).ToString();
+                txt_iva_factura.Text = String.Format("{0:N}", formIva).ToString();
                 decimal formDesc = Convert.ToDecimal(conscabcera.descuento);
-                txtSumaDesc.Text = String.Format("{0:N}", formDesc).ToString();
+                 txtSumaDesc.Text = String.Format("{0:N}", formDesc).ToString();
+                txt_descuento_factura.Text = String.Format("{0:N}", formDesc).ToString();
 
                 Session["sumaSubtotal"] = Convert.ToString(conscabcera.subtotal);
                 Session["sumaDescuento"] = Convert.ToString(conscabcera.descuento);
                 Session["sumaIva"] = Convert.ToString(conscabcera.iva);
                 Session["sumaTotal"] = Convert.ToString(conscabcera.total);
 
+                BloquearDatosFactura();
+               
+                lbl_trx.Text = null;
+                lbl_trx.Visible = false;
 
                 //Carga detalle factura
                 string nro_trans = conscabcera.nro_trans;
@@ -317,6 +326,21 @@ namespace CapaWeb.WebForms
             }
         }
 
+        protected void BloquearDatosFactura()
+        {
+            //Visible Datos Factura
+            lbl_nro_factura.Visible = true;
+            txt_nro_factura.Visible = true;
+            lbl_subtotal_factura.Visible = true;
+            lbl_total_factura.Visible = true;
+            lbl_descuento_factura.Visible = true;
+            lbl_iva_factura.Visible = true;
+            txt_subtotal_factura.Visible = true;
+            txt_total_factura.Visible = true;
+            txt_descuento_factura.Visible = true;
+            txt_iva_factura.Visible = true;
+
+        }
         protected void BloquearFactura()
         {
             //inhabilitar cajas de texto cabecera factura

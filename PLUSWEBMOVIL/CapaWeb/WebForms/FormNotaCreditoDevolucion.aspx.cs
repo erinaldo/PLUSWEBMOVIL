@@ -283,7 +283,7 @@ namespace CapaWeb.WebForms
                         Session.Remove("Tipo");
                         Int64 id = Int64.Parse(qs["Id"].ToString());
                         Session["valor_asignado"] = id.ToString();
-
+                        txt_nro_trans_padre.Text = id.ToString();
                         cargarListaDesplegables();
                         LlenarFactura();
 
@@ -1555,7 +1555,7 @@ namespace CapaWeb.WebForms
             
             if (txt_nro_trans_padre.Text == null || txt_nro_trans_padre.Text == "")
             {
-                lbl_trx.Text = "Seleccione Factura para lo Nota de Crédito";
+                lbl_trx.Text = "Seleccione Factura para realizar la Nota de Crédito";
                 lbl_trx.Visible = true;
             }
             else
@@ -1594,6 +1594,11 @@ namespace CapaWeb.WebForms
                     if (consdetalle == null)
                     {
                         txt_Codigo.Text = "No existe el producto/ servicio";
+                        txt_Cantidad.Text = "1";
+                        txt_Descripcion.Text = "";
+                        txt_Precio.Text = "0";
+                        txt_Iva.Text = "";
+                        txt_Desc.Text = "0";
                     }
                     else
                     {
@@ -1608,6 +1613,7 @@ namespace CapaWeb.WebForms
                         txt_Iva.Text = String.Format("{0:N}", IvaFac).ToString();
                         decimal DescFac = Convert.ToDecimal(Math.Round(consdetalle.porc_descto, 0));
                         txt_Desc.Text = String.Format("{0:N}", DescFac).ToString();
+                        Session.Remove("articulo");
 
 
                     }

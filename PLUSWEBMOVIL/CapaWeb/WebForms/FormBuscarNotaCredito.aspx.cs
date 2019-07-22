@@ -60,7 +60,7 @@ namespace CapaWeb.WebForms
         public string cod_proceso;
 
 
-        public string EstF_proceso = "RCOMFACT";
+        public string EstF_proceso = "RCOMNCRED";
         protected void Page_Load(object sender, EventArgs e)
         {
             RecuperarCokie();
@@ -274,18 +274,40 @@ namespace CapaWeb.WebForms
                 case "Editar":
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                     estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
-
+                    
                     switch (estadoM)
                     {
                         case "PENDIENTE":
+                            /*Consultar que tipo de NC es para poder direccionar al adecuando*/
+
+                            listaConsCab = ConsultaCabe.ConsultaNCTransPadre(Id.ToString());
+                            int count1 = 0;
+                            conscabcera = null;
+                            foreach (modelowmtfacturascab item in listaConsCab)
+                            {
+                                count1++;
+                                conscabcera = item;
+
+                            }
 
                             qs.Add("TRN", "UDP");
                             qs.Add("Id", Id.ToString());
-
-                            Response.Redirect("FormNotaCreditoFin.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                            if (conscabcera.tipo_nce == "NCDE")
+                            { 
+                            Response.Redirect("FormNotaCreditoDevolucion.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                            }else
+                                if(conscabcera.tipo_nce == "NCAE")
+                            {
+                                Response.Redirect("FormNotaCreditoFin.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                            }
+                            else
+                                 if (conscabcera.tipo_nce == "NCFE")
+                            {
+                                Response.Redirect("FormNotaCreditoFinanciera.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                            }
                             break;
                         default:
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('SU NOTA DE CRÉDITO ESTA " + estadoM + "')+ error;</script>");
                             break;
 
                     }
@@ -311,7 +333,7 @@ namespace CapaWeb.WebForms
                             Response.Write("<script>window.open('" + "ReporteNotaCredito.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
                             break;
                         default:
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('SU NOTA DE CRÉDITO ESTA " + estadoM + "')+ error;</script>");
                             break;
 
                     }
@@ -329,11 +351,33 @@ namespace CapaWeb.WebForms
 
                 case "Ver":
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+                    /*Consultar que tipo de NC es para poder direccionar al adecuando*/
 
+                    listaConsCab = ConsultaCabe.ConsultaNCTransPadre(Id.ToString());
+                    int count = 0;
+                    conscabcera = null;
+                    foreach (modelowmtfacturascab item in listaConsCab)
+                    {
+                        count++;
+                        conscabcera = item;
 
+                    }
                     qs.Add("TRN", "VER");
                     qs.Add("Id", Id.ToString());
-                    Response.Redirect("FormNotaCreditoFin.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    if (conscabcera.tipo_nce == "NCDE")
+                    {
+                        Response.Redirect("FormNotaCreditoDevolucion.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    }
+                    else
+                        if (conscabcera.tipo_nce == "NCAE")
+                    {
+                        Response.Redirect("FormNotaCreditoFin.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    }
+                    else
+                         if (conscabcera.tipo_nce == "NCFE")
+                    {
+                        Response.Redirect("FormNotaCreditoFinanciera.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    }
                     break;
 
                 case "Mostrar":
