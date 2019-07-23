@@ -301,6 +301,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox txt_nro_trans_padre;
         
         /// <summary>
+        /// Control txt_saldo_factura.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_saldo_factura;
+        
+        /// <summary>
         /// Control area.
         /// </summary>
         /// <remarks>

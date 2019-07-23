@@ -300,6 +300,9 @@
                                <td>
                                    <asp:TextBox ID="txt_nro_trans_padre" Visible="false" runat="server"></asp:TextBox>
                                </td>
+                                <td>
+                                   <asp:TextBox ID="txt_saldo_factura" Visible="false" runat="server"></asp:TextBox>
+                               </td>
                                </tr>
 
                           

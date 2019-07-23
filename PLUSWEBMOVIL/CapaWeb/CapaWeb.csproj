@@ -113,6 +113,7 @@
     <Content Include="WebForms\BuscaFacturasNCAn.aspx" />
     <Content Include="WebForms\BuscarArticuloNCDevolucion.aspx" />
     <Content Include="WebForms\BuscarFacturasNC.aspx" />
+    <Content Include="WebForms\BuscarFacturasNCFin.aspx" />
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
     <Content Include="WebForms\FormDetalleImpuestos.aspx" />
     <Content Include="WebForms\FormListaUsuarioSucursal.aspx" />
@@ -202,6 +203,13 @@
     </Compile>
     <Compile Include="WebForms\BuscarFacturasNC.aspx.designer.cs">
       <DependentUpon>BuscarFacturasNC.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarFacturasNCFin.aspx.cs">
+      <DependentUpon>BuscarFacturasNCFin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarFacturasNCFin.aspx.designer.cs">
+      <DependentUpon>BuscarFacturasNCFin.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormBuscarNotaCredito.aspx.cs">
       <DependentUpon>FormBuscarNotaCredito.aspx</DependentUpon>

@@ -163,7 +163,7 @@ namespace CapaWeb.WebForms
             if (Session["articulo"] != null)
             {
                 // recupera la variable de secion con el objetoarticulo
-                consdetalle = (ModeloDetalleFactura)Session["articulo"];
+                /*consdetalle = (ModeloDetalleFactura)Session["articulo"];
                 decimal CantFac = Convert.ToDecimal(Math.Round(consdetalle.cantidad, 2));
                 txt_Cantidad.Text = String.Format("{0:N}", CantFac).ToString();
                 txt_cantidad_pro.Text = String.Format("{0:N}", CantFac).ToString();
@@ -174,7 +174,13 @@ namespace CapaWeb.WebForms
                 decimal IvaFac = Convert.ToDecimal(Math.Round(consdetalle.porc_iva, 0));
                 txt_Iva.Text = String.Format("{0:N}", IvaFac).ToString();
                 decimal DescFac = Convert.ToDecimal(Math.Round(consdetalle.porc_descto, 0));
-                txt_Desc.Text = String.Format("{0:N}", DescFac).ToString();
+                txt_Desc.Text = String.Format("{0:N}", DescFac).ToString();*/
+                articulo = (modelowmspcarticulos)Session["articulo"];
+                txt_Descripcion.Text = articulo.nom_articulo;
+                txt_Precio.Text = articulo.precio_total;
+                txt_Codigo.Text = articulo.cod_articulo;
+                txt_Iva.Text = (articulo.porc_impuesto);
+                txt_Desc.Text = "0";
 
 
             }
@@ -223,6 +229,10 @@ namespace CapaWeb.WebForms
                 lbl_trx.Visible = false;
 
             }
+            if (Session["saldoFacturas"] != null)
+            {
+                txt_saldo_factura.Text = Session["saldoFacturas"].ToString();
+            }
 
 
             ConsultarTasaCambioCanorus();
@@ -231,6 +241,7 @@ namespace CapaWeb.WebForms
             {
                 Session.Remove("listaClienteFac");
                 Session.Remove("listaFacturas");
+                Session.Remove("saldoFacturas");
                 Session.Remove("listaProducto");
                 Session.Remove("articulo");
                 Session.Remove("sumaSubtotal");
@@ -1490,7 +1501,7 @@ namespace CapaWeb.WebForms
                 if (Session["listaFacturas"] == null)
                 {
                     Session["listaClienteFac"] = ListaSaldoFacturas;
-                    this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarFacturasNC.aspx', 'Buscar Facturas', 'top=100,width=800 ,height=400, left=400');</script>");
+                    this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarFacturasNCFin.aspx', 'Buscar Facturas', 'top=100,width=800 ,height=400, left=400');</script>");
 
                 }
             }
@@ -1609,72 +1620,126 @@ namespace CapaWeb.WebForms
         protected void txt_Codigo_TextChanged(object sender, EventArgs e)
         {
 
-            if (txt_nro_trans_padre.Text == null || txt_nro_trans_padre.Text == "")
+            /* if (txt_nro_trans_padre.Text == null || txt_nro_trans_padre.Text == "")
+             {
+                 lbl_trx.Text = "Seleccione Factura para realizar la Nota de Crédito";
+                 lbl_trx.Visible = true;
+             }
+             else
+             {
+                 int count = 0;
+                 consdetalle = null;
+                 if (Session["articulo"] == null)
+                 {
+                     //Buscar detalle de factura
+                     string like = '%' + txt_Codigo.Text + '%';
+                     listaConsDetalle = ConsultaDeta.ConsultaDetFacNCDev(txt_nro_trans_padre.Text, like);
+
+                     foreach (ModeloDetalleFactura item in listaConsDetalle)
+                     {
+                         count++;
+                         consdetalle = item;
+
+                     }
+                 }
+                 else
+                 {
+                     consdetalle = (ModeloDetalleFactura)Session["articulo"];
+                 }
+
+                 if (count > 1)
+                 {
+                     Session["listaProducto"] = listaConsDetalle;
+                     this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarArticuloNCDevolucion.aspx', 'Buscar Articulo', 'top=100,width=800 ,height=600, left=400');</script>");
+
+                 }
+                 else
+                 {
+
+                     if (consdetalle == null)
+                     {
+                         txt_Codigo.Text = "No existe el producto/ servicio";
+                         txt_Cantidad.Text = "1";
+                         txt_Descripcion.Text = "";
+                         txt_Precio.Text = "0";
+                         txt_Iva.Text = "";
+                         txt_Desc.Text = "0";
+                     }
+                     else
+                     {
+                         decimal CantFac = Convert.ToDecimal(Math.Round(consdetalle.cantidad, 2));
+                         txt_Cantidad.Text = String.Format("{0:N}", CantFac).ToString();
+                         txt_cantidad_pro.Text = String.Format("{0:N}", CantFac).ToString();
+                         txt_Codigo.Text = consdetalle.cod_articulo;
+                         txt_Descripcion.Text = consdetalle.nom_articulo;
+                         decimal PrecioFac = Convert.ToDecimal(Math.Round(consdetalle.precio_unit, 2));
+                         txt_Precio.Text = String.Format("{0:N}", PrecioFac).ToString();
+                         decimal IvaFac = Convert.ToDecimal(Math.Round(consdetalle.porc_iva, 0));
+                         txt_Iva.Text = String.Format("{0:N}", IvaFac).ToString();
+                         decimal DescFac = Convert.ToDecimal(Math.Round(consdetalle.porc_descto, 0));
+                         txt_Desc.Text = String.Format("{0:N}", DescFac).ToString();
+                         Session.Remove("articulo");
+
+
+                     }
+                 }
+             }
+             */
+            int count = 0;
+            articulo = null;
+
+            if (Session["articulo"] == null)
             {
-                lbl_trx.Text = "Seleccione Factura para realizar la Nota de Crédito";
-                lbl_trx.Visible = true;
+
+
+
+                string ArtB__articulo = txt_Codigo.Text;
+
+                listaArticulos = ConsultaArticulo.ConsultaArticulos(AmUsrLog, ComPwm, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
+
+
+                foreach (modelowmspcarticulos item in listaArticulos)
+                {
+                    count++;
+                    articulo = item;
+
+                }
+
             }
             else
             {
-                int count = 0;
-                consdetalle = null;
-                if (Session["articulo"] == null)
-                {
-                    //Buscar detalle de factura
-                    string like = '%' + txt_Codigo.Text + '%';
-                    listaConsDetalle = ConsultaDeta.ConsultaDetFacNCDev(txt_nro_trans_padre.Text, like);
-
-                    foreach (ModeloDetalleFactura item in listaConsDetalle)
-                    {
-                        count++;
-                        consdetalle = item;
-
-                    }
-                }
-                else
-                {
-                    consdetalle = (ModeloDetalleFactura)Session["articulo"];
-                }
-
-                if (count > 1)
-                {
-                    Session["listaProducto"] = listaConsDetalle;
-                    this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarArticuloNCDevolucion.aspx', 'Buscar Articulo', 'top=100,width=800 ,height=600, left=400');</script>");
-
-                }
-                else
-                {
-
-                    if (consdetalle == null)
-                    {
-                        txt_Codigo.Text = "No existe el producto/ servicio";
-                        txt_Cantidad.Text = "1";
-                        txt_Descripcion.Text = "";
-                        txt_Precio.Text = "0";
-                        txt_Iva.Text = "";
-                        txt_Desc.Text = "0";
-                    }
-                    else
-                    {
-                        decimal CantFac = Convert.ToDecimal(Math.Round(consdetalle.cantidad, 2));
-                        txt_Cantidad.Text = String.Format("{0:N}", CantFac).ToString();
-                        txt_cantidad_pro.Text = String.Format("{0:N}", CantFac).ToString();
-                        txt_Codigo.Text = consdetalle.cod_articulo;
-                        txt_Descripcion.Text = consdetalle.nom_articulo;
-                        decimal PrecioFac = Convert.ToDecimal(Math.Round(consdetalle.precio_unit, 2));
-                        txt_Precio.Text = String.Format("{0:N}", PrecioFac).ToString();
-                        decimal IvaFac = Convert.ToDecimal(Math.Round(consdetalle.porc_iva, 0));
-                        txt_Iva.Text = String.Format("{0:N}", IvaFac).ToString();
-                        decimal DescFac = Convert.ToDecimal(Math.Round(consdetalle.porc_descto, 0));
-                        txt_Desc.Text = String.Format("{0:N}", DescFac).ToString();
-                        Session.Remove("articulo");
-
-
-                    }
-                }
+                articulo = (modelowmspcarticulos)Session["articulo"];
             }
 
 
+            if (count > 1)
+            {
+                Session["listaProducto"] = listaArticulos;
+                this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarArticulo.aspx', 'Buscar Articulo', 'top=100,width=800 ,height=600, left=400');</script>");
+
+            }
+            else
+            {
+
+                if (articulo == null)
+                {
+                    txt_Codigo.Text = "No existe el producto/ servicio";
+                }
+                else
+                {
+                                    
+                    txt_Codigo.Text = articulo.cod_articulo;
+                    txt_Descripcion.Text = articulo.nom_articulo;
+                 
+                    txt_Precio.Text = String.Format("{0:N}", articulo.precio_total).ToString();
+                   
+                    txt_Iva.Text = String.Format("{0:N}", articulo.porc_impuesto).ToString();
+
+                    txt_Desc.Text = "0";
+                    Session.Remove("articulo");
+
+                }
+            }
 
         }
     }

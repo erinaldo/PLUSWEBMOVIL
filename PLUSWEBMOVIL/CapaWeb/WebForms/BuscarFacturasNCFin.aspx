@@ -1,5 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="BuscarFacturasNC.aspx.cs" Inherits="CapaWeb.WebForms.BuscarFacturasNC" %>
-
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="BuscarFacturasNCFin.aspx.cs" Inherits="CapaWeb.WebForms.BuscarFacturasNCFin" %>
 <link href="../Tema/css/StylePront.css" rel="stylesheet" />
 <!DOCTYPE html>
 
@@ -9,7 +8,7 @@
     <title></title>
 </head>
 <body>
-    <form id="form1" name="form1" class="forms-sample" runat="server" method="post">
+     <form id="form1" name="form1" class="forms-sample" runat="server" method="post">
          <div style="align-items: left">
             <table  width="95%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="white">
        <tr>
