@@ -125,5 +125,22 @@ namespace CapaDatos.Sql
 
             return dr;
         }
+
+        //Consulta detalle global de todas las notas de credito disponibles y saber el dato exacto de las entregadas 
+        public SqlDataReader ConsultaDetCantNCDev(string cod_emp, string nro_doca, string serie_doca, string cod_articulo)
+        {
+            cn = conexion.genearConexion();
+            string consulta = "SELECT Sum(dbo.wmt_facturas_det.cantidad) AS cantidad,wmt_facturas_det.cod_articulo,wmt_facturas_det.serie_doca,wmt_facturas_det.nro_doca,wmt_facturas_det.cod_emp FROM wmt_facturas_det INNER JOIN wmt_facturas_cab ON wmt_facturas_cab.nro_trans = wmt_facturas_det.nro_trans WHERE wmt_facturas_det.cod_emp = @cod_emp AND wmt_facturas_det.nro_doca = @nro_doca AND wmt_facturas_det.serie_doca = @serie_doca AND wmt_facturas_det.cod_articulo = @cod_articulo AND wmt_facturas_cab.tipo <> 'VTA' AND wmt_facturas_cab.estado  IN('F' ,'C')  GROUP BY wmt_facturas_det.cod_emp,wmt_facturas_det.cod_doca,wmt_facturas_det.nro_doca,wmt_facturas_det.serie_doca,wmt_facturas_det.cod_articulo";
+            SqlCommand conmand = new SqlCommand(consulta, cn);
+
+            conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
+            conmand.Parameters.Add("nro_doca", SqlDbType.VarChar).Value = nro_doca;
+            conmand.Parameters.Add("serie_doca", SqlDbType.VarChar).Value = serie_doca;
+            conmand.Parameters.Add("cod_articulo", SqlDbType.VarChar).Value = cod_articulo;
+
+            SqlDataReader dr = conmand.ExecuteReader();
+
+            return dr;
+        }
     }
 }

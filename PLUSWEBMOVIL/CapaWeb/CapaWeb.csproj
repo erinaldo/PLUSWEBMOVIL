@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tema\css\StylePront.css" />
+    <Content Include="WebForms\BuscaFacturasNCAn.aspx" />
     <Content Include="WebForms\BuscarArticuloNCDevolucion.aspx" />
     <Content Include="WebForms\BuscarFacturasNC.aspx" />
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
@@ -181,6 +182,13 @@
     <Content Include="WebForms\ReporteFactura.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WebForms\BuscaFacturasNCAn.aspx.cs">
+      <DependentUpon>BuscaFacturasNCAn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscaFacturasNCAn.aspx.designer.cs">
+      <DependentUpon>BuscaFacturasNCAn.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\BuscarArticuloNCDevolucion.aspx.cs">
       <DependentUpon>BuscarArticuloNCDevolucion.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

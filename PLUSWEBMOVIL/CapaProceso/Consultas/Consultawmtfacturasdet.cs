@@ -137,6 +137,27 @@ namespace CapaProceso.Consultas
             }
             return lista;
         }
+
+        //Consulta Cantidades de NC existentes, NC por devolucion
+        public List<ModeloDetalleFactura> ConsultaCantidadesNCDev(string cod_emp, string nro_doca, string serie_doca, string cod_articulo)
+        {
+            List<ModeloDetalleFactura> lista = new List<ModeloDetalleFactura>();
+            SqlDataReader dr = consulta.ConsultaDetCantNCDev(cod_emp, nro_doca,serie_doca, cod_articulo);
+
+            while (dr.Read())
+            {
+                ModeloDetalleFactura item = new ModeloDetalleFactura();
+              
+                item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                item.nro_doca = Convert.ToString(dr["nro_doca"]);
+                item.serie_doca = Convert.ToString(dr["serie_doca"]);
+                item.cod_articulo = Convert.ToString(dr["cod_articulo"]);
+                item.cantidad = Convert.ToDecimal(dr["cantidad"]);
+              
+                lista.Add(item);
+            }
+            return lista;
+        }
     }
 
 }
