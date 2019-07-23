@@ -317,6 +317,8 @@ namespace CapaWeb.WebForms
             txt_total_factura.Visible = true;
             txt_descuento_factura.Visible = true;
             txt_iva_factura.Visible = true;
+            lbl_motivo_nc.Visible = true;
+            cbx_motivo_nc.Visible = true;
 
         }
         protected void BloquearFactura()
@@ -1353,7 +1355,8 @@ namespace CapaWeb.WebForms
             cabecerafactura.cod_sucursal = ModeloUsuSucursal.cod_sucursal;
             cabecerafactura.nro_pedido = nro_pedido.Text;
             cabecerafactura.nro_trans_padre = txt_nro_trans_padre.Text;
-            cabecerafactura.tipo_nce = "NCDE";
+            cabecerafactura.tipo_nce = "NCFE"; //NC Financiera
+            cabecerafactura.mot_nce = cbx_motivo_nc.SelectedValue;
 
 
             error = GuardarCabezera.InsertarCabezeraNotaCredito(cabecerafactura);

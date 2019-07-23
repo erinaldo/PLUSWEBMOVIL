@@ -90,6 +90,12 @@
                         </td>
                 </tr>
                 <tr>
+                    <td valing="center">
+                        <p class="Subtitulo2" >Nota de Crédito por: Anulación de Factura Electrónica</p>
+                    </td>
+                </tr>
+                
+                <tr>
                     <td>
                         <p class="Subtitulo1">Por favor ingrese los datos solicitados:</p>
                     </td>
@@ -235,8 +241,8 @@
 
                                     </label>
                                 </td>
-                                <td class="busqueda">
-                                    <asp:Label align="center" ID="lbl_fac1"  Width="100" runat="server" Text="Facturas:"></asp:Label>
+                                <td class="busqueda" >
+                                    <asp:Label align="left" ID="lbl_fac1"  Width="100" runat="server" Text="Facturas:"></asp:Label>
                                   </td>
                                
                                

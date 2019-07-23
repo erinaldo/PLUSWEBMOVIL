@@ -13,6 +13,7 @@ namespace CapaDatos.Sql.SqlNC
     {
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
+        //Saldos y totales de facturas en general sin restricciones
         public List<modeloSaldosFacturas> ConsultaFacturasSaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2)
         {
             try
@@ -61,6 +62,48 @@ namespace CapaDatos.Sql.SqlNC
             {
                 List<modeloSaldosFacturas> lista = new List<modeloSaldosFacturas>();
                 return lista;
+            }
+
+
+        }
+
+        //cONSULTA PARA FACTURAS ELECTRONICAS CON CUFE SE USA EN NC PARA SALDOS Y TOTALES
+        public modeloFacturasElecSaldos ConsultaFacEleSaldos( string cod_cliente, string cod_emp, string nro_trans)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    modeloFacturasElecSaldos item = new modeloFacturasElecSaldos();
+                    item = null;
+
+                    string consulta = ("SELECT	TOP 1 F.nro_trans,	F.cod_emp,	F.serie_docum,	F.nro_docum,	D.cufe FROM 	wmt_facturas_cab AS F INNER JOIN wmt_respuestaDS AS D ON F.nro_trans = D.nro_trans WHERE D.cufe <> '' AND F.tipo = 'VTA' AND F.cod_cliente = @cod_cliente AND F.cod_emp = @cod_emp AND F.estado IN ('F') AND F.nro_trans = @nro_trans GROUP BY 	F.nro_trans,	F.cod_emp,F.serie_docum,	F.nro_docum,	D.cufe");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = cod_cliente;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                        item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                        item.cufe = Convert.ToString(dr["cufe"]);
+                        item.serie_docum = Convert.ToString(dr["serie_docum"]);
+                        item.nro_docum = Convert.ToString(dr["nro_docum"]);
+                      
+                    }
+
+                    return item;
+                }
+            }
+            catch (Exception e)
+            {
+                modeloFacturasElecSaldos item = new modeloFacturasElecSaldos();
+                return item;
             }
 
 

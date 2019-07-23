@@ -88,6 +88,11 @@
                         </td>
                 </tr>
                 <tr>
+                    <td valing="center">
+                        <p class="Subtitulo2" >Nota de Crédito por: Devolución de parte de los bienes; no aceptación de partes del servicio</p>
+                    </td>
+                </tr>
+                <tr>
                     <td>
                         <p class="Subtitulo1">Por favor ingrese los datos solicitados:</p>
                     </td>
@@ -234,7 +239,7 @@
                                     </label>
                                 </td>
                                 <td class="busqueda">
-                                    <asp:Label align="center" ID="lbl_fac1"  Width="100" runat="server" Text="Facturas:"></asp:Label>
+                                    <asp:Label align="left" ID="lbl_fac1"  Width="100" runat="server" Text="Facturas:"></asp:Label>
                                   </td>
                                
                                
@@ -245,28 +250,28 @@
                                     <asp:Label align="center" Visible="false" ID="lbl_nro_factura"  Width="100" runat="server" Text="Nro Factura:"></asp:Label>
                                   </td>
                                 <td>
-                                    <asp:TextBox ID="txt_nro_factura" Visible="false"  Enabled="false" runat="server" Width="202px"></asp:TextBox>
+                                    <asp:TextBox ID="txt_nro_factura" Visible="false" class="textos" Enabled="false" runat="server" Width="202px"></asp:TextBox>
                                 </td>
                                </tr>
                             <tr>
                                 
                                 <td class="busqueda" align="left" valign="top" nowrap="nowrap">
-                                    <asp:Label align="center" Visible="False" ID="lbl_subtotal_factura"  Width="124px" runat="server" Text="Subtotal Factura:"></asp:Label>
+                                    <asp:Label align="center" Visible="False" ID="lbl_subtotal_factura"   Width="124px" runat="server" Text="Subtotal Factura:"></asp:Label>
                                   </td>
                                 <td>
-                                    <asp:TextBox ID="txt_subtotal_factura" Visible="false" Enabled="false" runat="server" Width="200px"></asp:TextBox>
+                                    <asp:TextBox ID="txt_subtotal_factura" Visible="false" Enabled="false" class="textos" runat="server" Width="200px"></asp:TextBox>
                                 </td>
                                 <td class="busqueda" align="left" valign="top" nowrap="nowrap">
                                     <asp:Label align="center" ID="lbl_descuento_factura" Visible="False"  Width="129px" runat="server" Text="Descuento Factura:"></asp:Label>
                                   </td>
                                 <td>
-                                    <asp:TextBox ID="txt_descuento_factura" Visible="false" Enabled="false" runat="server" Width="247px"></asp:TextBox>
+                                    <asp:TextBox ID="txt_descuento_factura" Visible="false" Enabled="false" class="textos" runat="server" Width="247px"></asp:TextBox>
                                 </td>
                                 <td class="busqueda">
                                     <asp:Label align="center" ID="lbl_iva_factura" Visible="false" Width="100" runat="server" Text="Iva Factura:"></asp:Label>
                                   </td>
                                 <td>
-                                    <asp:TextBox ID="txt_iva_factura" Enabled="false" Visible="false" runat="server" Width="201px"></asp:TextBox>
+                                    <asp:TextBox ID="txt_iva_factura" Enabled="false" Visible="false" class="textos" runat="server" Width="201px"></asp:TextBox>
                                 </td>
                                  
                              </tr>
@@ -275,8 +280,10 @@
                                     <asp:Label align="center" ID="lbl_total_factura" Visible="false"  Width="100" runat="server" Text="Total Factura:"></asp:Label>
                                   </td>
                                 <td>
-                                    <asp:TextBox ID="txt_total_factura" Visible="false" Enabled="false" runat="server" Width="200px"></asp:TextBox>
+                                    <asp:TextBox ID="txt_total_factura" Visible="false" Enabled="false" class="textos" runat="server" Width="200px"></asp:TextBox>
                                 </td>
+                               
+
                             </tr>
                             <tr>
                                <td>

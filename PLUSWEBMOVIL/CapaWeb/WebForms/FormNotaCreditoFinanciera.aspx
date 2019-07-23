@@ -88,10 +88,16 @@
                         </td>
                 </tr>
                 <tr>
+                    <td valing="center">
+                        <p class="Subtitulo2" >Nota de Crédito Financiera</p>
+                    </td>
+                </tr>
+                <tr>
                     <td>
                         <p class="Subtitulo1">Por favor ingrese los datos solicitados:</p>
                     </td>
                 </tr>
+
 
                 <tr>
                     <td>
@@ -234,7 +240,7 @@
                                     </label>
                                 </td>
                                 <td class="busqueda">
-                                    <asp:Label align="center" ID="lbl_fac1"  Width="100" runat="server" Text="Facturas:"></asp:Label>
+                                    <asp:Label align="left" ID="lbl_fac1"  Width="100" runat="server" Text="Facturas:"></asp:Label>
                                   </td>
                                
                                
@@ -276,6 +282,18 @@
                                   </td>
                                 <td>
                                     <asp:TextBox ID="txt_total_factura" Visible="false" Enabled="false" runat="server" Width="200px"></asp:TextBox>
+                                </td>
+                                 <td class="busqueda">
+                                    <asp:Label align="left" ID="lbl_motivo_nc" Visible="false"  Width="100" runat="server" Text="Motivo:"></asp:Label>
+                                  </td>
+                                <td>
+                                    <asp:DropDownList ID="cbx_motivo_nc" class="textos" Visible="false" runat="server" Width="254px">
+                                        <asp:ListItem Value="3">Rebaja total aplicada</asp:ListItem>
+                                        <asp:ListItem Value="4">Descuento total aplicado</asp:ListItem>
+                                        <asp:ListItem Value="5">Rescisión: Nulidad por falta de requisitos</asp:ListItem>
+                                        <asp:ListItem Value="6">Otros</asp:ListItem>
+                                    </asp:DropDownList>
+                                    
                                 </td>
                             </tr>
                             <tr>

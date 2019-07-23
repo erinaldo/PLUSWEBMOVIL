@@ -13,7 +13,9 @@ namespace CapaProceso.RestCliente
     {
         public modelowmtfacturascab conscabcera = new modelowmtfacturascab();
         public modelowmtfacturascab conscabceraNC = new modelowmtfacturascab();
+        public modelowmtfacturascab conscabceraNCMot = new modelowmtfacturascab();
         public List<modelowmtfacturascab> listaConsCabNC = null;
+        public List<modelowmtfacturascab> listaConsCabNCMot = null;
         public Consultawmtfacturascab ConsultaCabeNC = new Consultawmtfacturascab();
         public List<modelowmtfacturascab> listaConsCab = null;
         public Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
@@ -116,12 +118,17 @@ namespace CapaProceso.RestCliente
                 count++;
                 break;
             }
+            
+
             //CABECERA de la FACTURA
             conscabcera = null;
             conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, "VTA", nro_factura);
             //CABECERA NC
             conscabceraNC = null;
             conscabceraNC = buscarCabezeraNC(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+            //motivo de NC
+            conscabceraNCMot = null;
+           conscabceraNCMot = buscarMotNC( Ccf_nro_trans);
 
             Modeloempresa = null;
             Modeloempresa = BuscarCabEmpresa(Ccf_usuario, Ccf_cod_emp);
@@ -150,11 +157,11 @@ namespace CapaProceso.RestCliente
             encabezado.usuario = Ccf_usuario;  //Usuario que facturo
             encabezado.totalDet = listaConsDet.Count; //la cantidad de lineas del detalle de la factura
             encabezado.totalImp = 1; //la cantidad de lineas de los impuestos
-            encabezado.ref_doc = "FVE"; //prefijo de la factura 
+            encabezado.ref_doc = "FVE"; //prefijo de la factura parapruebas
             encabezado.ref_fecha = conscabcera.fec_doc.ToString("yyyy-MM-dd");
            encabezado.ref_num =Convert.ToInt64(consdetalle.nro_doca); //numero de la factura
             encabezado.ref_cufe = ModeloResQr.cufe; //CUFE Factura emitida
-            encabezado.tlmotivodv = 2;//NC PARA ANULAR FACTURA (2)
+            encabezado.tlmotivodv = Convert.ToInt32(conscabceraNCMot.mot_nce);//NC PARA ANULAR FACTURA (2)
             return encabezado;
         }
 
@@ -342,6 +349,23 @@ namespace CapaProceso.RestCliente
             }
             return conscabcera;
         }
+        //Bucar el motivo de anulacion de NC
+        
+        public modelowmtfacturascab buscarMotNC(string Ccf_nro_trans)
+        {
+
+            listaConsCabNCMot = ConsultaCabeNC.ConsultaNCTransPadre( Ccf_nro_trans);
+            int count = 0;
+            conscabcera = null;
+            foreach (modelowmtfacturascab item in listaConsCabNCMot)
+            {
+                count++;
+                conscabceraNCMot = item;
+
+            }
+            return conscabceraNCMot;
+        }
+
         public modelowmspclogo BuscarUsuarioLogo(string Ccf_cod_emp, string Ccf_usuario)
         {
             ListaModelowmspclogo = consultaLogo.BuscartaLogo(Ccf_cod_emp, Ccf_usuario);

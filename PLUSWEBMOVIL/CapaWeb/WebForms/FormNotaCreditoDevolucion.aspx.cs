@@ -317,6 +317,7 @@ namespace CapaWeb.WebForms
             txt_total_factura.Visible = true;
             txt_descuento_factura.Visible = true;
             txt_iva_factura.Visible = true;
+            
 
         }
         protected void BloquearFactura()
@@ -1354,6 +1355,7 @@ namespace CapaWeb.WebForms
             cabecerafactura.nro_pedido = nro_pedido.Text;
             cabecerafactura.nro_trans_padre = txt_nro_trans_padre.Text;
             cabecerafactura.tipo_nce = "NCDE";
+            cabecerafactura.mot_nce = "1"; //Motivo NC para DS 1 por devolucion
 
 
             error = GuardarCabezera.InsertarCabezeraNotaCredito(cabecerafactura);
@@ -1468,7 +1470,7 @@ namespace CapaWeb.WebForms
            string Ven__cod_tit = dniCliente.Text;
 
             lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
-
+             
             cliente = null;
             foreach (modelowmspctitulares item in lista)
             {

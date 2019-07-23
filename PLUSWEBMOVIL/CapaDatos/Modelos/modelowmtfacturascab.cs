@@ -76,5 +76,6 @@ namespace CapaDatos.Modelos
         public string email_tit { get; set; }
         public string nro_trans_padre { get; set; }
         public string tipo_nce { get; set; }
+        public string mot_nce { get; set; }
     }
 }

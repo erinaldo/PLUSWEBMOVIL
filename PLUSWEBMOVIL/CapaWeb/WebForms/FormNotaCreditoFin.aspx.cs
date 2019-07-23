@@ -163,7 +163,7 @@ namespace CapaWeb.WebForms
             {
                 conscabcera = (modelowmtfacturascab)Session["listaFacturas"];
 
-                cod_fpago.SelectedValue = conscabcera.cod_fpago;
+                cod_fpago.SelectedValue = conscabcera.cod_fpago.Trim();
                 nro_pedido.Text = conscabcera.nro_pedido;
                 //area.Text = conscabcera.observaciones;
                 ocompra.Text = conscabcera.ocompra;
@@ -1177,7 +1177,7 @@ namespace CapaWeb.WebForms
             cabecerafactura.nro_pedido = nro_pedido.Text;
             cabecerafactura.nro_trans_padre = txt_nro_trans_padre.Text;
             cabecerafactura.tipo_nce = "NCAE"; //NC por anulacion electronica
-
+            cabecerafactura.mot_nce = "2"; //Motivo DS  1 por anulación
 
             error = GuardarCabezera.InsertarCabezeraNotaCredito(cabecerafactura);
             if (string.IsNullOrEmpty(error))
@@ -1186,12 +1186,8 @@ namespace CapaWeb.WebForms
             }
             else
             {
-                //mensaje.Text = error;
-
-                //  this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
-                Session["cabecera"] = cabecerafactura;
-               
-
+             
+               Session["cabecera"] = cabecerafactura;
             }
 
 
