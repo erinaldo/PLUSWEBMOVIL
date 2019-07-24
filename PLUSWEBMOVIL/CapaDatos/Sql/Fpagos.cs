@@ -35,7 +35,7 @@ namespace CapaDatos.Sql
 
                     modelowmspcfpago item = new modelowmspcfpago();
                     item.descripcion = Convert.ToString(dr["cod_fpago"]) + " - " + Convert.ToString(dr["nom_fpago"]);
-                    item.cod_fpago = Convert.ToString(dr["cod_fpago"]);
+                    item.cod_fpago = Convert.ToString(dr["cod_fpago"]).Trim();
                     item.nom_fpago = Convert.ToString(dr["nom_fpago"]);
                     item.plazo_libre = Convert.ToString(dr["plazo_libre"]);
                     item.cant_cuotas = Convert.ToString(dr["cant_cuotas"]);

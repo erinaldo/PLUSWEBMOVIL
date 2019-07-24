@@ -182,7 +182,7 @@ namespace CapaDatos.Sql
                         item.nro_dgi = Convert.ToString(dr["nro_dgi"]);
                         item.nro_dgi2 = Convert.ToString(dr["nro_dgi2"]);
                         item.nro_dgi1 = Convert.ToString(dr["nro_dgi1"]);
-                        item.cod_fpago = Convert.ToString(dr["cod_fpago"]);
+                        item.cod_fpago = Convert.ToString(dr["cod_fpago"]).Trim();
                         item.nom_fpago = Convert.ToString(dr["nom_fpago"]);
                         item.plazo_libre = Convert.ToString(dr["plazo_libre"]);
                         item.observaciones = Convert.ToString(dr["observaciones"]);

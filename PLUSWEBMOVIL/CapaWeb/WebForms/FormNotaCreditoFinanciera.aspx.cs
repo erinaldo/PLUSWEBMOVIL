@@ -189,7 +189,7 @@ namespace CapaWeb.WebForms
             {
                 conscabcera = (modelowmtfacturascab)Session["listaFacturas"];
 
-                cod_fpago.SelectedValue = conscabcera.cod_fpago;
+                cod_fpago.SelectedValue = conscabcera.cod_fpago.Trim();
                 nro_pedido.Text = conscabcera.nro_pedido;
                 //area.Text = conscabcera.observaciones;
                 ocompra.Text = conscabcera.ocompra;
@@ -1141,75 +1141,37 @@ namespace CapaWeb.WebForms
                     item.base_imp = articulo.volumen_art;
                     item.tasa_iva = articulo.cod_tasa_impu;
                     item.cod_concepret = articulo.cod_concepret;
-
                     ModeloDetalleFactura.Add(item);
+
                 }
 
+               
+                    Session["detalle"] = ModeloDetalleFactura;
+                    ModeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);
+                    gv_Producto.DataSource = ModeloDetalleFactura;
+                    gv_Producto.DataBind();
 
-                Session["detalle"] = ModeloDetalleFactura;
-
-                ModeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);
-                gv_Producto.DataSource = ModeloDetalleFactura;
-                gv_Producto.DataBind();
-
-                txt_Codigo.Text = "";
-                txt_Descripcion.Text = "";
-                txt_Precio.Text = "0";
-                txt_Iva.Text = "0";
-                txt_Desc.Text = "0";
-                txt_Cantidad.Text = "1";
-                item = null;
-
+                    txt_Codigo.Text = "";
+                    txt_Descripcion.Text = "";
+                    txt_Precio.Text = "0";
+                    txt_Iva.Text = "0";
+                    txt_Desc.Text = "0";
+                    txt_Cantidad.Text = "1";
+                    item = null;
+                
             }
         }
         protected void AgregarNC_Click(object sender, EventArgs e)
         {
             /*
              ---Comparar cantidades antes de agregar
-             decimal cant_act = Convert.ToDecimal(txt_Cantidad.Text); Cantidad colocada en el monento
-             decimal cant_ant = Convert.ToDecimal(txt_cantidad_pro.Text); Cant qu trae del detalle de la factura
+             Va a guardar con estado P solo si es menor que el saldo
+             sino solo se va a mostrar en la grilla sin afectar pwm
              */
-            listaCantNCTotales = ConsultaDeta.ConsultaCantidadesNCDev(ComPwm, txt_nro_docum.Text, txt_serie_docum.Text, txt_Codigo.Text);
-            foreach (ModeloDetalleFactura item in listaCantNCTotales)
-            {
+             AgregarDetalleNotaCredito(); //Calcula totales y agrega a grilla
+            GuardarDetalle();
 
-                consCantNC = item;
-
-            }
-            decimal cant_act = Convert.ToDecimal(txt_Cantidad.Text);
-            decimal cant_ant = Convert.ToDecimal(txt_cantidad_pro.Text);
-            if (listaCantNCTotales.Count == 0)
-            {
-
-                if (cant_act > cant_ant)
-                {
-                    this.Page.Response.Write("<script language='JavaScript'>window.alert('La cantidad de devolución, no puede ser mayor que la cantidad de compra de producto ')+ error;</script>");
-                }
-                else
-                {
-                    //Mostrar grilla y guardar con estado P
-                    AgregarDetalleNotaCredito(); //Calcula totales y agrega a grilla
-                    GuardarDetalle(); //Guarda cabecera y detalle con estado P
-                }
-            }
-
-            else
-            {
-                //Comparar cantidades  Cantidad vendida - Cantidad devuelta 
-                decimal CompararValores = cant_ant - consCantNC.cantidad;
-                if (cant_act > CompararValores || cant_ant == consCantNC.cantidad)
-                {
-                    this.Page.Response.Write("<script language='JavaScript'>window.alert('La cantidad de devolución, no puede ser mayor que la cantidad de compra de producto ')+ error;</script>");
-                }
-                else
-                {
-
-                    //Mostrar grilla y guardar con estado P
-                    AgregarDetalleNotaCredito(); //Calcula totales y agrega a grilla
-                    GuardarDetalle(); //Guarda cabecera y detalle con estado P
-
-                }
-            }
+            
         }
         public void AgregarCabeceraDetalle()
         {
@@ -1411,16 +1373,23 @@ namespace CapaWeb.WebForms
             ModeloDetalleFactura = new List<ModeloDetalleFactura>();
             ModeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);
 
-            //Insertar primero la cabecera
-            InsertarCabecera();
-            /*
-             * Si no existe detalle debria guardar solo cabecera*/
-            if (ModeloDetalleFactura == null)
+            /*Validar si el saldo de la factura */
+            decimal valorSaldo = Convert.ToDecimal(txt_saldo_factura.Text);
+            decimal valorTotal = Convert.ToDecimal(txtSumaTotal.Text);
+            if (valorTotal > valorSaldo)
             {
-                this.Page.Response.Write("<script language='JavaScript'>window.alert('Factura salvada correctamente')+ error;</script>");
+                this.Page.Response.Write("<script language='JavaScript'>window.alert('La Nota de Crédito, no puede ser mayor que la Factura ')+ error;</script>");
+
             }
             else
+                if (ModeloDetalleFactura == null)
             {
+                this.Page.Response.Write("<script language='JavaScript'>window.alert('Nota de Crédito sin productos')+ error;</script>");
+            }
+            else {
+                //Insertar primero la cabecera
+                InsertarCabecera();
+                       
                 //Busca el nro de auditoria
                 conscabcera = null;
                 conscabcera = BuscarCabecera();
@@ -1553,6 +1522,17 @@ namespace CapaWeb.WebForms
                             this.Page.Response.Write("<script language='JavaScript'>window.alert('No existen productos para la nota de crédito')+ error;</script>");
 
                         }
+                    
+                        else
+                        {
+                            /*Validar si el saldo de la factura */
+                            decimal valorSaldo = Convert.ToDecimal(txt_saldo_factura.Text);
+                            decimal valorTotal = Convert.ToDecimal(txtSumaTotal.Text);
+                            if (valorTotal > valorSaldo)
+                            {
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('La Nota de Crédito, no puede ser mayor que la Factura ')+ error;</script>");
+                               
+                            }
                         else
                         {
                             string respuestaConfirmacionNC = "";
@@ -1598,10 +1578,14 @@ namespace CapaWeb.WebForms
                                 lbl_trx.Text = respuestaConfirmacionNC;
                             }
                         }
+                    }
+
+                        }
+                            
 
                     }
                 }
-            }
+            
         }
 
         protected void btnImpuestos_Click(object sender, System.Web.UI.ImageClickEventArgs e)

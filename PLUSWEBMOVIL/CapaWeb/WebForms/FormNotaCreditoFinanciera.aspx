@@ -15,16 +15,15 @@
         }
 
         function validarCamposArticulo(){
-            var BuscarArticulo = document.getElementById("<%= txt_Codigo.ClientID %>").value;
+            var txt_Codigo = document.getElementById("<%= txt_Codigo.ClientID %>").value;
             var precio = document.getElementById("<%= txt_Precio.ClientID %>").value;
             var cantidad = document.getElementById("<%= txt_Cantidad.ClientID %>").value;
             var porcdescto = document.getElementById("<%= txt_Desc.ClientID %>").value;
-            var iva = document.getElementById("<%= txt_Iva.ClientID %>").value;
+            
             var descripcion = document.getElementById("<%= txt_Descripcion.ClientID %>").value;
             var txtcorreo = document.getElementById("<%= txtcorreo.ClientID %>").value;
-            var n = txt.length;
             var respuesta;
-            if (BuscarArticulo == null || BuscarArticulo == "") {
+            if (txt_Codigo == null || txt_Codigo == "") {
                 alert("Ingrese el código");
                 respuesta =  false;
             } else {             
@@ -43,12 +42,7 @@
             } else {
                 respuesta = true;
             }
-            if (iva == null || iva == ""  || iva !=19 || iva !=5 ) {
-                alert("Ingrese iva");
-                respuesta = false;
-            } else {
-                respuesta = true;
-            }
+           
 
             if (porcdescto < 0 || porcdescto == "" || porcdescto == null) {
                 alert("Descuento no puede ser menor que cero");
@@ -143,7 +137,7 @@
                                 </td>
                                 <td>
                                     <label>
-                                        <asp:TextBox ID="txtcorreo" required="required" Width="202" class="textos" runat="server"></asp:TextBox>
+                                         <asp:TextBox ID="txtcorreo"  type="email" required="required" title="correo@gmail.com" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" Width="202" class="textos" runat="server"></asp:TextBox>
 
                                     </label>
                                 </td>
@@ -325,7 +319,7 @@
                                     <div align="left">Observaciones:</div>
                                 </td>
                                 <td colspan="5">
-                                    <asp:TextBox ID="area" runat="server" Width="900" class="textos" TextMode="MultiLine" cols="150" Rows="3"></asp:TextBox>
+                                    <asp:TextBox ID="area" runat="server" Width="900"  class="textos" MaxLength="250" TextMode="MultiLine" onKeyDown="cuentaCaracteres()" onKeyUp="cuentaCaracteres()" cols="150" Rows="3"></asp:TextBox>
                                     <div class="textos2" align="left">Caracteres disponibles: <b><span id="myCounter">250</span></b></div>
                                 </td>
                             </tr>
@@ -385,7 +379,7 @@
                                     
                                 </td>
                                  <td>
-                                    <asp:TextBox ID="txt_Precio" CssClass="textos" type="number" ReadOnly="true"  step="0.01" value="0" Width="100px" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="txt_Precio" CssClass="textos" type="number"   step="0.01" value="0" Width="100px" runat="server"></asp:TextBox>
                                     
                                 </td>
                                  <td>

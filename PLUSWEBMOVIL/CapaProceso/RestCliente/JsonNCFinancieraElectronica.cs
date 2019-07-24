@@ -356,7 +356,7 @@ namespace CapaProceso.RestCliente
 
             listaConsCabNCMot = ConsultaCabeNC.ConsultaNCTransPadre( Ccf_nro_trans);
             int count = 0;
-            conscabcera = null;
+            conscabceraNCMot = null;
             foreach (modelowmtfacturascab item in listaConsCabNCMot)
             {
                 count++;

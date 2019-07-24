@@ -183,7 +183,7 @@ namespace CapaWeb.WebForms
             {
                 conscabcera = (modelowmtfacturascab)Session["listaFacturas"];
 
-                cod_fpago.SelectedValue = conscabcera.cod_fpago;
+                cod_fpago.SelectedValue = conscabcera.cod_fpago.Trim();
                 nro_pedido.Text = conscabcera.nro_pedido;
                 //area.Text = conscabcera.observaciones;
                 ocompra.Text = conscabcera.ocompra;
