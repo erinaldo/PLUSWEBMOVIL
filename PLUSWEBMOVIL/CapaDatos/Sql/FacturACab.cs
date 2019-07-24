@@ -89,7 +89,7 @@ namespace CapaDatos.Sql
             return dr;
 
         }
-
+       
         //Consultar datos solo de laNC PARA Q EN NULL no de error
         public List<modelowmtfacturascab> ConsultaDatosNCPadre(string nro_trans)
         {

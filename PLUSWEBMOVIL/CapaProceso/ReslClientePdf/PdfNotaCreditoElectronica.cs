@@ -18,12 +18,19 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 {
     public class PdfNotaCreditoElectronica
     {
-       public modelowmtfacturascab conscabcera = new modelowmtfacturascab();
-        public ModeloDetalleFactura consdetalle = new ModeloDetalleFactura();
+        public modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+        public modelowmtfacturascab conscabceraNC = new modelowmtfacturascab();
+        public modelowmtfacturascab conscabceraNCMot = new modelowmtfacturascab();
+        public List<modelowmtfacturascab> listaConsCabNC = null;
+        public List<modelowmtfacturascab> listaConsCabNCMot = null;
+        public Consultawmtfacturascab ConsultaCabeNC = new Consultawmtfacturascab();
         public List<modelowmtfacturascab> listaConsCab = null;
-        public List<ModeloDetalleFactura> listaConsDet = null;
         public Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
-        public Consultawmtfacturasdet ConsultaDeta = new Consultawmtfacturasdet();
+        
+        public ModeloDetalleFactura consdetalle = new ModeloDetalleFactura();
+       
+        public List<ModeloDetalleFactura> listaConsDet = null;
+               public Consultawmtfacturasdet ConsultaDeta = new Consultawmtfacturasdet();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public ConsultawmspctctrxCotizacion consultaMoneda = new ConsultawmspctctrxCotizacion();
         public ConsultaBancos consultabanco = new ConsultaBancos();
@@ -102,14 +109,58 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 }
             return conscabcera;
         }
+
+        //Bucar el motivo de anulacion de NC
+
+        public modelowmtfacturascab buscarMotNC(string Ccf_nro_trans)
+        {
+
+            listaConsCabNCMot = ConsultaCabeNC.ConsultaNCTransPadre(Ccf_nro_trans);
+            int count = 0;
+            conscabceraNCMot = null;
+            foreach (modelowmtfacturascab item in listaConsCabNCMot)
+            {
+                count++;
+                conscabceraNCMot = item;
+
+            }
+            return conscabceraNCMot;
+        }
+
+        //Consulta DATOS FACTURA
+        public modelowmtfacturascab buscarCabezeraNC(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        {
+
+            listaConsCabNC = ConsultaCabeNC.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+            int count = 0;
+            conscabceraNC = null;
+            foreach (modelowmtfacturascab item in listaConsCabNC)
+            {
+                count++;
+                conscabceraNC = item;
+
+            }
+            return conscabceraNC;
+        }
         public string generarPdf(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
+            //Buscar cab NC
             conscabcera = null;
-            conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, "NC", Ccf_nro_trans);
-
+            conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+            //Obtener nro factura
             consdetalle = null;
             consdetalle = buscarDetalleFactura(Ccf_nro_trans);
 
+            //motivo de NC
+            conscabceraNCMot = null;
+            conscabceraNCMot = buscarMotNC(Ccf_nro_trans);
+
+            //Buscar datos de factura
+            //CABECERA NC
+            conscabceraNC = null;
+            conscabceraNC = buscarCabezeraNC(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, "VTA", conscabceraNCMot.nro_trans_padre.Trim());
+
+           
             decimal baseiva19 = 0;
             decimal iva19 = 0;
             decimal baseiva5 = 0;
@@ -218,6 +269,11 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 2;
             tabladetaEmpresa.AddCell(cell);
 
+            cell = new PdfPCell(new Phrase( Modeloempresa.nom_emp, fontText));
+            cell.Border = 0;
+            cell.HorizontalAlignment = 2;
+            tabladetaEmpresa.AddCell(cell);
+
             cell = new PdfPCell(new Phrase("NIT " + Modeloempresa.nro_dgi2 + "-" + Modeloempresa.nro_dgi1,fontText));
             cell.Border = 0;
             cell.HorizontalAlignment = 2;
@@ -252,7 +308,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             table.WidthPercentage = 100;
             table.SpacingAfter = 10;
            cell = new PdfPCell();
-            cell = new PdfPCell(new Paragraph("NOTA DE CRÉDITO: " + conscabcera.serie_docum + " - " + conscabcera.nro_docum, fontText));
+            cell = new PdfPCell(new Paragraph("NOTA DE CRÉDITO ELECTRÓNICA  " + conscabcera.serie_docum + " - " + conscabcera.nro_docum, fontText));
             cell.Colspan = 3;
             cell.Border = 0;
             cell.HorizontalAlignment = 2; //0=Left, 1=Centre, 2=Right  
@@ -273,7 +329,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 0;
             tablaCab.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph("FECHA FACTURA: " + conscabcera.fec_doc_str, fontText));
+            cell = new PdfPCell(new Paragraph("FECHA NCE: " + conscabcera.fec_doc_str, fontText));
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;
@@ -291,7 +347,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 0;
             tablaCab.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph("VENCIMIENTO: " + conscabcera.fec_venc_str, fontText));
+            cell = new PdfPCell(new Paragraph("FACTURA A APLICAR: " + conscabceraNC.observacion, fontText));
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;
@@ -309,7 +365,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 0;
             tablaCab.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph("FORMA DE PAGO: " + conscabcera.nom_fpago, fontText));
+            cell = new PdfPCell(new Paragraph("FECHA FACTURA A APLICAR: " + conscabceraNC.fec_doc_str, fontText));
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;
@@ -327,7 +383,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 0;
             tablaCab.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph("VENDEDOR: " + conscabcera.nom_vendedor, fontText));
+            cell = new PdfPCell(new Paragraph("MONEDA: " + conscabcera.cod_moneda, fontText));
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;
@@ -345,14 +401,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 0;
             tablaCab.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph("O.COMPRA/PEDIDO: " + conscabcera.ocompra, fontText));
-            cell.BorderWidthBottom = 0;
-            cell.BorderWidthLeft = 0;
-            cell.BorderWidthTop = 0;
-            cell.BorderWidthRight = 1;
-            cell.Colspan = 1;
-            cell.HorizontalAlignment = 0;
-            tablaCab.AddCell(cell);
+            
 
             cell = new PdfPCell(tablaCab);//this line made the difference
 
@@ -716,7 +765,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 1;
             detainfotri.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph("Prefijo " + conscabcera.mes_char + " " + "Factura " + conscabcera.ntipo, fontText));
+            cell = new PdfPCell(new Paragraph("Prefijo " + conscabcera.mes_char + " " + "Nota Crédito " + conscabcera.ntipo, fontText));
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;

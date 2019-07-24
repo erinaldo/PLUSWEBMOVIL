@@ -19,7 +19,7 @@ namespace CapaDatos.Sql
             {
                 List<modeloparametrocomercial> lista = new List<modeloparametrocomercial>();
 
-                string consulta = "SELECT * FROM dbo.wmm_param_comercial WHERE cod_emp = @cod_emp";
+                string consulta = "SELECT * FROM wmm_param_comercial WHERE cod_emp = @cod_emp";
                 SqlCommand conmand = new SqlCommand(consulta, cn);
 
                 conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
