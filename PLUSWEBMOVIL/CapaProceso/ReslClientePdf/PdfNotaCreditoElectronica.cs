@@ -803,7 +803,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             pagos1.WidthPercentage = 100;
             cell = new PdfPCell();
 
-            cell = new PdfPCell(new Paragraph(Modelocomercial.letra_cambio1, fontText));
+            cell = new PdfPCell(new Paragraph(Modelocomercial.letra_cambio4, fontText));
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;
@@ -811,21 +811,9 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 1;
             pagos1.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph(Modelocomercial.letra_cambio2, fontText));
-            cell.BorderWidthBottom = 0;
-            cell.BorderWidthLeft = 0;
-            cell.BorderWidthTop = 0;
-            cell.BorderWidthRight = 1;
-            cell.HorizontalAlignment = 1;
-            pagos1.AddCell(cell);
+            
 
-            cell = new PdfPCell(new Paragraph(Modelocomercial.letra_cambio3, fontText));
-            cell.BorderWidthBottom = 0;
-            cell.BorderWidthLeft = 0;
-            cell.BorderWidthTop = 0;
-            cell.BorderWidthRight = 1;
-            cell.HorizontalAlignment = 1;
-            pagos1.AddCell(cell);
+            
 
             cell = new PdfPCell(pagos1);//this line made the difference
             pagos.AddCell(cell);

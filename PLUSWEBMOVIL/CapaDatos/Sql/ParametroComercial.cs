@@ -43,6 +43,7 @@ namespace CapaDatos.Sql
                     item.letra_cambio1 = Convert.ToString(dr["letra_cambio1"]);
                     item.letra_cambio2 = Convert.ToString(dr["letra_cambio2"]);
                     item.letra_cambio3 = Convert.ToString(dr["letra_cambio3"]);
+                    item.letra_cambio4 = Convert.ToString(dr["letra_cambio4"]);
                     item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
                     item.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
                     item.maneja_recurso = Convert.ToString(dr["maneja_recurso"]);

@@ -22,6 +22,7 @@ namespace CapaDatos.Modelos
         public string letra_cambio1 { get; set; }
         public string letra_cambio2 { get; set; }
         public string letra_cambio3 { get; set; }
+        public string letra_cambio4 { get; set; }
         public string usuario_mod { get; set; }
         public DateTime fecha_mod { get; set; }
         public string maneja_recurso { get; set; }
