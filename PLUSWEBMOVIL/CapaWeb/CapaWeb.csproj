@@ -116,6 +116,9 @@
     <Content Include="WebForms\BuscarFacturasNCFin.aspx" />
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
     <Content Include="WebForms\FormDetalleImpuestos.aspx" />
+    <Content Include="WebForms\FormDocumentosElectronicos.aspx" />
+    <Content Include="WebForms\FormHostMail.aspx" />
+    <Content Include="WebForms\FormListaHostMail.aspx" />
     <Content Include="WebForms\FormListaUsuarioSucursal.aspx" />
     <Content Include="Tema\css\modal.css" />
     <Content Include="Tema\css\reset.min.css" />
@@ -224,6 +227,27 @@
     </Compile>
     <Compile Include="WebForms\FormDetalleImpuestos.aspx.designer.cs">
       <DependentUpon>FormDetalleImpuestos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormDocumentosElectronicos.aspx.cs">
+      <DependentUpon>FormDocumentosElectronicos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormDocumentosElectronicos.aspx.designer.cs">
+      <DependentUpon>FormDocumentosElectronicos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormHostMail.aspx.cs">
+      <DependentUpon>FormHostMail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormHostMail.aspx.designer.cs">
+      <DependentUpon>FormHostMail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormListaHostMail.aspx.cs">
+      <DependentUpon>FormListaHostMail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormListaHostMail.aspx.designer.cs">
+      <DependentUpon>FormListaHostMail.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormListaUsuarioSucursal.aspx.cs">
       <DependentUpon>FormListaUsuarioSucursal.aspx</DependentUpon>

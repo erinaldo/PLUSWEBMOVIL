@@ -44,6 +44,7 @@
     <Compile Include="Modelos\modelocabecerafactura.cs" />
     <Compile Include="Modelos\modeloCodProcesoFactura.cs" />
     <Compile Include="Modelos\ModeloDetalleFactura.cs" />
+    <Compile Include="Modelos\ModeloHost\modeloHostmail.cs" />
     <Compile Include="Modelos\modeloinsertarconfirmar.cs" />
     <Compile Include="Modelos\modeloRemisionesFactura.cs" />
     <Compile Include="Modelos\modeloRolesFacturacion.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Sql\FacturaDetalle.cs" />
     <Compile Include="Sql\Fpagos.cs" />
     <Compile Include="Sql\FPagosPos.cs" />
+    <Compile Include="Sql\HostMail\HostaMail.cs" />
     <Compile Include="Sql\ImpuestosRest.cs" />
     <Compile Include="Sql\ModificarPrecioFactura.cs" />
     <Compile Include="Sql\Numeradores.cs" />
