@@ -41,5 +41,7 @@ namespace CapaProceso.Consultas
             item = consultaSaldoa.ConsultaFacEleSaldos(cod_cliente, cod_emp, nro_trans);
             return item;
         }
+
+        
     }
 }

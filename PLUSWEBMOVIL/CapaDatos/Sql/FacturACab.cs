@@ -1,4 +1,5 @@
 ﻿using CapaDatos.Modelos;
+using CapaDatos.Modelos.ModelosNC;
 using CapaProceso.Modelos;
 using System;
 using System.Collections.Generic;
@@ -249,7 +250,7 @@ namespace CapaDatos.Sql
               
         }
 
-        //BUSQUEDA DE NC POR TIPO_NCE
+       
         public List<modelowmtfacturascab> ConsultaNCENroTran(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string Ccf_estado, string Ccf_cliente, string Ccf_cod_docum, string Ccf_serie_docum, string Ccf_nro_docum, string Ccf_diai, string Ccf_mesi, string Ccf_anioi, string Ccf_diaf, string Ccf_mesf, string Ccf_aniof)
         {
             try
@@ -488,6 +489,49 @@ namespace CapaDatos.Sql
                 return e.ToString();
             }
 
+
+
+        }
+
+        /*DOCUMENTOS ELECTRONICOS*/
+        //CONSULTA DOC ELECTRONICOS 
+        public modeloFacturasElecSaldos ConsultaDocumEletronicos(string cod_emp, string nro_trans)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    modeloFacturasElecSaldos item = new modeloFacturasElecSaldos();
+                    item = null;
+
+                    string consulta = ("SELECT	TOP 1 F.nro_trans,	F.cod_emp,	F.serie_docum,	F.nro_docum,	D.cufe FROM 	wmt_facturas_cab AS F INNER JOIN wmt_respuestaDS AS D ON F.nro_trans = D.nro_trans WHERE D.cufe <> '' AND F.tipo IN ('VTA','NC') AND F.nro_trans= @nro_trans AND F.cod_emp = @cod_emp AND F.estado IN ('F')  GROUP BY 	F.nro_trans,	F.cod_emp,F.serie_docum,	F.nro_docum,	D.cufe");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                        item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                        item.cufe = Convert.ToString(dr["cufe"]);
+                        item.serie_docum = Convert.ToString(dr["serie_docum"]);
+                        item.nro_docum = Convert.ToString(dr["nro_docum"]);
+
+                    }
+
+                    return item;
+                }
+            }
+            catch (Exception e)
+            {
+                modeloFacturasElecSaldos item = new modeloFacturasElecSaldos();
+                return item;
+            }
 
 
         }
