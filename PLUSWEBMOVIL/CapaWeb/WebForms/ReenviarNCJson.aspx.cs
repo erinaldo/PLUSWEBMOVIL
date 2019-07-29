@@ -121,12 +121,24 @@ namespace CapaWeb.WebForms
 
         protected void btn_reenviarpdf_Click(object sender, EventArgs e)
         {
-            ConsumoRest consumoRest = new ConsumoRest();
+            //Consulta nro_trans factura 
+            listaConsCab = ConsultaCabe.ConsultaNCTransPadre(lbl_nro_trans.Text);
+            int count = 0;
+            conscabcera = null;
+            foreach (modelowmtfacturascab item in listaConsCab)
+            {
+                count++;
+                conscabcera = item;
+
+            }
+            lbl_nro_factura.Text = conscabcera.nro_trans_padre;
+
+            ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
             string respuesta = "";
-            respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", "VTA", lbl_nro_trans.Text);
+            respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", "NC", lbl_nro_trans.Text);
             if (respuesta == "")
             {
-                mensaje.Text = "Su Nota Crédito fue enviada exitosamente"; ;
+                mensaje.Text = "La Nota Crédito fue enviada exitosamente";
                 btn_reenviar.Enabled = false;
                 ActualizarEstadoFact.ActualizarEstadoFactura(lbl_nro_trans.Text, "F");
 
@@ -137,6 +149,7 @@ namespace CapaWeb.WebForms
                 mensaje.Text = respuesta;
 
             }
+      
         }
     }
 }

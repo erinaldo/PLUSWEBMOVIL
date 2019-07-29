@@ -63,7 +63,7 @@ namespace CapaProceso.ReslClientePdf
            encabezado.emisor = Convert.ToInt32(Modeloempresa.nro_dgi2);
             encabezado.idsuc = 1;
             encabezado.numero = Convert.ToInt32(conscabcera.nro_docum);
-            encabezado.prefijo = Convert.ToString(conscabcera.serie_docum.Trim());
+            encabezado.prefijo =  Convert.ToString(conscabcera.serie_docum.Trim());
             encabezado.contenidopdf = pdfbase64;
 
             return encabezado;

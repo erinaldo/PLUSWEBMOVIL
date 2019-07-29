@@ -9,7 +9,8 @@ using System.Net.Mail;
 using System.Net.Http;
 
 using System.Data;
-
+using CapaDatos.Modelos.ModeloHost;
+using CapaProceso.Consultas.ConsultaHost;
 
 namespace CapaProceso.Consultas
 {
@@ -17,15 +18,40 @@ namespace CapaProceso.Consultas
     {
         MailMessage email = new MailMessage();
         SmtpClient smtp = new SmtpClient();
+        public ConsultaHostmail Consultahost = new ConsultaHostmail();
+        public modeloHostmail ModeloHost = new modeloHostmail();
+        public List<modeloHostmail> ListaModeloHost = null;
+
+        public modeloHostmail buscarDatosHostEmpresa(string cod_emp)
+        {
 
 
-        public bool enviarcorreo(string asunto, string mensaje, string correo , List<string> adjunto)
+            ListaModeloHost = Consultahost.BuscarHostmail(cod_emp);
+            int count = 0;
+            ModeloHost = null;
+            foreach (modeloHostmail item in ListaModeloHost)
+            {
+                count++;
+                ModeloHost = item;
+
+            }
+            return ModeloHost;
+        }
+
+        public bool enviarcorreo(string asunto, string mensaje, string correo , List<string> adjunto, string cod_emp)
         {
 
             try
             {
-               
-                /* recuperar de base de tabla HostMail */
+                ModeloHost = null;
+                ModeloHost = buscarDatosHostEmpresa(cod_emp);
+
+               /* string Usuario = ModeloHost.correo;
+                string Contrasenia = ModeloHost.contrasenia;
+                string smtpHost = ModeloHost.smtp;
+                int puerto =ModeloHost.puerto;
+                bool ssl = false;
+                 recuperar de base de tabla HostMail */
                 string Usuario = "prueba@cepes.ec";
                 string Contrasenia = "Plus2019*";
                 string smtpHost = "mail.cepes.ec";

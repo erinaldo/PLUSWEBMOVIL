@@ -29,7 +29,7 @@ namespace CapaProceso.Consultas
         public string Ccf_mesf = null;
         public string Ccf_aniof = null;
         public string nro_trans = null;
-        public string Ven__cod_tipotit = "cliente";
+        public string Ven__cod_tipotit = "clientes";
         public string Ven__cod_tit = " ";
         public string Ven__cod_dgi = "0";
         public string Ven__fono = "0";
@@ -96,12 +96,12 @@ namespace CapaProceso.Consultas
                     email = "Margarita.quijozaca@gmail.com";//cliente.email_tit;
 
 
-                    string mensaje = "<strong> Estimado(a): </strong>" + nombre.ToUpper() + "<br/>" + "Se a generado la factura N°: " + conscabcera.nro_docum;
+                    string mensaje = "<strong> Estimado(a): </strong>" + nombre.ToUpper() + "<br/>" + "se a generado el Documento Electrónico N°: " + conscabcera.observacion;
 
                     List<string> listaPath = new List<string>();// lista de archivos adjuntos
                     listaPath.Add(pathPdf);
                     listaPath.Add(pathXml);
-                   // correo.enviarcorreo("Envio de  Factura Electronica", mensaje, email, listaPath);
+                   correo.enviarcorreo("Documento Electrónico", mensaje, email, listaPath,Ccf_cod_emp);
 
 
                     return true;
@@ -110,12 +110,12 @@ namespace CapaProceso.Consultas
                 }
                 else
                 {
-                    string mensaje = "<strong> Estimado(a): </strong>" + nombre.ToUpper() + "<br/>" + "Se a generado la factura N°: " + conscabcera.cod_docum;
+                    string mensaje = "<strong> Estimado(a): </strong>" + nombre.ToUpper() + "<br/>" + "Se a generado el Documento Electrónico N°: " + conscabcera.observacion;
 
                     List<string> listaPath = new List<string>();// lista de archivos adjuntos
                     listaPath.Add(pathPdf);
                     listaPath.Add(pathXml);
-                    //correo.enviarcorreo("Envio de  Factura Electronica", mensaje, email, listaPath);
+                    correo.enviarcorreo("Envio de  Documento Electrónico", mensaje, email, listaPath, Ccf_cod_emp);
                     return true;
 
 
@@ -131,16 +131,16 @@ namespace CapaProceso.Consultas
                 string nombre = "";
                 string email = "";
 
-                nombre = "Prueba";//cliente.nom_tit;
-                email = "Margarita.quijozaca@gmail.com";//cliente.email_tit;
+                nombre = cliente.nom_tit;
+                email = cliente.email_tit;
 
 
-                string mensaje = "<strong> Estimado(a): </strong>" + nombre.ToUpper() + "<br/>" + "Se a generado la factura N°: " + conscabcera.nro_docum;
+                string mensaje = "<strong> Estimado(a): </strong>" + nombre.ToUpper() + "<br/>" + "Se a generado el Documento Electrónico N°: " + conscabcera.observacion;
 
                 List<string> listaPath = new List<string>();// lista de archivos adjuntos
                 listaPath.Add(pathPdf);
                 listaPath.Add(pathXml);
-                correo.enviarcorreo("Envio de  Contraseña", mensaje, email, listaPath);
+                correo.enviarcorreo("Envio de  Documento Electrónico", mensaje, email, listaPath, Ccf_cod_emp);
 
 
                 return true;

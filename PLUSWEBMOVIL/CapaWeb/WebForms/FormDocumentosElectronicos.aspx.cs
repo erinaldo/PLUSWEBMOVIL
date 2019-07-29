@@ -6,6 +6,9 @@ using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
 using CapaProceso.RestCliente;
 using CapaDatos.Modelos;
+using CapaProceso.GenerarPDF.FacturaElectronica;
+using System.IO;
+using System.Text;
 
 namespace CapaWeb.WebForms
 {
@@ -39,6 +42,10 @@ namespace CapaWeb.WebForms
         public List<modelowmspcfacturasWMimpuRest> ListaModeloimpuesto = new List<modelowmspcfacturasWMimpuRest>();
         public modelowmspcfacturasWMimpuRest ModeloImpuesto = new modelowmspcfacturasWMimpuRest();
         public ConsultawmspcfacturasWMimpuRest consultaImpuesto = new ConsultawmspcfacturasWMimpuRest();
+
+        public List<JsonRespuestaDE> ListaModelorespuestaDs = null;
+        public JsonRespuestaDE ModeloResQr = new JsonRespuestaDE();
+        public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
 
         public string ComPwm;
         public string AmUsrLog;
@@ -76,7 +83,7 @@ namespace CapaWeb.WebForms
 
             if (!IsPostBack)
             {
-                cargarListaDesplegables();
+              
 
                 fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 fechafin.Text = DateTime.Today.ToString("yyyy-MM-dd");
@@ -143,20 +150,7 @@ namespace CapaWeb.WebForms
 
         }
         
-        public void cargarListaDesplegables()
-        {
-            //Lista Estados facturas
-            Listaestados = Consultaestados.ConsultaEstadosFac(EstF_proceso);
-            estados.DataSource = Listaestados;
-
-            estados.DataTextField = "nom_estado";
-            estados.DataValueField = "estado";
-            estados.DataBind();
-
-            estados.Items.Insert(0, new ListItem("TODOS", "0"));
-            estados.SelectedIndex = 0;
-
-        }
+      
 
 
         protected void Grid_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
@@ -176,6 +170,7 @@ namespace CapaWeb.WebForms
             string Ccf_tipo2 = cbx_tipo_doc.SelectedValue;
             string Ccf_serie_docum = txtSerie.Text;
             string Ccf_nro_docum = txtDocumento.Text;
+            string Ccf_estado = "F";
             string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);
             string Ccf_mesi = string.Format("{0:00}", Fechainicio.Month);
             string Ccf_anioi = Fechainicio.Year.ToString();
@@ -196,7 +191,7 @@ namespace CapaWeb.WebForms
         {
             DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
             DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
-            string Ccf_estado = estados.SelectedValue;
+            string Ccf_estado = "F";
             string Ccf_tipo2 = cbx_tipo_doc.SelectedValue;
             string Ccf_cliente = txtCliente.Text;
             string Ccf_serie_docum = txtSerie.Text;
@@ -230,71 +225,66 @@ namespace CapaWeb.WebForms
             switch (e.CommandName) //ultilizo la variable para la opcion
             {
 
-                case "Editar":
-                    Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
-                    estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
-
-                    switch (estadoM)
-                    {
-                        case "PENDIENTE":
-
-                            qs.Add("TRN", "UDP");
-                            qs.Add("Id", Id.ToString());
-
-                            Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
-                            break;
-                        default:
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
-                            break;
-
-                    }
-
-                    break;
-
-                case "Imprimir":
-                    Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
-                    estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
-                    switch (estadoM)
-                    {
-                        case "FINALIZADO":
-
-                            qs.Add("Id", Id.ToString());
-                            Response.Write("<script>window.open('" + "ReporteFactura.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
-                            break;
-                        default:
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
-                            break;
-
-                    }
-
-                    break;
-
-                
-
-
-                case "Mostrar":
-                    Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
-                    estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
-
-                    qs.Add("TRN", "MTR");
-                    qs.Add("Id", Id.ToString());
-                    Response.Redirect("PortalFacturas.aspx" + Encryption.EncryptQueryString(qs).ToString());
-
-                    break;
 
                 case "Reenviar":
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                     estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
+                    //Saber si en nc o factura
+                    listaConsCab = ConsultaCabe.ConsultaNCTransPadre(Id.ToString());
+                    int count1 = 0;
+                    conscabcera = null;
+                    foreach (modelowmtfacturascab item in listaConsCab)
+                    {
+                        count1++;
+                        conscabcera = item;
+
+                    }
+                    //Buscar el xml TRAE TODAS LAS RESPUESTAS
+                    ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(Id.ToString());
+                    int count = 0;
+                    foreach (var item in ListaModelorespuestaDs)
+                    {
+                        if(item.xml != "")
+                        {
+                        ModeloResQr = item;
+                        count++;
+                        }
+                        
+                    }
 
                     switch (estadoM)
                     {
-                        case "CONTABILIZADO":
+                        case "FINALIZADO":
+                            Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
+                            string pathPdf = "";
+                            string StringXml = ModeloResQr.xml;
+                            string pathTemporal = Modelowmspclogo.pathtmpfac;
+                            string nombreXml = ModeloResQr.cufe.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + ".xml";
+                            string pathXml = pathTemporal + nombreXml;
+                            File.WriteAllText(pathXml, StringXml);
 
-                            qs.Add("Id", Id.ToString());
-                            Response.Redirect("ReenviarFacturaJson.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                            if (conscabcera.tipo_nce != "")
+                            {
+                                //Tipo NCE siempre trae lleno cuando es nc
+                                PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
+                                Ccf_tipo2 = "NC";
+                                pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Id.ToString());
+
+                            }
+                            else
+                            { 
+                                PdfFacturaElectronica pdf = new PdfFacturaElectronica();
+                                pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Id.ToString());
+                            }                          
+
+                            
+                            Boolean error = enviarcorreocliente.EnviarCorreoCliente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Id.ToString(), pathPdf, pathXml);
+
+
+
                             break;
                         default:
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('SU DOCUMENTO ESTA " + estadoM + "')+ error;</script>");
                             break;
 
                     }

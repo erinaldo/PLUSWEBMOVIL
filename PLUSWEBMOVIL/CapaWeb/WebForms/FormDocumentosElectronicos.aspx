@@ -64,19 +64,16 @@
                                 <asp:TextBox ID="fechafin" type="date"  Width="202"  runat="server"></asp:TextBox>
                             </td>
 
-                            <td width="20%" class="busqueda">Estado:</td>
+                           <td width="80%" class="busqueda">Tipo Documento:</td>
                           <td>
-                              <asp:DropDownList ID="estados" class="textos" runat="server"></asp:DropDownList>
-                          </td>
-                        </tr>
-                        <tr valign="top">
-                            <td width="80%" class="busqueda">Tipo Documento:</td>
-                          <td>
-                              <asp:DropDownList ID="cbx_tipo_doc" Width="205" class="textos" runat="server">
+                              <asp:DropDownList ID="cbx_tipo_doc" Width="224px" class="textos" runat="server" Height="16px">
                                   <asp:ListItem Value="VTA">Factura</asp:ListItem>
                                   <asp:ListItem Value="NC">Nota Crédito</asp:ListItem>
                               </asp:DropDownList>
                           </td>
+                        </tr>
+                        <tr valign="top">
+                            
                             
                             <td> </td>
                             <td aling="rigth"><asp:Button ID="Buscar" runat="server" OnClick="Buscar_Click" class="botones" Text="Buscar" /></td>
@@ -163,17 +160,9 @@
                                             </asp:TemplateColumn>
 
                                          
-                                                                                                                                  
-                                            <asp:TemplateColumn>
+                                        <asp:TemplateColumn>
                                                 <ItemTemplate>
-                                                    <asp:ImageButton ID="imgError" runat="server" CausesValidation="false" CommandName="Mostrar"
-                                                        ImageUrl="~/Tema/imagenes/application_search.png" ToolTip="Mostrar" Width="16" />
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-
-                                            <asp:TemplateColumn>
-                                                <ItemTemplate>
-                                                    <asp:ImageButton ID="imgReenviar" runat="server" CausesValidation="false" CommandName="Reenviar"
+                                                    <asp:ImageButton ID="imgReenviar" runat="server" OnClientClick="return confirm('¿Desea enviar el documento?');"  CausesValidation="false" CommandName="Reenviar"
                                                         ImageUrl="~/Tema/imagenes/up.png" ToolTip="Reenviar" Width="16" />
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
