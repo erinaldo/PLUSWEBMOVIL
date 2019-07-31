@@ -92,19 +92,8 @@ namespace CapaProceso.Consultas
                 if (email == "")
                 {
 
-
-                    /* email = "Margarita.quijozaca@gmail.com";//cliente.email_tit;
-
-
-                     string mensaje = "<strong> Estimado(a): </strong>" + nombre.ToUpper() + "<br/>" + "se a generado el Documento Electrónico N°: " + conscabcera.observacion;
-
-                     List<string> listaPath = new List<string>();// lista de archivos adjuntos
-                     listaPath.Add(pathPdf);
-                     listaPath.Add(pathXml);
-                    correo.enviarcorreo("Documento Electrónico", mensaje, email, listaPath,Ccf_cod_emp);*/
-
-                    string mensaje = "Cliente no tiene email";
-                    return true;
+                    string mensaje = "Cliente no tiene email valido";
+                    return false;
 
 
                 }

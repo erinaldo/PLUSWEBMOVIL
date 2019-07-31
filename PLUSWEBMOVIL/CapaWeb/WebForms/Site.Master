@@ -9,12 +9,7 @@
     <link rel="stylesheet" href="~/Tema/css/Style.css" />
 
     <title>PlusWebMobile</title>
-       <script type="text/javascript">
-        {
-            if (history.forward(1))
-                location.replace(history.forward(1))
-        }
-    </script>
+ 
 
 </head>
 <body>

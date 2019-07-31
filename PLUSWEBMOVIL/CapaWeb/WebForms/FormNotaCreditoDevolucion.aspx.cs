@@ -320,7 +320,7 @@ namespace CapaWeb.WebForms
             
 
         }
-        protected void BloquearFactura()
+        protected void BloquearCabeceraNC()
         {
             //inhabilitar cajas de texto cabecera factura
             dniCliente.Enabled = false;
@@ -342,23 +342,16 @@ namespace CapaWeb.WebForms
             txtSumaTotal.Enabled = false;
             txtSumaIva.Enabled = false;
             txtSumaDesc.Enabled = false;
-            gv_Producto.Enabled = false;
+           
             txtBase15.Enabled = false;
             txtBaseIva19.Enabled = false;
             txtIva15.Enabled = false;
             txtIva19.Enabled = false;
             //botones
-            AgregarNC.Enabled = false;
-            Confirmar.Visible = true;
-            btnGuardarDetalle.Visible = false;
+            
             btn_Fac.Enabled = false;
-            //detalle producto
-            txt_Codigo.Enabled = false;
-            txt_Cantidad.Enabled = false;
-            txt_Descripcion.Enabled = false;
-            txt_Precio.Enabled = false;
-            txt_Desc.Enabled = false;
-            txt_Iva.Enabled = false;
+           
+         
         }
         protected void BloquearNCVer()
         {
@@ -504,7 +497,7 @@ namespace CapaWeb.WebForms
             {
                 lbl_trx.Text = " No existe Tipo de Cambio registrado para la fecha de la factura. Por favor registrar la tasa del dia y actualizar la pagina";
                 lbl_trx.Visible = true;
-                BloquearFactura();
+                BloquearCabeceraNC();
             }
         }
         public QueryString ulrDesencriptada()
@@ -1178,6 +1171,7 @@ namespace CapaWeb.WebForms
                     //Mostrar grilla y guardar con estado P
                     AgregarDetalleNotaCredito(); //Calcula totales y agrega a grilla
                     GuardarDetalle(); //Guarda cabecera y detalle con estado P
+                    BloquearCabeceraNC();//Bloquear cabecera NC
                 }
             }
             
@@ -1195,6 +1189,8 @@ namespace CapaWeb.WebForms
                     //Mostrar grilla y guardar con estado P
                     AgregarDetalleNotaCredito(); //Calcula totales y agrega a grilla
                     GuardarDetalle(); //Guarda cabecera y detalle con estado P
+
+                    BloquearCabeceraNC();//Bloquear cabecera NC
 
                 }
             }

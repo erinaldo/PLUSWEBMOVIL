@@ -139,7 +139,7 @@
                                <tr>
        
                                 <td >
-                                    <input Class="botones" type="button" onclick="javascript: window.history.back();"     value="Cancelar">
+                                      <input Class="botones" type="button" onclick="javascript: window.history.back();"     value="Cancelar">
                                     
                                 </td>
                     

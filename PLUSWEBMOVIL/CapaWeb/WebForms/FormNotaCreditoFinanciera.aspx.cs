@@ -108,7 +108,7 @@ namespace CapaWeb.WebForms
         public string Vend__cod_tit = "0";
         public string FP__cod_fpago = "0";
         public string ArtB__articulo = "tubo";
-        public string ArtB__tipo = "0";
+        public string ArtB__tipo = "NCRED";
         public string ArtB__compras = "0";
         public string ArtB__ventas = "S";
         public string Ccf_tipo1 = "C";
@@ -332,7 +332,40 @@ namespace CapaWeb.WebForms
             cbx_motivo_nc.Visible = true;
 
         }
-        protected void BloquearFactura()
+        protected void BloquearCabeceraNC()
+        {
+            //inhabilitar cajas de texto cabecera factura
+            dniCliente.Enabled = false;
+            nombreCliente.Enabled = false;
+            fonoCliente.Enabled = false;
+            txtcorreo.Enabled = false;
+            fecha.Enabled = false;
+            cod_fpago.Enabled = false;
+            nro_pedido.Enabled = false;
+            cod_costos.Enabled = false;
+            serie_docum.Enabled = false;
+            ocompra.Enabled = false;
+            //area.Enabled = false;
+
+            porc_descto.Enabled = false;
+            cmbCod_moneda.Enabled = false;
+            cod_vendedor.Enabled = false;
+            txtSumaSubTo.Enabled = false;
+            txtSumaTotal.Enabled = false;
+            txtSumaIva.Enabled = false;
+            txtSumaDesc.Enabled = false;
+
+            txtBase15.Enabled = false;
+            txtBaseIva19.Enabled = false;
+            txtIva15.Enabled = false;
+            txtIva19.Enabled = false;
+            //botones
+
+            btn_Fac.Enabled = false;
+
+
+        }
+        void BloquearFactura()
         {
             //inhabilitar cajas de texto cabecera factura
             dniCliente.Enabled = false;
@@ -1170,6 +1203,7 @@ namespace CapaWeb.WebForms
              */
              AgregarDetalleNotaCredito(); //Calcula totales y agrega a grilla
             GuardarDetalle();
+            BloquearCabeceraNC(); 
 
             
         }

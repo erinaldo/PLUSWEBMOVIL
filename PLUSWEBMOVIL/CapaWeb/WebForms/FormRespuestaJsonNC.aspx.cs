@@ -131,7 +131,7 @@ namespace CapaWeb.WebForms
             //2 voy a agregando los valores que deseo
             qs.Add("TRN", "MTR");
             qs.Add("Id", mensaje.Text);
-            Response.Redirect("PortalNCRespustaDS.aspx" + Encryption.EncryptQueryString(qs).ToString());
+            Response.Redirect("ListaRespuestaNCDS.aspx" + Encryption.EncryptQueryString(qs).ToString());
         }
     }
 }
