@@ -44,7 +44,7 @@ namespace CapaWeb.WebForms
         public string AmUsrLog;
         public string cod_proceso;     
         public string Ccf_tipo1 = "C";
-        public string Ccf_tipo2 = "VTA";
+        public string Ccf_tipo2 = "VTAE";
         public string Ccf_nro_trans = " ";
         public string Ccf_estado = "0";
         public string Ccf_cliente = "0";
@@ -100,6 +100,7 @@ namespace CapaWeb.WebForms
             if (count1 >0)
             {
                 NuevaFactura.Visible = true;
+                Factura_Pos.Visible = true;
             }
             //Rol acceso a la pantalla de Buscar facturas
             ListaModelosRoles = ConsultaRoles.BuscarAccesoFactura(AmUsrLog);
@@ -128,7 +129,7 @@ namespace CapaWeb.WebForms
             }
 
             //Rol eliminar factura
-            ListaModelosRoles = ConsultaRoles.BuscarRolEditar(AmUsrLog);
+            ListaModelosRoles = ConsultaRoles.BuscarRolEliminar(AmUsrLog);
             int count4 = 0;
             foreach (var item in ListaModelosRoles)
             {
@@ -141,7 +142,7 @@ namespace CapaWeb.WebForms
             }
 
             //Rol imprimir factura
-            ListaModelosRoles = ConsultaRoles.BuscarRolEditar(AmUsrLog);
+            ListaModelosRoles = ConsultaRoles.BuscarRolPrint(AmUsrLog);
             int count5 = 0;
             foreach (var item in ListaModelosRoles)
             {
@@ -329,7 +330,7 @@ namespace CapaWeb.WebForms
                             Encabezado encabezado = new Encabezado();
                             conscabcera = null;
                             conscabcera = buscarCabezeraFactura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Convert.ToString(Id));
-                            Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans=" + Convert.ToString(Id) + "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo=VTA");
+                            Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans=" + Convert.ToString(Id) + "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo=VTAE");
                             break;
 
                     }
@@ -540,6 +541,17 @@ namespace CapaWeb.WebForms
             //rEcibir de cookie
             ModeloCodProceso = BuscarCodProceso(cod_proceso);
             Response.Redirect("Ayuda.asp" + "?cod_proceso="+cod_proceso);
+        }
+
+        protected void Factura_Pos_Click(object sender, EventArgs e)
+        {
+            //1 primero creo un objeto Clave/Valor de QueryString 
+            QueryString qs = new QueryString();
+
+            //2 voy a agregando los valores que deseo
+            qs.Add("TRN", "INS");
+            qs.Add("Id", "");
+            Response.Redirect("FormFacturaPostElec.aspx" + Encryption.EncryptQueryString(qs).ToString());
         }
     }
 }

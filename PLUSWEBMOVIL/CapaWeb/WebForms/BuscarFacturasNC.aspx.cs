@@ -49,7 +49,7 @@ namespace CapaWeb.WebForms
         public string AmUsrLog;
         public string cod_proceso;
         public string Ccf_tipo1 = "CLIENTES";
-        public string Ccf_tipo2 = "VTA";
+        public string Ccf_tipo2 = "VTAE";
         public string Ccf_nro_trans = " ";
         public string Ccf_estado = "0";
         public string Ccf_cliente = "0";

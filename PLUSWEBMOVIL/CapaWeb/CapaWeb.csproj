@@ -117,6 +117,7 @@
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
     <Content Include="WebForms\FormDetalleImpuestos.aspx" />
     <Content Include="WebForms\FormDocumentosElectronicos.aspx" />
+    <Content Include="WebForms\FormFacturaPostElec.aspx" />
     <Content Include="WebForms\FormHostMail.aspx" />
     <Content Include="WebForms\FormListaHostMail.aspx" />
     <Content Include="WebForms\FormListaUsuarioSucursal.aspx" />
@@ -179,6 +180,7 @@
     <Content Include="WebForms\FormSucursalempresa.aspx" />
     <Content Include="WebForms\FormUsuariosucursal.aspx" />
     <Content Include="WebForms\ListaRespuestaNCDS.aspx" />
+    <Content Include="WebForms\MediosPagoPos.aspx" />
     <Content Include="WebForms\PortalFacturas.aspx" />
     <Content Include="WebForms\ReenviarFacturaJson.aspx" />
     <Content Include="WebForms\ReenviarNCJson.aspx" />
@@ -234,6 +236,13 @@
     </Compile>
     <Compile Include="WebForms\FormDocumentosElectronicos.aspx.designer.cs">
       <DependentUpon>FormDocumentosElectronicos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormFacturaPostElec.aspx.cs">
+      <DependentUpon>FormFacturaPostElec.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormFacturaPostElec.aspx.designer.cs">
+      <DependentUpon>FormFacturaPostElec.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormHostMail.aspx.cs">
       <DependentUpon>FormHostMail.aspx</DependentUpon>
@@ -342,6 +351,13 @@
     </Compile>
     <Compile Include="WebForms\ListaRespuestaNCDS.aspx.designer.cs">
       <DependentUpon>ListaRespuestaNCDS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\MediosPagoPos.aspx.cs">
+      <DependentUpon>MediosPagoPos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\MediosPagoPos.aspx.designer.cs">
+      <DependentUpon>MediosPagoPos.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\ReenviarNCJson.aspx.cs">
       <DependentUpon>ReenviarNCJson.aspx</DependentUpon>

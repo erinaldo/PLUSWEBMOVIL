@@ -39,7 +39,13 @@
                           </p>
                         </td>
                     </tr>
-                 
+                 <tr>
+                    <td>
+                        <p class="Subtitulo2">Para realizar una nueva factura POS
+                                <asp:Button ID="Factura_Pos" onclick="Factura_Pos_Click" Visible="false" class="botones" runat="server" Text="AQUI" />
+                          </p>
+                        </td>
+                    </tr>
                 
                  <tr>
                     <td>

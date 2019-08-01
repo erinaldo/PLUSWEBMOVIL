@@ -112,7 +112,7 @@ namespace CapaWeb.WebForms
         public string ArtB__compras = "0";
         public string ArtB__ventas = "S";
         public string Ccf_tipo1 = "C";
-        public string Ccf_tipo2 = "NC";
+        public string Ccf_tipo2 = "NCVE";
         public string Ccf_nro_trans = "0";
         public string Ccf_estado = null;
         public string Ccf_cliente = null;
@@ -1340,7 +1340,7 @@ namespace CapaWeb.WebForms
             cabecerafactura.nro_audit = "0"; // por defecto va cero s disapra triger
             cabecerafactura.ocompra = ocompra.Text;
             cabecerafactura.cod_moneda = cmbCod_moneda.SelectedValue;
-            cabecerafactura.tipo = "NCV";
+            cabecerafactura.tipo = "NCVE";
             cabecerafactura.porc_descto = Convert.ToDecimal("0.00");
             cabecerafactura.descuento = Convert.ToDecimal("0.00");
             cabecerafactura.diar = "0";

@@ -22,7 +22,7 @@ namespace CapaWeb.WebForms
         public string ComPwm;
         public string AmUsrLog;       
         public string Ccf_tipo1 = "C";
-        public string Ccf_tipo2 = "VTA";
+        public string Ccf_tipo2 = "VTAE";
         public string Ccf_nro_trans = null;
         public string Ccf_estado = null;
         public string Ccf_cliente = null;

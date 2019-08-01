@@ -98,6 +98,7 @@
     <Compile Include="Consultas\Consultaestadosfactura.cs" />
     <Compile Include="Consultas\ConsultaHost\ConsultaHostmail.cs" />
     <Compile Include="Consultas\ConsultaLogo.cs" />
+    <Compile Include="Consultas\ConsultaMediosPago.cs" />
     <Compile Include="Consultas\ConsultaNumerador.cs" />
     <Compile Include="Consultas\Consultaparamcomercial.cs" />
     <Compile Include="Consultas\ConsultaProformaIns.cs" />

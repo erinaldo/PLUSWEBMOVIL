@@ -158,7 +158,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             //Buscar datos de factura
             //CABECERA NC
             conscabceraNC = null;
-            conscabceraNC = buscarCabezeraNC(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, "VTA", conscabceraNCMot.nro_trans_padre.Trim());
+            conscabceraNC = buscarCabezeraNC(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, "VTAE", conscabceraNCMot.nro_trans_padre.Trim());
 
            
             decimal baseiva19 = 0;

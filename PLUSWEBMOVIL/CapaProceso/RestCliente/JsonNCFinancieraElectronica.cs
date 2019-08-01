@@ -122,7 +122,7 @@ namespace CapaProceso.RestCliente
 
             //CABECERA de la FACTURA
             conscabcera = null;
-            conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, "VTA", nro_factura);
+            conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, "VTAE", nro_factura);
             //CABECERA NC
             conscabceraNC = null;
             conscabceraNC = buscarCabezeraNC(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
