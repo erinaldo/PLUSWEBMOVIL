@@ -112,6 +112,7 @@
     <Content Include="Tema\css\StylePront.css" />
     <Content Include="WebForms\BuscaFacturasNCAn.aspx" />
     <Content Include="WebForms\BuscarArticuloNCDevolucion.aspx" />
+    <Content Include="WebForms\BuscarFacturaPos.aspx" />
     <Content Include="WebForms\BuscarFacturasNC.aspx" />
     <Content Include="WebForms\BuscarFacturasNCFin.aspx" />
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
@@ -201,6 +202,13 @@
     </Compile>
     <Compile Include="WebForms\BuscarArticuloNCDevolucion.aspx.designer.cs">
       <DependentUpon>BuscarArticuloNCDevolucion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarFacturaPos.aspx.cs">
+      <DependentUpon>BuscarFacturaPos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarFacturaPos.aspx.designer.cs">
+      <DependentUpon>BuscarFacturaPos.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\BuscarFacturasNC.aspx.cs">
       <DependentUpon>BuscarFacturasNC.aspx</DependentUpon>

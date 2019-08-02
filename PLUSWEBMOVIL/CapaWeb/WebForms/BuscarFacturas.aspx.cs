@@ -100,7 +100,7 @@ namespace CapaWeb.WebForms
             if (count1 >0)
             {
                 NuevaFactura.Visible = true;
-                Factura_Pos.Visible = true;
+                
             }
             //Rol acceso a la pantalla de Buscar facturas
             ListaModelosRoles = ConsultaRoles.BuscarAccesoFactura(AmUsrLog);

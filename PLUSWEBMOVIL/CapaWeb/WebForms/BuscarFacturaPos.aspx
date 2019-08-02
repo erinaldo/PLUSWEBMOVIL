@@ -1,6 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeBehind="BuscarFacturas.aspx.cs" Inherits="CapaWeb.WebForms.BuscarFacturas" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="BuscarFacturaPos.aspx.cs" Inherits="CapaWeb.WebForms.BuscarFacturaPos" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-   <script type="text/javascript">
+     <script type="text/javascript">
        $(document).ready(function () {
 
            $("form1").keypress(function (e){
@@ -28,18 +28,18 @@
                 <tr>
                     <td>
                         <asp:ImageButton ID="ImgAyuda" onclick="ImgAyuda_Click" runat="server" src="../Tema/imagenes/help.png" width="16" height="16" />
-                        <asp:Label ID="lblAyuda" runat="server"  CssClass="Titulo" Text="Facturas de venta"></asp:Label>
+                        <asp:Label ID="lblAyuda" runat="server"  CssClass="Titulo" Text="Facturas de Venta POS" ></asp:Label>
                         
                         </td>
                     </tr>
-                <tr>
+                
+                 <tr>
                     <td>
                         <p class="Subtitulo2">Para realizar una nueva factura 
-                                <asp:Button ID="NuevaFactura" OnClick="NuevaFactura_Click" Visible="false" class="botones" runat="server" Text="AQUI" />
+                                <asp:Button ID="Factura_Pos" onclick="Factura_Pos_Click" Visible="false" class="botones" runat="server" Text="AQUI" />
                           </p>
                         </td>
                     </tr>
-               
                 
                  <tr>
                     <td>

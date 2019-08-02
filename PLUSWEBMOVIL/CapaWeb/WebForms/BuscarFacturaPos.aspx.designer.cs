@@ -10,7 +10,7 @@
 namespace CapaWeb.WebForms {
     
     
-    public partial class BuscarFacturas {
+    public partial class BuscarFacturaPos {
         
         /// <summary>
         /// Control form1.
@@ -40,13 +40,13 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label lblAyuda;
         
         /// <summary>
-        /// Control NuevaFactura.
+        /// Control Factura_Pos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button NuevaFactura;
+        protected global::System.Web.UI.WebControls.Button Factura_Pos;
         
         /// <summary>
         /// Control txtAcceso.
