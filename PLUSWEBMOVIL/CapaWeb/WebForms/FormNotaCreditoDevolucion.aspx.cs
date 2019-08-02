@@ -1340,7 +1340,7 @@ namespace CapaWeb.WebForms
             cabecerafactura.nro_audit = "0"; // por defecto va cero s disapra triger
             cabecerafactura.ocompra = ocompra.Text;
             cabecerafactura.cod_moneda = cmbCod_moneda.SelectedValue;
-            cabecerafactura.tipo = "NCVE";
+            cabecerafactura.tipo = Ccf_tipo2; //"NCVE";
             cabecerafactura.porc_descto = Convert.ToDecimal("0.00");
             cabecerafactura.descuento = Convert.ToDecimal("0.00");
             cabecerafactura.diar = "0";
@@ -1350,7 +1350,7 @@ namespace CapaWeb.WebForms
             cabecerafactura.cod_sucursal = ModeloUsuSucursal.cod_sucursal;
             cabecerafactura.nro_pedido = nro_pedido.Text;
             cabecerafactura.nro_trans_padre = txt_nro_trans_padre.Text;
-            cabecerafactura.tipo_nce = "NCDE";
+            //cabecerafactura.tipo_nce = "NCDE";
             cabecerafactura.mot_nce = "1"; //Motivo NC para DS 1 por devolucion
 
 

@@ -292,16 +292,16 @@ namespace CapaWeb.WebForms
 
                             qs.Add("TRN", "UDP");
                             qs.Add("Id", Id.ToString());
-                            if (conscabcera.tipo_nce == "NCDE")
+                            if (conscabcera.mot_nce.Trim() == "1")
                             { 
                             Response.Redirect("FormNotaCreditoDevolucion.aspx" + Encryption.EncryptQueryString(qs).ToString());
                             }else
-                                if(conscabcera.tipo_nce == "NCAE")
+                                if(conscabcera.mot_nce.Trim() == "2")
                             {
                                 Response.Redirect("FormNotaCreditoFin.aspx" + Encryption.EncryptQueryString(qs).ToString());
                             }
                             else
-                                 if (conscabcera.tipo_nce == "NCFE")
+                                 if (conscabcera.mot_nce.Trim() != "2" || conscabcera.mot_nce != "1")
                             {
                                 Response.Redirect("FormNotaCreditoFinanciera.aspx" + Encryption.EncryptQueryString(qs).ToString());
                             }
@@ -343,10 +343,28 @@ namespace CapaWeb.WebForms
                 case "Eliminar":
                     Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                     Encabezado encabezado = new Encabezado();
+                    estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
+                    
+                    switch (estadoM)
+                    {
+                        case "CONTABILIZADO":
 
-                    conscabcera = null;
-                    conscabcera = buscarCabezeraFactura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Convert.ToString(Id));
-                    Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans=" + Convert.ToString(Id) + "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo=NC");
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('LA  NOTA DE CRÉDITO ESTA EN ESTADO " + estadoM + " ')+ error;</script>");
+                            break;
+                        case "FINALIZADO":
+
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('LA  NOTA DE CRÉDITO EN ESTADO " + estadoM + " ')+ error;</script>");
+                            break;
+                        default:
+
+                            conscabcera = null;
+                            conscabcera = buscarCabezeraFactura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Convert.ToString(Id));
+                            Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans=" + Convert.ToString(Id) + "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo=NC");
+                            break;
+
+                    }
+
+                  
                     break;
 
                 case "Ver":
@@ -364,17 +382,17 @@ namespace CapaWeb.WebForms
                     }
                     qs.Add("TRN", "VER");
                     qs.Add("Id", Id.ToString());
-                    if (conscabcera.tipo_nce == "NCDE")
+                    if (conscabcera.mot_nce.Trim() == "1")
                     {
                         Response.Redirect("FormNotaCreditoDevolucion.aspx" + Encryption.EncryptQueryString(qs).ToString());
                     }
                     else
-                        if (conscabcera.tipo_nce == "NCAE")
+                        if (conscabcera.mot_nce.Trim() == "2")
                     {
                         Response.Redirect("FormNotaCreditoFin.aspx" + Encryption.EncryptQueryString(qs).ToString());
                     }
                     else
-                         if (conscabcera.tipo_nce == "NCFE")
+                         if (conscabcera.mot_nce.Trim() != "2" || conscabcera.mot_nce != "1")
                     {
                         Response.Redirect("FormNotaCreditoFinanciera.aspx" + Encryption.EncryptQueryString(qs).ToString());
                     }
