@@ -10,11 +10,33 @@ namespace CapaProceso.Consultas
     public class ConsultaMediosPago
     {
         MediosPago consultaMediosPago = new MediosPago();
+        FPagosPos guardarPago = new FPagosPos();
+        //Buscar todo los medios de pago
         public List<modeloMediosPago> BuscarMediosPago(string cod_emp)
         {
             List<modeloMediosPago> lista = new List<modeloMediosPago>();
             lista = consultaMediosPago.ListaMediosPago(cod_emp);
             return lista;
+        }
+        //Recupera datos de medio de pago para insertar en tabla wmt_facturas_pgs
+        public List<ModeloTipoPagoTem> BuscarMediosPagoTemporal(string usuario,string cod_emp, string nro_trans)
+        {
+            List<ModeloTipoPagoTem> lista = new List<ModeloTipoPagoTem>();
+            lista = consultaMediosPago.BuscarPagosTemporal(usuario,cod_emp,nro_trans);
+            return lista;
+        }
+        //Insertar Pagos de la factura  Insertar pagos en wmt_facturas_pgs
+        public string InsertarPagosFactura(modeloFacturasPagos facturasPagos)
+        {
+            string respuesta = guardarPago.InsertarFacturaPagos(facturasPagos);
+            return respuesta;
+        }
+
+        //Insertar en tabla temporal el wmt_facturas_pgstmp cada codigo de pago
+        public string InsertarTipoPago(modeloFacturasPagos TipoPagos)
+        {
+            string respuesta = guardarPago.InsertarTiposPagos(TipoPagos);
+            return respuesta;
         }
     }
 }

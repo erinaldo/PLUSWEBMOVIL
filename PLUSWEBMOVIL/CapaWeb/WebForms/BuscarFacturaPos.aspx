@@ -19,7 +19,7 @@
                         <td valign="top">
                             <table width="100%" border="0" cellspacing="0">
                                 <tr>
-                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;Facturas Venta</td>
+                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;Facturas Venta POS</td>
                                 </tr>
                             </table>
                         </td>

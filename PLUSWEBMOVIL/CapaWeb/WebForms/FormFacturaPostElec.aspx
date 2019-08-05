@@ -328,11 +328,11 @@
                                     
                                 </td>
                                  <td>
-                                    <asp:TextBox ID="txt_Precio" CssClass="textos" type="number" ReadOnly="true"  step="0.01" value="0" Width="100px" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="txt_Precio" CssClass="textos" type="number"   step="0.01" value="0" Width="100px" runat="server"></asp:TextBox>
                                     
                                 </td>
                                  <td>
-                                    <asp:TextBox ID="txt_Desc" CssClass="textos" min="0" step="0.01" ReadOnly="true" type="number" value="0"  Width="60px" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="txt_Desc" CssClass="textos" min="0" step="0.01"  type="number" value="0"  Width="60px" runat="server"></asp:TextBox>
                                     
                                 </td>
                                  <td>
@@ -572,7 +572,7 @@
                                 </td>
                                 <td >
                                     <asp:Button ID="Cancelar" Class="btnFactura1"  runat="server" onclick="Cancelar_Click" UseSubmitBehavior="False" Text="Cancelar" />
-                                    <asp:Button ID="Confirmar"  Class="btnFactura1" runat="server" OnClientClick="return confirm('¿Desea guardar la factura?');" OnClick="Confirmar_Click" Text="Confirmar" />
+                                    <asp:Button ID="Confirmar"  Class="btnFactura1" runat="server" Visible="false" OnClientClick="return confirm('¿Desea guardar la factura?');" OnClick="Confirmar_Click" Text="Confirmar" />
                                      <asp:Button ID="btn_Pagos"  Class="btnFactura1" runat="server" OnClick="btn_Pagos_Click" Text="Medios Pago" />
                                
                                   </td>

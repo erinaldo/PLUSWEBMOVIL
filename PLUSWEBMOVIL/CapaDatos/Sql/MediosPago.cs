@@ -14,7 +14,7 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
         modelowmspcarticulos modeloarticulos = new modelowmspcarticulos();
-
+        //Lista d medios de pago por empresa
         public List<modeloMediosPago> ListaMediosPago(string cod_emp)
         {
 
@@ -59,6 +59,49 @@ namespace CapaDatos.Sql
                 return lista;
             }
         }
-    
-}
+
+        //Recupera datos de medio de pago para insertar en tabla wmt_facturas_pgs
+        public List<ModeloTipoPagoTem> BuscarPagosTemporal(string usuario,string cod_emp, string nro_trans)
+        {
+
+            using (cn = conexion.genearConexion())
+            {
+                List<ModeloTipoPagoTem> lista = new List<ModeloTipoPagoTem>();
+
+                string consulta = ("wmspc_fpagoPOS_tmp");
+                SqlCommand conmand = new SqlCommand(consulta, cn);
+                conmand.CommandType = CommandType.StoredProcedure;
+                conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+
+
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                while (dr.Read())
+                {
+
+                    ModeloTipoPagoTem item = new ModeloTipoPagoTem();
+                    item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                    item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                    item.cod_fpago = Convert.ToString(dr["cod_fpago"]);
+                    item.nom_fpago = Convert.ToString(dr["nom_fpago"]);
+                    item.cod_docum = Convert.ToString(dr["cod_docum"]);
+                    item.cod_cta = Convert.ToString(dr["cod_cta"]);
+                    
+                    item.modif_ter = Convert.ToString(dr["modif_ter"]);
+                    item.cod_ter = Convert.ToString(dr["cod_ter"]);
+                    item.ter_campo = Convert.ToString(dr["ter_campo"]);
+                    item.modif_doc = Convert.ToString(dr["modif_doc"]);
+                    item.nro_doc= Convert.ToString(dr["nro_doc"]);
+                    item.doc_campo= Convert.ToString(dr["doc_campo"]);
+                    
+                    lista.Add(item);
+
+                }
+
+                return lista;
+            }
+        }
+    }
 }

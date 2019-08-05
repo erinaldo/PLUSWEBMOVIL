@@ -44,6 +44,7 @@
     <Compile Include="Modelos\modelocabecerafactura.cs" />
     <Compile Include="Modelos\modeloCodProcesoFactura.cs" />
     <Compile Include="Modelos\ModeloDetalleFactura.cs" />
+    <Compile Include="Modelos\modeloFacturasPagos.cs" />
     <Compile Include="Modelos\ModeloHost\modeloHostmail.cs" />
     <Compile Include="Modelos\modeloinsertarconfirmar.cs" />
     <Compile Include="Modelos\modeloMediosPago.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Modelos\ModelosNC\modeloFacturasElecSaldos.cs" />
     <Compile Include="Modelos\ModelosNC\modeloSaldosFacturas.cs" />
     <Compile Include="Modelos\modeloSucuralempresa.cs" />
+    <Compile Include="Modelos\ModeloTipoPagoTem.cs" />
     <Compile Include="Modelos\modeloUsuariosucursal.cs" />
     <Compile Include="Modelos\modelowmtproformascab.cs" />
     <Compile Include="Modelos\modelobancos.cs" />
