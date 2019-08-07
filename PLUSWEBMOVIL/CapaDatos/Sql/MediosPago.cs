@@ -103,5 +103,79 @@ namespace CapaDatos.Sql
                 return lista;
             }
         }
+
+
+        //Lista d medios de pago por empresa
+        public List<ModelosPagosTitular> TitularPago(string usuario, string cod_emp, string nro_trans)
+        {
+
+            using (cn = conexion.genearConexion())
+            {
+                List<ModelosPagosTitular> lista = new List<ModelosPagosTitular>();
+
+                string consulta = ("wmspc_fpagoPOS_tittmp");
+                SqlCommand conmand = new SqlCommand(consulta, cn);
+                conmand.CommandType = CommandType.StoredProcedure;
+                conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+
+
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                while (dr.Read())
+                {
+
+                    ModelosPagosTitular item = new ModelosPagosTitular();
+                   
+                    item.cod_fpago = Convert.ToString(dr["cod_fpago"]);
+                    item.cod_tipotit = Convert.ToString(dr["cod_tipotit"]);
+                    item.cod_tit = Convert.ToString(dr["cod_tit"]);
+                    item.nom_tit = Convert.ToString(dr["nom_tit"]);
+                   
+                    lista.Add(item);
+
+                }
+
+                return lista;
+            }
+        }
+
+        //REcuoerar diferencia line por linea total pago - total factura
+        public List<ModeloDiferenciaPagos> Diferencia(string usuario, string cod_emp, string nro_trans)
+        {
+            
+
+            using (cn = conexion.genearConexion())
+            {
+                List<ModeloDiferenciaPagos> lista = new List<ModeloDiferenciaPagos>();
+
+                string consulta = ("wmspc_totalPOS");
+                SqlCommand conmand = new SqlCommand(consulta, cn);
+                conmand.CommandType = CommandType.StoredProcedure;
+                conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+
+
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                while (dr.Read())
+                {
+
+                    ModeloDiferenciaPagos item = new ModeloDiferenciaPagos();
+
+                    item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                    item.total = Convert.ToString(dr["total"]);
+                    item.pagado = Convert.ToString(dr["pagado"]);
+                    item.diferencia = Convert.ToString(dr["diferencia"]);
+                    item.color = Convert.ToString(dr["color"]);
+                    lista.Add(item);
+
+                }
+
+                return lista;
+            }
+        }
     }
 }

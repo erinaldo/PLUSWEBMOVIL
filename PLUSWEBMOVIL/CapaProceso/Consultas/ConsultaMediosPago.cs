@@ -18,6 +18,14 @@ namespace CapaProceso.Consultas
             lista = consultaMediosPago.ListaMediosPago(cod_emp);
             return lista;
         }
+
+        //Buscar cod_tit 
+        public List<ModelosPagosTitular> BuscartitularPagos(string usuario, string cod_emp, string nro_trans)
+        {
+            List<ModelosPagosTitular> lista = new List<ModelosPagosTitular>();
+            lista = consultaMediosPago.TitularPago(usuario, cod_emp, nro_trans);
+            return lista;
+        }
         //Recupera datos de medio de pago para insertar en tabla wmt_facturas_pgs
         public List<ModeloTipoPagoTem> BuscarMediosPagoTemporal(string usuario,string cod_emp, string nro_trans)
         {
@@ -37,6 +45,22 @@ namespace CapaProceso.Consultas
         {
             string respuesta = guardarPago.InsertarTiposPagos(TipoPagos);
             return respuesta;
+        }
+
+        //Eliminar datos antes de insrrtar nuevamente la lista de medios de pago
+        public string EliminarPagosFactura(string nro_trans)
+        {
+            string respuesta = guardarPago.EliminarDetallePagosFactura(nro_trans);
+            return respuesta;
+        }
+
+        //Lista diferencia de saldos luego de pagar
+        
+        public List<ModeloDiferenciaPagos> BuscarDiferenciaSaldos(string usuario, string cod_emp, string nro_trans)
+        {
+            List<ModeloDiferenciaPagos> lista = new List<ModeloDiferenciaPagos>();
+            lista = consultaMediosPago.Diferencia(usuario, cod_emp, nro_trans);
+            return lista;
         }
     }
 }

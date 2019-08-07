@@ -36,12 +36,12 @@ namespace CapaDatos.Sql
                     string insert = "INSERT INTO  wmt_facturas_pgs  (nro_trans,linea, cod_emp, cod_fpago,cod_tit,cod_docum, nro_docum,cod_cta, recibido) VALUES(@nro_trans,@linea, @cod_emp, @cod_fpago,@cod_tit,@cod_docum, @nro_docum, @cod_cta ,@recibido)";
 
                     SqlCommand conmand = new SqlCommand(insert, cn);
-                    conmand.Parameters.Add("@nro_trans", SqlDbType.Decimal).Value = cabezeraFactura.nro_trans;
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = cabezeraFactura.nro_trans;
                     conmand.Parameters.Add("@linea", SqlDbType.Int).Value = cabezeraFactura.linea;
-                    conmand.Parameters.Add("@cod_emp", SqlDbType.Decimal).Value = cabezeraFactura.cod_emp;
-                    conmand.Parameters.Add("@cod_fpago", SqlDbType.Decimal).Value = cabezeraFactura.cod_fpago;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cabezeraFactura.cod_emp;
+                    conmand.Parameters.Add("@cod_fpago", SqlDbType.VarChar).Value = cabezeraFactura.cod_fpago;
                     conmand.Parameters.Add("@cod_tit", SqlDbType.VarChar).Value = cabezeraFactura.cod_tit;
-                    conmand.Parameters.Add("@cod_docum", SqlDbType.Decimal).Value = cabezeraFactura.cod_docum;
+                    conmand.Parameters.Add("@cod_docum", SqlDbType.VarChar).Value = cabezeraFactura.cod_docum;
                     conmand.Parameters.Add("@nro_docum", SqlDbType.VarChar).Value = cabezeraFactura.nro_docum;
                     conmand.Parameters.Add("@cod_cta", SqlDbType.VarChar).Value = cabezeraFactura.cod_cta;
                     conmand.Parameters.Add("@recibido", SqlDbType.Decimal).Value = cabezeraFactura.recibido;
@@ -73,9 +73,9 @@ namespace CapaDatos.Sql
                     string insert = "INSERT INTO  wmt_facturas_pgstmp  (nro_trans, cod_fpago,cod_emp) VALUES(@nro_trans,@cod_fpago,@cod_emp)";
 
                     SqlCommand conmand = new SqlCommand(insert, cn);
-                    conmand.Parameters.Add("@nro_trans", SqlDbType.Decimal).Value = cabezeraFactura.nro_trans;
-                    conmand.Parameters.Add("@cod_fpago", SqlDbType.Decimal).Value = cabezeraFactura.cod_fpago;
-                    conmand.Parameters.Add("@cod_emp", SqlDbType.Decimal).Value = cabezeraFactura.cod_emp;
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = cabezeraFactura.nro_trans;
+                    conmand.Parameters.Add("@cod_fpago", SqlDbType.VarChar).Value = cabezeraFactura.cod_fpago;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cabezeraFactura.cod_emp;
                  
                     int dr = conmand.ExecuteNonQuery();
                     cn.Close();
@@ -92,5 +92,39 @@ namespace CapaDatos.Sql
 
 
         }
+
+
+        /*Eliminar datos de la tabala wmtfacturas_pgs*/
+        public string EliminarDetallePagosFactura(string nro_trans)
+        {
+            try
+            {
+
+                using (cn = conexion.genearConexion())
+                {
+
+                    string mensaje = "Eliminacion correctamente";
+                    string delete = "delete from wmt_facturas_pgs where nro_trans =  @nro_trans ";
+                    SqlCommand conmand = new SqlCommand(delete, cn);
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                    conmand.ExecuteNonQuery();
+
+
+                    return mensaje;
+                }
+
+
+            }
+            catch (Exception e)
+            {
+
+                return e.ToString();
+            }
+
+        }
+
+
+
+
     }
 }

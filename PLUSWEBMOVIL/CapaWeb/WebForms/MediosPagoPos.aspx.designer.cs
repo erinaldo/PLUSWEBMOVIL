@@ -103,6 +103,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label Label4;
         
         /// <summary>
+        /// Control lbl_mensaje.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_mensaje;
+        
+        /// <summary>
         /// Control cbx_medios.
         /// </summary>
         /// <remarks>
@@ -166,13 +175,22 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox txt_Descripcion;
         
         /// <summary>
-        /// Control txt_Banco.
+        /// Control cbx_tercero.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_Banco;
+        protected global::System.Web.UI.WebControls.DropDownList cbx_tercero;
+        
+        /// <summary>
+        /// Control txt_numero.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_numero;
         
         /// <summary>
         /// Control txt_Precio.
@@ -193,12 +211,12 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Button AgregarPago;
         
         /// <summary>
-        /// Control gvProducto.
+        /// Control gv_Producto.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvProducto;
+        protected global::System.Web.UI.WebControls.DataGrid gv_Producto;
     }
 }

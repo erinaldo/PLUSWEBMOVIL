@@ -21,7 +21,7 @@ namespace CapaDatos.Modelos
         public decimal recibido { get; set; }
         public decimal valor { get; set; }
         public decimal diferencia { get; set; }
-        public decimal sumaTotalPago { get; set; }
-        public decimal sumaDiferencia { get; set; }
+        public string  forma_pago { get; set; }
+        public string tercero { get; set; }
     }
 }
