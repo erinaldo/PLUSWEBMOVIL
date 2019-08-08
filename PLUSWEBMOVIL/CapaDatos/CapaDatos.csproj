@@ -45,6 +45,7 @@
     <Compile Include="Modelos\modeloCodProcesoFactura.cs" />
     <Compile Include="Modelos\ModeloDetalleFactura.cs" />
     <Compile Include="Modelos\ModeloDiferenciaPagos.cs" />
+    <Compile Include="Modelos\modeloFacturaPgs.cs" />
     <Compile Include="Modelos\modeloFacturasPagos.cs" />
     <Compile Include="Modelos\ModeloHost\modeloHostmail.cs" />
     <Compile Include="Modelos\modeloinsertarconfirmar.cs" />

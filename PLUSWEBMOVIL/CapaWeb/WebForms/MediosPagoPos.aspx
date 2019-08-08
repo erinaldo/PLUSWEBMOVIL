@@ -30,13 +30,15 @@
                      <asp:Label ID="Label3" class="busqueda" runat="server" Text="Label">TRX:</asp:Label></td>
                <td>
                    <asp:TextBox ID="txt_nro_trans" ReadOnly="true" CssClass="textos" runat="server"></asp:TextBox>
+                     <asp:Label ID="Label1" class="busqueda" runat="server" Text="Label">Total  Pago:</asp:Label>
+                   <asp:TextBox ID="txt_total_pago" ReadOnly="true" CssClass="textos" runat="server"></asp:TextBox>
                </td>
                </tr>
               <tr>
                <td class="busqueda">
-                     <asp:Label ID="Label1" class="busqueda" runat="server" Text="Label">Total  Pago:</asp:Label></td>
+                     <asp:Label ID="Label5" class="busqueda" runat="server" Text="Label">Cambio:</asp:Label></td>
                <td>
-                   <asp:TextBox ID="txt_total_pago" ReadOnly="true" CssClass="textos" runat="server"></asp:TextBox>
+                   <asp:TextBox ID="txt_vuelto" ReadOnly="true" CssClass="textos" runat="server"></asp:TextBox>
                </td>
                <td class="busqueda">
                      <asp:Label ID="Label2" class="busqueda" runat="server" Text="Label">Diferencia:</asp:Label></td>
@@ -44,6 +46,7 @@
                    <asp:TextBox ID="txt_Diferencia" ReadOnly="true" CssClass="textos" runat="server"></asp:TextBox>
                </td>
                </tr>
+          
            <tr>
                <td colspan="2">
                    <asp:Label ID="Label4" class="Subtitulo1" runat="server" Text="Label">Seleccione la Forma de Pago que desea aplicar:</asp:Label>
@@ -53,7 +56,7 @@
            </tr>
             <tr>
                <td colspan="2">
-                   <asp:Label ID="lbl_mensaje" class="textos" runat="server" Text="Label">:</asp:Label>
+                   <asp:Label ID="lbl_mensaje" class="textos" runat="server" Text=""></asp:Label>
                    
                </td>
 
@@ -95,7 +98,7 @@
                     
                </td>
                <td>
-                   <asp:TextBox ID="txt_numero" Visible="false" CssClass="textos"  runat="server"></asp:TextBox>
+                   <asp:TextBox ID="txt_numero" Visible="false" CssClass="textos" value="0" runat="server"></asp:TextBox>
 
                </td>
                <td>
@@ -126,6 +129,13 @@
 
 
                                         <Columns>
+                                            <asp:TemplateColumn HeaderText="Medio Pago" Visible="false" >
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="cod_fpago"  Visible="false" runat="server" class="textos" Text='<%#Eval("cod_fpago") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
                                             <asp:TemplateColumn HeaderText="Medio Pago" >
                                                 <ItemTemplate>
                                                     <span style="float: left;">
@@ -193,7 +203,27 @@
 
 
       </div>
+            <tr>
+          <td>
 
+              <hr />
+          </td>
+      </tr>
+         <tr>
+                    <td>
+                        <table>
+                               <tr>
+                                
+                                <td >
+                                    <asp:Button ID="Cancelar" Class="botones"  runat="server" OnClick="Cancelar_Click"  UseSubmitBehavior="False" Text="Siguiente" />
+                                                                     
+                               
+                                  </td>
+                    
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
   </table>
     </form>
 </body>

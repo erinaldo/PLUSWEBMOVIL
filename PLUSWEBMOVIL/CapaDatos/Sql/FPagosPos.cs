@@ -93,7 +93,38 @@ namespace CapaDatos.Sql
 
         }
 
+        /*Eliminar datos de la tabala wmtfacturas_pgs x linea para totales y saldos*/
+        public string EliminarDetallePagosLinea(string nro_trans, string cod_fpago, string nro_docum)
+        {
+            try
+            {
 
+                using (cn = conexion.genearConexion())
+                {
+
+                    string mensaje = "Eliminacion correctamente";
+                    string delete = "delete from wmt_facturas_pgs where nro_trans =  @nro_trans and cod_fpago =@cod_fpago and nro_docum = nro_docum";
+                    SqlCommand conmand = new SqlCommand(delete, cn);
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+
+                   
+                    conmand.Parameters.Add("@cod_fpago", SqlDbType.VarChar).Value = cod_fpago;
+                    conmand.Parameters.Add("@nro_docum", SqlDbType.VarChar).Value = nro_docum;
+                    conmand.ExecuteNonQuery();
+
+
+                    return mensaje;
+                }
+
+
+            }
+            catch (Exception e)
+            {
+
+                return e.ToString();
+            }
+
+        }
         /*Eliminar datos de la tabala wmtfacturas_pgs*/
         public string EliminarDetallePagosFactura(string nro_trans)
         {
@@ -123,8 +154,85 @@ namespace CapaDatos.Sql
 
         }
 
+        /*Eliminar datos de la tabala wmtfacturas_pgs*/
+        public string EliminarTemporal(string nro_trans, string cod_emp, string cod_fpago)
+        {
+            try
+            {
+
+                using (cn = conexion.genearConexion())
+                {
+
+                    string mensaje = "Eliminacion correctamente";
+                    string delete = "delete from wmt_facturas_pgstmp where nro_trans =  @nro_trans and cod_fpago = @cod_fpago and cod_emp = @cod_emp ";
+                    SqlCommand conmand = new SqlCommand(delete, cn);
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                    
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("@cod_fpago", SqlDbType.VarChar).Value = cod_fpago;
 
 
+                    conmand.ExecuteNonQuery();
 
+
+                    return mensaje;
+                }
+
+
+            }
+            catch (Exception e)
+            {
+
+                return e.ToString();
+            }
+
+        }
+
+        //Recuperar si es efectivo el vuelto en caso de q cancele mas
+        public List<modeloFacturasPagos> BuscarVueltoPgs( string nro_trans)
+        {
+
+
+            using (cn = conexion.genearConexion())
+            {
+                List<modeloFacturasPagos> lista = new List<modeloFacturasPagos>();
+
+                string consulta = ("select*from wmt_facturas_pgs where nro_trans = @nro_trans  ORDER BY linea DESC");
+                SqlCommand conmand = new SqlCommand(consulta, cn);
+               
+               
+                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+
+
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                while (dr.Read())
+                {
+
+                    modeloFacturasPagos item = new modeloFacturasPagos();
+
+                    item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                    item.linea = Convert.ToInt16(dr["linea"]);
+                    item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                    item.cod_fpago = Convert.ToString(dr["cod_fpago"]);
+                   
+                    item.cod_tit = Convert.ToString(dr["cod_tit"]);
+                    item.cod_docum = Convert.ToString(dr["cod_docum"]);
+                    item.nro_docum = Convert.ToString(dr["nro_docum"]);
+                    item.cod_cta = Convert.ToString(dr["cod_cta"]);
+                    item.recibido = Convert.ToDecimal(dr["recibido"]);
+                    item.valor = Convert.ToDecimal(dr["valor"]);
+                    item.diferencia = Convert.ToDecimal(dr["diferencia"]);
+                   
+                    
+                    lista.Add(item);
+
+                }
+
+                return lista;
+            }
+        }
+
+        
     }
 }

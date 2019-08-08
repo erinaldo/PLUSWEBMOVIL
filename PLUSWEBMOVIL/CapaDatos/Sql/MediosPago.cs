@@ -177,5 +177,69 @@ namespace CapaDatos.Sql
                 return lista;
             }
         }
+
+        //Trae todos los pagos hechos por nro_trans cuando esta en estado P
+        //EXEC wmspc_fpagoPOS  'OANDAGOY','01','425','2' trae todo si se desea por linea
+
+        public List<modeloFacturasPagos> ConsultaTablaPgs(string usuario, string cod_emp, string nro_trans)
+        {
+
+
+            using (cn = conexion.genearConexion())
+            {
+                List<modeloFacturasPagos> lista = new List<modeloFacturasPagos>();
+
+                string consulta = ("wmspc_fpagoPOS");
+                SqlCommand conmand = new SqlCommand(consulta, cn);
+
+
+                conmand.CommandType = CommandType.StoredProcedure;
+                conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+
+
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                while (dr.Read())
+                {
+
+                    modeloFacturasPagos item = new modeloFacturasPagos();
+
+                    item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                    item.linea = Convert.ToInt16(dr["linea"]);
+                    item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                    item.cod_fpago = Convert.ToString(dr["cod_fpago"]);
+
+                    item.nom_fpago= Convert.ToString(dr["nom_fpago"]);
+                    item.cod_docum = Convert.ToString(dr["cod_docum"]);
+                    item.nom_docum = Convert.ToString(dr["nom_docum"]);
+                    item.nro_docum = Convert.ToString(dr["nro_docum"]);
+                    item.cod_cta = Convert.ToString(dr["cod_cta"]);
+                    item.nom_cta = Convert.ToString(dr["nom_cta"]);
+                    item.nom_tit = Convert.ToString(dr["nom_tit"]);
+                    item.recibido = Convert.ToDecimal(dr["recibido"]);
+                    item.valor = Convert.ToDecimal(dr["valor"]);
+                    item.diferencia = Convert.ToDecimal(dr["diferencia"]);
+                    item.mod_ter= Convert.ToString(dr["modif_ter"]);
+                    item.cod_ter= Convert.ToString(dr["cod_ter"]);
+                    item.ter_campo = Convert.ToString(dr["ter_campo"]);
+                    item.modif_doc = Convert.ToString(dr["modif_doc"]);
+                    item.nro_doc = Convert.ToString(dr["nro_doc"]);
+                    item.doc_campo = Convert.ToString(dr["doc_campo"]);
+                    item.forma_pago = item.cod_fpago +'-'+ item.nom_fpago;
+                    item.tercero = Convert.ToString(dr["nom_tit"]);
+
+
+                    lista.Add(item);
+
+                }
+
+                return lista;
+            }
+        }
+
+
+
     }
 }

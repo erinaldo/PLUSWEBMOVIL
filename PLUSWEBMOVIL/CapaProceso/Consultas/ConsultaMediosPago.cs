@@ -53,13 +53,40 @@ namespace CapaProceso.Consultas
             string respuesta = guardarPago.EliminarDetallePagosFactura(nro_trans);
             return respuesta;
         }
-
+        //Eliminar datos
+        public string EliminarPagosSaldos(string nro_trans, string cod_fpago, string nro_docum)
+        {
+            string respuesta = guardarPago.EliminarDetallePagosLinea(nro_trans,  cod_fpago, nro_docum);
+            return respuesta;
+        }
+        //Eliminar datos antes de insrrtar nuevamente la lista de medios de pago
+        public string EliminarTemporal(string nro_trans, string cod_emp, string cod_fpago)
+        {
+            string respuesta = guardarPago.EliminarTemporal(nro_trans, cod_emp, cod_fpago);
+            return respuesta;
+        }
         //Lista diferencia de saldos luego de pagar
-        
+
         public List<ModeloDiferenciaPagos> BuscarDiferenciaSaldos(string usuario, string cod_emp, string nro_trans)
         {
             List<ModeloDiferenciaPagos> lista = new List<ModeloDiferenciaPagos>();
             lista = consultaMediosPago.Diferencia(usuario, cod_emp, nro_trans);
+            return lista;
+        }
+
+        //vuelto de pgs
+        public List<modeloFacturasPagos> ObtenerVueltoPgs(string nro_trans)
+        {
+            List<modeloFacturasPagos> lista = new List<modeloFacturasPagos>();
+            lista = guardarPago.BuscarVueltoPgs(nro_trans);
+            return lista;
+        }
+
+        //Trae todos las formas de pagos guardadas x transaccion
+        public List<modeloFacturasPagos> ConsultaTablaPgs(string usuario, string cod_emp, string nro_trans)
+        {
+            List<modeloFacturasPagos> lista = new List<modeloFacturasPagos>();
+            lista = consultaMediosPago.ConsultaTablaPgs(usuario, cod_emp, nro_trans);
             return lista;
         }
     }

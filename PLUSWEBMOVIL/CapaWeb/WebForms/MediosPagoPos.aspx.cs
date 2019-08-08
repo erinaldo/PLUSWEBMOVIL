@@ -26,6 +26,10 @@ namespace CapaWeb.WebForms
 
         public List<modeloFacturasPagos> listaPagosPgs = null; //Modelos recuperar de la tabla wmt_facturas_pgs
         modeloFacturasPagos modeloPagosPgs = new modeloFacturasPagos(); //Modelos recuperar de la tabla wmt_facturas_pgs
+
+        public List<modeloFacturaPgs> listaTotalPgs = null; //Modelos recuperar total pagos sp
+        modeloFacturaPgs modeloTotalPgs = new modeloFacturaPgs(); //Modelos total pagos sp
+
         public List<modeloFacturasPagos> listaPagosFactura = null; //Modelos guardar tabla wmt_facturas_pgs
         modeloFacturasPagos modeloPagosFactura = new modeloFacturasPagos();
         modeloFacturasPagos detallePagosFactura = new modeloFacturasPagos();
@@ -38,15 +42,13 @@ namespace CapaWeb.WebForms
         public string AmUsrLog;
         public decimal sumaTotalPago;
         public decimal sumaDiferencia;
-
+        public string transaccion;
         protected void Page_Load(object sender, EventArgs e)
         {
             RecuperarCokie();
 
             if (!IsPostBack)
             {
-
-
 
                 if (Request.Cookies["ComPwm"] != null)
                 {
@@ -60,6 +62,11 @@ namespace CapaWeb.WebForms
                 if (Session["valor_asignado1"] != null)
                 {
                     txt_nro_trans.Text = Session["valor_asignado1"].ToString();
+                }
+                if (Session["Tipo"] != null)
+                {
+                    transaccion = Session["Tipo"].ToString();
+                    BuscarPagosPrevios();
                 }
                 cargarListaDesplegables();
             }
@@ -79,6 +86,44 @@ namespace CapaWeb.WebForms
 
         }
 
+        public void BuscarPagosPrevios()
+        {
+          
+            //Cargar en el mismo modelo modeloFacturasPagos
+            //Buscar tabla wmt_facturas_pgs
+            if(transaccion == "UDP")
+            { 
+            //Si es pago en efectivo si puede ser mayor el pago xq se puede dar vuelto
+            listaPagosPgs = consultaMediosPago.ConsultaTablaPgs(AmUsrLog, ComPwm, txt_nro_trans.Text);
+            Session["detallePagos"] = listaPagosPgs;
+            
+            gv_Producto.DataSource = listaPagosPgs;
+            gv_Producto.DataBind();
+            gv_Producto.Height = 100;
+
+          /*  foreach (var item in listaPagosPgs)
+            {
+                modeloPagosPgs = item;
+                break;
+            }
+
+
+            if (Convert.ToString(modeloPagosPgs.diferencia) != "0.00")
+            {
+                txt_vuelto.Text = Convert.ToString(modeloPagosPgs.diferencia);
+            }
+            */
+            listaSaldos = consultaMediosPago.BuscarDiferenciaSaldos(AmUsrLog, ComPwm, txt_nro_trans.Text);
+            foreach (var item in listaSaldos)
+            {
+                modeloDiferencia = item;
+            }
+            txt_total_pago.Text = modeloDiferencia.pagado;
+            txt_Diferencia.Text = modeloDiferencia.diferencia;
+
+            }
+
+        }
         public void HabilitarCajas()
         {
             lblDes.Visible = true;
@@ -186,24 +231,7 @@ namespace CapaWeb.WebForms
 
             return modeloTemporal;
         }
-        /*public modeloFacturasPagos DatosGuardadosPagos()
-       {
-
-
-            listaPagosPgs = guardarPagos.BuscarMediosPago(AmUsrLog, ComPwm, nro_trans);
-
-
-             modeloTemporal = null;
-             foreach (ModeloTipoPagoTem item in listaTemporal)
-             {
-
-                 modeloTemporal = item;
-                 break;
-
-
-
-
-       } }*/
+    
 
 
         public void AgregarPagoGrilla()
@@ -226,7 +254,7 @@ namespace CapaWeb.WebForms
             Boolean existe = false;
             foreach (modeloFacturasPagos itemSuma in modeloFacturasPagos)
             {
-                if (itemSuma.nro_docum == modeloTemporal.nro_doc && itemSuma.cod_fpago == modeloTemporal.cod_fpago)
+                if (itemSuma.nro_docum == modeloTemporal.nro_doc && itemSuma.cod_fpago.Trim() == modeloTemporal.cod_fpago.Trim())
                 {
                     existe = true;
 
@@ -240,7 +268,10 @@ namespace CapaWeb.WebForms
             {
 
                 item.cod_tit = cbx_tercero.SelectedValue;
-                item.nro_docum = txt_numero.Text;
+                if (txt_numero.Text == "")
+                { item.nro_docum = "0"; }
+                else { item.nro_docum = txt_numero.Text; }
+                
                 item.recibido = Convert.ToDecimal(txt_Precio.Text);
                 item.nro_trans = txt_nro_trans.Text;
                 item.cod_emp = ComPwm;
@@ -260,7 +291,7 @@ namespace CapaWeb.WebForms
             gv_Producto.DataBind();
 
             txt_Descripcion.Text = "";
-            txt_numero.Text = "";
+            txt_numero.Text = "0";
             txt_Precio.Text = "0";
 
             item = null;
@@ -268,6 +299,13 @@ namespace CapaWeb.WebForms
         }
         protected void AgregarPago_Click(object sender, EventArgs e)
         {
+            /*Validar que la diferencia sea diferente de 0*/
+            if (txt_total_factura.Text == txt_total_pago.Text)
+            {
+                this.Page.Response.Write("<script language='JavaScript'>window.alert('Pago Finalizado, no puede pagar más de lo que Factura')+ error;</script>");
+            }
+            else
+            { 
             //agregar a grilla medio de pago para insertar
             AgregarPagoGrilla();
             GuardarPagos();
@@ -279,32 +317,141 @@ namespace CapaWeb.WebForms
             }
             txt_total_pago.Text = modeloDiferencia.pagado;
             txt_Diferencia.Text = modeloDiferencia.diferencia;
+            //Si es pago en efectivo si puede ser mayor el pago xq se puede dar vuelto
+            listaPagosPgs = consultaMediosPago.ObtenerVueltoPgs(txt_nro_trans.Text);
+            foreach (var item in listaPagosPgs)
+            {
+                modeloPagosPgs = item;
+                break;
+            }
+            if (Convert.ToString(modeloPagosPgs.diferencia) != "0.00")
+            {
+                txt_vuelto.Text = Convert.ToString(modeloPagosPgs.diferencia);
+            }
+            }
         }
 
         protected void Agregar_MedioPago_Click(object sender, EventArgs e)
         {
-            //Agregar medio de pago en la tabla wmt_facturas_pgstmp
-            
-            modeloTiposPagos.nro_trans = txt_nro_trans.Text;
-            modeloTiposPagos.cod_fpago = cbx_medios.SelectedValue;
-            modeloTiposPagos.cod_emp = ComPwm;
-            consultaMediosPago.InsertarTipoPago(modeloTiposPagos);
-            //Recupero datos con wmspc_fpagoPOS_tmp
-            listaTemporal = consultaMediosPago.BuscarMediosPagoTemporal(AmUsrLog, ComPwm, txt_nro_trans.Text);
-            foreach (var item in listaTemporal)
+            if (txt_total_factura.Text == txt_total_pago.Text)
             {
-                modeloTemporal = item;
+                this.Page.Response.Write("<script language='JavaScript'>window.alert('Pago Finalizado, no puede pagar más de lo que Factura')+ error;</script>");
             }
-            txt_Descripcion.Text = modeloTemporal.nom_fpago;
-            //buscar titulars sp wmspc_fpagoPOS_tittmp
-            listaTitular = consultaMediosPago.BuscartitularPagos(AmUsrLog, ComPwm, txt_nro_trans.Text);
-            cbx_tercero.DataSource = listaTitular;
-            cbx_tercero.DataTextField = "nom_tit";
-            cbx_tercero.DataValueField = "cod_tit";
-            cbx_tercero.DataBind();
-            txt_Precio.Text = "0";
-            
-            HabilitarCajas();
+            else
+            {
+                //Agregar medio de pago en la tabla wmt_facturas_pgstmp
+
+                modeloTiposPagos.nro_trans = txt_nro_trans.Text;
+                modeloTiposPagos.cod_fpago = cbx_medios.SelectedValue;
+                modeloTiposPagos.cod_emp = ComPwm;
+                consultaMediosPago.InsertarTipoPago(modeloTiposPagos);
+                //Recupero datos con wmspc_fpagoPOS_tmp--Recupera el medio de pago insertado en ese momento con sus restricciones
+                listaTemporal = consultaMediosPago.BuscarMediosPagoTemporal(AmUsrLog, ComPwm, txt_nro_trans.Text);
+                foreach (var item in listaTemporal)
+                {
+                    modeloTemporal = item;
+                }
+                txt_Descripcion.Text = modeloTemporal.nom_fpago;
+                //Habilitar y deshabilitar campos segun medio de pago campo_numero, campo_terero
+                if (modeloTemporal.modif_ter == " ")
+                {
+                    cbx_tercero.Enabled = true;
+                }
+                else { cbx_tercero.Enabled = false; }
+                if (modeloTemporal.modif_doc == " ")
+                {
+                    txt_numero.Enabled = true;
+                }
+                else { txt_numero.Enabled = false; }
+
+                //buscar titulars sp wmspc_fpagoPOS_tittmp
+                listaTitular = consultaMediosPago.BuscartitularPagos(AmUsrLog, ComPwm, txt_nro_trans.Text);
+                cbx_tercero.DataSource = listaTitular;
+                cbx_tercero.DataTextField = "nom_tit";
+                cbx_tercero.DataValueField = "cod_tit";
+                cbx_tercero.DataBind();
+                txt_Precio.Text = "0";
+
+                HabilitarCajas();
+            }
         }
+
+        //Grilla de medios de pago
+        protected void gv_Producto_ItemCommand(object source, DataGridCommandEventArgs e)
+        {
+            if (Session["detallePagos"] != null)
+            {
+               modeloFacturasPagos detalle = new modeloFacturasPagos();
+                modeloFacturasPagos = (Session["detallePagos"] as List<modeloFacturasPagos>);// tomo la variable de secion 
+                foreach (var item in modeloFacturasPagos)
+                {
+                    if (item.cod_fpago == Convert.ToString(((Label)e.Item.Cells[2].FindControl("cod_fpago")).Text) && item.nro_docum == Convert.ToString(((Label)e.Item.Cells[5].FindControl("nro_docum")).Text))// comparo si la lista el cosigo de producto es igual al selecionado
+                    {
+                        detalle = item; // saco el item seleccionado
+                        break;
+                    }
+                }
+
+                switch (e.CommandName) //ultilizo la variable para la opcion            
+                {
+                    case "Editar":// lleno las cajas de texto con los datos para la edicon del item seleccionado
+                        txt_Descripcion.Text = detalle.forma_pago;
+                        cbx_tercero.SelectedValue = detalle.cod_tit;
+                        txt_numero.Text = Convert.ToString(detalle.nro_docum);
+                        txt_Precio.Text = Convert.ToString(detalle.recibido);
+                       
+                        //Agregar medio de pago en la tabla wmt_facturas_pgstmp
+
+                        modeloTiposPagos.nro_trans = txt_nro_trans.Text;
+                        modeloTiposPagos.cod_fpago = detalle.cod_fpago.Trim();
+                        modeloTiposPagos.cod_emp = ComPwm;
+                        consultaMediosPago.InsertarTipoPago(modeloTiposPagos);
+
+                        HabilitarCajas();
+                        break;
+
+                    case "Eliminar":
+                        /*Eliminar item de la grilla*/
+                        //Eliminar de la tabla temporal
+                       consultaMediosPago.EliminarTemporal(txt_nro_trans.Text, ComPwm, detalle.cod_fpago);
+                        consultaMediosPago.EliminarPagosSaldos(txt_nro_trans.Text,detalle.cod_fpago, detalle.nro_docum );
+                        listaSaldos = consultaMediosPago.BuscarDiferenciaSaldos(AmUsrLog, ComPwm, txt_nro_trans.Text);
+                        foreach (var item in listaSaldos)
+                        {
+                            modeloDiferencia = item;
+                        }
+                        txt_total_pago.Text = modeloDiferencia.pagado;
+                        txt_Diferencia.Text = modeloDiferencia.diferencia;
+                        //Si es pago en efectivo si puede ser mayor el pago xq se puede dar vuelto
+                        listaPagosPgs = consultaMediosPago.ObtenerVueltoPgs(txt_nro_trans.Text);
+                        foreach (var item in listaPagosPgs)
+                        {
+                            modeloPagosPgs = item;
+                            break;
+                        }
+                        if (Convert.ToString(modeloPagosPgs.diferencia) != "0.00")
+                        {
+                            txt_vuelto.Text = Convert.ToString(modeloPagosPgs.diferencia);
+                        }
+
+                        modeloFacturasPagos.RemoveAt(e.Item.ItemIndex);
+                        Session["detallePagos"] = modeloFacturasPagos;
+                        modeloFacturasPagos = (Session["detallePagos"] as List<modeloFacturasPagos>);
+                        gv_Producto.DataSource = modeloFacturasPagos;
+                        gv_Producto.DataBind();
+                        break;
+                }
+            }
+
+
+
+        }
+
+        protected void Cancelar_Click(object sender, EventArgs e)
+        {
+            ClientScript.RegisterClientScriptBlock(GetType(), "Refresca", "window.opener.location.reload(); window.close();", true);
+        }
+
+      
     }
     }

@@ -5,13 +5,13 @@ using System.Text;
 
 namespace CapaDatos.Modelos
 {
-    public class modeloFacturasPagos
+   public  class modeloFacturaPgs
     {
-
+        //EXEC wmspc_fpagoPOS  'OANDAGOY','01','425','2' x todo o por linea
         public string nro_trans { get; set; }
         public string cod_emp { get; set; }
         public int linea { get; set; }
-
+        
         public string cod_fpago { get; set; }
 
         public string nom_fpago { get; set; }
@@ -25,7 +25,7 @@ namespace CapaDatos.Modelos
         public decimal recibido { get; set; }
         public decimal valor { get; set; }
         public decimal diferencia { get; set; }
-
+     
         public string mod_ter { get; set; }
         public string cod_ter { get; set; }
         public string ter_campo { get; set; }
@@ -34,6 +34,7 @@ namespace CapaDatos.Modelos
         public string doc_campo { get; set; }
         public string forma_pago { get; set; }
         public string tercero { get; set; }
-  
+
+
     }
 }

@@ -105,6 +105,11 @@ namespace CapaWeb.WebForms
 
         public modeloActualizarDatosTitular ModeloActualizarEmail = new modeloActualizarDatosTitular();
         public ConsultaActualizarTitular ConsultaDatosTitular = new ConsultaActualizarTitular();
+
+        ModeloDiferenciaPagos modeloDiferencia = new ModeloDiferenciaPagos(); //Trae los saldos
+        public List<ModeloDiferenciaPagos> listaSaldos = null;
+        ConsultaMediosPago consultaMediosPago = new ConsultaMediosPago();
+
         public string ComPwm;
         public string AmUsrLog;
         public string valor_asignado = null;
@@ -148,6 +153,7 @@ namespace CapaWeb.WebForms
         public decimal sumaIva15 = 0;
         public string auditoria = null;
         public string nro_trans = null;
+        public string tipo_tran = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             RecuperarCokie();
@@ -209,7 +215,9 @@ namespace CapaWeb.WebForms
 
                     case "INS":
                         cargarListaDesplegables();
+                         tipo_tran = "INS";
                         Session.Remove("listaCliente");
+                        Session.Remove("Tipo_Trans");
                         Session.Remove("valor_asignado");
                         DateTime hoy = DateTime.Today;
                         fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
@@ -225,7 +233,7 @@ namespace CapaWeb.WebForms
                     case "UDP":
                         Int64 id = Int64.Parse(qs["Id"].ToString());
                         Session["valor_asignado"] = id.ToString();
-
+                        Session["Tipo_Trans"] = "UDP";
                         cargarListaDesplegables();
                         LlenarFactura();
 
@@ -871,7 +879,7 @@ namespace CapaWeb.WebForms
             cabecerafactura.diar = "0";
             cabecerafactura.mesr = "0";
             cabecerafactura.anior = "0";
-            cabecerafactura.cod_proc_aud = "RCOMFACT";
+            cabecerafactura.cod_proc_aud = "RCOMFACPOS";
             cabecerafactura.cod_sucursal = ModeloUsuSucursal.cod_sucursal;
             cabecerafactura.nro_pedido = nro_pedido.Text;
 
@@ -1152,6 +1160,18 @@ namespace CapaWeb.WebForms
 
         protected void Confirmar_Click(object sender, EventArgs e)
         {
+            /*Antes de guardar verificar q esten guardados los medios de pago*/
+            listaSaldos = consultaMediosPago.BuscarDiferenciaSaldos(AmUsrLog, ComPwm, Session["valor_asignado"].ToString());
+            foreach (var item in listaSaldos)
+            {
+                modeloDiferencia = item;
+            }
+            if (modeloDiferencia.total != modeloDiferencia.pagado)
+             {
+                this.Page.Response.Write("<script language='JavaScript'>window.alert('Pago no existente, verifique que los pagos sean correctos ')+ error;</script>");
+
+            }
+            else { 
             //Consultar si el vendedor tiene asignada una sucursal
             ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
             int count = 0;
@@ -1190,10 +1210,21 @@ namespace CapaWeb.WebForms
                         {
                             string respuestaConfirmacionFAC = "";
                             //Boton Coonfirmar hace lo mismo que el salvar solo aumenta la insercion a la tabla wmt_facturas_ins
-                            conscabcera = null;
-                            conscabcera = GuardarDetalle();
+                            
+                               string Ccf_nro_trans = Session["valor_asignado"].ToString();
 
-                            confirmarinsertar.nro_trans = conscabcera.nro_trans;
+                                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                                int count1 = 0;
+                                conscabcera = null;
+                                foreach (modelowmtfacturascab item in listaConsCab)
+                                {
+                                    count1++;
+                                    conscabcera = item;
+
+                                }
+                                /*Consultar la cabacecera de la factura sacar los datos e insertar en ins para q no se borre de la tabla wmt_facturas_pgs*/
+
+                                confirmarinsertar.nro_trans = conscabcera.nro_trans;
                             confirmarinsertar.cod_emp = conscabcera.cod_emp;
                             confirmarinsertar.usuario_mod = AmUsrLog;
                             confirmarinsertar.fecha_mod = DateTime.Now;
@@ -1210,14 +1241,14 @@ namespace CapaWeb.WebForms
                                     mensaje.Text = "Su factura fue procesada exitosamente";
                                     Confirmar.Enabled = false;
                                     GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
-                                    Response.Redirect("BuscarFacturas.aspx");
+                                    Response.Redirect("BuscarFacturaPos.aspx");
 
                                 }
                                 else
                                 {
                                     GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
                                     mensaje.Text = respuesta;
-                                    Response.Redirect("BuscarFacturas.aspx");
+                                    Response.Redirect("BuscarFacturaPos.aspx");
 
                                 }
                             }
@@ -1232,6 +1263,7 @@ namespace CapaWeb.WebForms
                 }
             }
 
+            }
         }
 
         public void RecuperarCokie()
@@ -2152,16 +2184,59 @@ namespace CapaWeb.WebForms
 
         protected void btn_Pagos_Click(object sender, EventArgs e)
         {
-            if (txtSumaTotal.Text == "0.00" || txtSumaTotal.Text == null || txtSumaTotal.Text == "")
+
+            //Consultar si el vendedor tiene asignada una sucursal
+            ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
+            int count = 0;
+            foreach (var item in ListaModeloUsuarioSucursal)
             {
-                this.Page.Response.Write("<script language='JavaScript'>window.alert('No existe productos para Facturar')+ error;</script>");
+                ModelousuarioSucursal = item;
+                count++;
+                break;
+            }
+
+            if (count == 0)
+            {
+                this.Page.Response.Write("<script language='JavaScript'>window.alert('Usuario no tiene asignada sucursal, por favor asignar para continuar con el proceso ')+ error;</script>");
             }
             else
             {
-                Session["valor_asignado1"] = Session["valor_asignado"];
-                Session["TotalFactura"] = txtSumaTotal.Text;
-                this.Page.Response.Write("<script language='JavaScript'>window.open('./MediosPagoPos.aspx', 'Medios Pago', 'top=100,width=800 ,height=600, left=400');</script>");
+                //Preguntar si existe detalle antes de confirmar
+                if (txtSumaTotal.Text == "")
+                {
+                    this.Page.Response.Write("<script language='JavaScript'>window.alert('No existen productos para facturar')+ error;</script>");
+                }
+                else
+                {
+                    if (txtSumaTotal.Text == "0.00")
+                    {
+                        this.Page.Response.Write("<script language='JavaScript'>window.alert('No existen productos para facturar')+ error;</script>");
+                    }
+                    else
+                    {
+                        if (Session["detalle"] == null)
+                        {
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('No existen productos para facturar')+ error;</script>");
 
+                        }
+                        else
+                        {
+
+                            if (txtSumaTotal.Text == "0.00" || txtSumaTotal.Text == null || txtSumaTotal.Text == "")
+                            {
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('No existe productos para Facturar')+ error;</script>");
+                            }
+                            else
+                            {
+                                Session["Tipo"] = Session["Tipo_Trans"];
+                                Session["valor_asignado1"] = Session["valor_asignado"];
+                                Session["TotalFactura"] = txtSumaTotal.Text;
+                                this.Page.Response.Write("<script language='JavaScript'>window.open('./MediosPagoPos.aspx', 'Medios Pago', 'top=100,width=900 ,height=600, left=500');</script>");
+
+                            }
+                        }
+                    }
+                }
             }
          }
     }
