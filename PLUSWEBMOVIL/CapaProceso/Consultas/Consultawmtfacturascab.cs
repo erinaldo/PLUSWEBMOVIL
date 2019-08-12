@@ -34,6 +34,14 @@ namespace CapaProceso.Consultas
             return lista;
         }
 
+        public List<modelowmtfacturascab> ConsultaTipoFactura(string nro_trans)
+        {
+            List<modelowmtfacturascab> lista = new List<modelowmtfacturascab>();
+            lista = consulta.ConsultaTipoFC(nro_trans);
+
+            return lista;
+        }
+
         /*CONSULTA DOCUMENTOS ELECTRONICOS*/
         SaldosFacturas consultaSaldoa = new SaldosFacturas();
         public List<modelowmtfacturascab> ConsultaDocElectronicos(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string Ccf_estado, string Ccf_cliente, string Ccf_cod_docum, string Ccf_serie_docum, string Ccf_nro_docum, string Ccf_diai, string Ccf_mesi, string Ccf_anioi, string Ccf_diaf, string Ccf_mesf, string Ccf_aniof)

@@ -2228,10 +2228,11 @@ namespace CapaWeb.WebForms
                             }
                             else
                             {
+                                BloquearFactura();
                                 Session["Tipo"] = Session["Tipo_Trans"];
                                 Session["valor_asignado1"] = Session["valor_asignado"];
                                 Session["TotalFactura"] = txtSumaTotal.Text;
-                                this.Page.Response.Write("<script language='JavaScript'>window.open('./MediosPagoPos.aspx', 'Medios Pago', 'top=100,width=900 ,height=600, left=500');</script>");
+                                this.Page.Response.Write("<script language='JavaScript'>window.open('./MediosPagoPos.aspx', 'Medios Pago', 'top=100,width=900 ,height=500, left=500');</script>");
 
                             }
                         }

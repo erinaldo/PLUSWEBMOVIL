@@ -18,6 +18,18 @@ namespace CapaWeb.WebForms
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
 
         public CabezeraFactura ActualizarEstadoFact = new CabezeraFactura();
+
+
+        modelocabecerafactura cabecerafactura = new modelocabecerafactura();
+        Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
+
+        List<ModeloDetalleFactura> ModeloDetalleFactura = new List<ModeloDetalleFactura>();
+        Consultawmtfacturasdet ConsultaDeta = new Consultawmtfacturasdet();
+        ModeloDetalleFactura detallefactura = new ModeloDetalleFactura();
+
+        modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+        ModeloDetalleFactura consdetalle = new ModeloDetalleFactura();
+        List<modelowmtfacturascab> listaConsCab = null;
         public string ComPwm;
         public string AmUsrLog;
         public string nro_trans = null;
@@ -60,6 +72,20 @@ namespace CapaWeb.WebForms
             }
         }
 
+        public modelowmtfacturascab buscarTipoFac(string nro_trans)
+        {
+
+            listaConsCab = ConsultaCabe.ConsultaTipoFactura(nro_trans );
+            int count = 0;
+            conscabcera = null;
+            foreach (modelowmtfacturascab item in listaConsCab)
+            {
+                count++;
+                conscabcera = item;
+
+            }
+            return conscabcera;
+        }
         public QueryString ulrDesencriptada()
         {
             //1- guardo el Querystring encriptado que viene desde el request en mi objeto
@@ -72,9 +98,21 @@ namespace CapaWeb.WebForms
 
         protected void btn_reenviar_Click(object sender, EventArgs e)
         {
+            conscabcera = null;
+            conscabcera = buscarTipoFac(lbl_nro_trans.Text);
+            string Tipo_fac = null;
+            if (conscabcera.tipo_nce.ToString() == "VTA")
+            {
+                Tipo_fac = "VTA";
+            }
+            else
+            {
+
+                Tipo_fac = "POSE";
+            }
             ConsumoRest consumoRest = new ConsumoRest();
             string respuesta = "";
-            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTA", lbl_nro_trans.Text);
+            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", Tipo_fac, lbl_nro_trans.Text);
             if (respuesta == "")
             {
                 mensaje.Text = "Su factura fue enviada exitosamente";
@@ -92,14 +130,38 @@ namespace CapaWeb.WebForms
 
         protected void btn_cancelar_Click(object sender, EventArgs e)
         {
-            Response.Redirect("BuscarFacturas.aspx");
+            conscabcera = null;
+            conscabcera = buscarTipoFac(lbl_nro_trans.Text);
+            
+            if (conscabcera.tipo_nce.ToString() == "VTA")
+            {
+                Response.Redirect("BuscarFacturas.aspx");
+            }
+            else
+            {
+
+                Response.Redirect("BuscarFacturaPOS.aspx");
+            }
+            
         }
 
         protected void btn_reenviarpdf_Click(object sender, EventArgs e)
         {
+            conscabcera = null;
+            conscabcera = buscarTipoFac(lbl_nro_trans.Text);
+            string Tipo_fac = null;
+            if (conscabcera.tipo_nce.ToString() == "VTA")
+            {
+                Tipo_fac = "VTA";
+            }
+            else
+            {
+
+                Tipo_fac = "POSE";
+            }
             ConsumoRest consumoRest = new ConsumoRest();
             string respuesta = "";
-            respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", "VTA", lbl_nro_trans.Text);
+            respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", Tipo_fac, lbl_nro_trans.Text);
             if (respuesta == "")
             {
                 mensaje.Text = "Su factura fue enviada exitosamente"; ;

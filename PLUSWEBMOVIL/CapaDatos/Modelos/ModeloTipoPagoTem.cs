@@ -22,8 +22,8 @@ namespace CapaDatos.Modelos
         public string modif_doc { get; set; }
         public string nro_doc { get; set; }
         public string doc_campo { get; set; }
+        public string vuelto { get; set; }
 
-       
 
     }
 }

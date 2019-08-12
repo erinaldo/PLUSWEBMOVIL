@@ -21,6 +21,8 @@ namespace CapaWeb.WebForms
 
         modelowmtfacturascab conscabcera = new modelowmtfacturascab();
         ModeloDetalleFactura consdetalle = new ModeloDetalleFactura();
+        List<modelowmtfacturascab> listaConsCab = null;
+
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
@@ -60,6 +62,7 @@ namespace CapaWeb.WebForms
                     case "MTR":
                         Int64 ide = Int64.Parse(qs["Id"].ToString());
                         string nro_trans = ide.ToString();
+                        Session["valor_asignado"] = ide.ToString();
                         //CargarFormularioRespuestaDS(nro_trans);
                         CargarGrilla(nro_trans);
                         FormularioRes.Visible = false;
@@ -170,8 +173,23 @@ namespace CapaWeb.WebForms
 
         protected void Cancelar_Click(object sender, EventArgs e)
         {
-            Response.Redirect("BuscarFacturas.aspx");
-       
+            listaConsCab = ConsultaCabe.ConsultaTipoFactura(Session["valor_asignado"].ToString());
+            conscabcera = null;
+            foreach (modelowmtfacturascab item in listaConsCab)
+            {
+               
+                conscabcera = item;
+
+            }
+            if (conscabcera.tipo_nce.Trim() == "POSE")
+            {
+                Response.Redirect("BuscarFacturaPos.aspx");
+            }
+            if (conscabcera.tipo_nce.Trim() == "VTAE")
+            {
+                Response.Redirect("BuscarFacturas.aspx");
+            }
+
         }
     }
 }

@@ -89,7 +89,7 @@
            <tr>
 
                <td>
-                   <asp:TextBox ID="txt_Descripcion" Visible="false" CssClass="textos" Size="30" runat="server"></asp:TextBox>
+                   <asp:TextBox ID="txt_Descripcion" Visible="false" readonly="true" CssClass="textos" Size="30" runat="server"></asp:TextBox>
                    
 
                </td>
@@ -104,6 +104,9 @@
                <td>
                    <asp:TextBox ID="txt_Precio" Visible="false" CssClass="textos" type="number" step="0.01" value="0" size="20" runat="server"></asp:TextBox>
 
+               </td>
+               <td>
+                   <asp:TextBox ID="txt_cal_vuelto" Visible="false" runat="server"></asp:TextBox>
                </td>
 
                <td>

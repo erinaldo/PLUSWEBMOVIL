@@ -74,23 +74,46 @@ namespace CapaDatos.Sql
 
         }
 
-        public SqlDataReader ConsultaCabezaraFactura(string cod_emp, string tipo)
+        //Consulta para saber que tipo es ncve, pose, vtae
+        public List<modelowmtfacturascab> ConsultaTipoFC(string nro_trans)
         {
-            cn = conexion.genearConexion();
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modelowmtfacturascab> lista = new List<modelowmtfacturascab>();
+                    string consulta = ("select nro_trans, tipo from wmt_facturas_cab where nro_trans = @nro_trans");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
 
-            string consulta = "SELECT TOP 1  * FROM wmt_facturas_cab WHERE cod_emp = @cod_emp AND tipo = @tipo AND cod_docum = 'FV' AND estado = 'F' AND cod_docum = 'FV' AND serie_docum = 'S' AND nro_docum = '3948'";
-            SqlCommand conmand = new SqlCommand(consulta, cn);
-
-            conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
-            conmand.Parameters.Add("tipo", SqlDbType.VarChar).Value = tipo;
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
 
 
-            SqlDataReader dr = conmand.ExecuteReader();
+                    SqlDataReader dr = conmand.ExecuteReader();
 
-            return dr;
+                    while (dr.Read())
+                    {
+
+                        modelowmtfacturascab item = new modelowmtfacturascab();
+
+                        item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                        item.tipo_nce = Convert.ToString(dr["tipo"]);
+                        
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+                List<modelowmtfacturascab> lista = new List<modelowmtfacturascab>();
+                return lista;
+            }
+
 
         }
-       
+
         //Consultar datos solo de laNC PARA Q EN NULL no de error
         public List<modelowmtfacturascab> ConsultaDatosNCPadre(string nro_trans)
         {

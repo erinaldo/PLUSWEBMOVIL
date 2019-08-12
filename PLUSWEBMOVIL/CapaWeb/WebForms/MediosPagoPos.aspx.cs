@@ -236,67 +236,71 @@ namespace CapaWeb.WebForms
 
         public void AgregarPagoGrilla()
         {
-            modeloFacturasPagos item = new modeloFacturasPagos();
-            modeloTemporal = null;
-            modeloTemporal = BuscarDetallePago(txt_nro_trans.Text);
+            
+                modeloFacturasPagos item = new modeloFacturasPagos();
+                modeloTemporal = null;
+                modeloTemporal = BuscarDetallePago(txt_nro_trans.Text);
 
-            //Consulta si existe el pago en la lista
+                //Consulta si existe el pago en la lista
 
-            if (Session["detallePagos"] == null)
-            {
-                modeloFacturasPagos = new List<modeloFacturasPagos>();
-            }
-            else
-            {
-                modeloFacturasPagos = (Session["detallePagos"] as List<modeloFacturasPagos>);
-            }
-
-            Boolean existe = false;
-            foreach (modeloFacturasPagos itemSuma in modeloFacturasPagos)
-            {
-                if (itemSuma.nro_docum == modeloTemporal.nro_doc && itemSuma.cod_fpago.Trim() == modeloTemporal.cod_fpago.Trim())
+                if (Session["detallePagos"] == null)
                 {
-                    existe = true;
+                    modeloFacturasPagos = new List<modeloFacturasPagos>();
+                }
+                else
+                {
+                    modeloFacturasPagos = (Session["detallePagos"] as List<modeloFacturasPagos>);
+                }
 
-                    itemSuma.recibido = Convert.ToDecimal(txt_Precio.Text);
+                Boolean existe = false;
+                foreach (modeloFacturasPagos itemSuma in modeloFacturasPagos)
+                {
+                    if (itemSuma.nro_docum == modeloTemporal.nro_doc && itemSuma.cod_fpago.Trim() == modeloTemporal.cod_fpago.Trim())
+                    {
+                        existe = true;
+
+                        itemSuma.recibido = Convert.ToDecimal(txt_Precio.Text);
+
+                    }
 
                 }
 
+                if (!existe)
+                {
+
+                    item.cod_tit = cbx_tercero.SelectedValue;
+                    if (txt_numero.Text == "")
+                    { item.nro_docum = "0"; }
+                    else { item.nro_docum = txt_numero.Text; }
+
+                    item.recibido = Convert.ToDecimal(txt_Precio.Text);
+                    item.nro_trans = txt_nro_trans.Text;
+                    item.cod_emp = ComPwm;
+                    item.cod_docum = modeloTemporal.cod_docum;
+                    item.cod_cta = modeloTemporal.cod_cta;
+                    item.cod_fpago = modeloTemporal.cod_fpago;
+                    item.forma_pago = cbx_medios.SelectedItem.ToString();
+                    item.tercero = cbx_tercero.SelectedItem.ToString();
+
+                    modeloFacturasPagos.Add(item);
+                }
+
+                Session["detallePagos"] = modeloFacturasPagos;
+
+                modeloFacturasPagos = (Session["detallePagos"] as List<modeloFacturasPagos>);
+                gv_Producto.DataSource = modeloFacturasPagos;
+                gv_Producto.DataBind();
+
+                txt_Descripcion.Text = "";
+                txt_numero.Text = "0";
+                txt_Precio.Text = "0";
+                txt_cal_vuelto.Text = "";
+                item = null;
+                InhabilitarCajas();
             }
 
-            if (!existe)
-            {
-
-                item.cod_tit = cbx_tercero.SelectedValue;
-                if (txt_numero.Text == "")
-                { item.nro_docum = "0"; }
-                else { item.nro_docum = txt_numero.Text; }
-                
-                item.recibido = Convert.ToDecimal(txt_Precio.Text);
-                item.nro_trans = txt_nro_trans.Text;
-                item.cod_emp = ComPwm;
-                item.cod_docum = modeloTemporal.cod_docum;
-                item.cod_cta = modeloTemporal.cod_cta;
-                item.cod_fpago = modeloTemporal.cod_fpago;
-                item.forma_pago = cbx_medios.SelectedItem.ToString();
-                item.tercero = cbx_tercero.SelectedItem.ToString();
-
-                modeloFacturasPagos.Add(item);
-            }
-
-            Session["detallePagos"] = modeloFacturasPagos;
-
-            modeloFacturasPagos = (Session["detallePagos"] as List<modeloFacturasPagos>);
-            gv_Producto.DataSource = modeloFacturasPagos;
-            gv_Producto.DataBind();
-
-            txt_Descripcion.Text = "";
-            txt_numero.Text = "0";
-            txt_Precio.Text = "0";
-
-            item = null;
-            InhabilitarCajas();
-        }
+    
+           
         protected void AgregarPago_Click(object sender, EventArgs e)
         {
             /*Validar que la diferencia sea diferente de 0*/
@@ -304,30 +308,69 @@ namespace CapaWeb.WebForms
             {
                 this.Page.Response.Write("<script language='JavaScript'>window.alert('Pago Finalizado, no puede pagar más de lo que Factura')+ error;</script>");
             }
-            else
-            { 
-            //agregar a grilla medio de pago para insertar
-            AgregarPagoGrilla();
-            GuardarPagos();
-            //Mostrar saldos
-            listaSaldos = consultaMediosPago.BuscarDiferenciaSaldos(AmUsrLog, ComPwm, txt_nro_trans.Text);
-            foreach (var item in listaSaldos)
-            {
-                modeloDiferencia = item;
-            }
-            txt_total_pago.Text = modeloDiferencia.pagado;
-            txt_Diferencia.Text = modeloDiferencia.diferencia;
-            //Si es pago en efectivo si puede ser mayor el pago xq se puede dar vuelto
-            listaPagosPgs = consultaMediosPago.ObtenerVueltoPgs(txt_nro_trans.Text);
-            foreach (var item in listaPagosPgs)
-            {
-                modeloPagosPgs = item;
-                break;
-            }
-            if (Convert.ToString(modeloPagosPgs.diferencia) != "0.00")
-            {
-                txt_vuelto.Text = Convert.ToString(modeloPagosPgs.diferencia);
-            }
+            else {
+                //Preguntamos si calcula vuelto dependiendo del medio de pago
+                if (txt_cal_vuelto.Text == "N")
+                {
+                    if (Convert.ToDecimal(txt_Precio.Text) > Convert.ToDecimal(txt_total_factura.Text))
+                    {
+                        this.Page.Response.Write("<script language='JavaScript'>window.alert('No puede pagar más de lo que Factura')+ error;</script>");
+                    }
+                    else
+                    {
+                        //agregar a grilla medio de pago para insertar
+                        AgregarPagoGrilla();
+                        GuardarPagos();
+                        //Mostrar saldos
+                        listaSaldos = consultaMediosPago.BuscarDiferenciaSaldos(AmUsrLog, ComPwm, txt_nro_trans.Text);
+                        foreach (var item in listaSaldos)
+                        {
+                            modeloDiferencia = item;
+                        }
+                        txt_total_pago.Text = modeloDiferencia.pagado;
+                        txt_Diferencia.Text = modeloDiferencia.diferencia;
+
+                        //Si es pago en efectivo si puede ser mayor el pago xq se puede dar vuelto
+                        listaPagosPgs = consultaMediosPago.ObtenerVueltoPgs(txt_nro_trans.Text);
+                        foreach (var item in listaPagosPgs)
+                        {
+                            modeloPagosPgs = item;
+                            break;
+                        }
+                        if (Convert.ToString(modeloPagosPgs.diferencia) != "0.00")
+                        {
+                            txt_vuelto.Text = Convert.ToString(modeloPagosPgs.diferencia);
+                        }
+                    }
+                }
+                else
+                {
+                    //agregar a grilla medio de pago para insertar
+                    AgregarPagoGrilla();
+                    GuardarPagos();
+                    //Mostrar saldos
+                    listaSaldos = consultaMediosPago.BuscarDiferenciaSaldos(AmUsrLog, ComPwm, txt_nro_trans.Text);
+                    foreach (var item in listaSaldos)
+                    {
+                        modeloDiferencia = item;
+                    }
+                    txt_total_pago.Text = modeloDiferencia.pagado;
+                    txt_Diferencia.Text = modeloDiferencia.diferencia;
+
+                    //Si es pago en efectivo si puede ser mayor el pago xq se puede dar vuelto
+                    listaPagosPgs = consultaMediosPago.ObtenerVueltoPgs(txt_nro_trans.Text);
+                    foreach (var item in listaPagosPgs)
+                    {
+                        modeloPagosPgs = item;
+                        break;
+                    }
+                    if (Convert.ToString(modeloPagosPgs.diferencia) != "0.00")
+                    {
+                        txt_vuelto.Text = Convert.ToString(modeloPagosPgs.diferencia);
+                    }
+                }
+
+
             }
         }
 
@@ -352,6 +395,7 @@ namespace CapaWeb.WebForms
                     modeloTemporal = item;
                 }
                 txt_Descripcion.Text = modeloTemporal.nom_fpago;
+                txt_cal_vuelto.Text = modeloTemporal.vuelto.Trim();
                 //Habilitar y deshabilitar campos segun medio de pago campo_numero, campo_terero
                 if (modeloTemporal.modif_ter == " ")
                 {

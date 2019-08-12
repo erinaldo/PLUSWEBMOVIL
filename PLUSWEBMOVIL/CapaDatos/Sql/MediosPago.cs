@@ -95,7 +95,8 @@ namespace CapaDatos.Sql
                     item.modif_doc = Convert.ToString(dr["modif_doc"]);
                     item.nro_doc= Convert.ToString(dr["nro_doc"]);
                     item.doc_campo= Convert.ToString(dr["doc_campo"]);
-                    
+                    item.vuelto = Convert.ToString(dr["vuelto"]);
+
                     lista.Add(item);
 
                 }
