@@ -38,8 +38,11 @@ namespace CapaWeb.WebForms
 
 
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
-        modelowmtfacturascab conscabcera = new modelowmtfacturascab();        
-        
+        modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+        modelocabecerafactura cabecerafactura = new modelocabecerafactura();
+            
+        List<modelowmtfacturascab> listaConsCab = null;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             RecuperarCokie();
@@ -48,19 +51,42 @@ namespace CapaWeb.WebForms
             Int64 id = Int64.Parse(qs["Id"].ToString());
             Ccf_nro_trans = id.ToString();
 
+            //Buscar que tipo de factura es pose / vtae
+            conscabcera = null;
+            conscabcera = buscarTipoFac(Ccf_nro_trans);
+            if(conscabcera.tipo_nce.Trim() == "VTAE")
+            {
+                Ccf_tipo2 = "VTAE";
+            }
+            else
+            {
+                Ccf_tipo2 = "POSE";
+            }
             PdfFacturaElectronica pdf = new PdfFacturaElectronica();
             string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
-           /* Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
-            Boolean error = enviarcorreocliente.EnviarCorreoCliente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, ""); */
-
+          
             Response.ContentType = "application/pdf";
             Response.WriteFile(pathPdf);            
             Response.End();
 
         }
 
-   
+        public modelowmtfacturascab buscarTipoFac(string nro_trans)
+        {
+
+            listaConsCab = ConsultaCabe.ConsultaTipoFactura(nro_trans);
+            int count = 0;
+            conscabcera = null;
+            foreach (modelowmtfacturascab item in listaConsCab)
+            {
+                count++;
+                conscabcera = item;
+
+            }
+            return conscabcera;
+        }
+
         public QueryString ulrDesencriptada()
         {
             //1- guardo el Querystring encriptado que viene desde el request en mi objeto

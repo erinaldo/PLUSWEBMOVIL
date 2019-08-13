@@ -65,8 +65,20 @@ namespace CapaWeb.WebForms
                 }
                 if (Session["Tipo"] != null)
                 {
+
                     transaccion = Session["Tipo"].ToString();
-                    BuscarPagosPrevios();
+                    if (transaccion.Trim() == "UDP")
+                    {
+                        BuscarPagosPrevios();
+                    }
+                    if (transaccion.Trim() == "VER")
+                    {
+                        BuscarPagosPrevios();
+                        Agregar_MedioPago.Visible = false;
+                    }
+
+
+
                 }
                 cargarListaDesplegables();
             }
@@ -91,7 +103,7 @@ namespace CapaWeb.WebForms
           
             //Cargar en el mismo modelo modeloFacturasPagos
             //Buscar tabla wmt_facturas_pgs
-            if(transaccion == "UDP")
+            if(transaccion == "UDP" || transaccion == "VER")
             { 
             //Si es pago en efectivo si puede ser mayor el pago xq se puede dar vuelto
             listaPagosPgs = consultaMediosPago.ConsultaTablaPgs(AmUsrLog, ComPwm, txt_nro_trans.Text);
@@ -493,7 +505,7 @@ namespace CapaWeb.WebForms
 
         protected void Cancelar_Click(object sender, EventArgs e)
         {
-            ClientScript.RegisterClientScriptBlock(GetType(), "Refresca", "window.opener.location.reload(); window.close();", true);
+            this.Page.Response.Write("<script language='JavaScript'>window.close('./MediosPagoPos.aspx', 'Medios Pago', 'top=100,width=800 ,height=600, left=400');</script>");
         }
 
       

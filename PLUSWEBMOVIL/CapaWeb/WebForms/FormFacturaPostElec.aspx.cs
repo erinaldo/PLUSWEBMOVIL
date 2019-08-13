@@ -219,6 +219,7 @@ namespace CapaWeb.WebForms
                         Session.Remove("listaCliente");
                         Session.Remove("Tipo_Trans");
                         Session.Remove("valor_asignado");
+                        Session.Remove("Tipo_Trans");
                         DateTime hoy = DateTime.Today;
                         fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
                         //Consultar tasa de cambio
@@ -242,7 +243,7 @@ namespace CapaWeb.WebForms
                     case "VER":
                         Int64 ide = Int64.Parse(qs["Id"].ToString());
                         Session["valor_asignado"] = ide.ToString();
-
+                        Session["Tipo_Trans"] = "VER";
                         cargarListaDesplegables();
                         LlenarFactura();
                         BloquearFactura();
@@ -298,6 +299,45 @@ namespace CapaWeb.WebForms
             //botones
             AgregarNC.Enabled = false;
             Confirmar.Visible = false;
+            
+            btnGuardarDetalle.Visible = false;
+            //detalle producto
+            txt_Codigo.Enabled = false;
+            txt_Descripcion.Enabled = false;
+            txt_Cantidad.Enabled = false;
+            txt_Precio.Enabled = false;
+            txt_Desc.Enabled = false;
+            txt_Iva.Enabled = false;
+        }
+        protected void BloquearFacturaPagos()
+        {
+            //inhabilitar cajas de texto cabecera factura
+            dniCliente.Enabled = false;
+            nombreCliente.Enabled = false;
+            fonoCliente.Enabled = false;
+            txtcorreo.Enabled = false;
+            fecha.Enabled = false;
+            cod_fpago.Enabled = false;
+            nro_pedido.Enabled = false;
+            cod_costos.Enabled = false;
+            serie_docum.Enabled = false;
+            ocompra.Enabled = false;
+            area.Enabled = false;
+            porc_descto.Enabled = false;
+            cmbCod_moneda.Enabled = false;
+            cod_vendedor.Enabled = false;
+            txtSumaSubTo.Enabled = false;
+            txtSumaTotal.Enabled = false;
+            txtSumaIva.Enabled = false;
+            txtSumaDesc.Enabled = false;
+            gv_Producto.Enabled = false;
+            txtBase15.Enabled = false;
+            txtBaseIva19.Enabled = false;
+            txtIva15.Enabled = false;
+            txtIva19.Enabled = false;
+            //botones
+            AgregarNC.Enabled = false;
+            
             btnGuardarDetalle.Visible = false;
             //detalle producto
             txt_Codigo.Enabled = false;
@@ -2228,7 +2268,7 @@ namespace CapaWeb.WebForms
                             }
                             else
                             {
-                                BloquearFactura();
+                                BloquearFacturaPagos();
                                 Session["Tipo"] = Session["Tipo_Trans"];
                                 Session["valor_asignado1"] = Session["valor_asignado"];
                                 Session["TotalFactura"] = txtSumaTotal.Text;

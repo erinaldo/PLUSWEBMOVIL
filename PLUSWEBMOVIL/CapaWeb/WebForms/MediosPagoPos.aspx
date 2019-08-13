@@ -218,7 +218,7 @@
                                <tr>
                                 
                                 <td >
-                                    <asp:Button ID="Cancelar" Class="botones"  runat="server" OnClick="Cancelar_Click"  UseSubmitBehavior="False" Text="Siguiente" />
+                                    <asp:Button ID="Cancelar" Class="botones"  runat="server" OnClick="Cancelar_Click"  UseSubmitBehavior="False" Text="Cancelar" />
                                                                      
                                
                                   </td>
