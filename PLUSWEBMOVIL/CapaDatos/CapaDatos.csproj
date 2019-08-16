@@ -110,6 +110,7 @@
     <Compile Include="Sql\EstadosFactura.cs" />
     <Compile Include="Sql\FacturACab.cs" />
     <Compile Include="Sql\FacturaDetalle.cs" />
+    <Compile Include="Sql\FormatoCantidades.cs" />
     <Compile Include="Sql\Fpagos.cs" />
     <Compile Include="Sql\FPagosPos.cs" />
     <Compile Include="Sql\HostMail\HostaMail.cs" />

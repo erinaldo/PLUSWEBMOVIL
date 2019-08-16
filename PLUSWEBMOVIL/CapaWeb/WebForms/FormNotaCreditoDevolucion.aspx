@@ -366,7 +366,7 @@
                                     
                                 </td>
                                  <td>
-                                    <asp:TextBox ID="txt_Precio" CssClass="textos" type="number" ReadOnly="true"  step="0.01" value="0" Width="100px" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="txt_Precio" CssClass="textos" ReadOnly="true"   value="0" Width="100px" runat="server"></asp:TextBox>
                                     
                                 </td>
                                  <td>

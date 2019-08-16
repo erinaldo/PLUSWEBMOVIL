@@ -335,7 +335,7 @@
                                     <asp:TextBox ID="cantidad" CssClass="textos"  min="1" step="0.01" type="number" value="1" Width="60px" runat="server"></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="precio"   CssClass="textos"  type="number"  step="0.01" value="0" runat="server" Width="100px"></asp:TextBox>
+                                    <asp:TextBox ID="precio"   CssClass="textos"  type="number" step="any"   value="0" runat="server" Width="100px"></asp:TextBox>
                                 </td>
                                  <td>
                                     <asp:TextBox ID="porcdescto" CssClass="textos" min="0" step="0.01" type="number" value="0"  Width="60px" runat="server"></asp:TextBox>

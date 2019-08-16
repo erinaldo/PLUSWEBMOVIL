@@ -54,7 +54,7 @@ namespace CapaDatos.Sql
             using (cn = conexion.genearConexion())
             {
                 List<modelowmtproformascab> lista = new List<modelowmtproformascab>();
-                string consulta = ("SELECT * FROM dbo.wmt_proformas_cab WHERE nro_trans = @nro_trans");
+                string consulta = ("SELECT * FROM wmt_proformas_cab WHERE nro_trans = @nro_trans");
                 SqlCommand conmand = new SqlCommand(consulta, cn);
 
 
@@ -105,7 +105,7 @@ namespace CapaDatos.Sql
             using (cn = conexion.genearConexion())
             {
                 List<modelowmtproformascab> lista = new List<modelowmtproformascab>();
-                string consulta = ("SELECT * FROM dbo.wmt_proformas_cab WHERE cod_cliente = @cod_cliente AND estado = @estado AND tipo = @tipo");
+                string consulta = ("SELECT * FROM wmt_proformas_cab WHERE cod_cliente = @cod_cliente AND estado = @estado AND tipo = @tipo");
                 SqlCommand conmand = new SqlCommand(consulta, cn);
 
 

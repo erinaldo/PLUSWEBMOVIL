@@ -13,6 +13,7 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
 
+     
         public List<modelowmspcmonedas> ListaBuscaCMonedas(string MonB__usuario, string MonB__cod_emp, string MonB__moneda)
         {
 
@@ -37,6 +38,8 @@ namespace CapaDatos.Sql
                     item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
                     item.nom_moneda = Convert.ToString(dr["nom_moneda"]);
                     item.simbolo_moneda = Convert.ToString(dr["simbolo_moneda"]);
+                    item.redondeo = Convert.ToString(dr["redondeo"]);
+                    item.redondeo_pu = Convert.ToString(dr["redondeo_pu"]);
 
                     lista.Add(item);
 
@@ -46,5 +49,7 @@ namespace CapaDatos.Sql
             }
             
         }
+
+
     }
 }
