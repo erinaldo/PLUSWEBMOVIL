@@ -583,20 +583,11 @@ namespace CapaWeb.WebForms
                             sumaIva15 -= itemSuma.detaiva;
                         }
                         /* sumo los numebos valores agregados al producto*/
-                        itemSuma.cantidad = Convert.ToDecimal(cantidad.Text);
-                        //Redondear el numero a precios_uni
-                        decimal precio_unitario = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(precio.Text));
-                        itemSuma.precio_unit = precio_unitario;
-
-                        //Redondear valore totales
-                        decimal precio_iva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(iva.Text));
-                        itemSuma.porc_iva = precio_iva;
-                        //Redondear valore totales
-                        decimal precio_des = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(porcdescto.Text));
-                        itemSuma.porc_descto = precio_des;
-                        //Redondear valore totales
-                        decimal precio_sub = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(itemSuma.precio_unit * itemSuma.cantidad));
-                        itemSuma.subtotal = precio_sub;
+                        itemSuma.cantidad += Convert.ToDecimal(cantidad.Text);
+                        itemSuma.precio_unit = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(precio.Text));
+                        itemSuma.porc_iva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(iva.Text));
+                        itemSuma.porc_descto = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(porcdescto.Text));
+                        itemSuma.subtotal = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(itemSuma.precio_unit * itemSuma.cantidad));
                         itemSuma.poriva = itemSuma.porc_iva / 100;
 
                         sumaSubtotal = itemSuma.subtotal;
@@ -608,8 +599,7 @@ namespace CapaWeb.WebForms
                             itemSuma.descuento = 0;
                             itemSuma.detadescuento = 0;
                             //Redondear valore totales
-                            decimal precio_detaiva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(itemSuma.subtotal * itemSuma.poriva));
-                            itemSuma.detaiva = precio_iva;
+                            itemSuma.detaiva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (itemSuma.subtotal * itemSuma.poriva));
                             itemSuma.subdos = itemSuma.subtotal;
                             itemSuma.total = itemSuma.subdos + itemSuma.detaiva; //Suma total
                         }
@@ -1922,19 +1912,10 @@ namespace CapaWeb.WebForms
 
                             /* sumo los numebos valores agregados al producto*/
                             itemSuma.cantidad += Convert.ToDecimal(cantidad.Text);
-                            //Redondear el numero a precios_uni
-                            decimal precio_unitario = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(precio.Text));
-                            itemSuma.precio_unit = precio_unitario;
-
-                            //Redondear valore totales
-                            decimal precio_iva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(iva.Text));
-                            itemSuma.porc_iva = precio_iva;
-                            //Redondear valore totales
-                            decimal precio_des = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(porcdescto.Text));
-                            itemSuma.porc_descto = precio_des;
-                            //Redondear valore totales
-                            decimal precio_sub = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(itemSuma.precio_unit * itemSuma.cantidad));
-                            itemSuma.subtotal = precio_sub;
+                            itemSuma.precio_unit = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(precio.Text));
+                            itemSuma.porc_iva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(iva.Text));
+                            itemSuma.porc_descto = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(porcdescto.Text));
+                            itemSuma.subtotal = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(itemSuma.precio_unit * itemSuma.cantidad));
                             itemSuma.poriva = itemSuma.porc_iva / 100;
 
                             sumaSubtotal = itemSuma.subtotal;

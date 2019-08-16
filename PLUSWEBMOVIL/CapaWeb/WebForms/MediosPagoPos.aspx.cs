@@ -38,11 +38,33 @@ namespace CapaWeb.WebForms
 
         modeloFacturasPagos modeloTiposPagos = new modeloFacturasPagos(); //Modelo tipos de pagos
         public List<modeloFacturasPagos> listaTiposPagos = null;
+
+        Consultawmspcmonedas ConsultaCMonedas = new Consultawmspcmonedas();
+        List<modelowmspcmonedas> listaMonedas = null;
+        modelowmspcmonedas DecimalesMoneda = new modelowmspcmonedas();
+
+        Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
+        List<modelowmtfacturascab> listaConsCab = null;
+        modelowmtfacturascab conscabcera = new modelowmtfacturascab();
         public string ComPwm;
         public string AmUsrLog;
         public decimal sumaTotalPago;
         public decimal sumaDiferencia;
         public string transaccion;
+        public string Ccf_tipo1 = "C";
+        public string Ccf_tipo2 = "POSE";
+        public string Ccf_nro_trans = "0";
+        public string Ccf_estado = null;
+        public string Ccf_cliente = null;
+        public string Ccf_cod_docum = null;
+        public string Ccf_serie_docum = null;
+        public string Ccf_nro_docum = null;
+        public string Ccf_diai = null;
+        public string Ccf_mesi = null;
+        public string Ccf_anioi = null;
+        public string Ccf_diaf = null;
+        public string Ccf_mesf = null;
+        public string Ccf_aniof = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             RecuperarCokie();
@@ -98,6 +120,23 @@ namespace CapaWeb.WebForms
 
         }
 
+        public modelowmtfacturascab BuscarCabecera()
+        {
+            //Busca el nro de auditoria para poder insertar el detalle factura
+            //consulta nro_auditoria de la cabecera
+            string Ccf_nro_trans = txt_nro_trans.Text;
+            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+            int count = 0;
+            conscabcera = null;
+            foreach (modelowmtfacturascab item in listaConsCab)
+            {
+                count++;
+                conscabcera = item;
+            }
+
+           
+            return conscabcera;
+        }
         public void BuscarPagosPrevios()
         {
           
@@ -113,28 +152,53 @@ namespace CapaWeb.WebForms
             gv_Producto.DataBind();
             gv_Producto.Height = 100;
 
-          /*  foreach (var item in listaPagosPgs)
-            {
-                modeloPagosPgs = item;
-                break;
-            }
+                /*  foreach (var item in listaPagosPgs)
+                  {
+                      modeloPagosPgs = item;
+                      break;
+                  }
 
 
-            if (Convert.ToString(modeloPagosPgs.diferencia) != "0.00")
-            {
-                txt_vuelto.Text = Convert.ToString(modeloPagosPgs.diferencia);
-            }
-            */
-            listaSaldos = consultaMediosPago.BuscarDiferenciaSaldos(AmUsrLog, ComPwm, txt_nro_trans.Text);
+                  if (Convert.ToString(modeloPagosPgs.diferencia) != "0.00")
+                  {
+                      txt_vuelto.Text = Convert.ToString(modeloPagosPgs.diferencia);
+                  }
+                  */
+                  //Buscar el tipo de moneda
+                conscabcera = null;
+                conscabcera = BuscarCabecera();
+                //Consultamos cuantos descimales se van a usar redondeo
+                DecimalesMoneda = null;
+                DecimalesMoneda = BuscarDecimales(conscabcera.cod_moneda.Trim());
+                listaSaldos = consultaMediosPago.BuscarDiferenciaSaldos(AmUsrLog, ComPwm, txt_nro_trans.Text);
             foreach (var item in listaSaldos)
             {
                 modeloDiferencia = item;
             }
-            txt_total_pago.Text = modeloDiferencia.pagado;
-            txt_Diferencia.Text = modeloDiferencia.diferencia;
+            decimal pago = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(modeloDiferencia.pagado));
+            txt_total_pago.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, pago);
+            decimal pago1 = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(modeloDiferencia.diferencia));
+            txt_Diferencia.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, pago1);
 
             }
 
+        }
+        //Buscar cantidad de decimales q se va ausar x tipo de moneda
+        public modelowmspcmonedas BuscarDecimales(string moneda)
+        {
+
+            listaMonedas = ConsultaCMonedas.ConsultaCMonedas(AmUsrLog, ComPwm, moneda);
+
+            DecimalesMoneda = null;
+            foreach (modelowmspcmonedas item in listaMonedas)
+            {
+
+                DecimalesMoneda = item;
+                break;
+
+            }
+
+            return DecimalesMoneda;
         }
         public void HabilitarCajas()
         {
@@ -321,6 +385,12 @@ namespace CapaWeb.WebForms
                 this.Page.Response.Write("<script language='JavaScript'>window.alert('Pago Finalizado, no puede pagar más de lo que Factura')+ error;</script>");
             }
             else {
+                //Buscar el tipo de moneda
+                conscabcera = null;
+                conscabcera = BuscarCabecera();
+                //Consultamos cuantos descimales se van a usar redondeo
+                DecimalesMoneda = null;
+                DecimalesMoneda = BuscarDecimales(conscabcera.cod_moneda.Trim());
                 //Preguntamos si calcula vuelto dependiendo del medio de pago
                 if (txt_cal_vuelto.Text == "N")
                 {
@@ -333,14 +403,18 @@ namespace CapaWeb.WebForms
                         //agregar a grilla medio de pago para insertar
                         AgregarPagoGrilla();
                         GuardarPagos();
+                       
+                        
                         //Mostrar saldos
                         listaSaldos = consultaMediosPago.BuscarDiferenciaSaldos(AmUsrLog, ComPwm, txt_nro_trans.Text);
                         foreach (var item in listaSaldos)
                         {
                             modeloDiferencia = item;
                         }
-                        txt_total_pago.Text = modeloDiferencia.pagado;
-                        txt_Diferencia.Text = modeloDiferencia.diferencia;
+                        decimal pago = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(modeloDiferencia.pagado));
+                        txt_total_pago.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, pago);
+                        decimal pago1 = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(modeloDiferencia.diferencia));
+                        txt_Diferencia.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, pago1);
 
                         //Si es pago en efectivo si puede ser mayor el pago xq se puede dar vuelto
                         listaPagosPgs = consultaMediosPago.ObtenerVueltoPgs(txt_nro_trans.Text);
@@ -351,7 +425,8 @@ namespace CapaWeb.WebForms
                         }
                         if (Convert.ToString(modeloPagosPgs.diferencia) != "0.00")
                         {
-                            txt_vuelto.Text = Convert.ToString(modeloPagosPgs.diferencia);
+                            decimal vuelto = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(modeloPagosPgs.diferencia));
+                            txt_vuelto.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, vuelto);
                         }
                     }
                 }
@@ -366,8 +441,10 @@ namespace CapaWeb.WebForms
                     {
                         modeloDiferencia = item;
                     }
-                    txt_total_pago.Text = modeloDiferencia.pagado;
-                    txt_Diferencia.Text = modeloDiferencia.diferencia;
+                    decimal pago = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(modeloDiferencia.pagado));
+                    txt_total_pago.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, pago);
+                    decimal pago1 = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(modeloDiferencia.diferencia));
+                    txt_Diferencia.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, pago1);
 
                     //Si es pago en efectivo si puede ser mayor el pago xq se puede dar vuelto
                     listaPagosPgs = consultaMediosPago.ObtenerVueltoPgs(txt_nro_trans.Text);
@@ -378,7 +455,8 @@ namespace CapaWeb.WebForms
                     }
                     if (Convert.ToString(modeloPagosPgs.diferencia) != "0.00")
                     {
-                        txt_vuelto.Text = Convert.ToString(modeloPagosPgs.diferencia);
+                        decimal vuelto = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(modeloPagosPgs.diferencia));
+                        txt_vuelto.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, vuelto);
                     }
                 }
 
@@ -447,6 +525,12 @@ namespace CapaWeb.WebForms
                         break;
                     }
                 }
+                //Buscar el tipo de moneda
+                conscabcera = null;
+                conscabcera = BuscarCabecera();
+                //Consultamos cuantos descimales se van a usar redondeo
+                DecimalesMoneda = null;
+                DecimalesMoneda = BuscarDecimales(conscabcera.cod_moneda.Trim());
 
                 switch (e.CommandName) //ultilizo la variable para la opcion            
                 {
@@ -476,8 +560,10 @@ namespace CapaWeb.WebForms
                         {
                             modeloDiferencia = item;
                         }
-                        txt_total_pago.Text = modeloDiferencia.pagado;
-                        txt_Diferencia.Text = modeloDiferencia.diferencia;
+                        decimal pago = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(modeloDiferencia.pagado));
+                        txt_total_pago.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, pago);
+                        decimal pago1 = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(modeloDiferencia.diferencia));
+                        txt_Diferencia.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, pago1);
                         //Si es pago en efectivo si puede ser mayor el pago xq se puede dar vuelto
                         listaPagosPgs = consultaMediosPago.ObtenerVueltoPgs(txt_nro_trans.Text);
                         foreach (var item in listaPagosPgs)
@@ -487,7 +573,8 @@ namespace CapaWeb.WebForms
                         }
                         if (Convert.ToString(modeloPagosPgs.diferencia) != "0.00")
                         {
-                            txt_vuelto.Text = Convert.ToString(modeloPagosPgs.diferencia);
+                            decimal vuelto = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(modeloPagosPgs.diferencia));
+                            txt_vuelto.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, vuelto);
                         }
 
                         modeloFacturasPagos.RemoveAt(e.Item.ItemIndex);

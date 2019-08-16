@@ -929,7 +929,7 @@ namespace CapaWeb.WebForms
                             sumaIva15 -= itemSuma.detaiva;
                         }
                         /* sumo los numebos valores agregados al producto*/
-                        itemSuma.cantidad = Convert.ToDecimal(txt_Cantidad.Text);
+                        itemSuma.cantidad += Convert.ToDecimal(txt_Cantidad.Text);
                         itemSuma.precio_unit = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(txt_Precio.Text));
                         itemSuma.porc_iva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(txt_Iva.Text));
                         itemSuma.porc_descto = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(txt_Iva.Text));

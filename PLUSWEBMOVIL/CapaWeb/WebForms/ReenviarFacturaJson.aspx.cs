@@ -101,9 +101,9 @@ namespace CapaWeb.WebForms
             conscabcera = null;
             conscabcera = buscarTipoFac(lbl_nro_trans.Text);
             string Tipo_fac = null;
-            if (conscabcera.tipo_nce.ToString() == "VTA")
+            if (conscabcera.tipo_nce.ToString() == "VTAE")
             {
-                Tipo_fac = "VTA";
+                Tipo_fac = "VTAE";
             }
             else
             {
@@ -133,7 +133,7 @@ namespace CapaWeb.WebForms
             conscabcera = null;
             conscabcera = buscarTipoFac(lbl_nro_trans.Text);
             
-            if (conscabcera.tipo_nce.ToString() == "VTA")
+            if (conscabcera.tipo_nce.ToString() == "VTAE")
             {
                 Response.Redirect("BuscarFacturas.aspx");
             }
@@ -150,9 +150,9 @@ namespace CapaWeb.WebForms
             conscabcera = null;
             conscabcera = buscarTipoFac(lbl_nro_trans.Text);
             string Tipo_fac = null;
-            if (conscabcera.tipo_nce.ToString() == "VTA")
+            if (conscabcera.tipo_nce.ToString() == "VTAE")
             {
-                Tipo_fac = "VTA";
+                Tipo_fac = "VTAE";
             }
             else
             {
