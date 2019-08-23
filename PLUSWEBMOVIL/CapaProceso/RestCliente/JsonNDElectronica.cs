@@ -9,10 +9,9 @@ using System.Text;
 
 namespace CapaProceso.RestCliente
 {
-    public class JsonNCFinancieraElectronica
+  public   class JsonNDElectronica
     {
         public modelowmtfacturascab conscabcera = new modelowmtfacturascab();
-        public modelowmtfacturascab conscabceraTipo = new modelowmtfacturascab();
         public modelowmtfacturascab conscabceraNC = new modelowmtfacturascab();
         public modelowmtfacturascab conscabceraNCMot = new modelowmtfacturascab();
         public List<modelowmtfacturascab> listaConsCabNC = null;
@@ -40,7 +39,7 @@ namespace CapaProceso.RestCliente
         public List<modeloUsuariosucursal> ListaUsuSucursal = new List<modeloUsuariosucursal>();
         public ConsultawmusuarioSucursal ConsultaUsuSucursal = new ConsultawmusuarioSucursal();
         public modeloUsuariosucursal ModeloUsuSucursal = new modeloUsuariosucursal();
-             
+
         public List<modeloparametrocomercial> ListaModelocomercial = new List<modeloparametrocomercial>();
         public Consultaparamcomercial consultaComercial = new Consultaparamcomercial();
         public modeloparametrocomercial Modelocomercial = new modeloparametrocomercial();
@@ -100,7 +99,6 @@ namespace CapaProceso.RestCliente
 
         public EncabezadoNC LlenarEnacabezadoNCJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string nro_factura)
         {
-            string tipoFactura = "";
             EncabezadoNC encabezado = new EncabezadoNC();
             //Recuperar el cufe ce la factura
             ListaModelorespuestaDs = consultaRespuestaDS.RespuestaLineaQr(nro_factura, "1");
@@ -121,39 +119,16 @@ namespace CapaProceso.RestCliente
                 break;
             }
 
-            listaConsCab = ConsultaCabe.ConsultaTipoFactura(Ccf_nro_trans);
-            conscabceraTipo = null;
-            foreach (modelowmtfacturascab item in listaConsCab)
-            {
 
-                conscabceraTipo = item;
-
-            }
-            if (conscabceraTipo.tipo_nce.Trim() == "POSE")
-            {
-                tipoFactura = "POSE";
-            }
-            if (conscabceraTipo.tipo_nce.Trim() == "VTAE")
-            {
-                tipoFactura = "VTAE";
-            }
-            if (conscabceraTipo.tipo_nce.Trim() == "NCVE")
-            {
-                tipoFactura = "NCVE";
-            }
-            if (conscabceraTipo.tipo_nce.Trim() == "NCME")
-            {
-                tipoFactura = "NCME";
-            }
             //CABECERA de la FACTURA
             conscabcera = null;
-            conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, tipoFactura, nro_factura);
+            conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, "VTAE", nro_factura);
             //CABECERA NC
             conscabceraNC = null;
             conscabceraNC = buscarCabezeraNC(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
             //motivo de NC
             conscabceraNCMot = null;
-           conscabceraNCMot = buscarMotNC( Ccf_nro_trans);
+            conscabceraNCMot = buscarMotNC(Ccf_nro_trans);
 
             Modeloempresa = null;
             Modeloempresa = BuscarCabEmpresa(Ccf_usuario, Ccf_cod_emp);
@@ -162,7 +137,7 @@ namespace CapaProceso.RestCliente
             ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
             //Pruebas emisor 830106032
             //Produccion emisor =Convert.ToInt32(Modeloempresa.nro_dgi2);
-            encabezado.emisor = 830106032; 
+            encabezado.emisor = 830106032;
             encabezado.codmoneda = conscabceraNC.cod_moneda.Trim();
             encabezado.comentarios = conscabceraNC.observaciones;
             encabezado.factortrm = Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
@@ -174,17 +149,17 @@ namespace CapaProceso.RestCliente
             encabezado.nit = Convert.ToInt64(conscabceraNC.nro_dgi2);
             encabezado.numero = Convert.ToInt32(conscabceraNC.nro_docum);
             encabezado.ordencompra = Convert.ToString(conscabceraNC.ocompra);
-            encabezado.prefijo = Convert.ToString(conscabceraNC.serie_docum.Trim()); 
+            encabezado.prefijo = Convert.ToString(conscabceraNC.serie_docum.Trim());
             //encabezado.prefijo = "DV"; // para pruebas (DV)
             encabezado.subtotal = Convert.ToInt32(conscabceraNC.subtotal);
-            encabezado.sucursal = Convert.ToInt16(conscabceraNC.cod_sucursal); 
+            encabezado.sucursal = Convert.ToInt16(conscabceraNC.cod_sucursal);
             encabezado.total = Convert.ToInt32(conscabceraNC.total);
             encabezado.usuario = Ccf_usuario;  //Usuario que facturo
             encabezado.totalDet = listaConsDet.Count; //la cantidad de lineas del detalle de la factura
             encabezado.totalImp = 1; //la cantidad de lineas de los impuestos
             encabezado.ref_doc = "FVE"; //prefijo de la factura parapruebas
             encabezado.ref_fecha = conscabcera.fec_doc.ToString("yyyy-MM-dd");
-           encabezado.ref_num =Convert.ToInt64(consdetalle.nro_doca); //numero de la factura
+            encabezado.ref_num = Convert.ToInt64(consdetalle.nro_doca); //numero de la factura
             encabezado.ref_cufe = ModeloResQr.cufe; //CUFE Factura emitida
             encabezado.tlmotivodv = Convert.ToInt32(conscabceraNCMot.mot_nce);//NC PARA ANULAR FACTURA (2)
             return encabezado;
@@ -193,7 +168,7 @@ namespace CapaProceso.RestCliente
         public List<DetalleNC> LlenarDetalleNCJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_nro_trans)
         {
 
-            
+
             listaConsDet = ConsultaDeta.ConsultaDetalleFacura(Ccf_nro_trans);
             List<DetalleNC> detalle = new List<DetalleNC>();
             ModeloCotizacion = null;
@@ -229,7 +204,7 @@ namespace CapaProceso.RestCliente
                 detalle.Add(itemDetalle);
 
             }
-            
+
 
 
             return detalle;
@@ -267,8 +242,8 @@ namespace CapaProceso.RestCliente
             cliente = null;
             cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
 
-            ModeloUsuSucursal  = BuscarUsuarioSucursal (Ccf_cod_emp, Ccf_usuario);
-          
+            ModeloUsuSucursal = BuscarUsuarioSucursal(Ccf_cod_emp, Ccf_usuario);
+
             vendedor = null;
             vendedor = buscarCliente(Ccf_usuario, Ccf_cod_emp, "vendedores", conscabceraNC.cod_vendedor, Ven__cod_dgi);
 
@@ -282,10 +257,10 @@ namespace CapaProceso.RestCliente
             sucursal.idsuc = Convert.ToInt16(conscabceraNC.cod_sucursal.Trim());
             sucursal.idvendedor = 0;//Convert.ToInt64(conscabceraNC.cod_vendedor);
             sucursal.movil = "";
-            sucursal.mun = vendedor.ciudad_tit;            
+            sucursal.mun = vendedor.ciudad_tit;
             sucursal.razonsocial = vendedor.razon_social;
             sucursal.telefono1 = vendedor.tel_tit;
-            sucursal.telefono2 = ""; 
+            sucursal.telefono2 = "";
             return sucursal;
         }
 
@@ -298,7 +273,7 @@ namespace CapaProceso.RestCliente
 
             string Ven__cod_tit = conscabceraNC.cod_cliente;
             cliente = null;
-            cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit,  Ven__cod_dgi);
+            cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
 
             tercero.apli1 = cliente.primer_apellido;
             tercero.apl2 = cliente.segundo_apellido;
@@ -310,7 +285,7 @@ namespace CapaProceso.RestCliente
             tercero.nom1 = cliente.primer_nombre;
             tercero.nom2 = cliente.segundo_nombre;
             tercero.razonsocial = cliente.razon_social;
-            tercero.tdoc = Convert.ToInt16(cliente.cod_dgi);           
+            tercero.tdoc = Convert.ToInt16(cliente.cod_dgi);
             tercero.tipopersona = cliente.control_tit;
 
             return tercero;
@@ -320,7 +295,7 @@ namespace CapaProceso.RestCliente
         {
 
 
-            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit,  Ven__cod_dgi);
+            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
             int count = 0;
             cliente = null;
             foreach (modelowmspctitulares item in lista)
@@ -375,11 +350,11 @@ namespace CapaProceso.RestCliente
             return conscabcera;
         }
         //Bucar el motivo de anulacion de NC
-        
+
         public modelowmtfacturascab buscarMotNC(string Ccf_nro_trans)
         {
 
-            listaConsCabNCMot = ConsultaCabeNC.ConsultaNCTransPadre( Ccf_nro_trans);
+            listaConsCabNCMot = ConsultaCabeNC.ConsultaNCTransPadre(Ccf_nro_trans);
             int count = 0;
             conscabceraNCMot = null;
             foreach (modelowmtfacturascab item in listaConsCabNCMot)

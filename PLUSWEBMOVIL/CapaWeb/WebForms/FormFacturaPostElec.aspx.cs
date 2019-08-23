@@ -1284,7 +1284,7 @@ namespace CapaWeb.WebForms
                                 }
                                 /*Consultar la cabacecera de la factura sacar los datos e insertar en ins para q no se borre de la tabla wmt_facturas_pgs*/
 
-                                confirmarinsertar.nro_trans = conscabcera.nro_trans;
+                            confirmarinsertar.nro_trans = conscabcera.nro_trans;
                             confirmarinsertar.cod_emp = conscabcera.cod_emp;
                             confirmarinsertar.usuario_mod = AmUsrLog;
                             confirmarinsertar.fecha_mod = DateTime.Now;

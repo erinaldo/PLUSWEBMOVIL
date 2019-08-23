@@ -43,6 +43,7 @@
     <Compile Include="Modelos\modeloActualizarDatosTitular.cs" />
     <Compile Include="Modelos\modelocabecerafactura.cs" />
     <Compile Include="Modelos\modeloCodProcesoFactura.cs" />
+    <Compile Include="Modelos\modeloDenominacionesMoneda.cs" />
     <Compile Include="Modelos\ModeloDetalleFactura.cs" />
     <Compile Include="Modelos\ModeloDiferenciaPagos.cs" />
     <Compile Include="Modelos\modeloFacturaPgs.cs" />

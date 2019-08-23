@@ -8,7 +8,7 @@ using CapaDatos.Modelos;
 
 namespace CapaWeb.WebForms
 {
-    public partial class FormRespuestaJsonNC : System.Web.UI.Page
+    public partial class ListaRespuestaNDDS : System.Web.UI.Page
     {
         modelocabecerafactura cabecerafactura = new modelocabecerafactura();
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
@@ -57,12 +57,9 @@ namespace CapaWeb.WebForms
 
                     case "MTR":
                         Int64 ide = Int64.Parse(qs["Id"].ToString());
-                        Int64 lin = Int64.Parse(qs["linea"].ToString());
-                        
                         string nro_trans = ide.ToString();
-                        mensaje.Text = nro_trans;
-                        string linea = lin.ToString();
-                        CargarFormularioRespuestaDS(nro_trans, linea);
+                        //CargarFormularioRespuestaDS(nro_trans);
+                        CargarGrilla(nro_trans);
                        
                         break;
                 }
@@ -70,6 +67,63 @@ namespace CapaWeb.WebForms
             }
         }
 
+
+        private void CargarFormularioRespuestaDS(string nro_trans, string linea)
+        {
+
+            ListaModelorespuestaDs = consultaRespuestaDS.RespuestaLineaQr(nro_trans, linea);
+            int count = 0;
+            foreach (var item in ListaModelorespuestaDs)
+            {
+                ModeloResQr = item;
+                count++;
+                break;
+            }
+
+
+        }
+        private void CargarGrilla(string nro_trans)
+        {
+
+            ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
+            Grid.DataSource = ListaModelorespuestaDs;
+            Grid.DataBind();
+            Grid.Height = 100;
+        }
+
+        protected void Grid_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
+        {
+            // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
+            Grid.CurrentPageIndex = 0;
+            Grid.CurrentPageIndex = e.NewPageIndex;
+            CargarGrilla(nro_trans);
+        }
+
+        protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
+        {
+
+            //1 primero creo un objeto Clave/Valor de QueryString 
+            QueryString qs = new QueryString();
+            //Escoger opcion
+
+            int Id;
+            int linea;
+
+            switch (e.CommandName) //ultilizo la variable para la opcion
+            {
+
+                case "Mostrar": //ejecuta el codigo si el usuario ingresa el numero 3
+                    Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+                    linea = Convert.ToInt32(((Label)e.Item.Cells[2].FindControl("linea")).Text);
+                    qs.Add("TRN", "MTR");
+                    qs.Add("Id", Id.ToString());
+                    qs.Add("linea", linea.ToString());
+
+                    Response.Redirect("FormRespuestaJsonND.aspx" + Encryption.EncryptQueryString(qs).ToString());
+
+                    break;
+            }
+        }
         public void RecuperarCokie()
         {
             if (Request.Cookies["ComPwm"] != null)
@@ -89,30 +143,6 @@ namespace CapaWeb.WebForms
             }
         }
 
-        private void CargarFormularioRespuestaDS(string nro_trans, string linea)
-        {
-
-            ListaModelorespuestaDs = consultaRespuestaDS.RespuestaLineaQr(nro_trans, linea);
-            int count = 0;
-            foreach (var item in ListaModelorespuestaDs)
-            {
-                ModeloResQr = item;
-                count++;
-                break;
-            }
-
-            txt_nro_trans.Text = ModeloResQr.nro_trans;
-            txt_linea.Text = Convert.ToString(ModeloResQr.linea);
-            txt_id.Text = ModeloResQr.id;
-            txt_qrdata.Text = ModeloResQr.qrdata;
-            txt_xml.Text = ModeloResQr.xml;
-            txt_cufe.Text = ModeloResQr.cufe;
-            txt_error.Text = ModeloResQr.error;
-            txt_json.Text = ModeloResQr.json;
-            txt_result.Text = ModeloResQr.result;
-            FormularioRes.Visible = true;
-
-        }
         public QueryString ulrDesencriptada()
         {
             //1- guardo el Querystring encriptado que viene desde el request en mi objeto
@@ -122,15 +152,11 @@ namespace CapaWeb.WebForms
             qs = Encryption.DecryptQueryString(qs);
             return qs;
         }
+
         protected void Cancelar_Click(object sender, EventArgs e)
         {
- 
-            QueryString qs = new QueryString();
+            Response.Redirect("BuscarNotaDebito.aspx");
 
-            //2 voy a agregando los valores que deseo
-            qs.Add("TRN", "MTR");
-            qs.Add("Id", mensaje.Text);
-            Response.Redirect("ListaRespuestaNCDS.aspx" + Encryption.EncryptQueryString(qs).ToString());
         }
     }
 }

@@ -8,7 +8,7 @@ using CapaDatos.Modelos;
 
 namespace CapaWeb.WebForms
 {
-    public partial class FormRespuestaJsonNC : System.Web.UI.Page
+    public partial class FormRespuestaJsonND : System.Web.UI.Page
     {
         modelocabecerafactura cabecerafactura = new modelocabecerafactura();
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
@@ -58,18 +58,18 @@ namespace CapaWeb.WebForms
                     case "MTR":
                         Int64 ide = Int64.Parse(qs["Id"].ToString());
                         Int64 lin = Int64.Parse(qs["linea"].ToString());
-                        
+
                         string nro_trans = ide.ToString();
                         mensaje.Text = nro_trans;
                         string linea = lin.ToString();
                         CargarFormularioRespuestaDS(nro_trans, linea);
-                       
+
                         break;
                 }
 
             }
-        }
 
+        }
         public void RecuperarCokie()
         {
             if (Request.Cookies["ComPwm"] != null)
@@ -124,13 +124,14 @@ namespace CapaWeb.WebForms
         }
         protected void Cancelar_Click(object sender, EventArgs e)
         {
- 
+
+
             QueryString qs = new QueryString();
 
             //2 voy a agregando los valores que deseo
             qs.Add("TRN", "MTR");
             qs.Add("Id", mensaje.Text);
-            Response.Redirect("ListaRespuestaNCDS.aspx" + Encryption.EncryptQueryString(qs).ToString());
+            Response.Redirect("ListaRespuestaNDDS.aspx" + Encryption.EncryptQueryString(qs).ToString());
         }
     }
 }

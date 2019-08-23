@@ -219,11 +219,11 @@ namespace CapaWeb.WebForms
                         fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
                         //Consultar tasa de cambio
                         ConsultarTasaCambioCanorus();
-                       /* ModeloRolMod = BuscarRolModificar( AmUsrLog, ComPwm, "VTA", "NA", "N");
+                        ModeloRolMod = BuscarRolModificar( AmUsrLog, ComPwm, "VTA", "PR", "N");
                         if (ModeloRolMod.control_uso == "readonly=\"readonly\"")
                         {
                             precio.Enabled = false;
-                        }*/
+                        }
                         break;
 
                     case "UDP":

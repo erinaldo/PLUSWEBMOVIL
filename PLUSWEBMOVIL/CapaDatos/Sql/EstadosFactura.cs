@@ -19,7 +19,7 @@ namespace CapaDatos.Sql
             using (cn = conexion.genearConexion())
             {
                 List<modeloestadosfactura> lista = new List<modeloestadosfactura>();
-                string consulta = ("SELECT * FROM dbo.wmm_procesos_est WHERE cod_proceso = @proceso ORDER BY nom_estado ASC");
+                string consulta = ("SELECT * FROM wmm_procesos_est WHERE cod_proceso = @proceso ORDER BY nom_estado ASC");
                 SqlCommand conmand = new SqlCommand(consulta, cn);
 
                 conmand.Parameters.Add("@proceso", SqlDbType.VarChar).Value = EstF_proceso;
