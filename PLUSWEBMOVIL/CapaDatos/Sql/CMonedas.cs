@@ -50,7 +50,7 @@ namespace CapaDatos.Sql
             
         }
 
-        //Denominaciones de monedas maestro de  Denominacion wmm_denominacionMB pod ID
+        //Denominaciones de monedas maestro de  Denominacion wmm_denominacionMB por ID
         public List<modeloDenominacionesMoneda> ListaDenominacionUDP(string id)
         {
 
@@ -68,7 +68,7 @@ namespace CapaDatos.Sql
                 {
 
                     modeloDenominacionesMoneda item = new modeloDenominacionesMoneda();
-                    item.observaciones = Convert.ToString(dr["nombre"]) + "  " + Convert.ToString(dr["valor"]);
+                    item.observaciones = Convert.ToString(dr["nombre"]) + " DE " + Convert.ToString(dr["valor"]);
                     item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
                     item.nombre = Convert.ToString(dr["nombre"]);
                     item.valor = Convert.ToDecimal(dr["valor"]);
@@ -76,6 +76,45 @@ namespace CapaDatos.Sql
                     item.fecha_mod = Convert.ToString(dr["fecha_mod"]);
                     item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
                     item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                    lista.Add(item);
+
+                }
+
+                return lista;
+            }
+
+        }
+        //Denominaciones de monedas maestro de  Denominacion wmm_denominacionMB por cod_moneda
+        public List<modeloDenominacionesMoneda> ListaDenominacionEmpresa(string cod_moneda)
+        {
+
+            using (cn = conexion.genearConexion())
+            {
+                List<modeloDenominacionesMoneda> lista = new List<modeloDenominacionesMoneda>();
+                string consulta = ("SELECT  * FROM wmm_denominacionMB WHERE cod_moneda= @cod_moneda ");
+                SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                conmand.Parameters.Add("cod_moneda", SqlDbType.VarChar).Value = cod_moneda;
+
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                while (dr.Read())
+                {
+
+                    modeloDenominacionesMoneda item = new modeloDenominacionesMoneda();
+                    item.id = Convert.ToString(dr["id"]);
+                   
+                    item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
+                    item.nombre = Convert.ToString(dr["nombre"]);
+                    item.valor = Convert.ToDecimal(dr["valor"]);
+                    string valor1 = String.Format("{0:N0}", item.valor).ToString();
+                    item.observaciones = Convert.ToString(dr["nombre"]) + " DE " + valor1;
+                    item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                    item.fecha_mod = Convert.ToString(dr["fecha_mod"]);
+                    item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
+                    item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                    item.cantidad = 0;
+                    item.total = 0;
                     lista.Add(item);
 
                 }

@@ -22,6 +22,13 @@ namespace CapaProceso.Consultas
             lista = cmonedas.ListaBuscaCMonedas(MonB__usuario, MonB__cod_emp, MonB__moneda);            
             return lista;
         }
+        //Consulta lista de denominaciones por cod_moneda  wmm_denominacionM x empresa
+        public List<modeloDenominacionesMoneda> ConsultaDenominacionesEmpresa(string cod_moneda)
+        {
+            List<modeloDenominacionesMoneda> lista = new List<modeloDenominacionesMoneda>();
+            lista = cmonedas.ListaDenominacionEmpresa(cod_moneda);
+            return lista;
+        }
 
         //Consulta lista de denominaciones por cod_moneda  wmm_denominacionM
         public List<modeloDenominacionesMoneda> ConsultaDenominacionesMonedas()

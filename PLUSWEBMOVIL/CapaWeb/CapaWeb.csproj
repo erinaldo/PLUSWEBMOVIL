@@ -112,11 +112,13 @@
     <Content Include="Tema\css\StylePront.css" />
     <Content Include="WebForms\BuscaFacturasNCAn.aspx" />
     <Content Include="WebForms\BuscarArticuloNCDevolucion.aspx" />
+    <Content Include="WebForms\BuscarCierreCaja.aspx" />
     <Content Include="WebForms\BuscarFacturaPos.aspx" />
     <Content Include="WebForms\BuscarFacturasNC.aspx" />
     <Content Include="WebForms\BuscarFacturasNCFin.aspx" />
     <Content Include="WebForms\BuscarNotaDebito.aspx" />
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
+    <Content Include="WebForms\FormCierreCaja.aspx" />
     <Content Include="WebForms\FormDenominaciones.aspx" />
     <Content Include="WebForms\FormDetalleImpuestos.aspx" />
     <Content Include="WebForms\FormDocumentosElectronicos.aspx" />
@@ -211,6 +213,13 @@
     <Compile Include="WebForms\BuscarArticuloNCDevolucion.aspx.designer.cs">
       <DependentUpon>BuscarArticuloNCDevolucion.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\BuscarCierreCaja.aspx.cs">
+      <DependentUpon>BuscarCierreCaja.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarCierreCaja.aspx.designer.cs">
+      <DependentUpon>BuscarCierreCaja.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\BuscarFacturaPos.aspx.cs">
       <DependentUpon>BuscarFacturaPos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -245,6 +254,13 @@
     </Compile>
     <Compile Include="WebForms\FormBuscarNotaCredito.aspx.designer.cs">
       <DependentUpon>FormBuscarNotaCredito.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormCierreCaja.aspx.cs">
+      <DependentUpon>FormCierreCaja.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormCierreCaja.aspx.designer.cs">
+      <DependentUpon>FormCierreCaja.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormDenominaciones.aspx.cs">
       <DependentUpon>FormDenominaciones.aspx</DependentUpon>

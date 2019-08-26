@@ -42,10 +42,12 @@
     <Compile Include="Modelos\JsonRespuestaDE.cs" />
     <Compile Include="Modelos\modeloActualizarDatosTitular.cs" />
     <Compile Include="Modelos\modelocabecerafactura.cs" />
+    <Compile Include="Modelos\modeloCierreCaja.cs" />
     <Compile Include="Modelos\modeloCodProcesoFactura.cs" />
     <Compile Include="Modelos\modeloDenominacionesMoneda.cs" />
     <Compile Include="Modelos\ModeloDetalleFactura.cs" />
     <Compile Include="Modelos\ModeloDiferenciaPagos.cs" />
+    <Compile Include="Modelos\modeloEfectivoCaja.cs" />
     <Compile Include="Modelos\modeloFacturaPgs.cs" />
     <Compile Include="Modelos\modeloFacturasPagos.cs" />
     <Compile Include="Modelos\ModeloHost\modeloHostmail.cs" />
@@ -60,6 +62,7 @@
     <Compile Include="Modelos\ModelosPagosTitular.cs" />
     <Compile Include="Modelos\modeloSucuralempresa.cs" />
     <Compile Include="Modelos\ModeloTipoPagoTem.cs" />
+    <Compile Include="Modelos\modeloTotalPgsFacturas.cs" />
     <Compile Include="Modelos\modeloUsuariosucursal.cs" />
     <Compile Include="Modelos\modelowmtproformascab.cs" />
     <Compile Include="Modelos\modelobancos.cs" />
@@ -97,6 +100,7 @@
     <Compile Include="Sql\ActualizarDatosTitular.cs" />
     <Compile Include="Sql\Articulos.cs" />
     <Compile Include="Sql\CCostos.cs" />
+    <Compile Include="Sql\CierreCaja.cs" />
     <Compile Include="Sql\CMonedas.cs" />
     <Compile Include="Sql\CodProcesoFactura.cs" />
     <Compile Include="Sql\ConfirmarFactura.cs" />
@@ -107,6 +111,7 @@
     <Compile Include="Sql\DetalleProformaFac.cs" />
     <Compile Include="Sql\DetalleRemision.cs" />
     <Compile Include="Sql\Documento.cs" />
+    <Compile Include="Sql\EfectivoCaja.cs" />
     <Compile Include="Sql\Empresa.cs" />
     <Compile Include="Sql\EstadosFactura.cs" />
     <Compile Include="Sql\FacturACab.cs" />

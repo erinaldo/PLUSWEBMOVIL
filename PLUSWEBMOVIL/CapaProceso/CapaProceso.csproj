@@ -90,10 +90,12 @@
     <Compile Include="Consultas\CabezeraFactura.cs" />
     <Compile Include="Consultas\ConsultaActualizarTitular.cs" />
     <Compile Include="Consultas\ConsultaBancos.cs" />
+    <Compile Include="Consultas\ConsultaCierecaja.cs" />
     <Compile Include="Consultas\ConsultaCodProceso.cs" />
     <Compile Include="Consultas\Consultaconfirmarfactura.cs" />
     <Compile Include="Consultas\ConsultaDetalleProforma.cs" />
     <Compile Include="Consultas\ConsultaDetalleRemision.cs" />
+    <Compile Include="Consultas\ConsultaEfectivoCaja.cs" />
     <Compile Include="Consultas\ConsultaEmpresa.cs" />
     <Compile Include="Consultas\Consultaestadosfactura.cs" />
     <Compile Include="Consultas\ConsultaHost\ConsultaHostmail.cs" />

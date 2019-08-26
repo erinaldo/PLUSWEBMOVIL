@@ -38,7 +38,7 @@
                                         OnItemCommand="Grid_ItemCommand" AllowSorting="True" ShowFooter="True"
                                         OnPageIndexChanged="Grid_PageIndexChanged" PageSize="9" CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1">
                                         <Columns>
-                                              <asp:TemplateColumn HeaderText="Id"  >
+                                              <asp:TemplateColumn HeaderText="Id" visible="false" >
                                                 <ItemTemplate>
                                                     <span style="float: left;">
                                                         <asp:Label ID="id" runat="server" Text='<%#Eval("id") %>'></asp:Label>
@@ -65,7 +65,7 @@
                                             <asp:TemplateColumn HeaderText="VALOR">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="valor" runat="server" Text='<%#Eval("valor") %>'></asp:Label>
+                                                        <asp:Label ID="valor" runat="server" Text='<%#Eval("valor", "{0:N}") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>                                 
