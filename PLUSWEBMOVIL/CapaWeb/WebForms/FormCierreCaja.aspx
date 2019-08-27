@@ -50,7 +50,7 @@
                     </td>
                     <td>
 
-                        <asp:Label ID="lbl_fecha0" runat="server" class="Subtitulo1" Text="LUNES"></asp:Label>
+                        <asp:Label ID="lbl_dia" runat="server" class="Subtitulo1" Text="LUNES"></asp:Label>
 
                     </td>
                 </tr>

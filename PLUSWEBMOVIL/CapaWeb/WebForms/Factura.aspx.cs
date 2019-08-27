@@ -1299,10 +1299,11 @@ namespace CapaWeb.WebForms
              }
          }
 
+     
+       
 
 
-
-         protected void gv_Producto_ItemCommand(object source, DataGridCommandEventArgs e)
+        protected void gv_Producto_ItemCommand(object source, DataGridCommandEventArgs e)
          {
             if (Session["detalle"] != null)
             {

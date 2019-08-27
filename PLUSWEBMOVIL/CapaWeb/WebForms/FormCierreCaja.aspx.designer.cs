@@ -40,13 +40,13 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label lbl_fecha;
         
         /// <summary>
-        /// Control lbl_fecha0.
+        /// Control lbl_dia.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_fecha0;
+        protected global::System.Web.UI.WebControls.Label lbl_dia;
         
         /// <summary>
         /// Control mensaje.

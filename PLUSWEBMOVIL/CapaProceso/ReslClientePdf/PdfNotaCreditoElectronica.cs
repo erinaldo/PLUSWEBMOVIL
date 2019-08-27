@@ -19,12 +19,14 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
     public class PdfNotaCreditoElectronica
     {
         public modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+        public modelowmtfacturascab conscabceraTipo = new modelowmtfacturascab();
         public modelowmtfacturascab conscabceraNC = new modelowmtfacturascab();
         public modelowmtfacturascab conscabceraNCMot = new modelowmtfacturascab();
         public List<modelowmtfacturascab> listaConsCabNC = null;
         public List<modelowmtfacturascab> listaConsCabNCMot = null;
         public Consultawmtfacturascab ConsultaCabeNC = new Consultawmtfacturascab();
         public List<modelowmtfacturascab> listaConsCab = null;
+        public List<modelowmtfacturascab> listaConsCabTipo = null;
         public Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
         
         public ModeloDetalleFactura consdetalle = new ModeloDetalleFactura();
@@ -144,6 +146,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
         }
         public string generarPdf(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
+            string Tipo = null;
             //Buscar cab NC
             conscabcera = null;
             conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
@@ -156,9 +159,28 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             conscabceraNCMot = buscarMotNC(Ccf_nro_trans);
 
             //Buscar datos de factura
+            //Primero buscar q tipo pos, o vate
+            listaConsCabTipo = ConsultaCabe.ConsultaTipoFactura(conscabceraNCMot.nro_trans_padre.Trim());
+            conscabceraTipo = null;
+            foreach (modelowmtfacturascab item in listaConsCabTipo)
+            {
+
+                conscabceraTipo = item;
+
+            }
+            if (conscabceraTipo.tipo_nce.Trim() == "POSE")
+            {
+                 Tipo = "POSE";
+            }
+            if (conscabceraTipo.tipo_nce.Trim() == "VTAE")
+            {
+                Tipo = "VTAE";
+                
+            }
+
             //CABECERA NC
             conscabceraNC = null;
-            conscabceraNC = buscarCabezeraNC(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, "VTAE", conscabceraNCMot.nro_trans_padre.Trim());
+            conscabceraNC = buscarCabezeraNC(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Tipo, conscabceraNCMot.nro_trans_padre.Trim());
 
            
             decimal baseiva19 = 0;
@@ -511,11 +533,11 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
             foreach (ModeloDetalleFactura item in listaConsDet)
             {
-                
-                detalle.AddCell(new Paragraph( item.cod_articulo, fontText1));
-                detalle.AddCell(new Paragraph(item.nom_articulo, fontText1));
-                detalle.AddCell(new Paragraph(String.Format("{0:N3}", item.cantidad).ToString(), fontText1));
-                detalle.AddCell(new Paragraph(String.Format("{0:N5}", item.precio_unit).ToString(), fontText1));
+
+                detalle.DefaultCell.HorizontalAlignment = 0; detalle.AddCell(new Paragraph( item.cod_articulo, fontText1));
+                detalle.DefaultCell.HorizontalAlignment = 0; detalle.AddCell(new Paragraph(item.nom_articulo, fontText1));
+                detalle.DefaultCell.HorizontalAlignment = 2; detalle.AddCell(new Paragraph(String.Format("{0:N3}", item.cantidad).ToString(), fontText1));
+                detalle.AddCell(new Paragraph(String.Format("{0:N4}", item.precio_unit).ToString(), fontText1));
                 detalle.AddCell(new Paragraph(String.Format("{0:N}", (Math.Round( item.porc_descto, 2))).ToString(), fontText1));
                 detalle.AddCell(new Paragraph(String.Format("{0:N2}", (Math.Round(item.subtotal, 2))).ToString(), fontText1));
                 detalle.AddCell(new Paragraph(String.Format("{0:N2}",(Math.Round(item.total, 2))).ToString(), fontText1));

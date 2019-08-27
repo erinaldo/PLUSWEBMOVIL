@@ -40,8 +40,9 @@ namespace CapaWeb.WebForms
             }
             if (!IsPostBack)
             {
+               
                 lbl_fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
-               // txt_diaA.Text = DateTime.Today.DayOfWeek;
+                lbl_dia.Text = DateTime.Today.ToString("dddd");               
                 CargarGrilla();
                 llenarCampos(lbl_fecha.Text);
             }

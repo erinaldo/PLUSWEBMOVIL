@@ -217,6 +217,11 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 2;
             tabladetaEmpresa.AddCell(cell);
 
+            cell = new PdfPCell(new Phrase(Modeloempresa.nom_emp, fontText));
+            cell.Border = 0;
+            cell.HorizontalAlignment = 2;
+            tabladetaEmpresa.AddCell(cell);
+
             cell = new PdfPCell(new Phrase("NIT " + Modeloempresa.nro_dgi2 + "-" + Modeloempresa.nro_dgi1,fontText));
             cell.Border = 0;
             cell.HorizontalAlignment = 2;
@@ -344,7 +349,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 0;
             tablaCab.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph("O.COMPRA/PEDIDO: " + conscabcera.ocompra, fontText));
+            cell = new PdfPCell(new Paragraph("O.COMPRA/PEDIDO: " + conscabcera.ocompra + "/" +conscabcera.nro_pedido, fontText));
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;
@@ -461,11 +466,12 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
             foreach (ModeloDetalleFactura item in listaConsDet)
             {
-                
-                detalle.AddCell(new Paragraph( item.cod_articulo, fontText1));
-                detalle.AddCell(new Paragraph(item.nom_articulo, fontText1));
-                detalle.AddCell(new Paragraph(String.Format("{0:N3}", item.cantidad).ToString(), fontText1));
-                detalle.AddCell(new Paragraph(String.Format("{0:N5}", item.precio_unit).ToString(), fontText1));
+
+                 detalle.DefaultCell.HorizontalAlignment = 0; detalle.AddCell(new Paragraph( item.cod_articulo, fontText1));
+                detalle.DefaultCell.HorizontalAlignment = 0; detalle.AddCell(new Paragraph(item.nom_articulo, fontText1));
+               
+                detalle.DefaultCell.HorizontalAlignment = 2; detalle.AddCell(new Paragraph(String.Format("{0:N3}", item.cantidad).ToString(), fontText1));
+                detalle.AddCell(new Paragraph(String.Format("{0:N4}", item.precio_unit).ToString(), fontText1));
                 detalle.AddCell(new Paragraph(String.Format("{0:N}", (Math.Round( item.porc_descto, 2))).ToString(), fontText1));
                 detalle.AddCell(new Paragraph(String.Format("{0:N2}", (Math.Round(item.subtotal, 2))).ToString(), fontText1));
                 detalle.AddCell(new Paragraph(String.Format("{0:N2}",(Math.Round(item.total, 2))).ToString(), fontText1));

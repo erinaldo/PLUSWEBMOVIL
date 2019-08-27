@@ -286,7 +286,7 @@ namespace CapaWeb.WebForms
                             Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
                             break;
                         default:
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA "+ estadoM  + "')+ error;</script>");
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('FACTURA ESTÁ "+ estadoM  + ", NO SE PUEDE EDITAR')+ error;</script>");
                             break;
                         
                     }
@@ -320,11 +320,11 @@ namespace CapaWeb.WebForms
                     {
                         case "CONTABILIZADO":
 
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('LA  FACTURA ESTA EN ESTADO " + estadoIM + " , POR FAVOR ANULARLA MEDIANTE NOTA DE CRÉDITO')+ error;</script>");
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('LA  FACTURA ESTÁ EN ESTADO " + estadoIM + " , POR FAVOR ANULARLA MEDIANTE NOTA DE CRÉDITO')+ error;</script>");
                             break;
                         case "FINALIZADO":
 
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('LA  FACTURA EN ESTADO " + estadoIM + " , POR FAVOR ANULARLA MEDIANTE NOTA DE CRÉDITO')+ error;</script>");
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('LA  FACTURA ESTÁ EN ESTADO " + estadoIM + " , POR FAVOR ANULARLA MEDIANTE NOTA DE CRÉDITO')+ error;</script>");
                             break;
                         default:
                             Encabezado encabezado = new Encabezado();
