@@ -35,6 +35,11 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
         public Consultawmtfacturasdet ConsultaDeta = new Consultawmtfacturasdet();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public ConsultawmspctctrxCotizacion consultaMoneda = new ConsultawmspctctrxCotizacion();
+
+        modelowmspcmonedas DecimalesMoneda = new modelowmspcmonedas();
+        Consultawmspcmonedas ConsultaCMonedas = new Consultawmspcmonedas();
+        List<modelowmspcmonedas> listaMonedas = null;
+       
         public ConsultaBancos consultabanco = new ConsultaBancos();
         public Consultaparamcomercial consultaComercial = new Consultaparamcomercial();
         public ConsultaEmpresa consultaEmpresa = new ConsultaEmpresa();
@@ -67,6 +72,24 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
         public string Ccf_aniof = null;
         public string nro_trans = null;
 
+
+        //Buscar cantidad de decimales q se va ausar x tipo de moneda
+        public modelowmspcmonedas BuscarDecimales(string usuario, string empresa, string cod_moneda)
+        {
+
+            listaMonedas = ConsultaCMonedas.ConsultaCMonedas(usuario, empresa, cod_moneda);
+
+            DecimalesMoneda = null;
+            foreach (modelowmspcmonedas item in listaMonedas)
+            {
+
+                DecimalesMoneda = item;
+                break;
+
+            }
+
+            return DecimalesMoneda;
+        }
         public JsonRespuestaNC BuscarRespuestaDS(string nro_trans)
         {
             ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
@@ -182,7 +205,10 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             conscabceraNC = null;
             conscabceraNC = buscarCabezeraNC(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Tipo, conscabceraNCMot.nro_trans_padre.Trim());
 
-           
+            //Cantidad de decimales
+            DecimalesMoneda = null;
+            DecimalesMoneda = BuscarDecimales(Ccf_usuario, Ccf_cod_emp, conscabcera.cod_moneda.Trim());
+
             decimal baseiva19 = 0;
             decimal iva19 = 0;
             decimal baseiva5 = 0;
@@ -536,11 +562,19 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
                 detalle.DefaultCell.HorizontalAlignment = 0; detalle.AddCell(new Paragraph( item.cod_articulo, fontText1));
                 detalle.DefaultCell.HorizontalAlignment = 0; detalle.AddCell(new Paragraph(item.nom_articulo, fontText1));
-                detalle.DefaultCell.HorizontalAlignment = 2; detalle.AddCell(new Paragraph(String.Format("{0:N3}", item.cantidad).ToString(), fontText1));
-                detalle.AddCell(new Paragraph(String.Format("{0:N4}", item.precio_unit).ToString(), fontText1));
-                detalle.AddCell(new Paragraph(String.Format("{0:N}", (Math.Round( item.porc_descto, 2))).ToString(), fontText1));
-                detalle.AddCell(new Paragraph(String.Format("{0:N2}", (Math.Round(item.subtotal, 2))).ToString(), fontText1));
-                detalle.AddCell(new Paragraph(String.Format("{0:N2}",(Math.Round(item.total, 2))).ToString(), fontText1));
+                decimal cantidadP = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, item.cantidad);
+                detalle.DefaultCell.HorizontalAlignment = 2; detalle.AddCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, cantidadP), fontText1));
+                decimal precio_un = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, item.precio_unit);
+                detalle.DefaultCell.HorizontalAlignment = 2; detalle.AddCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo_pu, precio_un), fontText1));
+
+                decimal porc_des = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, item.porc_descto);
+                detalle.DefaultCell.HorizontalAlignment = 2; detalle.AddCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, porc_des), fontText1));
+
+                decimal subtotal = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, item.subtotal);
+                detalle.DefaultCell.HorizontalAlignment = 2; detalle.AddCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, subtotal), fontText1));
+                
+                decimal total = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, item.total);
+                detalle.DefaultCell.HorizontalAlignment = 2; detalle.AddCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, total), fontText1)); 
 
             }
 
@@ -638,7 +672,8 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             PdfPTable numtot = new PdfPTable(1);//cantidad de columnas que va tener la tabla
             numtot.WidthPercentage = 100;
 
-            cell = new PdfPCell(new Paragraph((String.Format("{0:N}",  conscabcera.suman).ToString()),fontText));
+            decimal suman = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, conscabcera.suman);
+            cell = new PdfPCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, suman), fontText));
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;
@@ -646,7 +681,8 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 2;
             numtot.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph((String.Format("{0:N}", conscabcera.descuento).ToString()), fontText));
+            decimal descuento = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, conscabcera.descuento);
+            cell = new PdfPCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, descuento), fontText));
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;
@@ -654,7 +690,8 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 2;
             numtot.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph((String.Format("{0:N}", conscabcera.subtotal).ToString()), fontText));
+            decimal subtotal1 = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, conscabcera.subtotal);
+            cell = new PdfPCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, subtotal1), fontText));
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;
@@ -662,7 +699,8 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 2;
             numtot.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph((String.Format("{0:N}", baseiva19).ToString()), fontText));
+            decimal base19 = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, baseiva19);
+            cell = new PdfPCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, base19), fontText));
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;
@@ -670,7 +708,8 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 2;
             numtot.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph((String.Format("{0:N}", baseiva5).ToString()), fontText));
+            decimal base5 = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, baseiva5);
+            cell = new PdfPCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, base5), fontText));
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;
@@ -678,7 +717,8 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 2;
             numtot.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph((String.Format("{0:N}", iva19).ToString()), fontText));
+            decimal tiva19 = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, iva19);
+            cell = new PdfPCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, tiva19), fontText));
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;
@@ -686,7 +726,8 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 2;
             numtot.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph((String.Format("{0:N}", iva5).ToString()),fontText));
+            decimal tiva5 = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, iva5);
+            cell = new PdfPCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, tiva5), fontText));
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;
@@ -701,8 +742,8 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
              cell = total((String.Format("{0:N}", conscabcera.iva).ToString()));
              cell.HorizontalAlignment = 2;
              numtot.AddCell(cell);*/
-
-            cell = new PdfPCell(new Paragraph((String.Format("{0:N}", conscabcera.total).ToString()), fontText));
+            decimal Total = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, conscabcera.total);
+            cell = new PdfPCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, Total), fontText));
             cell.BorderWidthBottom = 0;
             cell.BorderWidthLeft = 0;
             cell.BorderWidthTop = 0;
