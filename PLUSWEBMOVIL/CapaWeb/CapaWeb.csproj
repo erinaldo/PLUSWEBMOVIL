@@ -177,7 +177,6 @@
     <Content Include="WebForms\CrearCliente.aspx" />
     <Content Include="WebForms\Factura.aspx" />
     <Content Include="WebForms\FormListaSucursalEmpresa.aspx" />
-    <Content Include="WebForms\FormNotaCredito.aspx" />
     <Content Include="WebForms\FormNotaCreditoDevolucion.aspx" />
     <Content Include="WebForms\FormNotaCreditoFin.aspx" />
     <Content Include="WebForms\FormNotaCreditoFinanciera.aspx" />
@@ -355,13 +354,6 @@
     </Compile>
     <Compile Include="WebForms\Factura.aspx.designer.cs">
       <DependentUpon>Factura.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WebForms\FormNotaCredito.aspx.cs">
-      <DependentUpon>FormNotaCredito.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebForms\FormNotaCredito.aspx.designer.cs">
-      <DependentUpon>FormNotaCredito.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormNotaCreditoDevolucion.aspx.cs">
       <DependentUpon>FormNotaCreditoDevolucion.aspx</DependentUpon>

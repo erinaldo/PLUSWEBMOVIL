@@ -76,7 +76,7 @@
                     </tr>
                 <tr>
                     <td>
-                        <asp:ImageButton ID="ImgAyuda" onclick="ImgAyuda_Click" runat="server" src="../Tema/imagenes/help.png" width="16" height="16" />
+                       
                         <asp:Label ID="lblAyuda" runat="server"  CssClass="Titulo" Text="Facturas de Venta POS"></asp:Label>
                         
                         </td>

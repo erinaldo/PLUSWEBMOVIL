@@ -7,7 +7,7 @@
                         <td valign="top">
                             <table width="100%" border="0" cellspacing="0">
                                 <tr>
-                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="FormBuscarNotaCredito.aspx">Nota Crédito</a>---&gt;Nuevo</td>
+                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="FormBuscarNotaCredito.aspx">Nota Débito</a>---&gt;Nuevo</td>
                                 </tr>
                             </table>
                         </td>
