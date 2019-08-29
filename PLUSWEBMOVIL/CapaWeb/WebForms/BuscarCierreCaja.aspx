@@ -49,14 +49,11 @@
                         
                         
                         <tr valign="top">
-                         <td width="20%" class="busqueda">Fecha inicio:</td>
+                         <td width="20%" class="busqueda">Fecha Cierre:</td>
                           <td>
                                 <asp:TextBox ID="fechainicio" type="date"  Width="202"   runat="server"></asp:TextBox>
                             </td>
-                            <td width="20%" class="busqueda">Fecha fin:</td>
-                          <td>
-                                <asp:TextBox ID="fechafin" type="date"  Width="202"  runat="server"></asp:TextBox>
-                            </td>
+                           
 
                              <td aling="rigth">
                                  <asp:Button ID="Buscar" runat="server" onclick="Buscar_Click" class="botones" Text="Buscar" /></td>

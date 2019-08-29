@@ -5,7 +5,7 @@ using CapaProceso.Modelos;
 using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
 using CapaDatos.Modelos;
-
+using System.Globalization;
 
 namespace CapaWeb.WebForms
 {
@@ -42,7 +42,7 @@ namespace CapaWeb.WebForms
             {
                
                 lbl_fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
-                lbl_dia.Text = DateTime.Today.ToString("dddd");               
+                lbl_dia.Text =  DateTime.Today.ToString("dddd", new CultureInfo("es-ES")).ToUpper();               
                 CargarGrilla();
                 llenarCampos(lbl_fecha.Text);
             }
@@ -180,13 +180,20 @@ namespace CapaWeb.WebForms
                 item.Cells[4].Text = acumulador.ToString();
 
             }
-            TextBox1.Text = acumulador.ToString();
+            txt_saldo_caja.Text = acumulador.ToString();
         }
 
-        
+        protected void InsertarTotales()
+        {
+            //wmt_cierre_resumenaja
+
+            //wmt_efectivoCaja
+        }
         protected void CalcularTotal()
         {
+            //Calcula datos de la grilla
             decimal acumulador = 0;
+            decimal totalDenominacion = 0;
 
             foreach (GridViewRow item in Grid.Rows)
             {
@@ -195,9 +202,17 @@ namespace CapaWeb.WebForms
                 TextBox cantidad = item.FindControl("cantidad") as TextBox;
                 Decimal.TryParse(valor.Text, out valor1);
                 acumulador = Convert.ToDecimal(cantidad.Text) * valor1;
+                totalDenominacion += acumulador;
                 item.Cells[4].Text = acumulador.ToString();
 
             }
+            txt_valor_caja.Text = totalDenominacion.ToString();
+            //Calcula datos de los txt
+            
+            decimal  Total_saldo = Convert.ToDecimal(txt_ingreso_facturas.Text) + Convert.ToDecimal(txt_ingreso_nventas.Text) + Convert.ToDecimal(txt_valor_id.Text);
+            decimal saldos_neg = Convert.ToDecimal(txt_pefectivo_facturas.Text )+ Convert.ToDecimal(txt_pefectivo_otros.Text) + Convert.ToDecimal(txt_depositos.Text);
+            txt_saldo_caja.Text = Convert.ToString(Total_saldo - saldos_neg);
+
         }
 
 

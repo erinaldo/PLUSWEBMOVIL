@@ -72,7 +72,7 @@
                         <td valign="top">
                             <table width="100%" border="0" cellspacing="0">
                                 <tr>
-                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="BuscarFacturasNC.aspx">Nota de Crédito</a>---&gt;Nuevo</td>
+                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="FormBuscarNotaCredito.aspx">Nota de Crédito</a>---&gt;Nuevo</td>
                                 </tr>
                             </table>
                         </td>
@@ -119,19 +119,19 @@
                                 </td>
 
                                 <td class="textos">
-                                    <asp:TextBox ID="dniCliente" required="required" placeholder="Buscar..." size="25" title="Ingrese el cliente" runat="server" AutoPostBack="True" OnTextChanged="dniCliente_TextChanged"></asp:TextBox>
+                                    <asp:TextBox ID="dniCliente" required="required" placeholder="Buscar..."  Width="202" title="Ingrese el cliente" runat="server" AutoPostBack="True" OnTextChanged="dniCliente_TextChanged"></asp:TextBox>
 
 
                                 </td>
                                 <td class="textos" colspan="2">
-                                    <asp:Label ID="cod_tit" required="required" runat="server" Text="" Visible="False"></asp:Label>
-                                    <asp:TextBox required="required" ID="nombreCliente" class="textos" size="44" MaxLength="50" runat="server" ReadOnly="true"></asp:TextBox>
+
+                                    <asp:TextBox required="required" ID="nombreCliente" class="textos" Width="325" MaxLength="50" runat="server" ReadOnly="true"></asp:TextBox>
                                 </td>
                                  <td align="right" nowrap="nowrap" class="busqueda">
                                     <div align="left">Teléfono:</div>
                                 </td>
                                 <td class="textos">
-                                    <asp:TextBox required="required" ID="fonoCliente" class="textos" size="27" runat="server" ReadOnly="true"></asp:TextBox>
+                                    <asp:TextBox required="required" ID="fonoCliente" class="textos" Width="206" runat="server" ReadOnly="true"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr valign="top">

@@ -128,6 +128,7 @@
     <Compile Include="Consultas\Consultawmtfacturasdet.cs" />
     <Compile Include="Consultas\ConsultawmtrespuestaDS.cs" />
     <Compile Include="Consultas\ConsultawmusuarioSucursal.cs" />
+    <Compile Include="Consultas\ConusltaDetalleCajaEfectivo.cs" />
     <Compile Include="Consultas\Cosnsultawmspcarticulos.cs" />
     <Compile Include="Consultas\DetalleFactura.cs" />
     <Compile Include="Consultas\EnviarCorreo.cs" />

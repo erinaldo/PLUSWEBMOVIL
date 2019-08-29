@@ -36,7 +36,7 @@ namespace CapaWeb.WebForms
                 
 
                 fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
-                fechafin.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                
 
             }
 

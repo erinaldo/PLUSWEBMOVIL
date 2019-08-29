@@ -449,7 +449,15 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             cell.HorizontalAlignment = 0;
             tablaCab.AddCell(cell);
 
-            
+            cell = new PdfPCell(new Paragraph());
+            cell.BorderWidthBottom = 0;
+            cell.BorderWidthLeft = 0;
+            cell.BorderWidthTop = 0;
+            cell.BorderWidthRight = 1;
+            cell.Colspan = 1;
+            cell.HorizontalAlignment = 0;
+            tablaCab.AddCell(cell);
+
 
             cell = new PdfPCell(tablaCab);//this line made the difference
 

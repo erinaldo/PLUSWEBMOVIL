@@ -150,6 +150,88 @@ namespace CapaWeb.WebForms
                 break;
             }
 
+            if (!IsPostBack)
+            {
+                Session.Remove("listaClienteFac");
+                Session.Remove("listaFacturas");
+                Session.Remove("listaProducto");
+                Session.Remove("articulo");
+                Session.Remove("sumaSubtotal");
+                Session.Remove("sumaTotal");
+                Session.Remove("sumaIva");
+                Session.Remove("sumaDescuento");
+                Session.Remove("cliente");
+                Session.Remove("detalle");
+                Session.Remove("sumaBase19");
+                Session.Remove("sumaBase15");
+                Session.Remove("sumaIva19");
+                Session.Remove("sumaIva15");
+
+
+                QueryString qs = ulrDesencriptada();
+
+                //Recibir opciones
+                switch (qs["TRN"].Substring(0, 3))
+                {
+                    case "AFA":
+                        cargarListaDesplegables();
+                        Session.Remove("listaCliente");
+                        Session.Remove("listaArticulos");
+                        Session.Remove("articulo");
+                        Session.Remove("ListaFacturas");
+                        Session.Remove("valor_asignado");
+
+                        Session["Tipo"] = "Anular";
+                        DateTime hoy1 = DateTime.Today;
+                        fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+
+                        ConsultarTasaCambioCanorus();
+
+                        break;
+
+                    case "INS":
+
+                        Session.Remove("listaCliente");
+                        Session.Remove("valor_asignado");
+                        Session.Remove("Tipo");
+                        Session.Remove("articulo");
+                        Session.Remove("ListaFacturas");
+                        Session.Remove("valor_asignado");
+                        cargarListaDesplegables();
+                        DateTime hoy = DateTime.Today;
+                        fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                        //Consultar tasa de cambio
+                        ConsultarTasaCambioCanorus();
+                        SetearCampos();
+
+                        /* ModeloRolMod = BuscarRolModificar( AmUsrLog, ComPwm, "VTA", "NA", "N");
+                         if (ModeloRolMod.control_uso == "readonly=\"readonly\"")
+                         {
+                             precio.Enabled = false;
+                         }*/
+                        break;
+
+                    case "UDP":
+                        Session.Remove("Tipo");
+                        Int64 id = Int64.Parse(qs["Id"].ToString());
+                        Session["valor_asignado"] = id.ToString();
+                        txt_nro_trans_padre.Text = id.ToString();
+                        cargarListaDesplegables();
+                        LlenarFactura();
+
+                        break;
+
+                    case "VER":
+                        Int64 ide = Int64.Parse(qs["Id"].ToString());
+                        Session["valor_asignado"] = ide.ToString();
+
+                        cargarListaDesplegables();
+                        LlenarFactura();
+                        BloquearNCVer();
+                        break;
+                }
+
+            }
 
             if (Session["cliente"] != null)
             {
@@ -225,89 +307,30 @@ namespace CapaWeb.WebForms
                 string nro_trans = conscabcera.nro_trans;
                 lbl_trx.Text = null;
                 lbl_trx.Visible = false;
-              
+
+
             }
 
 
             ConsultarTasaCambioCanorus();
 
-            if (!IsPostBack)
-            {
-                Session.Remove("listaClienteFac");
-                Session.Remove("listaFacturas");
-                Session.Remove("listaProducto");
-                Session.Remove("articulo");
-                Session.Remove("sumaSubtotal");
-                Session.Remove("sumaTotal");
-                Session.Remove("sumaIva");
-                Session.Remove("sumaDescuento");
-                Session.Remove("cliente");
-                Session.Remove("detalle");
-                Session.Remove("sumaBase19");
-                Session.Remove("sumaBase15");
-                Session.Remove("sumaIva19");
-                Session.Remove("sumaIva15");
-
-
-                QueryString qs = ulrDesencriptada();
-
-                //Recibir opciones
-                switch (qs["TRN"].Substring(0, 3))
-                {
-                    case "AFA":
-                        cargarListaDesplegables();
-                        Session.Remove("listaCliente");
-                        Session.Remove("listaArticulos");
-                        
-                        Session.Remove("valor_asignado");
-                        Session["Tipo"] = "Anular";
-                        DateTime hoy1 = DateTime.Today;
-                        fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
-
-                        ConsultarTasaCambioCanorus();
-
-                        break;
-
-                    case "INS":
-
-                        Session.Remove("listaCliente");
-                        Session.Remove("valor_asignado");
-                        Session.Remove("Tipo");
-                        cargarListaDesplegables();
-                        DateTime hoy = DateTime.Today;
-                        fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
-                        //Consultar tasa de cambio
-                        ConsultarTasaCambioCanorus();
-                        /* ModeloRolMod = BuscarRolModificar( AmUsrLog, ComPwm, "VTA", "NA", "N");
-                         if (ModeloRolMod.control_uso == "readonly=\"readonly\"")
-                         {
-                             precio.Enabled = false;
-                         }*/
-                        break;
-
-                    case "UDP":
-                        Session.Remove("Tipo");
-                        Int64 id = Int64.Parse(qs["Id"].ToString());
-                        Session["valor_asignado"] = id.ToString();
-                        txt_nro_trans_padre.Text = id.ToString();
-                        cargarListaDesplegables();
-                        LlenarFactura();
-
-                        break;
-
-                    case "VER":
-                        Int64 ide = Int64.Parse(qs["Id"].ToString());
-                        Session["valor_asignado"] = ide.ToString();
-
-                        cargarListaDesplegables();
-                        LlenarFactura();
-                        BloquearNCVer();
-                        break;
-                }
-
-            }
+          
         }
 
+        protected void SetearCampos()
+        {
+            /*Campos para insertar detalle de la nc*/
+            /*Campos para insertar detalle de la nc*/
+            txt_nro_factura.Text = null;
+            txt_cod_docum.Text = null;
+            txt_serie_docum.Text = null;
+            txt_nro_docum.Text = null;
+            txt_nro_trans_padre.Text = null;
+            txt_subtotal_factura.Text = null;
+            txt_total_factura.Text = null;
+            txt_iva_factura.Text = null;
+            txt_descuento_factura.Text = null;
+        }
         protected void BloquearDatosFactura()
         {
             //Visible Datos Factura

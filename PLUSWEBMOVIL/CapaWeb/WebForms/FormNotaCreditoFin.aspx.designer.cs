@@ -40,15 +40,6 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox dniCliente;
         
         /// <summary>
-        /// Control cod_tit.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label cod_tit;
-        
-        /// <summary>
         /// Control nombreCliente.
         /// </summary>
         /// <remarks>

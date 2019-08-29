@@ -13,6 +13,90 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
 
+        //Insertar cierre en tabla wmt_cierre_resumencaja
+        public string InsertarEfectivoCaja(modeloEfectivoCaja Efectivocaja)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    string insert = "INSERT INTO  wmt_efectivoCaja (denominacionMBId,  valor,cantidad,total, usuario_mod, fecha_mod,fecha_efe) VALUES (@denominacionMBId,  @valor,@cantidad,@total, @usuario_mod, @fecha_mod,@fecha_efe)";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+                    conmand.Parameters.Add("@denominacionMBId", SqlDbType.VarChar).Value = Efectivocaja.denominacionMId;
+                    conmand.Parameters.Add("@valor", SqlDbType.VarChar).Value = Efectivocaja.valor;
+                    conmand.Parameters.Add("@cantidad", SqlDbType.VarChar).Value = Efectivocaja.cantidad;
+                    conmand.Parameters.Add("@total", SqlDbType.Decimal).Value = Efectivocaja.total;
+                    conmand.Parameters.Add("@usuario_mod", SqlDbType.VarChar).Value = Efectivocaja.usuario_mod;
+                    conmand.Parameters.Add("@fecha_mod", SqlDbType.DateTime).Value = Efectivocaja.fecha_mod;
+                    conmand.Parameters.Add("@fecha_efe", SqlDbType.VarChar).Value = Efectivocaja.fecha_efe;
+
+                    int dr = conmand.ExecuteNonQuery();
+                    return "Efectivo Caja guardada correctamente";
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                return e.ToString();
+            }
+
+        }
+        //Actualizar cierre en tabla wmt_cierre_resumencaja
+        public string ActualizarEfectivoCaja(modeloEfectivoCaja Efectivocaja)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    string insert = "UPDATE  wmt_efectivoCaja SET denominacionMBId =@denominacionMBId,  valor =@valor,cantidad =@cantidad,total =@total, usuario_mod =@usuario_mod , fecha_mod = @fecha_mod WHERE id= @id";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+                    conmand.Parameters.Add("@denominacionMBId", SqlDbType.VarChar).Value = Efectivocaja.denominacionMId;
+                    conmand.Parameters.Add("@valor", SqlDbType.VarChar).Value = Efectivocaja.valor;
+                    conmand.Parameters.Add("@cantidad", SqlDbType.VarChar).Value = Efectivocaja.cantidad;
+                    conmand.Parameters.Add("@total", SqlDbType.Decimal).Value = Efectivocaja.total;
+                    conmand.Parameters.Add("@usuario_mod", SqlDbType.VarChar).Value = Efectivocaja.usuario_mod;
+                    conmand.Parameters.Add("@fecha_mod", SqlDbType.DateTime).Value = Efectivocaja.fecha_mod;
+                    conmand.Parameters.Add("@fecha_efe", SqlDbType.VarChar).Value = Efectivocaja.fecha_efe;
+                    conmand.Parameters.Add("@id", SqlDbType.VarChar).Value = Efectivocaja.id;
+
+                    int dr = conmand.ExecuteNonQuery();
+                    return "Efectivo Caja guardada correctamente";
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                return e.ToString();
+            }
+
+        }
+
+        //Eliminar cierre en tabla wmt_cierre_resumencaja
+        public string EliminarEfectivoCaja(modeloEfectivoCaja Efectivocaja)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    string insert = "DELETE  wmt_efectivoCaja  WHERE id= @id";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+
+                    conmand.Parameters.Add("@id", SqlDbType.VarChar).Value = Efectivocaja.id;
+
+                    int dr = conmand.ExecuteNonQuery();
+                    return "Efectivo  Caja eliminado correctamente";
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                return e.ToString();
+            }
+
+        }
 
         //Trae total de pagos en efectivo por facturas pos, pose
         public List<modeloTotalPgsFacturas> ListaEfectivoCF(string fecha)
@@ -58,7 +142,6 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("fecha", SqlDbType.VarChar).Value = fecha;
 
                 SqlDataReader dr = conmand.ExecuteReader();
-
                 while (dr.Read())
                 {
 
@@ -67,6 +150,7 @@ namespace CapaDatos.Sql
 
                     item.recibido = Convert.ToString(dr["recibido"]);
                     item.vueltos = Convert.ToString(dr["vueltos"]);
+               
 
                     lista.Add(item);
 
@@ -76,5 +160,7 @@ namespace CapaDatos.Sql
             }
 
         }
+
+
     }
 }

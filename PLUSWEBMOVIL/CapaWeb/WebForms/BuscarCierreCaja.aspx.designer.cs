@@ -58,15 +58,6 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox fechainicio;
         
         /// <summary>
-        /// Control fechafin.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fechafin;
-        
-        /// <summary>
         /// Control Buscar.
         /// </summary>
         /// <remarks>
