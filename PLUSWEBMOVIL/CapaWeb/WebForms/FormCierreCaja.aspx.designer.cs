@@ -67,6 +67,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label mensaje1;
         
         /// <summary>
+        /// Control lbl_idc.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_idc;
+        
+        /// <summary>
         /// Control txt_valor_id.
         /// </summary>
         /// <remarks>
@@ -74,6 +83,15 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txt_valor_id;
+        
+        /// <summary>
+        /// Control lbl_2.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_2;
         
         /// <summary>
         /// Control txt_ingreso_facturas.
@@ -94,6 +112,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.ImageButton btn_ingreso_facturas;
         
         /// <summary>
+        /// Control lbl_3.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_3;
+        
+        /// <summary>
         /// Control txt_ingreso_nventas.
         /// </summary>
         /// <remarks>
@@ -110,6 +137,15 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton btn_ingreso_nventas;
+        
+        /// <summary>
+        /// Control lbl_4.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_4;
         
         /// <summary>
         /// Control txt_pefectivo_facturas.
@@ -130,6 +166,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.ImageButton btn_pefectivo_facturas;
         
         /// <summary>
+        /// Control lbl_5.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_5;
+        
+        /// <summary>
         /// Control txt_pefectivo_otros.
         /// </summary>
         /// <remarks>
@@ -137,6 +182,15 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txt_pefectivo_otros;
+        
+        /// <summary>
+        /// Control lbl_6.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_6;
         
         /// <summary>
         /// Control txt_depositos.
@@ -227,5 +281,14 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button Btn_Calcular;
+        
+        /// <summary>
+        /// Control btn_cancelar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_cancelar;
     }
 }

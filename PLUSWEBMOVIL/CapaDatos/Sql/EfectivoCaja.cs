@@ -13,6 +13,102 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
 
+        //Buscar por fecha
+        public Int64 BuscarEfectivoCajaSecuencial(string fecha_efe)
+        {
+
+            Int64 secuencial = 0;
+
+            using (cn = conexion.genearConexion())
+            {
+                string insert = "SELECT TOP 1  secuencial FROM wmt_efectivoCaja where fecha_efe = @fecha_efe ORDER BY wmt_efectivoCaja.secuencial DESC ";
+                SqlCommand conmand = new SqlCommand(insert, cn);
+
+                conmand.Parameters.Add("@fecha_efe", SqlDbType.VarChar).Value = fecha_efe;
+
+
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    secuencial = Convert.ToInt64(dr["secuencial"]);
+
+
+                }
+
+                return secuencial + 1;
+            }
+        }
+
+        //Ultimo secuencial
+        public Int64 UltimoEfectivoCajaSecuencial(string fecha_efe)
+        {
+
+            Int64 secuencial = 0;
+
+            using (cn = conexion.genearConexion())
+            {
+                string insert = "SELECT TOP 1  secuencial FROM wmt_efectivoCaja where fecha_efe = @fecha_efe ORDER BY wmt_efectivoCaja.secuencial DESC ";
+                SqlCommand conmand = new SqlCommand(insert, cn);
+
+                conmand.Parameters.Add("@fecha_efe", SqlDbType.VarChar).Value = fecha_efe;
+
+
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    secuencial = Convert.ToInt64(dr["secuencial"]);
+
+
+                }
+
+                return secuencial;
+            }
+        }
+
+        //Buscar lista de Efectivo Caja
+        public List<modeloEfectivoCaja> BuscarEfectivoCF(string fecha_efe, Int64 secuencial)
+        {
+
+            using (cn = conexion.genearConexion())
+            {
+                List<modeloEfectivoCaja> lista = new List<modeloEfectivoCaja>();
+                string consulta = (" SELECT wmt_efectivoCaja.id,wmt_efectivoCaja.denominacionMId,wmt_efectivoCaja.valor,wmt_efectivoCaja.cantidad,wmt_efectivoCaja.total,wmt_efectivoCaja.fecha_efe,wmt_efectivoCaja.usuario_mod,wmt_efectivoCaja.cod_pro_aud,wmt_efectivoCaja.secuencial,wmm_denominacionMB.nombre,wmt_efectivoCaja.fecha_mod,wmt_efectivoCaja.nro_audit FROM wmt_efectivoCaja INNER JOIN wmm_denominacionMB ON wmt_efectivoCaja.denominacionMId = wmm_denominacionMB.id WHERE wmt_efectivoCaja.secuencial =@secuencial AND wmt_efectivoCaja.fecha_efe =@fecha_efe");
+
+                SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                conmand.Parameters.Add("fecha_efe", SqlDbType.VarChar).Value = fecha_efe;
+                conmand.Parameters.Add("secuencial", SqlDbType.BigInt).Value =secuencial;
+
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                while (dr.Read())
+                {
+
+                    modeloEfectivoCaja item = new modeloEfectivoCaja();
+                    item.id = Convert.ToString(dr["denominacionMId"]);
+                    
+                    item.denominacionMId = Convert.ToDecimal(dr["denominacionMId"]);
+                    item.valor = Convert.ToDecimal(dr["valor"]);
+                    string valor1 = String.Format("{0:N0}", item.valor).ToString();
+                    item.Observaciones = Convert.ToString(dr["nombre"]) + " " + "DE " + valor1;
+                    item.cantidad = Convert.ToDecimal(dr["cantidad"]);
+                    
+                    item.total = Convert.ToDecimal(dr["total"]);
+                    item.canti = String.Format("{0:N2}", item.total).ToString();
+                    item.fecha_efe = Convert.ToString(dr["fecha_efe"]);
+                    item.secuencial = Convert.ToInt64(dr["secuencial"]);
+                                       
+                    lista.Add(item);
+
+                }
+
+                return lista;
+            }
+
+        }
+
         //Insertar cierre en tabla wmt_cierre_resumencaja
         public string InsertarEfectivoCaja(modeloEfectivoCaja Efectivocaja)
         {
@@ -20,15 +116,16 @@ namespace CapaDatos.Sql
             {
                 using (cn = conexion.genearConexion())
                 {
-                    string insert = "INSERT INTO  wmt_efectivoCaja (denominacionMBId,  valor,cantidad,total, usuario_mod, fecha_mod,fecha_efe) VALUES (@denominacionMBId,  @valor,@cantidad,@total, @usuario_mod, @fecha_mod,@fecha_efe)";
+                    string insert = "INSERT INTO  wmt_efectivoCaja (denominacionMId,  valor,cantidad,total, usuario_mod, fecha_mod,fecha_efe, secuencial) VALUES (@denominacionMId,  @valor,@cantidad,@total, @usuario_mod, @fecha_mod,@fecha_efe, @secuencial)";
                     SqlCommand conmand = new SqlCommand(insert, cn);
-                    conmand.Parameters.Add("@denominacionMBId", SqlDbType.VarChar).Value = Efectivocaja.denominacionMId;
-                    conmand.Parameters.Add("@valor", SqlDbType.VarChar).Value = Efectivocaja.valor;
-                    conmand.Parameters.Add("@cantidad", SqlDbType.VarChar).Value = Efectivocaja.cantidad;
+                    conmand.Parameters.Add("@denominacionMId", SqlDbType.Decimal).Value = Efectivocaja.denominacionMId;
+                    conmand.Parameters.Add("@valor", SqlDbType.Decimal).Value = Efectivocaja.valor;
+                    conmand.Parameters.Add("@cantidad", SqlDbType.Decimal).Value = Efectivocaja.cantidad;
                     conmand.Parameters.Add("@total", SqlDbType.Decimal).Value = Efectivocaja.total;
                     conmand.Parameters.Add("@usuario_mod", SqlDbType.VarChar).Value = Efectivocaja.usuario_mod;
                     conmand.Parameters.Add("@fecha_mod", SqlDbType.DateTime).Value = Efectivocaja.fecha_mod;
                     conmand.Parameters.Add("@fecha_efe", SqlDbType.VarChar).Value = Efectivocaja.fecha_efe;
+                    conmand.Parameters.Add("@secuencial", SqlDbType.BigInt).Value = Efectivocaja.secuencial;
 
                     int dr = conmand.ExecuteNonQuery();
                     return "Efectivo Caja guardada correctamente";

@@ -35,6 +35,7 @@ namespace CapaDatos.Sql
 
                     modelowmspcempresas item = new modelowmspcempresas();
                     item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                    item.mone_mn = Convert.ToString(dr["mone_mn"]);
                     item.nom_emp = Convert.ToString(dr["nom_emp"]);
                     item.nro_dgi = Convert.ToString(dr["nro_dgi"]);
                     item.nro_dgi1 = Convert.ToString(dr["nro_dgi1"]);

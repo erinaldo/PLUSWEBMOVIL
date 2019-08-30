@@ -8,6 +8,7 @@ namespace CapaDatos.Modelos
     public class modelowmspcempresas
     {
         public string cod_emp { get; set; }
+        public string mone_mn { get; set; }
         public string nom_emp { get; set; }
         public string nro_dgi { get; set; }
         public string nro_dgi2 { get; set; }

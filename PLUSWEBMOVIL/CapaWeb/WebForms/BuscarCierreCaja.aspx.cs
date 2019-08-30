@@ -16,6 +16,25 @@ namespace CapaWeb.WebForms
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
+
+        ConsultaCierecaja ConsultaCCaja = new ConsultaCierecaja();
+        modeloCierreCaja modeloCCcaja = new modeloCierreCaja();
+        modeloCierreCaja guardarCCcaja = new modeloCierreCaja();
+        List<modeloCierreCaja> listaCCaja = null;
+
+        ConsultaEfectivoCaja ConsultaEfectivoC = new ConsultaEfectivoCaja();
+        modeloEfectivoCaja modeloEfectivoC = new modeloEfectivoCaja();
+        modeloEfectivoCaja guardarEfectivoC = new modeloEfectivoCaja();
+        List<modeloEfectivoCaja> listaEfectivoC = new List<modeloEfectivoCaja>();
+
+        Consultawmspcmonedas ConsultaCMonedas = new Consultawmspcmonedas();
+        List<modelowmspcmonedas> listaMonedas = null;
+        modelowmspcmonedas DecimalesMoneda = new modelowmspcmonedas();
+        modeloDenominacionesMoneda denominacion = new modeloDenominacionesMoneda();
+
+        ConsultaEmpresa consultaEmpresa = new ConsultaEmpresa();
+        List<modelowmspcempresas> listaEmpresa = null;
+        modelowmspcempresas modeloEmpresa = new modelowmspcempresas();
         public string ComPwm;
         public string AmUsrLog;
         public string nro_trans = null;
@@ -36,7 +55,8 @@ namespace CapaWeb.WebForms
                 
 
                 fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
-                
+                Tabla.Visible = false;
+                imp.Visible = false;
 
             }
 
@@ -50,12 +70,32 @@ namespace CapaWeb.WebForms
             Grid.DataBind();
             Grid.Height = 100;*/
         }
-        protected void Grid_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
+
+        //Buscar cantidad de decimales q se va ausar x tipo de moneda
+        public modelowmspcmonedas BuscarDecimales()
         {
-            // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
-            Grid.CurrentPageIndex = 0;
-            Grid.CurrentPageIndex = e.NewPageIndex;
-            CargarGrilla();
+            listaEmpresa = consultaEmpresa.BuscartaEmpresa(AmUsrLog, ComPwm);
+            modeloEmpresa = null;
+            foreach (modelowmspcempresas item in listaEmpresa)
+            {
+
+                modeloEmpresa = item;
+                break;
+
+            }
+
+            listaMonedas = ConsultaCMonedas.ConsultaCMonedas(AmUsrLog, ComPwm, modeloEmpresa.mone_mn.Trim());
+
+            DecimalesMoneda = null;
+            foreach (modelowmspcmonedas item in listaMonedas)
+            {
+
+                DecimalesMoneda = item;
+                break;
+
+            }
+
+            return DecimalesMoneda;
         }
 
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
@@ -140,7 +180,103 @@ namespace CapaWeb.WebForms
 
         protected void Buscar_Click(object sender, EventArgs e)
         {
+            //Busamos el ultimo secuancial
+            DecimalesMoneda = null;
+            DecimalesMoneda = BuscarDecimales();
+            decimal totalCaja = 0;
+            decimal SaldoCaja = 0;
+            decimal SaldoN = 0;
+            Int64 secuEfe = ConsultaEfectivoC.UltimoEfectivoSecuencial(fechainicio.Text);
 
+            listaEfectivoC = ConsultaEfectivoC.ListaCCajaFecha(fechainicio.Text, secuEfe);
+            Grid.DataSource = listaEfectivoC;
+            Grid.DataBind();
+            Grid.Height = 100;
+            foreach (modeloEfectivoCaja item in listaEfectivoC)
+            {
+                modeloEfectivoC = item;
+                totalCaja += modeloEfectivoC.total;
+            }
+            decimal valorCaja = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, totalCaja);
+            txt_valor_caja.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, valorCaja); 
+
+            Int64 secCierre = ConsultaCCaja.UltimoCCajaFechaSecuencial(fechainicio.Text);
+            string codigo = "VIDA";
+            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, codigo);
+            modeloCCcaja = null;
+            foreach (modeloCierreCaja item in listaCCaja)
+            {
+                modeloCCcaja = item;
+            }
+            decimal valor_id = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, modeloCCcaja.valor);
+            txt_valor_id.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, valor_id);
+            txt_valor_id.ReadOnly = true;
+            SaldoCaja = modeloCCcaja.valor;
+            //campo dos
+            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "INFA");
+            modeloCCcaja = null;
+            foreach (modeloCierreCaja item in listaCCaja)
+            {
+                modeloCCcaja = item;
+            }
+            decimal ingreso_facturas = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, modeloCCcaja.valor);
+            txt_ingreso_facturas.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, ingreso_facturas);
+            txt_ingreso_facturas.ReadOnly = true;
+            SaldoCaja += modeloCCcaja.valor;
+            //campo tres
+            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "INVT");
+            modeloCCcaja = null;
+            foreach (modeloCierreCaja item in listaCCaja)
+            {
+                modeloCCcaja = item;
+            }
+            decimal ingreso_nventas = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, modeloCCcaja.valor);
+            txt_ingreso_nventas.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, ingreso_nventas);
+            txt_ingreso_nventas.ReadOnly = true;
+            SaldoCaja += modeloCCcaja.valor;
+            //campo cuatro
+            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "PEFA");
+            modeloCCcaja = null;
+            foreach (modeloCierreCaja item in listaCCaja)
+            {
+                modeloCCcaja = item;
+            }
+            decimal pefectivo_facturas = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, modeloCCcaja.valor);
+            txt_pefectivo_facturas.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, pefectivo_facturas);
+            txt_pefectivo_facturas.ReadOnly = true;
+            SaldoN = modeloCCcaja.valor;
+            //campoCINCO
+            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "PEOT");
+            modeloCCcaja = null;
+            foreach (modeloCierreCaja item in listaCCaja)
+            {
+                modeloCCcaja = item;
+            }
+            decimal pefectivo_otros = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, modeloCCcaja.valor);
+            txt_pefectivo_otros.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, pefectivo_otros);
+            txt_pefectivo_otros.ReadOnly = true;
+            SaldoN += modeloCCcaja.valor;
+            //CAMPO SEIS
+            //campo dos
+            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "DEPD");
+            modeloCCcaja = null;
+            foreach (modeloCierreCaja item in listaCCaja)
+            {
+                modeloCCcaja = item;
+            }
+            decimal depositos = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, modeloCCcaja.valor);
+            txt_depositos.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, depositos);
+            txt_depositos.ReadOnly = true;
+            SaldoN += modeloCCcaja.valor;
+            decimal totalS = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (SaldoCaja - SaldoN));
+
+            txt_saldo_caja.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, totalS);
+            decimal Diferencia = Convert.ToDecimal(txt_valor_caja.Text) - Convert.ToDecimal(txt_saldo_caja.Text);
+            decimal dif = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Diferencia);
+
+            txt_diferencia.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, dif);
+            Tabla.Visible = true;
+            imp.Visible = true;
         }
     }
 }

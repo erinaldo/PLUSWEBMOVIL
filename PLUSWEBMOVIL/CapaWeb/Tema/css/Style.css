@@ -153,6 +153,13 @@ body {
 	font-size: 12px;
 	color: #000000;
 }
+
+.textos_prueba {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: 	#7FFFD4;
+}
+
 .textos2 {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 11px;

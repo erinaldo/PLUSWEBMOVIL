@@ -76,118 +76,258 @@
                         <div class="Subtitulo1">Listado de Cierres de Caja</div>
                     </td>
                 </tr>
-                        <tr>
+                <tr>
                     <td>
-                        <table border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#0E748A">
-                            <tr>
-                                <td>
-                                                                  
-                                    <asp:DataGrid ID="Grid" runat="server" onrowcreated="GriTipoUsuario_RowCreated"
-                                        onrowcommand="GriTipoUsuario_RowCommand"
-                                        AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
-                                        OnItemCommand="Grid_ItemCommand" AllowSorting="True" ShowFooter="True"
-                                        OnPageIndexChanged="Grid_PageIndexChanged" PageSize="9" CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1">
+                    <div id="areaImprimir" style="align-items: center">
+                            <style type="text/css">
+                                .tftable {
+                                    width: 100%;
+                                    border-width: 0px;
+                                    border-color: #DD6D29;
+                                    border-collapse: collapse;
+                                }
 
 
-                                        <Columns>
+                                    .tftable td {
+                                        border-width: 0px;
+                                        padding: 6px;
+                                        border-style: solid;
+                                        border-top: #DD6D29 1px dashed;
+                                        border-bottom: #DD6D29 1px dashed;
+                                    }
 
 
-                                            <asp:TemplateColumn HeaderText="FECHA" >
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="fecha_cie" class="textos" runat="server" Text='<%#Eval("fecha_cie") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
+                                .fondo {
+                                    color: #DD6D29;
+                                    font-weight: bold;
+                                }
 
-                                           
+                                @media print {
+                                    .noimp {
+                                        display: none;
+                                    }
+                                }
+                            </style>
+                        <table style="width: 100%;">
+                       <tr rowspan="4">
+                                    <td colspan="4">
+                                        <table style="width: 100%;" runat="server" id="Tabla">
+                                            <tr>
+                                                <td>
+                                                    <asp:Label ID="mensaje" name="mensaje" runat="server" class="fondo" Text="RESÚMEN DEL DÍA"></asp:Label>
+                                                </td>
+                                                <td>&nbsp;</td>
+                                                <td>
+                                                    <asp:Label ID="mensaje1" name="mensaje1" runat="server" class="fondo" Text="DETALLE DEL EFECTIVO DE CAJA"></asp:Label>
 
-                                            <asp:TemplateColumn HeaderText="NOMBRE">
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        
-                                                        <asp:Label ID="nombre" Type="date" class="textos" runat="server" Text='<%#Eval("nombre") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top">
+                                                    <table align="center" border="1" class="tftable">
 
-                                           
-                                             <asp:TemplateColumn HeaderText="VALOR">
-                                                <ItemTemplate>
-                                                    <span style="float: right;">
-                                                        <asp:Label ID="valor"  runat="server" class="textos" Text='<%#Eval("valor", "{0:N}") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
+                                                        <tr valign="top">
+                                                            <td class="textos">
+                                                                <div align="left">+</div>
+                                                            </td>
+                                                            <td class="textos">
+                                                                <asp:Label ID="lbl_idc" runat="server" Text="VALOR EN CAJA INICIO DEL DIA"></asp:Label>
+                                                               
+                                                            </td>
 
-                                            <asp:TemplateColumn>
-                                                <ItemTemplate>
-                                                    <asp:ImageButton ID="imgEditar" runat="server" CausesValidation="false" CommandName="Editar"
-                                                        ImageUrl="~/Tema/imagenes/edit.png" ToolTip="Editar" Width="16" />
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
+                                                            <td class="busqueda">
+                                                                <asp:TextBox ID="txt_valor_id" required="required" runat="server" value="0"></asp:TextBox>
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="textos">
+                                                                <div align="left">+</div>
+                                                            </td>
+                                                            <td class="textos">
+                                                                <asp:Label ID="lbl_2" runat="server" Text="INGRESOS POR FACTURAS"></asp:Label>
+                                                              
+                                                            </td>
 
-                                            <asp:TemplateColumn>
-                                                <ItemTemplate>
-                                                    <asp:ImageButton ID="imgEliminar" runat="server" CausesValidation="false" CommandName="Eliminar"
-                                                        ImageUrl="~/Tema/imagenes/trash.png" ToolTip="Eliminar" Width="16" />
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
+                                                            <td class="textos">
+                                                                <asp:TextBox ID="txt_ingreso_facturas" ReadOnly="true" required="required" runat="server"></asp:TextBox>
+                                                            </td>
+                                                            <td>
+                                                                <div class="noimp">
+                                                                    <asp:ImageButton ID="btn_ingreso_facturas" src="../Tema/imagenes/search.png" runat="server" />
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="textos">
+                                                                <div align="left">+</div>
+                                                            </td>
+                                                            <td class="textos">
+                                                                <asp:Label ID="lbl_3" runat="server" Text="INGRESOS POR NOTAS DE VENTA"></asp:Label>
+                                                                
+                                                            </td>
 
-                                             <asp:TemplateColumn>
-                                                <ItemTemplate>
-                                                    <asp:ImageButton ID="imgImpuestos" runat="server" CausesValidation="false" CommandName="Impuestos"
-                                                        ImageUrl="~/Tema/imagenes/notebook_search.png" ToolTip="Impuestos" Width="16" />
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
+                                                            <td class="textos">
+                                                                <asp:TextBox ID="txt_ingreso_nventas" required="required" ReadOnly="true" runat="server"></asp:TextBox>
+                                                            </td>
+                                                            <td>
+                                                                <div class="noimp">
+                                                                    <asp:ImageButton ID="btn_ingreso_nventas" src="../Tema/imagenes/search.png" runat="server" />
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="textos">
+                                                                <div align="left">-</div>
+                                                            </td>
+                                                            <td class="textos">
+                                                                <asp:Label ID="lbl_4" runat="server" Text="PAGOS EN EFECTIVO DE FACTURAS"></asp:Label>
+                                                                
+                                                            </td>
 
-                                            <asp:TemplateColumn>
-                                                <ItemTemplate>
-                                                    <asp:ImageButton ID="imgImprimir" runat="server" CausesValidation="false" CommandName="Imprimir"
-                                                        ImageUrl="~/Tema/imagenes/print.png" ToolTip="Imprimir" Width="16" />
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
+                                                            <td class="textos">
+                                                                <asp:TextBox ID="txt_pefectivo_facturas" required="required" runat="server"></asp:TextBox>
+                                                            </td>
+                                                            <td>
+                                                                <div class="noimp">
+                                                                    <asp:ImageButton ID="btn_pefectivo_facturas" src="../Tema/imagenes/search.png" runat="server" />
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="textos">
+                                                                <div align="left">-</div>
+                                                            </td>
+                                                            <td class="textos">
+                                                                <asp:Label ID="lbl_5" runat="server" Text="PAGOS EN EFECTIVO OTROS"></asp:Label>
+                                                                
+                                                            </td>
 
-                                            <asp:TemplateColumn>
-                                                <ItemTemplate>
-                                                    <asp:ImageButton ID="imgVisualizar" runat="server" CausesValidation="false" CommandName="Ver"
-                                                        ImageUrl="~/Tema/imagenes/search.png" ToolTip="Visualizar" Width="16" />
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-                                            
-                                            <asp:TemplateColumn>
-                                                <ItemTemplate>
-                                                    <asp:ImageButton ID="imgError" runat="server" CausesValidation="false" CommandName="Mostrar"
-                                                        ImageUrl="~/Tema/imagenes/application_search.png" ToolTip="Mostrar" Width="16" />
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
+                                                            <td class="busqueda">
+                                                                <asp:TextBox ID="txt_pefectivo_otros" required="required" runat="server" value="0"></asp:TextBox>
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="textos">
+                                                                <div align="left">-</div>
+                                                            </td>
+                                                            <td class="textos">
+                                                                <asp:Label ID="lbl_6" runat="server" Text="DEPOSITOS DEL DIA"></asp:Label>
+                                                                
+                                                            </td>
 
-                                            <asp:TemplateColumn>
-                                                <ItemTemplate>
-                                                    <asp:ImageButton ID="imgReenviar" runat="server" CausesValidation="false" CommandName="Reenviar"
-                                                        ImageUrl="~/Tema/imagenes/up.png" ToolTip="Reenviar" Width="16" />
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-                                        </Columns>
+                                                            <td class="textos">
+                                                                <asp:TextBox ID="txt_depositos" required="required" runat="server"></asp:TextBox>
+                                                            </td>
+                                                            <td>
+                                                                <div class="noimp">
+                                                                    <asp:ImageButton ID="btn_depositos" src="../Tema/imagenes/search.png" runat="server" />
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>&nbsp;</td>
+                                                <td>
+                                                    <asp:GridView ID="Grid" runat="server"
+                                                        AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
+                                                        OnItemCommand="Grid_ItemCommand" AllowSorting="True" ShowFooter="True"
+                                                        PageSize="11" CellPadding="2" BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" ShowHeader="False">
+                                                        <Columns>
+                                                            
+                                                             <asp:BoundField DataField="Observaciones"  HeaderText="Observaciones" ItemStyle-CssClass="textos" SortExpression="id"  />
+                                                            <asp:BoundField DataField="valor"  Visible="false" HeaderText="valor" ItemStyle-CssClass="textos" SortExpression="id"  />
+                                                            <asp:BoundField DataField="cantidad"  HeaderText="cantidad" ItemStyle-CssClass="textos" SortExpression="id"  />
+                                                            <asp:BoundField DataField="canti"  HeaderText="total" ItemStyle-CssClass="textos" SortExpression="id"  />
+                                                           
 
+                                                        </Columns>
 
-                                        <FooterStyle BackColor="White" ForeColor="#00000f" />
-                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />
-                                        <ItemStyle ForeColor="#00000f" />
-                                        <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" Mode="NumericPages" />
-                                        <SelectedItemStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                    </asp:GridView>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" colspan="3">
 
+                                                    <hr />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top">
+                                                    <table style="width: 100%;">
+                                                        <tr>
+                                                            <td>
 
-                                    </asp:DataGrid>
-                                </td>
-                            </tr>
-                        </table>
+                                                                <asp:Label ID="Label1" CssClass="fondo" runat="server" Text="SALDO EN CAJA FINAL DEL DÍA"></asp:Label>
+                                                            </td>
+                                                            <td>
+                                                                <asp:TextBox ID="txt_saldo_caja" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                                            </td>
+                                                        </tr>
+
+                                                    </table>
+                                                </td>
+                                                <td>&nbsp;</td>
+                                                <td>
+                                                    <table style="width: 100%;">
+                                                        <tr>
+                                                            <td>
+                                                                <asp:Label ID="Label2" runat="server" CssClass="fondo" Text="VALOR EN CAJA"></asp:Label>
+                                                            </td>
+                                                            <td>
+                                                                <asp:TextBox ID="txt_valor_caja" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <asp:Label ID="Label3" runat="server" CssClass="fondo" Text="DIFERENCIA"></asp:Label>
+                                                            </td>
+                                                            <td>
+                                                                <asp:TextBox ID="txt_diferencia" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td></td>
+                                                <td>&nbsp;</td>
+                                                <td></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+  </table>
+                                   
+                   </div>
                     </td>
                 </tr>
-
-
+                <tr>
+                    <td>
+                        
+                        &nbsp;&nbsp;&nbsp;
+                                    <input type="button" id="imp" runat="server" class="botones" onclick="printDiv('areaImprimir')" value="Imprimir" />
+                         &nbsp;&nbsp;&nbsp;
+                        
+                    </td>
+                </tr>
+          
                      
                 </table>
                     </div>
                   </form>
+     <script>
+        function printDiv(nombreDiv) {
+            var contenido = document.getElementById(nombreDiv).innerHTML;
+            var contenidoOriginal = document.body.innerHTML;
+
+            document.body.innerHTML = contenido;
+
+            window.print();
+
+            document.body.innerHTML = contenidoOriginal;
+        }
+    </script>
 </asp:Content>

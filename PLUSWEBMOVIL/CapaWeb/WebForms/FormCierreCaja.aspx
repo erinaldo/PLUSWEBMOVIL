@@ -98,7 +98,8 @@
                                                                 <div align="left">+</div>
                                                             </td>
                                                             <td class="textos">
-                                                                <div align="left">VALOR EN CAJA INICIO DEL DIA</div>
+                                                                <asp:Label ID="lbl_idc" runat="server" Text="VALOR EN CAJA INICIO DEL DIA"></asp:Label>
+                                                               
                                                             </td>
 
                                                             <td class="busqueda">
@@ -111,7 +112,8 @@
                                                                 <div align="left">+</div>
                                                             </td>
                                                             <td class="textos">
-                                                                <div align="left">INGRESOS POR FACTURAS</div>
+                                                                <asp:Label ID="lbl_2" runat="server" Text="INGRESOS POR FACTURAS"></asp:Label>
+                                                              
                                                             </td>
 
                                                             <td class="textos">
@@ -128,7 +130,8 @@
                                                                 <div align="left">+</div>
                                                             </td>
                                                             <td class="textos">
-                                                                <div align="left">INGRESOS POR NOTAS DE VENTA</div>
+                                                                <asp:Label ID="lbl_3" runat="server" Text="INGRESOS POR NOTAS DE VENTA"></asp:Label>
+                                                                
                                                             </td>
 
                                                             <td class="textos">
@@ -145,7 +148,8 @@
                                                                 <div align="left">-</div>
                                                             </td>
                                                             <td class="textos">
-                                                                <div align="left">PAGOS EN EFECTIVO DE FACTURAS</div>
+                                                                <asp:Label ID="lbl_4" runat="server" Text="PAGOS EN EFECTIVO DE FACTURAS"></asp:Label>
+                                                                
                                                             </td>
 
                                                             <td class="textos">
@@ -162,7 +166,8 @@
                                                                 <div align="left">-</div>
                                                             </td>
                                                             <td class="textos">
-                                                                <div align="left">PAGOS EN EFECTIVO OTROS</div>
+                                                                <asp:Label ID="lbl_5" runat="server" Text="PAGOS EN EFECTIVO OTROS"></asp:Label>
+                                                                
                                                             </td>
 
                                                             <td class="busqueda">
@@ -175,7 +180,8 @@
                                                                 <div align="left">-</div>
                                                             </td>
                                                             <td class="textos">
-                                                                <div align="left">DEPOSITOS DEL DIA</div>
+                                                                <asp:Label ID="lbl_6" runat="server" Text="DEPOSITOS DEL DIA"></asp:Label>
+                                                                
                                                             </td>
 
                                                             <td class="textos">
@@ -196,7 +202,7 @@
                                                         OnItemCommand="Grid_ItemCommand" AllowSorting="True" ShowFooter="True"
                                                         PageSize="11" CellPadding="2" BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" ShowHeader="False">
                                                         <Columns>
-                                                            <asp:BoundField DataField="Id" Visible="false" HeaderText="Id" SortExpression="BodNom" />
+                                                            <asp:BoundField DataField="id"  HeaderText="Id" ItemStyle-CssClass="textos_prueba" SortExpression="id" ItemStyle-ForeColor="White" />
                                                             <asp:BoundField DataField="Observaciones" HeaderText="Denominación" ItemStyle-CssClass="textos" SortExpression="Observaciones" />
                                                             <asp:TemplateField HeaderText="valor" Visible="false" SortExpression="valor">
                                                                 <ItemTemplate>
@@ -284,9 +290,12 @@
                 </tr>
                 <tr>
                     <td>
-                        <asp:Button ID="Btn_Calcular" runat="server" OnClick="Btn_Calcular_Click" Text="Calcular" />
+                        <asp:Button ID="Btn_Calcular" CssClass="botones" runat="server" OnClick="Btn_Calcular_Click" Text="Calcular" />
                         &nbsp;&nbsp;&nbsp;
-                                    <input type="button" onclick="printDiv('areaImprimir')" value="Imprimir" /></td>
+                                    <input type="button" class="botones" onclick="printDiv('areaImprimir')" value="Imprimir" />
+                         &nbsp;&nbsp;&nbsp;
+                        <asp:Button ID="btn_cancelar"  CssClass="botones" runat="server" UseSubmitBehavior="False"  Text="Cancelar" OnClick="btn_cancelar_Click" />
+                    </td>
                 </tr>
             </table>
 

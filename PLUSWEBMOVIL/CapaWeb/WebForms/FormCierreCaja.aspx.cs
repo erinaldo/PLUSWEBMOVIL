@@ -19,11 +19,30 @@ namespace CapaWeb.WebForms
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
 
 
-        Consultawmspcmonedas ConsultaCMonedas = new Consultawmspcmonedas();
-        List<modeloDenominacionesMoneda> listaMonedas = null;
+      
         ConsultaEfectivoCaja ConsultaECaja = new ConsultaEfectivoCaja();
         modeloTotalPgsFacturas modeloTPFacturas = new modeloTotalPgsFacturas();
         List<modeloTotalPgsFacturas> listaTPFacturas = null;
+
+        ConsultaCierecaja ConsultaCCaja = new ConsultaCierecaja();
+        modeloCierreCaja modeloCCcaja = new modeloCierreCaja();
+        modeloCierreCaja guardarCCcaja = new modeloCierreCaja();
+        List<modeloCierreCaja> listaCCaja = null;
+
+        ConsultaEfectivoCaja ConsultaEfectivoC = new ConsultaEfectivoCaja();
+        modeloEfectivoCaja modeloEfectivoC = new modeloEfectivoCaja();
+        modeloEfectivoCaja guardarEfectivoC = new modeloEfectivoCaja();
+        List<modeloEfectivoCaja> listaEfectivoC = new List<modeloEfectivoCaja>();
+
+        Consultawmspcmonedas ConsultaCMonedas = new Consultawmspcmonedas();
+        List<modelowmspcmonedas> listaMonedas = null;
+        modelowmspcmonedas DecimalesMoneda = new modelowmspcmonedas();
+        modeloDenominacionesMoneda Denominaciones = new modeloDenominacionesMoneda();
+        List<modeloDenominacionesMoneda> listaDenominacion = null;
+        ConsultaEmpresa consultaEmpresa = new ConsultaEmpresa();
+        List<modelowmspcempresas> listaEmpresa = null;
+        modelowmspcempresas modeloEmpresa = new modelowmspcempresas();
+
 
         public string ComPwm;
         public string AmUsrLog;
@@ -59,7 +78,16 @@ namespace CapaWeb.WebForms
                 modeloTPFacturas = item;
 
             }
-            txt_ingreso_facturas.Text = modeloTPFacturas.total.ToString();
+            if (modeloTPFacturas.total == "")
+            {
+                txt_ingreso_facturas.Text = "0.00";
+            }
+            else
+            {
+                txt_ingreso_facturas.Text = modeloTPFacturas.total.ToString();
+
+            }
+           
             //TOTAL NOTAS DE VENTA DEL DIA
             listaTPFacturas = null;
             listaTPFacturas = ConsultaECaja.ConsultaTotalNVTA(fecha);
@@ -83,8 +111,17 @@ namespace CapaWeb.WebForms
         }
         private void CargarGrilla()
         {
-            listaMonedas = ConsultaCMonedas.ConsultaDenominacionesEmpresa("COP");
-            Grid.DataSource = listaMonedas;
+            listaEmpresa = consultaEmpresa.BuscartaEmpresa(AmUsrLog, ComPwm);
+            modeloEmpresa = null;
+            foreach (modelowmspcempresas item in listaEmpresa)
+            {
+
+                modeloEmpresa = item;
+                break;
+
+            }
+            listaDenominacion = ConsultaCMonedas.ConsultaDenominacionesEmpresa(modeloEmpresa.mone_mn.Trim());
+            Grid.DataSource = listaDenominacion;
             Grid.DataBind();
             Grid.Height = 100;
         }
@@ -185,12 +222,133 @@ namespace CapaWeb.WebForms
 
         protected void InsertarTotales()
         {
+
+            Int64 secuencialCierreResumenCaja = ConsultaCCaja.BuscarCCajaFechaSecuencial(lbl_fecha.Text);
+            //Recuperar si ya existe cierre del dia
+
             //wmt_cierre_resumenaja
 
+            //Guardar linea x linea VALOR EN CAJA INICIO DEL DIA
+            guardarCCcaja.signo = "+";
+            guardarCCcaja.secuencial = secuencialCierreResumenCaja;
+            guardarCCcaja.codigo = "VIDA";
+            guardarCCcaja.nombre = lbl_idc.Text;
+            guardarCCcaja.valor = Convert.ToDecimal(txt_valor_id.Text);
+            guardarCCcaja.usuario_mod = AmUsrLog;
+            guardarCCcaja.fecha_cie = lbl_fecha.Text;
+            guardarCCcaja.fecha_mod = DateTime.Today;
+            ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
+            //Guardar linea x linea ingresos facturas
+            guardarCCcaja.signo = "+";
+            guardarCCcaja.secuencial = secuencialCierreResumenCaja;
+            guardarCCcaja.codigo = "INFA";
+            guardarCCcaja.nombre = lbl_2.Text;
+            guardarCCcaja.valor = Convert.ToDecimal(txt_ingreso_facturas.Text);
+            guardarCCcaja.usuario_mod = AmUsrLog;
+            guardarCCcaja.fecha_cie = lbl_fecha.Text;
+            guardarCCcaja.fecha_mod = DateTime.Today;
+            ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
+            //Guardar linea x linea ingresos NOTAS VENTA
+            guardarCCcaja.signo = "+";
+            guardarCCcaja.secuencial = secuencialCierreResumenCaja;
+            guardarCCcaja.codigo = "INVT";
+            guardarCCcaja.nombre = lbl_3.Text;
+            guardarCCcaja.valor = Convert.ToDecimal(txt_ingreso_nventas.Text);
+            guardarCCcaja.usuario_mod = AmUsrLog;
+            guardarCCcaja.fecha_cie = lbl_fecha.Text;
+            guardarCCcaja.fecha_mod = DateTime.Today;
+            ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
+            //Guardar linea x linea PAGOS EN FECTIVO FACTURAS
+            guardarCCcaja.signo = "-";
+            guardarCCcaja.secuencial = secuencialCierreResumenCaja;
+            guardarCCcaja.codigo = "PEFA";
+            guardarCCcaja.nombre = lbl_4.Text;
+            guardarCCcaja.valor = Convert.ToDecimal(txt_pefectivo_facturas.Text);
+            guardarCCcaja.usuario_mod = AmUsrLog;
+            guardarCCcaja.fecha_cie = lbl_fecha.Text;
+            guardarCCcaja.fecha_mod = DateTime.Today;
+            ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
+            //Guardar linea x linea PAGOS EN FECTIVO OTROS
+            guardarCCcaja.signo = "-";
+            guardarCCcaja.secuencial = secuencialCierreResumenCaja;
+            guardarCCcaja.codigo = "PEOT";
+            guardarCCcaja.nombre = lbl_5.Text;
+            guardarCCcaja.valor = Convert.ToDecimal(txt_pefectivo_otros.Text);
+            guardarCCcaja.usuario_mod = AmUsrLog;
+            guardarCCcaja.fecha_cie = lbl_fecha.Text;
+            guardarCCcaja.fecha_mod = DateTime.Today;
+            ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
+            //Guardar linea x linea DEPOSITOS DEL DIA
+            guardarCCcaja.signo = "-";
+            guardarCCcaja.secuencial = secuencialCierreResumenCaja;
+            guardarCCcaja.codigo = "DEPD";
+            guardarCCcaja.nombre = lbl_6.Text;
+            guardarCCcaja.valor = Convert.ToDecimal(txt_depositos.Text);
+            guardarCCcaja.usuario_mod = AmUsrLog;
+            guardarCCcaja.fecha_cie = lbl_fecha.Text;
+            guardarCCcaja.fecha_mod = DateTime.Today;
+            ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
+
             //wmt_efectivoCaja
+            Int64 secuencialEfectivoC = ConsultaEfectivoC.BuscarEfectivoSecuencial(lbl_fecha.Text);
+            //Calcula datos de la grilla
+            decimal acumulador = 0;
+            decimal totalDenominacion = 0;
+
+            foreach (GridViewRow item in Grid.Rows)
+            {
+                decimal valor1 = 0;
+                Label valor = item.FindControl("valor") as Label;
+                TextBox cantidad = item.FindControl("cantidad") as TextBox;
+                Decimal.TryParse(valor.Text, out valor1);
+                acumulador = Convert.ToDecimal(cantidad.Text) * valor1;
+                totalDenominacion += acumulador;
+                item.Cells[4].Text = acumulador.ToString();
+                string idDen = item.Cells[0].Text;
+                guardarEfectivoC.denominacionMId = Convert.ToDecimal(idDen);
+                guardarEfectivoC.valor = Convert.ToDecimal(valor.Text);
+                guardarEfectivoC.cantidad = Convert.ToDecimal(cantidad.Text);
+                guardarEfectivoC.total = Convert.ToDecimal(acumulador);
+                guardarEfectivoC.usuario_mod = AmUsrLog;
+                guardarEfectivoC.fecha_mod = DateTime.Today;
+                guardarEfectivoC.fecha_efe = lbl_fecha.Text;
+                guardarEfectivoC.secuencial = secuencialEfectivoC;
+                ConsultaEfectivoC.InsertarECaja(guardarEfectivoC);
+
+            }
+            
+        }
+
+        public modelowmspcmonedas BuscarDecimales()
+        {
+            listaEmpresa = consultaEmpresa.BuscartaEmpresa(AmUsrLog, ComPwm);
+            modeloEmpresa = null;
+            foreach (modelowmspcempresas item in listaEmpresa)
+            {
+
+                modeloEmpresa = item;
+                break;
+
+            }
+
+            listaMonedas = ConsultaCMonedas.ConsultaCMonedas(AmUsrLog, ComPwm, modeloEmpresa.mone_mn.Trim());
+
+            DecimalesMoneda = null;
+            foreach (modelowmspcmonedas item in listaMonedas)
+            {
+
+                DecimalesMoneda = item;
+                break;
+
+            }
+
+            return DecimalesMoneda;
         }
         protected void CalcularTotal()
         {
+            DecimalesMoneda = null;
+            DecimalesMoneda = BuscarDecimales();
+
             //Calcula datos de la grilla
             decimal acumulador = 0;
             decimal totalDenominacion = 0;
@@ -206,19 +364,30 @@ namespace CapaWeb.WebForms
                 item.Cells[4].Text = acumulador.ToString();
 
             }
-            txt_valor_caja.Text = totalDenominacion.ToString();
+            decimal TotaValor = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, totalDenominacion);
+            txt_valor_caja.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, TotaValor);
             //Calcula datos de los txt
             
             decimal  Total_saldo = Convert.ToDecimal(txt_ingreso_facturas.Text) + Convert.ToDecimal(txt_ingreso_nventas.Text) + Convert.ToDecimal(txt_valor_id.Text);
             decimal saldos_neg = Convert.ToDecimal(txt_pefectivo_facturas.Text )+ Convert.ToDecimal(txt_pefectivo_otros.Text) + Convert.ToDecimal(txt_depositos.Text);
-            txt_saldo_caja.Text = Convert.ToString(Total_saldo - saldos_neg);
+            decimal total_SC = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (Total_saldo - saldos_neg));
+            txt_saldo_caja.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, total_SC);
+            decimal Diferencia = Convert.ToDecimal(txt_valor_caja.Text) - Convert.ToDecimal(txt_saldo_caja.Text);
+            decimal to_difere = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Diferencia);
 
+            txt_diferencia.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, to_difere); 
         }
 
 
         protected void Btn_Calcular_Click(object sender, EventArgs e)
         {
             CalcularTotal();
+            InsertarTotales();
+        }
+
+        protected void btn_cancelar_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("BuscarCierreCaja.aspx");
         }
     }
 }
