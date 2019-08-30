@@ -406,18 +406,27 @@ namespace CapaWeb.WebForms
 
         protected void txt_valor_id_TextChanged(object sender, EventArgs e)
         {
-            lbl_mensaje.Text = "";
-           
-            if (ValidarNumero(txt_valor_id.Text))
+            try
             {
-                decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_valor_id.Text));
-                txt_valor_id.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+                lbl_mensaje.Text = "";
+
+                if (ValidarNumero(txt_valor_id.Text))
+                {
+                    decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_valor_id.Text));
+                    txt_valor_id.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+                }
+                else
+                {
+                    txt_valor_id.Text = "";
+                    lbl_mensaje.Text = "Números con formato incorrecto.";
+                }
             }
-            else
+            catch (Exception)
             {
-                txt_valor_id.Text = "";
-               lbl_mensaje.Text = "Números con formato incorrecto.";
+
+                lbl_mensaje.Text = "Números con formato incorrecto.";
             }
+            
            
         }
 
@@ -425,8 +434,12 @@ namespace CapaWeb.WebForms
         {
             try
             {
+
                 decimal valor = Convert.ToDecimal(txt_valor_id.Text);
-                return true;
+               
+                    return true;
+                
+                
             }
             catch (Exception)
             {
@@ -437,84 +450,128 @@ namespace CapaWeb.WebForms
 
         protected void txt_ingreso_facturas_TextChanged(object sender, EventArgs e)
         {
-            lbl_mensaje.Text = "";
+            try
+            {
+                lbl_mensaje.Text = "";
 
-            if (ValidarNumero(txt_ingreso_facturas.Text))
-            {
-                decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_ingreso_facturas.Text));
-                txt_ingreso_facturas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+                if (ValidarNumero(txt_ingreso_facturas.Text))
+                {
+                    decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_ingreso_facturas.Text));
+                    txt_ingreso_facturas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+                }
+                else
+                {
+                    txt_ingreso_facturas.Text = "";
+                    lbl_mensaje.Text = "Números con formato incorrecto.";
+                }
             }
-            else
+            catch (Exception)
             {
-                txt_ingreso_facturas.Text = "";
+
                 lbl_mensaje.Text = "Números con formato incorrecto.";
             }
+           
         }
 
         protected void txt_ingreso_nventas_TextChanged(object sender, EventArgs e)
         {
-            lbl_mensaje.Text = "";
+            try
+            {
+                lbl_mensaje.Text = "";
 
-            if (ValidarNumero(txt_ingreso_nventas.Text))
-            {
-                decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_ingreso_nventas.Text));
-                txt_ingreso_nventas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+                if (ValidarNumero(txt_ingreso_nventas.Text))
+                {
+                    decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_ingreso_nventas.Text));
+                    txt_ingreso_nventas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+                }
+                else
+                {
+                    txt_ingreso_nventas.Text = "";
+                    lbl_mensaje.Text = "Números con formato incorrecto.";
+                }
             }
-            else
+            catch (Exception)
             {
-                txt_ingreso_nventas.Text = "";
+
                 lbl_mensaje.Text = "Números con formato incorrecto.";
             }
+            
         }
 
         protected void txt_pefectivo_facturas_TextChanged(object sender, EventArgs e)
         {
-            lbl_mensaje.Text = "";
+            try
+            {
+                lbl_mensaje.Text = "";
 
-            if (ValidarNumero(txt_pefectivo_facturas.Text))
-            {
-                decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_pefectivo_facturas.Text));
-                txt_pefectivo_facturas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+                if (ValidarNumero(txt_pefectivo_facturas.Text))
+                {
+                    decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_pefectivo_facturas.Text));
+                    txt_pefectivo_facturas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+                }
+                else
+                {
+                    txt_pefectivo_facturas.Text = "";
+                    lbl_mensaje.Text = "Números con formato incorrecto.";
+                }
             }
-            else
+            catch (Exception)
             {
-                txt_pefectivo_facturas.Text = "";
+
                 lbl_mensaje.Text = "Números con formato incorrecto.";
             }
+            
 
         }
 
         protected void txt_pefectivo_otros_TextChanged(object sender, EventArgs e)
         {
-            lbl_mensaje.Text = "";
+            try
+            {
+                lbl_mensaje.Text = "";
 
-            if (ValidarNumero(txt_pefectivo_otros.Text))
-            {
-                decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_pefectivo_otros.Text));
-                txt_pefectivo_otros.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+                if (ValidarNumero(txt_pefectivo_otros.Text))
+                {
+                    decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_pefectivo_otros.Text));
+                    txt_pefectivo_otros.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+                }
+                else
+                {
+                    txt_pefectivo_otros.Text = "";
+                    lbl_mensaje.Text = "Números con formato incorrecto.";
+                }
             }
-            else
+            catch (Exception)
             {
-                txt_pefectivo_otros.Text = "";
+
                 lbl_mensaje.Text = "Números con formato incorrecto.";
             }
+           
         }
 
         protected void txt_depositos_TextChanged(object sender, EventArgs e)
         {
-            
-            lbl_mensaje.Text = "";
+            try
+            {
+                lbl_mensaje.Text = "";
 
-            if (ValidarNumero(txt_depositos.Text))
-            {
-                decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_depositos.Text));
-                txt_depositos.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+                if (ValidarNumero(txt_depositos.Text))
+                {
+                    decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_depositos.Text));
+                    txt_depositos.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+                }
+                else
+                {
+                    txt_depositos.Text = "";
+                    lbl_mensaje.Text = "Números con formato incorrecto.";
+                }
             }
-            else
+            catch (Exception)
             {
-                txt_depositos.Text = "";
+
                 lbl_mensaje.Text = "Números con formato incorrecto.";
-            }
+            }   
+            
         }
     }
 }
