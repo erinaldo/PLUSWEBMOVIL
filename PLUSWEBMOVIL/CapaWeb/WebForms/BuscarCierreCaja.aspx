@@ -112,11 +112,49 @@
                                         display: none;
                                     }
                                 }
+
+                                .label {
+                                    color: #ffffff;
+                                }
+
+                                @media print {
+                                    .label {
+                                        color: black;
+                                    }
+                                }
                             </style>
                         <table style="width: 100%;">
                        <tr rowspan="4">
                                     <td colspan="4">
                                         <table style="width: 100%;" runat="server" id="Tabla">
+                                            <tr>
+                                                <td colspan="3">
+                                                    <table style="width: 100%;">
+                                                    <tr>
+                                    <td>
+                                        <asp:Label ID="Label4" runat="server" CssClass="Titulo" Text="Cierre Caja"></asp:Label>
+                                    </td>
+                                    <td style="width: 33px">
+                                        <div class="Subtitulo1">DIA:</div>
+                                    </td>
+                                    <td>
+
+                                        <asp:Label ID="lbl_fecha" runat="server" class="Subtitulo1" Text="Label"></asp:Label>
+
+                                    </td>
+                                    <td>
+
+                                        <asp:Label ID="lbl_dia" runat="server" class="Subtitulo1" Text="LUNES"></asp:Label>
+
+                                    </td>
+                                </tr>
+                                                    <tr>
+                                    <td colspan="4">
+                                        <hr />
+                                    </td>
+                                </tr>
+                                       </table>                  </td>
+                                            </tr>
                                             <tr>
                                                 <td>
                                                     <asp:Label ID="mensaje" name="mensaje" runat="server" class="fondo" Text="RESÚMEN DEL DÍA"></asp:Label>
@@ -300,6 +338,58 @@
                                                 <td></td>
                                                 <td>&nbsp;</td>
                                                 <td></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><table style="width: 100%;  text-align: center;">
+                                                        <tr>
+                                                            <td>
+                                                                <label class="label">
+                                                                    _____________________________________
+                                                             
+                                                                </label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td >
+                                                                
+                                                                <asp:Label ID="Lbl_Usuario" CssClass="label" runat="server" Text=""></asp:Label>
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td >
+                                                               <label  class="label">
+                                                                  RESPONSABLE DE LA CAJA                                                             
+                                                                </label></td>
+                                                        </tr>
+                                                    </table></td>
+                                                <td>&nbsp;</td>
+                                                <td><table style="width: 100%;  text-align: center;">
+                                                        <tr>
+                                                            <td>
+                                                                <label class="label">
+                                                                    _____________________________________
+                                                             
+                                                                </label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td >
+                                                                
+                                                                
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td >
+                                                               <label  class="label">
+                                                                  SUPERVISOR                                                            
+                                                                </label></td>
+                                                        </tr>
+                                                    </table></td>
+                                            </tr>
+                                        </table></td>
                                             </tr>
                                         </table>
                                     </td>

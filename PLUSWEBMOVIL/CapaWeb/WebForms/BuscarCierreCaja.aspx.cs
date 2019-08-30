@@ -5,6 +5,7 @@ using CapaProceso.Modelos;
 using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
 using CapaDatos.Modelos;
+using System.Globalization;
 
 namespace CapaWeb.WebForms
 {
@@ -56,12 +57,12 @@ namespace CapaWeb.WebForms
             {
                 
 
-                fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                //fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 Tabla.Visible = false;
                 imp.Visible = false;
                 Buscar.Visible = false;
                 cbx_lista_cierres.Visible = false;
-
+                Lbl_Usuario.Text = UsuarioDatos.BuscarNombreUsuario(AmUsrLog.Trim());
             }
 
         }
@@ -285,7 +286,9 @@ namespace CapaWeb.WebForms
             txt_diferencia.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, dif);
             Tabla.Visible = true;
             imp.Visible = true;
-            
+            cbx_lista_cierres.Items.Clear();
+            fechainicio.Text = "";
+
         }
 
         protected void fechainicio_TextChanged(object sender, EventArgs e)
@@ -309,7 +312,13 @@ namespace CapaWeb.WebForms
                 cbx_lista_cierres.DataTextField = "cbx_secuencias";
                 cbx_lista_cierres.DataValueField = "secuencial";
                 cbx_lista_cierres.DataBind();
+
+                DateTime fecha = DateTime.Parse(fechainicio.Text);
+                lbl_dia.Text = fecha.ToString("dddd", new CultureInfo("es-ES")).ToUpper();
+                lbl_fecha.Text = fechainicio.Text;
             }
+
+            
         }
     }
 }

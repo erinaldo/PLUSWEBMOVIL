@@ -395,7 +395,7 @@ namespace CapaWeb.WebForms
         {
             CalcularTotal();
             InsertarTotales();
-            lbl_mensaje.Text = UsuarioDatos.BuscarNombreUsuario(AmUsrLog.Trim());
+            Lbl_Usuario.Text = UsuarioDatos.BuscarNombreUsuario(AmUsrLog.Trim());
         }
 
         protected void btn_cancelar_Click(object sender, EventArgs e)

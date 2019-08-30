@@ -56,24 +56,11 @@
 
                                 @media print {
                                     .label {
-                                        color: #DD6D29;
+                                        color: black;
                                     }
                                 }
 
-                                .hr {
-  
-   height: 1px;
-  background-color: white;
-}
-
-                                @media print {
-                                .hr {
-  
-   height: 1px;
-  background-color:  #DD6D29;
-}
-                                }
-
+                               
                                 
                   
                                 
@@ -316,28 +303,63 @@
                                             </tr>
 
                                             <tr>
+                                                <td valign="top">
+                                                    &nbsp;</td>
+                                                <td>&nbsp;</td>
                                                 <td>
-                                                    <table style="width: 100%;">
+                                                    &nbsp;</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <table style="width: 100%;  text-align: center;">
                                                         <tr>
                                                             <td>
                                                                 <label class="label">
-                                                                    -------------------------------------
+                                                                    _____________________________________
                                                              
                                                                 </label>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td>
-                                                                <label class="label">
-                                                                    Firma 
-                                                             
-                                                                </label>
+                                                            <td >
+                                                                
+                                                                <asp:Label ID="Lbl_Usuario" CssClass="label" runat="server" Text=""></asp:Label>
+                                                                
                                                             </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td >
+                                                               <label  class="label">
+                                                                  RESPONSABLE DE LA CAJA                                                             
+                                                                </label></td>
                                                         </tr>
                                                     </table>
                                                 </td>
-                                                <td>&nbsp;</td>
                                                 <td></td>
+                                                <td><table style="width: 100%;  text-align: center;">
+                                                        <tr>
+                                                            <td>
+                                                                <label class="label">
+                                                                    _____________________________________
+                                                             
+                                                                </label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td >
+                                                                
+                                                                
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td >
+                                                               <label  class="label">
+                                                                  SUPERVISOR                                                            
+                                                                </label></td>
+                                                        </tr>
+                                                    </table></td>
                                             </tr>
                                         </table>
                                     </td>
