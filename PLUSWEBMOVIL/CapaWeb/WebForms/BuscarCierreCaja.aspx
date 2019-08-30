@@ -85,6 +85,13 @@
                     <td>
                     <div id="areaImprimir" style="align-items: center">
                             <style type="text/css">
+
+                                 @media print {
+                                     body {
+        background: #fff !important;
+    }
+                                    }
+
                                 .tftable {
                                     width: 100%;
                                     border-width: 0px;
