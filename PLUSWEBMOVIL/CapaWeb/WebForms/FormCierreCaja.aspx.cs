@@ -43,6 +43,7 @@ namespace CapaWeb.WebForms
         List<modelowmspcempresas> listaEmpresa = null;
         modelowmspcempresas modeloEmpresa = new modelowmspcempresas();
 
+        Consultawmsptitulares UsuarioDatos = new Consultawmsptitulares();
 
         public string ComPwm;
         public string AmUsrLog;
@@ -59,7 +60,8 @@ namespace CapaWeb.WebForms
             }
             if (!IsPostBack)
             {
-               
+                DecimalesMoneda = null;
+                DecimalesMoneda = BuscarDecimales();
                 lbl_fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 lbl_dia.Text =  DateTime.Today.ToString("dddd", new CultureInfo("es-ES")).ToUpper();               
                 CargarGrilla();
@@ -289,12 +291,14 @@ namespace CapaWeb.WebForms
             guardarCCcaja.fecha_mod = DateTime.Today;
             ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
 
+            DecimalesMoneda = null;
+            DecimalesMoneda = BuscarDecimales();
             //wmt_efectivoCaja
             Int64 secuencialEfectivoC = ConsultaEfectivoC.BuscarEfectivoSecuencial(lbl_fecha.Text);
             //Calcula datos de la grilla
             decimal acumulador = 0;
             decimal totalDenominacion = 0;
-
+            string Total = "";
             foreach (GridViewRow item in Grid.Rows)
             {
                 decimal valor1 = 0;
@@ -303,7 +307,8 @@ namespace CapaWeb.WebForms
                 Decimal.TryParse(valor.Text, out valor1);
                 acumulador = Convert.ToDecimal(cantidad.Text) * valor1;
                 totalDenominacion += acumulador;
-                item.Cells[4].Text = acumulador.ToString();
+                Total = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, acumulador);
+                item.Cells[4].Text = Total;
                 string idDen = item.Cells[0].Text;
                 guardarEfectivoC.denominacionMId = Convert.ToDecimal(idDen);
                 guardarEfectivoC.valor = Convert.ToDecimal(valor.Text);
@@ -341,7 +346,8 @@ namespace CapaWeb.WebForms
                 break;
 
             }
-
+            Session["redondeo"] = DecimalesMoneda.redondeo;
+            Session["redondeo_pu"] = DecimalesMoneda.redondeo_pu;
             return DecimalesMoneda;
         }
         protected void CalcularTotal()
@@ -352,18 +358,24 @@ namespace CapaWeb.WebForms
             //Calcula datos de la grilla
             decimal acumulador = 0;
             decimal totalDenominacion = 0;
-
+            string Total = "";
             foreach (GridViewRow item in Grid.Rows)
             {
+                
                 decimal valor1 = 0;
                 Label valor = item.FindControl("valor") as Label;
                 TextBox cantidad = item.FindControl("cantidad") as TextBox;
                 Decimal.TryParse(valor.Text, out valor1);
                 acumulador = Convert.ToDecimal(cantidad.Text) * valor1;
                 totalDenominacion += acumulador;
-                item.Cells[4].Text = acumulador.ToString();
+              Total = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, acumulador);
+               
+                item.Cells[4].Text = Total;
 
             }
+
+        
+
             decimal TotaValor = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, totalDenominacion);
             txt_valor_caja.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, TotaValor);
             //Calcula datos de los txt
@@ -383,11 +395,126 @@ namespace CapaWeb.WebForms
         {
             CalcularTotal();
             InsertarTotales();
+            lbl_mensaje.Text = UsuarioDatos.BuscarNombreUsuario(AmUsrLog.Trim());
         }
 
         protected void btn_cancelar_Click(object sender, EventArgs e)
         {
             Response.Redirect("BuscarCierreCaja.aspx");
+        }
+
+
+        protected void txt_valor_id_TextChanged(object sender, EventArgs e)
+        {
+            lbl_mensaje.Text = "";
+           
+            if (ValidarNumero(txt_valor_id.Text))
+            {
+                decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_valor_id.Text));
+                txt_valor_id.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+            }
+            else
+            {
+                txt_valor_id.Text = "";
+               lbl_mensaje.Text = "Números con formato incorrecto.";
+            }
+           
+        }
+
+        public bool ValidarNumero(string texto)
+        {
+            try
+            {
+                decimal valor = Convert.ToDecimal(txt_valor_id.Text);
+                return true;
+            }
+            catch (Exception)
+            {
+
+               return false ;
+            }
+        }
+
+        protected void txt_ingreso_facturas_TextChanged(object sender, EventArgs e)
+        {
+            lbl_mensaje.Text = "";
+
+            if (ValidarNumero(txt_ingreso_facturas.Text))
+            {
+                decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_ingreso_facturas.Text));
+                txt_ingreso_facturas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+            }
+            else
+            {
+                txt_ingreso_facturas.Text = "";
+                lbl_mensaje.Text = "Números con formato incorrecto.";
+            }
+        }
+
+        protected void txt_ingreso_nventas_TextChanged(object sender, EventArgs e)
+        {
+            lbl_mensaje.Text = "";
+
+            if (ValidarNumero(txt_ingreso_nventas.Text))
+            {
+                decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_ingreso_nventas.Text));
+                txt_ingreso_nventas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+            }
+            else
+            {
+                txt_ingreso_nventas.Text = "";
+                lbl_mensaje.Text = "Números con formato incorrecto.";
+            }
+        }
+
+        protected void txt_pefectivo_facturas_TextChanged(object sender, EventArgs e)
+        {
+            lbl_mensaje.Text = "";
+
+            if (ValidarNumero(txt_pefectivo_facturas.Text))
+            {
+                decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_pefectivo_facturas.Text));
+                txt_pefectivo_facturas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+            }
+            else
+            {
+                txt_pefectivo_facturas.Text = "";
+                lbl_mensaje.Text = "Números con formato incorrecto.";
+            }
+
+        }
+
+        protected void txt_pefectivo_otros_TextChanged(object sender, EventArgs e)
+        {
+            lbl_mensaje.Text = "";
+
+            if (ValidarNumero(txt_pefectivo_otros.Text))
+            {
+                decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_pefectivo_otros.Text));
+                txt_pefectivo_otros.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+            }
+            else
+            {
+                txt_pefectivo_otros.Text = "";
+                lbl_mensaje.Text = "Números con formato incorrecto.";
+            }
+        }
+
+        protected void txt_depositos_TextChanged(object sender, EventArgs e)
+        {
+            
+            lbl_mensaje.Text = "";
+
+            if (ValidarNumero(txt_depositos.Text))
+            {
+                decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_depositos.Text));
+                txt_depositos.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+            }
+            else
+            {
+                txt_depositos.Text = "";
+                lbl_mensaje.Text = "Números con formato incorrecto.";
+            }
         }
     }
 }

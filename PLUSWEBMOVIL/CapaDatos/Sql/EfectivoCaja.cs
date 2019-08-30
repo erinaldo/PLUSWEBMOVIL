@@ -94,13 +94,14 @@ namespace CapaDatos.Sql
                     string valor1 = String.Format("{0:N0}", item.valor).ToString();
                     item.Observaciones = Convert.ToString(dr["nombre"]) + " " + "DE " + valor1;
                     item.cantidad = Convert.ToDecimal(dr["cantidad"]);
-                    
+                  
                     item.total = Convert.ToDecimal(dr["total"]);
                     item.canti = String.Format("{0:N2}", item.total).ToString();
                     item.fecha_efe = Convert.ToString(dr["fecha_efe"]);
                     item.secuencial = Convert.ToInt64(dr["secuencial"]);
-                                       
-                    lista.Add(item);
+                    item.cbx_secuencias = "Cierre N° " + item.secuencial;
+
+                  lista.Add(item);
 
                 }
 
@@ -109,6 +110,37 @@ namespace CapaDatos.Sql
 
         }
 
+        //Lista de cierres por fecha especifica
+        public List<modeloEfectivoCaja> ListaEfectivoFecha(string fecha_efe)
+        {
+
+            using (cn = conexion.genearConexion())
+            {
+                List<modeloEfectivoCaja> lista = new List<modeloEfectivoCaja>();
+                string consulta = (" SELECT DISTINCT(secuencial) FROM wmt_efectivoCaja WHERE fecha_efe =@fecha_efe ORDER BY wmt_efectivoCaja.secuencial DESC");
+
+                SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                conmand.Parameters.Add("fecha_efe", SqlDbType.VarChar).Value = fecha_efe;
+               
+
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                while (dr.Read())
+                {
+
+                    modeloEfectivoCaja item = new modeloEfectivoCaja();
+                    item.secuencial =  Convert.ToInt64(dr["secuencial"]);
+                    item.cbx_secuencias = "Cierre N° " + item.secuencial;
+
+                    lista.Add(item);
+
+                }
+
+                return lista;
+            }
+
+        }
         //Insertar cierre en tabla wmt_cierre_resumencaja
         public string InsertarEfectivoCaja(modeloEfectivoCaja Efectivocaja)
         {

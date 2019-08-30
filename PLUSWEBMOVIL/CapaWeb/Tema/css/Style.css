@@ -160,6 +160,12 @@ body {
 	color: 	#7FFFD4;
 }
 
+.textos_td {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: 	#000000;
+    text-align :right;
+}
 .textos2 {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 11px;

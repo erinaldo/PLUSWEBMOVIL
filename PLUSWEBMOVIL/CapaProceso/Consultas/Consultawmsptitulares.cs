@@ -14,14 +14,20 @@ namespace CapaProceso.Consultas
     {
         Documento documento = new Documento();
         modelowmspctitulares modelotitulares = new modelowmspctitulares();
-
+        UsuariosSistema usuarioDatos = new UsuariosSistema();
         public List<modelowmspctitulares> ConsultaTitulares(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi)
         {
             List<modelowmspctitulares> lista = new List<modelowmspctitulares>();
             lista = documento.ListaBuscaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);            
             return lista;
         }
+        //TRaer nombre de usuario dl sistema
+        public string BuscarNombreUsuario(string usuario)
+        {
 
-    
+            return usuarioDatos.NombreUsuario(usuario);
+        }
+
+
     }
 }

@@ -49,6 +49,38 @@
                                         display: none;
                                     }
                                 }
+
+                                .label {
+                                    color: #ffffff;
+                                }
+
+                                @media print {
+                                    .label {
+                                        color: #DD6D29;
+                                    }
+                                }
+
+                                .hr {
+  
+   height: 1px;
+  background-color: white;
+}
+
+                                @media print {
+                                .hr {
+  
+   height: 1px;
+  background-color:  #DD6D29;
+}
+                                }
+
+                                
+                  
+                                
+
+                                .auto-style1 {
+                                    height: 23px;
+                                }
                             </style>
                             <table style="width: 100%;">
 
@@ -67,6 +99,14 @@
                                     <td>
 
                                         <asp:Label ID="lbl_dia" runat="server" class="Subtitulo1" Text="LUNES"></asp:Label>
+
+                                    </td>
+                                </tr>
+
+                                <tr rowspan="4">
+                                    <td colspan="4">
+
+                                        <asp:Label ID="lbl_mensaje" runat="server" ForeColor="Red"></asp:Label>
 
                                     </td>
                                 </tr>
@@ -99,11 +139,11 @@
                                                             </td>
                                                             <td class="textos">
                                                                 <asp:Label ID="lbl_idc" runat="server" Text="VALOR EN CAJA INICIO DEL DIA"></asp:Label>
-                                                               
+
                                                             </td>
 
                                                             <td class="busqueda">
-                                                                <asp:TextBox ID="txt_valor_id" required="required" runat="server" value="0"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_valor_id"  required="required" runat="server" value="0" AutoPostBack="True" Style="text-align: right" OnTextChanged="txt_valor_id_TextChanged"></asp:TextBox>
                                                             </td>
                                                             <td></td>
                                                         </tr>
@@ -113,11 +153,11 @@
                                                             </td>
                                                             <td class="textos">
                                                                 <asp:Label ID="lbl_2" runat="server" Text="INGRESOS POR FACTURAS"></asp:Label>
-                                                              
+
                                                             </td>
 
-                                                            <td class="textos">
-                                                                <asp:TextBox ID="txt_ingreso_facturas" ReadOnly="true" required="required" runat="server"></asp:TextBox>
+                                                            <td class="textos_td">
+                                                                <asp:TextBox ID="txt_ingreso_facturas" ReadOnly="true" required="required" runat="server" AutoPostBack="True" Style="text-align: right" OnTextChanged="txt_ingreso_facturas_TextChanged"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -131,11 +171,11 @@
                                                             </td>
                                                             <td class="textos">
                                                                 <asp:Label ID="lbl_3" runat="server" Text="INGRESOS POR NOTAS DE VENTA"></asp:Label>
-                                                                
+
                                                             </td>
 
                                                             <td class="textos">
-                                                                <asp:TextBox ID="txt_ingreso_nventas" required="required" ReadOnly="true" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_ingreso_nventas" required="required" ReadOnly="true" runat="server" AutoPostBack="True" Style="text-align: right" OnTextChanged="txt_ingreso_nventas_TextChanged"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -149,11 +189,11 @@
                                                             </td>
                                                             <td class="textos">
                                                                 <asp:Label ID="lbl_4" runat="server" Text="PAGOS EN EFECTIVO DE FACTURAS"></asp:Label>
-                                                                
+
                                                             </td>
 
                                                             <td class="textos">
-                                                                <asp:TextBox ID="txt_pefectivo_facturas" required="required" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_pefectivo_facturas" required="required" runat="server" AutoPostBack="True" Style="text-align: right" value="0" OnTextChanged="txt_pefectivo_facturas_TextChanged"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -167,11 +207,11 @@
                                                             </td>
                                                             <td class="textos">
                                                                 <asp:Label ID="lbl_5" runat="server" Text="PAGOS EN EFECTIVO OTROS"></asp:Label>
-                                                                
+
                                                             </td>
 
                                                             <td class="busqueda">
-                                                                <asp:TextBox ID="txt_pefectivo_otros" required="required" runat="server" value="0"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_pefectivo_otros" required="required" runat="server" AutoPostBack="True" Style="text-align: right" value="0" OnTextChanged="txt_pefectivo_otros_TextChanged"></asp:TextBox>
                                                             </td>
                                                             <td></td>
                                                         </tr>
@@ -181,11 +221,11 @@
                                                             </td>
                                                             <td class="textos">
                                                                 <asp:Label ID="lbl_6" runat="server" Text="DEPOSITOS DEL DIA"></asp:Label>
-                                                                
+
                                                             </td>
 
                                                             <td class="textos">
-                                                                <asp:TextBox ID="txt_depositos" required="required" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_depositos" required="required" AutoPostBack = "True" Style = "text-align: right" runat="server" value="0" OnTextChanged="txt_depositos_TextChanged"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -202,7 +242,7 @@
                                                         OnItemCommand="Grid_ItemCommand" AllowSorting="True" ShowFooter="True"
                                                         PageSize="11" CellPadding="2" BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" ShowHeader="False">
                                                         <Columns>
-                                                            <asp:BoundField DataField="id"  HeaderText="Id" ItemStyle-CssClass="textos_prueba" SortExpression="id" ItemStyle-ForeColor="White" />
+                                                            <asp:BoundField DataField="id" HeaderText="Id" ItemStyle-CssClass="textos_prueba" SortExpression="id" ItemStyle-ForeColor="White" />
                                                             <asp:BoundField DataField="Observaciones" HeaderText="Denominación" ItemStyle-CssClass="textos" SortExpression="Observaciones" />
                                                             <asp:TemplateField HeaderText="valor" Visible="false" SortExpression="valor">
                                                                 <ItemTemplate>
@@ -212,16 +252,16 @@
 
                                                             <asp:TemplateField HeaderText="Cantidad">
                                                                 <ItemTemplate>
-                                                                    <span style="float: left;">
-                                                                        <asp:TextBox ID="cantidad" type="number" Title="Ingrese el valor" required="requeried" Width="50" class="textos" runat="server" Text="">0</asp:TextBox>
+                                                                    <span style="float: right;">
+                                                                        <asp:TextBox ID="cantidad" type="number" Title="Ingrese el valor" aling="right" required="requeried" Width="50" class="textos" runat="server" Text="">0</asp:TextBox>
                                                                     </span>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
 
                                                             <asp:TemplateField HeaderText="Total">
                                                                 <ItemTemplate>
-                                                                    <span style="float: left;">
-                                                                        <asp:Label ID="total" runat="server" class="textos" Text="">0</asp:Label>
+                                                                    <span style="float: right;">
+                                                                        <asp:Label ID="total" runat="server"   Style="text-align: right" Text=""  class="textos" >0</asp:Label>
                                                                     </span>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
@@ -276,7 +316,26 @@
                                             </tr>
 
                                             <tr>
-                                                <td></td>
+                                                <td>
+                                                    <table style="width: 100%;">
+                                                        <tr>
+                                                            <td>
+                                                                <label class="label">
+                                                                    -------------------------------------
+                                                             
+                                                                </label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <label class="label">
+                                                                    Firma 
+                                                             
+                                                                </label>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
                                                 <td>&nbsp;</td>
                                                 <td></td>
                                             </tr>
@@ -293,8 +352,8 @@
                         <asp:Button ID="Btn_Calcular" CssClass="botones" runat="server" OnClick="Btn_Calcular_Click" Text="Calcular" />
                         &nbsp;&nbsp;&nbsp;
                                     <input type="button" class="botones" onclick="printDiv('areaImprimir')" value="Imprimir" />
-                         &nbsp;&nbsp;&nbsp;
-                        <asp:Button ID="btn_cancelar"  CssClass="botones" runat="server" UseSubmitBehavior="False"  Text="Cancelar" OnClick="btn_cancelar_Click" />
+                        &nbsp;&nbsp;&nbsp;
+                        <asp:Button ID="btn_cancelar" CssClass="botones" runat="server" UseSubmitBehavior="False" Text="Cancelar" OnClick="btn_cancelar_Click" />
                     </td>
                 </tr>
             </table>

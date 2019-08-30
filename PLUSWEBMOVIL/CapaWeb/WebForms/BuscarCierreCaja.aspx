@@ -50,13 +50,18 @@
                         
                         <tr valign="top">
                          <td width="20%" class="busqueda">Fecha Cierre:</td>
+                         
                           <td>
-                                <asp:TextBox ID="fechainicio" type="date"  Width="202"   runat="server"></asp:TextBox>
+                                <asp:TextBox ID="fechainicio" type="date"  Width="202" AutoPostBack = "True"  runat="server" OnTextChanged="fechainicio_TextChanged"></asp:TextBox>
                             </td>
                            
-
+                            <td width="20%" class="busqueda">Lista Cierres Caja</td>
+                            <td>
+                                <asp:DropDownList ID="cbx_lista_cierres" CssClass="textos" runat="server"></asp:DropDownList>
+                            </td>
                              <td aling="rigth">
                                  <asp:Button ID="Buscar" runat="server" onclick="Buscar_Click" class="botones" Text="Buscar" /></td>
+                            
                             
                         </tr>
    
@@ -136,7 +141,7 @@
                                                             </td>
 
                                                             <td class="busqueda">
-                                                                <asp:TextBox ID="txt_valor_id" required="required" runat="server" value="0"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_valor_id" Style="text-align: right" required="required" runat="server" value="0"></asp:TextBox>
                                                             </td>
                                                             <td></td>
                                                         </tr>
@@ -150,7 +155,7 @@
                                                             </td>
 
                                                             <td class="textos">
-                                                                <asp:TextBox ID="txt_ingreso_facturas" ReadOnly="true" required="required" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_ingreso_facturas" Style="text-align: right" ReadOnly="true" required="required" runat="server"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -168,7 +173,7 @@
                                                             </td>
 
                                                             <td class="textos">
-                                                                <asp:TextBox ID="txt_ingreso_nventas" required="required" ReadOnly="true" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_ingreso_nventas" Style="text-align: right" required="required" ReadOnly="true" runat="server"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -186,7 +191,7 @@
                                                             </td>
 
                                                             <td class="textos">
-                                                                <asp:TextBox ID="txt_pefectivo_facturas" required="required" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_pefectivo_facturas" Style="text-align: right" required="required" runat="server"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -204,7 +209,7 @@
                                                             </td>
 
                                                             <td class="busqueda">
-                                                                <asp:TextBox ID="txt_pefectivo_otros" required="required" runat="server" value="0"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_pefectivo_otros" Style="text-align: right" required="required" runat="server" value="0"></asp:TextBox>
                                                             </td>
                                                             <td></td>
                                                         </tr>
@@ -218,7 +223,7 @@
                                                             </td>
 
                                                             <td class="textos">
-                                                                <asp:TextBox ID="txt_depositos" required="required" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_depositos" Style="text-align: right" required="required" runat="server"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">

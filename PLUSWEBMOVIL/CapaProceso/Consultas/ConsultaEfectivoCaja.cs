@@ -36,6 +36,14 @@ namespace CapaProceso.Consultas
             lista = efectivocaja.BuscarEfectivoCF(fecha, secuencial);
             return lista;
         }
+
+        //lista de secuenciales para cbx_secuencial
+        public List<modeloEfectivoCaja> ListaSecuencialFecha(string fecha)
+        {
+            List<modeloEfectivoCaja> lista = new List<modeloEfectivoCaja>();
+            lista = efectivocaja.ListaEfectivoFecha(fecha);
+            return lista;
+        }
         //insertar efectivo caja
         public string InsertarECaja(modeloEfectivoCaja ModeloECaja)
         {

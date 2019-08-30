@@ -132,6 +132,7 @@
     <Compile Include="Sql\SqlNC\RespuestaNC.cs" />
     <Compile Include="Sql\SqlNC\SaldosFacturas.cs" />
     <Compile Include="Sql\SucursalEmpresa.cs" />
+    <Compile Include="Sql\UsuariosSistema.cs" />
     <Compile Include="Sql\UsuarioSucursal.cs" />
     <Compile Include="Sql\UsuarioxEmpresa.cs" />
     <Compile Include="Sql\Vendedores.cs" />

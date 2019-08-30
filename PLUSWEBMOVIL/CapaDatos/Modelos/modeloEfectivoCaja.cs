@@ -18,7 +18,7 @@ namespace CapaDatos.Modelos
         public Int64 secuencial { get; set; }
         public string Observaciones { get; set; }
         public string fecha_efe { get; set; }
-
+        public string cbx_secuencias { get; set; }
         public string usuario_mod { get; set; }
         public DateTime fecha_mod { get; set; }
         public string nro_audit { get; set; }
