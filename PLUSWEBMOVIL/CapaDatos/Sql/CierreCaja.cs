@@ -16,18 +16,18 @@ namespace CapaDatos.Sql
         //Modelo cierre de caja tabla wmt_cierre_resumencaja
 
         //Buscar por fecha
-        public Int64 BuscarCierreDiaSecuencial(string fecha_cie)
+        public Int64 BuscarCierreDiaSecuencial(string fecha_cie, string cod_emp)
         {
 
             Int64 secuencial = 0;
             
             using (cn = conexion.genearConexion())
             {
-                string insert = "SELECT TOP 1  secuencial FROM wmt_cierre_resumencaja where fecha_cie = @fecha_cie ORDER BY dbo.wmt_cierre_resumencaja.secuencial DESC ";
+                string insert = "SELECT TOP 1  secuencial FROM wmt_cierre_resumencaja where fecha_cie = @fecha_cie AND cod_emp =@cod_emp ORDER BY wmt_cierre_resumencaja.secuencial DESC ";
                 SqlCommand conmand = new SqlCommand(insert, cn);
 
                 conmand.Parameters.Add("@fecha_cie", SqlDbType.VarChar).Value = fecha_cie;
-
+                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
 
                 SqlDataReader dr = conmand.ExecuteReader();
 
@@ -43,18 +43,18 @@ namespace CapaDatos.Sql
         }
 
         //ultimo secuencial
-        public Int64 UltimoCierreDiaSecuencial(string fecha_cie)
+        public Int64 UltimoCierreDiaSecuencial(string fecha_cie,string cod_emp)
         {
 
             Int64 secuencial = 0;
 
             using (cn = conexion.genearConexion())
             {
-                string insert = "SELECT TOP 1  secuencial FROM wmt_cierre_resumencaja where fecha_cie = @fecha_cie ORDER BY dbo.wmt_cierre_resumencaja.secuencial DESC ";
+                string insert = "SELECT TOP 1  secuencial FROM wmt_cierre_resumencaja where fecha_cie = @fecha_cie and cod_emp=@cod_emp ORDER BY dbo.wmt_cierre_resumencaja.secuencial DESC ";
                 SqlCommand conmand = new SqlCommand(insert, cn);
 
                 conmand.Parameters.Add("@fecha_cie", SqlDbType.VarChar).Value = fecha_cie;
-
+                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
 
                 SqlDataReader dr = conmand.ExecuteReader();
 
@@ -69,18 +69,19 @@ namespace CapaDatos.Sql
             }
         }
         //Resumen de ciere por fecha
-        public List<modeloCierreCaja> ListaCierreCF(string fecha, Int64 secuencial, string codigo)
+        public List<modeloCierreCaja> ListaCierreCF(string fecha, Int64 secuencial, string codigo, string cod_emp)
         {
 
             using (cn = conexion.genearConexion())
             {
                 List<modeloCierreCaja> lista = new List<modeloCierreCaja>();
-                string consulta = ("select * from wmt_cierre_resumencaja WHERE fecha_cie =@fecha_cie and secuencial = @secuencial and codigo= @codigo");
+                string consulta = ("select * from wmt_cierre_resumencaja WHERE fecha_cie =@fecha_cie and secuencial = @secuencial and codigo= @codigo and cod_emp= @cod_emp");
                 SqlCommand conmand = new SqlCommand(consulta, cn);
 
                 conmand.Parameters.Add("fecha_cie", SqlDbType.VarChar).Value = fecha;
                 conmand.Parameters.Add("secuencial", SqlDbType.BigInt).Value = secuencial;
                 conmand.Parameters.Add("codigo", SqlDbType.VarChar).Value = codigo;
+                conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
 
                 SqlDataReader dr = conmand.ExecuteReader();
 
@@ -100,6 +101,7 @@ namespace CapaDatos.Sql
                     item.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
                     item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
                     item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                    item.cod_emp = Convert.ToString(dr["cod_emp"]);
 
                     lista.Add(item);
 
@@ -117,7 +119,7 @@ namespace CapaDatos.Sql
             {
                 using (cn = conexion.genearConexion())
                 {
-                    string insert = "INSERT INTO  wmt_cierre_resumencaja (signo, codigo,nombre, valor, usuario_mod, fecha_mod,fecha_cie, secuencial) VALUES (@signo, @codigo,@nombre, @valor, @usuario_mod, @fecha_mod,@fecha_cie, @secuencial)";
+                    string insert = "INSERT INTO  wmt_cierre_resumencaja (signo, codigo,nombre, valor, usuario_mod, fecha_mod,fecha_cie, secuencial, cod_emp) VALUES (@signo, @codigo,@nombre, @valor, @usuario_mod, @fecha_mod,@fecha_cie, @secuencial, @cod_emp)";
                     SqlCommand conmand = new SqlCommand(insert, cn);
                     conmand.Parameters.Add("@signo", SqlDbType.VarChar).Value = Cierrecaja.signo;
                     conmand.Parameters.Add("@codigo", SqlDbType.VarChar).Value = Cierrecaja.codigo;
@@ -127,7 +129,7 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@fecha_mod", SqlDbType.DateTime).Value = Cierrecaja.fecha_mod;
                     conmand.Parameters.Add("@fecha_cie", SqlDbType.VarChar).Value = Cierrecaja.fecha_cie;
                     conmand.Parameters.Add("@secuencial", SqlDbType.VarChar).Value = Cierrecaja.secuencial;
-
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = Cierrecaja.cod_emp;
                     int dr = conmand.ExecuteNonQuery();
                     return "Cierre Caja guardada correctamente";
                 }

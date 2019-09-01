@@ -225,7 +225,7 @@ namespace CapaWeb.WebForms
         protected void InsertarTotales()
         {
 
-            Int64 secuencialCierreResumenCaja = ConsultaCCaja.BuscarCCajaFechaSecuencial(lbl_fecha.Text);
+            Int64 secuencialCierreResumenCaja = ConsultaCCaja.BuscarCCajaFechaSecuencial(lbl_fecha.Text, ComPwm.Trim());
             //Recuperar si ya existe cierre del dia
 
             //wmt_cierre_resumenaja
@@ -239,6 +239,7 @@ namespace CapaWeb.WebForms
             guardarCCcaja.usuario_mod = AmUsrLog;
             guardarCCcaja.fecha_cie = lbl_fecha.Text;
             guardarCCcaja.fecha_mod = DateTime.Today;
+            guardarCCcaja.cod_emp = ComPwm;
             ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
             //Guardar linea x linea ingresos facturas
             guardarCCcaja.signo = "+";
@@ -249,6 +250,7 @@ namespace CapaWeb.WebForms
             guardarCCcaja.usuario_mod = AmUsrLog;
             guardarCCcaja.fecha_cie = lbl_fecha.Text;
             guardarCCcaja.fecha_mod = DateTime.Today;
+            guardarCCcaja.cod_emp = ComPwm;
             ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
             //Guardar linea x linea ingresos NOTAS VENTA
             guardarCCcaja.signo = "+";
@@ -259,6 +261,7 @@ namespace CapaWeb.WebForms
             guardarCCcaja.usuario_mod = AmUsrLog;
             guardarCCcaja.fecha_cie = lbl_fecha.Text;
             guardarCCcaja.fecha_mod = DateTime.Today;
+            guardarCCcaja.cod_emp = ComPwm;
             ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
             //Guardar linea x linea PAGOS EN FECTIVO FACTURAS
             guardarCCcaja.signo = "-";
@@ -269,6 +272,7 @@ namespace CapaWeb.WebForms
             guardarCCcaja.usuario_mod = AmUsrLog;
             guardarCCcaja.fecha_cie = lbl_fecha.Text;
             guardarCCcaja.fecha_mod = DateTime.Today;
+            guardarCCcaja.cod_emp = ComPwm;
             ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
             //Guardar linea x linea PAGOS EN FECTIVO OTROS
             guardarCCcaja.signo = "-";
@@ -279,6 +283,7 @@ namespace CapaWeb.WebForms
             guardarCCcaja.usuario_mod = AmUsrLog;
             guardarCCcaja.fecha_cie = lbl_fecha.Text;
             guardarCCcaja.fecha_mod = DateTime.Today;
+            guardarCCcaja.cod_emp = ComPwm;
             ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
             //Guardar linea x linea DEPOSITOS DEL DIA
             guardarCCcaja.signo = "-";
@@ -289,12 +294,13 @@ namespace CapaWeb.WebForms
             guardarCCcaja.usuario_mod = AmUsrLog;
             guardarCCcaja.fecha_cie = lbl_fecha.Text;
             guardarCCcaja.fecha_mod = DateTime.Today;
+            guardarCCcaja.cod_emp = ComPwm;
             ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
 
             DecimalesMoneda = null;
             DecimalesMoneda = BuscarDecimales();
             //wmt_efectivoCaja
-            Int64 secuencialEfectivoC = ConsultaEfectivoC.BuscarEfectivoSecuencial(lbl_fecha.Text);
+            Int64 secuencialEfectivoC = ConsultaEfectivoC.BuscarEfectivoSecuencial(lbl_fecha.Text, ComPwm);
             //Calcula datos de la grilla
             decimal acumulador = 0;
             decimal totalDenominacion = 0;
@@ -318,6 +324,7 @@ namespace CapaWeb.WebForms
                 guardarEfectivoC.fecha_mod = DateTime.Today;
                 guardarEfectivoC.fecha_efe = lbl_fecha.Text;
                 guardarEfectivoC.secuencial = secuencialEfectivoC;
+                guardarEfectivoC.cod_emp =ComPwm;
                 ConsultaEfectivoC.InsertarECaja(guardarEfectivoC);
 
             }
@@ -409,7 +416,7 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_mensaje.Text = "";
-
+               
                 if (ValidarNumero(txt_valor_id.Text))
                 {
                     decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_valor_id.Text));
@@ -435,7 +442,11 @@ namespace CapaWeb.WebForms
             try
             {
 
-                decimal valor = Convert.ToDecimal(txt_valor_id.Text);
+                decimal valor = Convert.ToDecimal(texto);
+                if(valor<0 )
+                {
+                    return false;
+                }
                
                     return true;
                 

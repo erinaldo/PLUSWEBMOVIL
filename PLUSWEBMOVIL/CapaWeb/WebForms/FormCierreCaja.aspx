@@ -1,7 +1,64 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="FormCierreCaja.aspx.cs" Inherits="CapaWeb.WebForms.FormCierreCaja" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+     <script type="text/javascript">
 
+       
+        function validarCampos(){
+            var valor_inicioD = document.getElementById("<%= txt_valor_id.ClientID %>").value;
+            var ingreso_facturas = document.getElementById("<%= txt_ingreso_facturas.ClientID %>").value;
+            var ingreso_nventas = document.getElementById("<%= txt_ingreso_nventas.ClientID %>").value;
+            var pefectivo_facturas = document.getElementById("<%= txt_pefectivo_facturas.ClientID %>").value;
+            var pefectivo_otros = document.getElementById("<%=txt_pefectivo_otros.ClientID %>").value;
+            var depositos = document.getElementById("<%= txt_depositos.ClientID %>").value;
+            
+            
+            var respuesta;
+            if (valor_inicioD == null || valor_inicioD == "" || valor_inicioD <0) {
+                alert("Ingrese el valor");
+                respuesta =  false;
+            } else {             
+                respuesta = true;
+            }
+           
+            if (ingreso_facturas == null || ingreso_facturas == "" || ingreso_facturas < 0) {
+                alert("Ingrese el valor");
+                respuesta = false;
+            } else {
+                respuesta = true;
+            }
+
+            if (ingreso_nventas < 0 || ingreso_nventas == "" || ingreso_nventas == null) {
+                alert("Ingrese el valor");
+                respuesta = false;
+            } else {
+                respuesta = true;
+            }
+            if (pefectivo_facturas == null || pefectivo_facturas == "" || pefectivo_facturas < 0) {
+                alert("Ingrese el valor");
+                respuesta = false;
+            } else {
+                respuesta = true;
+            }
+            if (pefectivo_otros == null || pefectivo_otros == "" || pefectivo_otros < 0) {
+                alert("Ingrese el valor");
+                respuesta = false;
+            } else {
+                respuesta = true;
+            }
+            if (depositos == null || depositos == "" || depositos < 0) {
+                alert("Ingrese el valor");
+                respuesta = false;
+            } else {
+                respuesta = true;
+            }
+           
+            return respuesta
+        }
+        
+
+       
+    </script>
 
     <form id="form1" class="forms-sample" runat="server" method="post">
 
@@ -378,7 +435,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <asp:Button ID="Btn_Calcular" CssClass="botones" runat="server" OnClick="Btn_Calcular_Click" Text="Calcular" />
+                        <asp:Button ID="Btn_Calcular" CssClass="botones" runat="server" OnClientClick="return validarCampos();" OnClick="Btn_Calcular_Click" Text="Calcular" />
                         &nbsp;&nbsp;&nbsp;
                                     <input type="button" class="botones" onclick="printDiv('areaImprimir')" value="Imprimir" />
                         &nbsp;&nbsp;&nbsp;

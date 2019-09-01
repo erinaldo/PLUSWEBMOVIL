@@ -10,6 +10,7 @@ namespace CapaDatos.Modelos
         //Modelo efectivo caja tabla wmt_efectivoCaja
 
         public string id { get; set; }
+        public string cod_emp { get; set; }
         public decimal denominacionMId { get; set; }
         public decimal valor { get; set; }
         public decimal cantidad { get; set; }

@@ -15,23 +15,23 @@ namespace CapaProceso.Consultas
         modeloCierreCaja modeloCCaja = new modeloCierreCaja();
 
         //Consulta cierre caja por fecha en wmt_cierre_resumencaja
-        public Int64 BuscarCCajaFechaSecuencial(string fecha)
+        public Int64 BuscarCCajaFechaSecuencial(string fecha , string cod_emp)
         {          
             
-            return ccaja.BuscarCierreDiaSecuencial(fecha);
+            return ccaja.BuscarCierreDiaSecuencial(fecha, cod_emp);
         }
         //ultimo secuencial
-        public Int64 UltimoCCajaFechaSecuencial(string fecha)
+        public Int64 UltimoCCajaFechaSecuencial(string fecha, string cod_emp)
         {
 
-            return ccaja.UltimoCierreDiaSecuencial(fecha);
+            return ccaja.UltimoCierreDiaSecuencial(fecha, cod_emp);
         }
 
         //Consulta lista de cierre caja por fecha en wmt_cierre_resumencaja
-        public List<modeloCierreCaja> ConsultaCCajaFecha(string fecha, Int64 secuencial, string codigo)
+        public List<modeloCierreCaja> ConsultaCCajaFecha(string fecha, Int64 secuencial, string codigo, string cod_emp)
         {
             List<modeloCierreCaja> lista = new List<modeloCierreCaja>();
-            lista = ccaja.ListaCierreCF(fecha, secuencial, codigo);
+            lista = ccaja.ListaCierreCF(fecha, secuencial, codigo, cod_emp);
             return lista;
         }
 

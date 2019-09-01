@@ -196,7 +196,7 @@ namespace CapaWeb.WebForms
             //Int64 secuEfe = ConsultaEfectivoC.UltimoEfectivoSecuencial(fechainicio.Text);
             Int64 secuEfe = Convert.ToInt64(cbx_lista_cierres.SelectedValue);
                 
-            listaEfectivoC = ConsultaEfectivoC.ListaCCajaFecha(fechainicio.Text, secuEfe);
+            listaEfectivoC = ConsultaEfectivoC.ListaCCajaFecha(fechainicio.Text, secuEfe, ComPwm);
             Grid.DataSource = listaEfectivoC;
             Grid.DataBind();
             Grid.Height = 100;
@@ -211,7 +211,7 @@ namespace CapaWeb.WebForms
             ///Int64 secCierre = ConsultaCCaja.UltimoCCajaFechaSecuencial(fechainicio.Text);
             Int64 secCierre = Convert.ToInt64(cbx_lista_cierres.SelectedValue);
             string codigo = "VIDA";
-            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, codigo);
+            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, codigo, ComPwm);
             modeloCCcaja = null;
             foreach (modeloCierreCaja item in listaCCaja)
             {
@@ -222,7 +222,7 @@ namespace CapaWeb.WebForms
             txt_valor_id.ReadOnly = true;
             SaldoCaja = modeloCCcaja.valor;
             //campo dos
-            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "INFA");
+            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "INFA", ComPwm);
             modeloCCcaja = null;
             foreach (modeloCierreCaja item in listaCCaja)
             {
@@ -233,7 +233,7 @@ namespace CapaWeb.WebForms
             txt_ingreso_facturas.ReadOnly = true;
             SaldoCaja += modeloCCcaja.valor;
             //campo tres
-            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "INVT");
+            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "INVT", ComPwm);
             modeloCCcaja = null;
             foreach (modeloCierreCaja item in listaCCaja)
             {
@@ -244,7 +244,7 @@ namespace CapaWeb.WebForms
             txt_ingreso_nventas.ReadOnly = true;
             SaldoCaja += modeloCCcaja.valor;
             //campo cuatro
-            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "PEFA");
+            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "PEFA", ComPwm);
             modeloCCcaja = null;
             foreach (modeloCierreCaja item in listaCCaja)
             {
@@ -255,7 +255,7 @@ namespace CapaWeb.WebForms
             txt_pefectivo_facturas.ReadOnly = true;
             SaldoN = modeloCCcaja.valor;
             //campoCINCO
-            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "PEOT");
+            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "PEOT", ComPwm);
             modeloCCcaja = null;
             foreach (modeloCierreCaja item in listaCCaja)
             {
@@ -267,7 +267,7 @@ namespace CapaWeb.WebForms
             SaldoN += modeloCCcaja.valor;
             //CAMPO SEIS
             //campo dos
-            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "DEPD");
+            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "DEPD", ComPwm);
             modeloCCcaja = null;
             foreach (modeloCierreCaja item in listaCCaja)
             {
@@ -294,7 +294,7 @@ namespace CapaWeb.WebForms
         protected void fechainicio_TextChanged(object sender, EventArgs e)
         {
             //cARGAR SECUENCAIL
-            Int64 secuEfe = ConsultaEfectivoC.UltimoEfectivoSecuencial(fechainicio.Text);
+            Int64 secuEfe = ConsultaEfectivoC.UltimoEfectivoSecuencial(fechainicio.Text, ComPwm);
             if (secuEfe == 0)
             {
                 Buscar.Visible = false;
@@ -307,7 +307,7 @@ namespace CapaWeb.WebForms
                 cbx_lista_cierres.Visible = true;
                 //Cargar datos segun cbx
                 //Cargamos el combo de lista de cierres de caja del dia
-                listaEfectivoC = ConsultaEfectivoC.ListaSecuencialFecha(fechainicio.Text);
+                listaEfectivoC = ConsultaEfectivoC.ListaSecuencialFecha(fechainicio.Text, ComPwm);
                 cbx_lista_cierres.DataSource = listaEfectivoC;
                 cbx_lista_cierres.DataTextField = "cbx_secuencias";
                 cbx_lista_cierres.DataValueField = "secuencial";
