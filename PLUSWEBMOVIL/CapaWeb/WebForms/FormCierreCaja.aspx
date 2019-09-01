@@ -1,26 +1,26 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="FormCierreCaja.aspx.cs" Inherits="CapaWeb.WebForms.FormCierreCaja" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-     <script type="text/javascript">
+    <script type="text/javascript">
 
-       
-        function validarCampos(){
+
+        function validarCampos() {
             var valor_inicioD = document.getElementById("<%= txt_valor_id.ClientID %>").value;
             var ingreso_facturas = document.getElementById("<%= txt_ingreso_facturas.ClientID %>").value;
             var ingreso_nventas = document.getElementById("<%= txt_ingreso_nventas.ClientID %>").value;
             var pefectivo_facturas = document.getElementById("<%= txt_pefectivo_facturas.ClientID %>").value;
             var pefectivo_otros = document.getElementById("<%=txt_pefectivo_otros.ClientID %>").value;
             var depositos = document.getElementById("<%= txt_depositos.ClientID %>").value;
-            
-            
+
+
             var respuesta;
-            if (valor_inicioD == null || valor_inicioD == "" || valor_inicioD <0) {
+            if (valor_inicioD == null || valor_inicioD == "" || valor_inicioD < 0) {
                 alert("Ingrese el valor");
-                respuesta =  false;
-            } else {             
+                respuesta = false;
+            } else {
                 respuesta = true;
             }
-           
+
             if (ingreso_facturas == null || ingreso_facturas == "" || ingreso_facturas < 0) {
                 alert("Ingrese el valor");
                 respuesta = false;
@@ -52,12 +52,12 @@
             } else {
                 respuesta = true;
             }
-           
+
             return respuesta
         }
-        
 
-       
+
+
     </script>
 
     <form id="form1" class="forms-sample" runat="server" method="post">
@@ -79,12 +79,32 @@
 
                         <div id="areaImprimir" style="align-items: center">
                             <style type="text/css">
+                                .label {
+                                    color: white;
+                                }
 
                                 @media print {
-                                     body {
-        background: #fff !important;
-    }
+                                    body {
+                                        background: #fff !important;
                                     }
+
+                                    .noimp {
+                                        display: none;
+                                    }
+
+                                    .label {
+                                        color: black;
+                                    }
+
+                                    .sinBorde {
+                                        border: none;
+                                        text-align: right;
+                                    }
+                                }
+
+                                .sinBorde {
+                                    text-align: right;
+                                }
 
                                 .tftable {
                                     width: 100%;
@@ -108,30 +128,21 @@
                                     font-weight: bold;
                                 }
 
-                                @media print {
-                                    .noimp {
-                                        display: none;
-                                    }
+                                .auto-style2 {
+                                    font-family: Verdana, Arial, Helvetica, sans-serif;
+                                    font-size: 13px;
+                                    color: #DD6D29;
+                                    width: 140px;
                                 }
 
-                                .label {
-                                    color: #ffffff;
+                                .auto-style3 {
+                                    font-family: Verdana, Arial, Helvetica, sans-serif;
+                                    font-size: 12px;
+                                    color: #000000;
+                                    width: 140px;
                                 }
 
-                                @media print {
-                                    .label {
-                                        color: black;
-                                    }
-                                }
-
-                               
                                 
-                  
-                                
-
-                                .auto-style1 {
-                                    height: 23px;
-                                }
                             </style>
                             <table style="width: 100%;">
 
@@ -182,7 +193,7 @@
                                             </tr>
                                             <tr>
                                                 <td valign="top">
-                                                    <table align="center" border="1" class="tftable">
+                                                    <table align="center" border="1" class="tftable" style="width: 100%;">
 
                                                         <tr valign="top">
                                                             <td class="textos">
@@ -193,8 +204,8 @@
 
                                                             </td>
 
-                                                            <td class="busqueda">
-                                                                <asp:TextBox ID="txt_valor_id"  required="required" runat="server" value="0" AutoPostBack="True" Style="text-align: right" OnTextChanged="txt_valor_id_TextChanged"></asp:TextBox>
+                                                            <td class="auto-style2">
+                                                                <asp:TextBox ID="txt_valor_id" CssClass="sinBorde" required="required" runat="server" value="0" AutoPostBack="True" Style="text-align: right" OnTextChanged="txt_valor_id_TextChanged"></asp:TextBox>
                                                             </td>
                                                             <td></td>
                                                         </tr>
@@ -207,8 +218,8 @@
 
                                                             </td>
 
-                                                            <td class="textos_td">
-                                                                <asp:TextBox ID="txt_ingreso_facturas" ReadOnly="true" required="required" runat="server" AutoPostBack="True" Style="text-align: right" OnTextChanged="txt_ingreso_facturas_TextChanged"></asp:TextBox>
+                                                            <td class="auto-style3">
+                                                                <asp:TextBox ID="txt_ingreso_facturas" CssClass="sinBorde" ReadOnly="true" required="required" runat="server" AutoPostBack="True" Style="text-align: right" OnTextChanged="txt_ingreso_facturas_TextChanged"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -225,8 +236,8 @@
 
                                                             </td>
 
-                                                            <td class="textos">
-                                                                <asp:TextBox ID="txt_ingreso_nventas" required="required" ReadOnly="true" runat="server" AutoPostBack="True" Style="text-align: right" OnTextChanged="txt_ingreso_nventas_TextChanged"></asp:TextBox>
+                                                            <td class="auto-style3">
+                                                                <asp:TextBox ID="txt_ingreso_nventas" CssClass="sinBorde" required="required" ReadOnly="true" runat="server" AutoPostBack="True" Style="text-align: right" OnTextChanged="txt_ingreso_nventas_TextChanged"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -243,8 +254,8 @@
 
                                                             </td>
 
-                                                            <td class="textos">
-                                                                <asp:TextBox ID="txt_pefectivo_facturas" required="required" runat="server" AutoPostBack="True" Style="text-align: right" value="0" OnTextChanged="txt_pefectivo_facturas_TextChanged"></asp:TextBox>
+                                                            <td class="auto-style3">
+                                                                <asp:TextBox ID="txt_pefectivo_facturas" CssClass="sinBorde" required="required" runat="server" AutoPostBack="True" Style="text-align: right" value="0" OnTextChanged="txt_pefectivo_facturas_TextChanged"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -261,8 +272,8 @@
 
                                                             </td>
 
-                                                            <td class="busqueda">
-                                                                <asp:TextBox ID="txt_pefectivo_otros" required="required" runat="server" AutoPostBack="True" Style="text-align: right" value="0" OnTextChanged="txt_pefectivo_otros_TextChanged"></asp:TextBox>
+                                                            <td class="auto-style2">
+                                                                <asp:TextBox ID="txt_pefectivo_otros" CssClass="sinBorde" required="required" runat="server" AutoPostBack="True" Style="text-align: right" value="0" OnTextChanged="txt_pefectivo_otros_TextChanged"></asp:TextBox>
                                                             </td>
                                                             <td></td>
                                                         </tr>
@@ -275,8 +286,8 @@
 
                                                             </td>
 
-                                                            <td class="textos">
-                                                                <asp:TextBox ID="txt_depositos" required="required" AutoPostBack = "True" Style = "text-align: right" runat="server" value="0" OnTextChanged="txt_depositos_TextChanged"></asp:TextBox>
+                                                            <td class="auto-style3">
+                                                                <asp:TextBox ID="txt_depositos" CssClass="sinBorde" required="required" AutoPostBack="True" Style="text-align: right" runat="server" value="0" OnTextChanged="txt_depositos_TextChanged"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -284,17 +295,34 @@
                                                                 </div>
                                                             </td>
                                                         </tr>
+                                                        <tr>
+                                                            <td class="textos">
+                                                                <div align="left">+</div></td>
+                                                            <td class="textos">
+                                                                 <asp:Label ID="lbl_7" runat="server" Text="EFECTIVO PARA CAJA"></asp:Label></td>
+
+                                                            <td class="auto-style3">
+                                                                <asp:TextBox ID="txt_efectivo_caja" CssClass="sinBorde" required="required" AutoPostBack="True" Style="text-align: right" runat="server" value="0" OnTextChanged="txt_efectivo_caja_TextChanged" ></asp:TextBox></td>
+                                                            <td>
+                                                               <div class="noimp">
+                                                                    <asp:ImageButton ID="btn_efectivo_caja" src="../Tema/imagenes/search.png" runat="server" />
+                                                                </div></td>
+                                                        </tr>
                                                     </table>
                                                 </td>
-                                                <td>&nbsp;</td>
-                                                <td>
+                                                <td></td>
+                                                <td valign="top">
                                                     <asp:GridView ID="Grid" runat="server"
-                                                        AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
-                                                        OnItemCommand="Grid_ItemCommand" AllowSorting="True" ShowFooter="True"
-                                                        PageSize="11" CellPadding="2" BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" ShowHeader="False">
+                                                        AutoGenerateColumns="False" AllowPaging="True" CssClass="tftable"
+                                                        OnItemCommand="Grid_ItemCommand" AllowSorting="True" ShowFooter="False"
+                                                        PageSize="1000" CellPadding="2" BorderWidth="1px" CellSpacing="1" ShowHeader="False">
                                                         <Columns>
-                                                            <asp:BoundField DataField="id" HeaderText="Id" ItemStyle-CssClass="textos_prueba" SortExpression="id" ItemStyle-ForeColor="White" />
-                                                            <asp:BoundField DataField="Observaciones" HeaderText="Denominación" ItemStyle-CssClass="textos" SortExpression="Observaciones" />
+                                                            <asp:BoundField DataField="id" HeaderText="Id" ItemStyle-CssClass="textos_prueba" SortExpression="id" ItemStyle-ForeColor="White">
+                                                                <ItemStyle CssClass="textos_prueba" ForeColor="White"></ItemStyle>
+                                                            </asp:BoundField>
+                                                            <asp:BoundField DataField="Observaciones" HeaderText="Denominación" ItemStyle-CssClass="textos" SortExpression="Observaciones">
+                                                                <ItemStyle CssClass="textos"></ItemStyle>
+                                                            </asp:BoundField>
                                                             <asp:TemplateField HeaderText="valor" Visible="false" SortExpression="valor">
                                                                 <ItemTemplate>
                                                                     <asp:Label ID="valor" runat="server" Text='<%# Bind("valor") %>'></asp:Label>
@@ -304,7 +332,7 @@
                                                             <asp:TemplateField HeaderText="Cantidad">
                                                                 <ItemTemplate>
                                                                     <span style="float: right;">
-                                                                        <asp:TextBox ID="cantidad" type="number" Title="Ingrese el valor" aling="right" required="requeried" Width="50" class="textos" runat="server" Text="">0</asp:TextBox>
+                                                                        <asp:TextBox ID="cantidad" type="number" CssClass="sinBorde" Title="Ingrese el valor" required="requeried" Width="50" class="textos" runat="server" Text="">0</asp:TextBox>
                                                                     </span>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
@@ -312,7 +340,7 @@
                                                             <asp:TemplateField HeaderText="Total">
                                                                 <ItemTemplate>
                                                                     <span style="float: right;">
-                                                                        <asp:Label ID="total" runat="server"   Style="text-align: right" Text=""  class="textos" >0</asp:Label>
+                                                                        <asp:Label ID="total" runat="server" Style="text-align: right" Text="" class="textos">0</asp:Label>
                                                                     </span>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
@@ -337,7 +365,7 @@
                                                                 <asp:Label ID="Label1" CssClass="fondo" runat="server" Text="SALDO EN CAJA FINAL DEL DÍA"></asp:Label>
                                                             </td>
                                                             <td>
-                                                                <asp:TextBox ID="txt_saldo_caja" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_saldo_caja" CssClass="sinBorde" ReadOnly="true" runat="server"></asp:TextBox>
                                                             </td>
                                                         </tr>
 
@@ -351,7 +379,7 @@
                                                                 <asp:Label ID="Label2" runat="server" CssClass="fondo" Text="VALOR EN CAJA"></asp:Label>
                                                             </td>
                                                             <td>
-                                                                <asp:TextBox ID="txt_valor_caja" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_valor_caja" CssClass="sinBorde" ReadOnly="true" runat="server"></asp:TextBox>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -359,7 +387,7 @@
                                                                 <asp:Label ID="Label3" runat="server" CssClass="fondo" Text="DIFERENCIA"></asp:Label>
                                                             </td>
                                                             <td>
-                                                                <asp:TextBox ID="txt_diferencia" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_diferencia" CssClass="sinBorde" ReadOnly="true" runat="server"></asp:TextBox>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -367,16 +395,14 @@
                                             </tr>
 
                                             <tr>
-                                                <td valign="top">
-                                                    &nbsp;</td>
+                                                <td valign="top">&nbsp;</td>
                                                 <td>&nbsp;</td>
-                                                <td>
-                                                    &nbsp;</td>
+                                                <td>&nbsp;</td>
                                             </tr>
 
                                             <tr>
                                                 <td>
-                                                    <table style="width: 100%;  text-align: center;">
+                                                    <table style="width: 100%; text-align: center;">
                                                         <tr>
                                                             <td>
                                                                 <label class="label">
@@ -386,22 +412,24 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td >
-                                                                
+                                                            <td>
+
                                                                 <asp:Label ID="Lbl_Usuario" CssClass="label" runat="server" Text=""></asp:Label>
-                                                                
+
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td >
-                                                               <label  class="label">
-                                                                  RESPONSABLE DE LA CAJA                                                             
-                                                                </label></td>
+                                                            <td>
+                                                                <label class="label">
+                                                                    RESPONSABLE DE LA CAJA                                                             
+                                                                </label>
+                                                            </td>
                                                         </tr>
                                                     </table>
                                                 </td>
                                                 <td></td>
-                                                <td><table style="width: 100%;  text-align: center;">
+                                                <td>
+                                                    <table style="width: 100%; text-align: center;">
                                                         <tr>
                                                             <td>
                                                                 <label class="label">
@@ -411,19 +439,17 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td >
-                                                                
-                                                                
-                                                                
-                                                            </td>
+                                                            <td></td>
                                                         </tr>
                                                         <tr>
-                                                            <td >
-                                                               <label  class="label">
-                                                                  SUPERVISOR                                                            
-                                                                </label></td>
+                                                            <td>
+                                                                <label class="label">
+                                                                    SUPERVISOR                                                            
+                                                                </label>
+                                                            </td>
                                                         </tr>
-                                                    </table></td>
+                                                    </table>
+                                                </td>
                                             </tr>
                                         </table>
                                     </td>
@@ -439,7 +465,7 @@
                         &nbsp;&nbsp;&nbsp;
                                     <input type="button" class="botones" onclick="printDiv('areaImprimir')" value="Imprimir" />
                         &nbsp;&nbsp;&nbsp;
-                        <asp:Button ID="btn_cancelar" CssClass="botones" runat="server" UseSubmitBehavior="False" Text="Cancelar" OnClick="btn_cancelar_Click" />
+                        <asp:Button ID="btn_cancelar" CssClass="botones" runat="server" Text="Cancelar" OnClick="btn_cancelar_Click" />
                     </td>
                 </tr>
             </table>

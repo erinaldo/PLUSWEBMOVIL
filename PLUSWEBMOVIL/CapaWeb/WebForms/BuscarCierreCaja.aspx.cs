@@ -62,6 +62,8 @@ namespace CapaWeb.WebForms
                 imp.Visible = false;
                 Buscar.Visible = false;
                 cbx_lista_cierres.Visible = false;
+                lbl_busqueda.Visible = false;
+                Btn_Refrescar.Visible = false;
                 Lbl_Usuario.Text = UsuarioDatos.BuscarNombreUsuario(AmUsrLog.Trim());
             }
 
@@ -208,7 +210,7 @@ namespace CapaWeb.WebForms
             decimal valorCaja = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, totalCaja);
             txt_valor_caja.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, valorCaja);
 
-            ///Int64 secCierre = ConsultaCCaja.UltimoCCajaFechaSecuencial(fechainicio.Text);
+            ///campo uno
             Int64 secCierre = Convert.ToInt64(cbx_lista_cierres.SelectedValue);
             string codigo = "VIDA";
             listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, codigo, ComPwm);
@@ -265,8 +267,7 @@ namespace CapaWeb.WebForms
             txt_pefectivo_otros.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, pefectivo_otros);
             txt_pefectivo_otros.ReadOnly = true;
             SaldoN += modeloCCcaja.valor;
-            //CAMPO SEIS
-            //campo dos
+            //CAMPO SEIS           
             listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "DEPD", ComPwm);
             modeloCCcaja = null;
             foreach (modeloCierreCaja item in listaCCaja)
@@ -277,6 +278,18 @@ namespace CapaWeb.WebForms
             txt_depositos.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, depositos);
             txt_depositos.ReadOnly = true;
             SaldoN += modeloCCcaja.valor;
+            //CAMPO SIETE
+            listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "EFPC", ComPwm);
+            modeloCCcaja = null;
+            foreach (modeloCierreCaja item in listaCCaja)
+            {
+                modeloCCcaja = item;
+            }
+            decimal efectivoCaja = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, modeloCCcaja.valor);
+            txt_efectivo_caja.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, efectivoCaja);
+            txt_efectivo_caja.ReadOnly = true;
+            SaldoCaja += modeloCCcaja.valor;
+
             decimal totalS = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (SaldoCaja - SaldoN));
 
             txt_saldo_caja.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, totalS);
@@ -288,7 +301,10 @@ namespace CapaWeb.WebForms
             imp.Visible = true;
             cbx_lista_cierres.Items.Clear();
             fechainicio.Text = "";
-
+            cbx_lista_cierres.Visible = false;
+            Buscar.Visible = false;           
+            lbl_busqueda.Visible = false;
+            Btn_Refrescar.Visible = true;
         }
 
         protected void fechainicio_TextChanged(object sender, EventArgs e)
@@ -299,12 +315,14 @@ namespace CapaWeb.WebForms
             {
                 Buscar.Visible = false;
                 cbx_lista_cierres.Visible = false;
+                lbl_busqueda.Visible = false;
                 this.Page.Response.Write("<script language='JavaScript'>window.alert('No existe Cierre Caja del día indicado')+ error;</script>");
             }
             else
             {
                 Buscar.Visible = true;
                 cbx_lista_cierres.Visible = true;
+                lbl_busqueda.Visible = true;
                 //Cargar datos segun cbx
                 //Cargamos el combo de lista de cierres de caja del dia
                 listaEfectivoC = ConsultaEfectivoC.ListaSecuencialFecha(fechainicio.Text, ComPwm);
@@ -319,6 +337,13 @@ namespace CapaWeb.WebForms
             }
 
             
+        }
+
+        
+
+        protected void Btn_Refrescar_Click1(object sender, EventArgs e)
+        {
+            Response.Redirect("BuscarCierreCaja.aspx");
         }
     }
 }

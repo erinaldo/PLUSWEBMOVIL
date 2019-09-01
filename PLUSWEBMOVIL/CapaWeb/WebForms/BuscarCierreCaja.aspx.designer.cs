@@ -49,6 +49,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label txtAcceso;
         
         /// <summary>
+        /// Control Label5.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label5;
+        
+        /// <summary>
         /// Control fechainicio.
         /// </summary>
         /// <remarks>
@@ -56,6 +65,15 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox fechainicio;
+        
+        /// <summary>
+        /// Control lbl_busqueda.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_busqueda;
         
         /// <summary>
         /// Control cbx_lista_cierres.
@@ -274,6 +292,33 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.ImageButton btn_depositos;
         
         /// <summary>
+        /// Control lbl_7.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_7;
+        
+        /// <summary>
+        /// Control txt_efectivo_caja.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_efectivo_caja;
+        
+        /// <summary>
+        /// Control btn_efectivo_caja.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton btn_efectivo_caja;
+        
+        /// <summary>
         /// Control Grid.
         /// </summary>
         /// <remarks>
@@ -353,5 +398,14 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputButton imp;
+        
+        /// <summary>
+        /// Control Btn_Refrescar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Btn_Refrescar;
     }
 }

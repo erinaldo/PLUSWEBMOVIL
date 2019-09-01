@@ -107,18 +107,23 @@
                         
                         
                         <tr valign="top">
-                         <td width="20%" class="busqueda">Fecha Cierre:</td>
-                         
+                         <td><asp:Label CssClass="busqueda" ID="Label5" runat="server" Text="Fecha Cierre:"></asp:Label></td>
+                          
                           <td>
                                 <asp:TextBox ID="fechainicio" type="date"  Width="202" AutoPostBack = "True"  runat="server" OnTextChanged="fechainicio_TextChanged"></asp:TextBox>
                             </td>
                            
-                            <td width="20%" class="busqueda">Lista Cierres Caja</td>
+                            <td >
+                                <asp:Label ID="lbl_busqueda" CssClass="busqueda" runat="server" Text="Lista"></asp:Label></td>
                             <td>
                                 <asp:DropDownList ID="cbx_lista_cierres" CssClass="textos" runat="server"></asp:DropDownList>
                             </td>
                              <td aling="rigth">
                                  <asp:Button ID="Buscar" runat="server" onclick="Buscar_Click"  class="botones" Text="Buscar" /></td>
+                            
+                            
+                             <td aling="rigth">
+                                 &nbsp;</td>
                             
                             
                         </tr>
@@ -144,11 +149,32 @@
                     <div id="areaImprimir" style="align-items: center">
                             <style type="text/css">
 
-                                 @media print {
-                                     body {
-        background: #fff !important;
-    }
+                                 .label {
+                                    color: white;
+                                }
+
+                                @media print {
+                                    body {
+                                        background: #fff !important;
                                     }
+
+                                    .noimp {
+                                        display: none;
+                                    }
+
+                                    .label {
+                                        color: black;
+                                    }
+
+                                    .sinBorde {
+                                        border: none;
+                                        text-align: right;
+                                    }
+                                }
+
+                                .sinBorde {
+                                    text-align: right;
+                                }
 
                                 .tftable {
                                     width: 100%;
@@ -172,20 +198,18 @@
                                     font-weight: bold;
                                 }
 
-                                @media print {
-                                    .noimp {
-                                        display: none;
-                                    }
+                                .auto-style2 {
+                                    font-family: Verdana, Arial, Helvetica, sans-serif;
+                                    font-size: 13px;
+                                    color: #DD6D29;
+                                    width: 140px;
                                 }
 
-                                .label {
-                                    color: #ffffff;
-                                }
-
-                                @media print {
-                                    .label {
-                                        color: black;
-                                    }
+                                .auto-style3 {
+                                    font-family: Verdana, Arial, Helvetica, sans-serif;
+                                    font-size: 12px;
+                                    color: #000000;
+                                    width: 140px;
                                 }
                             </style>
                         <table style="width: 100%;">
@@ -244,7 +268,7 @@
                                                             </td>
 
                                                             <td class="busqueda">
-                                                                <asp:TextBox ID="txt_valor_id" Style="text-align: right" required="required" runat="server" value="0"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_valor_id" CssClass="sinBorde" runat="server" ReadOnly="true" value="0"></asp:TextBox>
                                                             </td>
                                                             <td></td>
                                                         </tr>
@@ -258,7 +282,7 @@
                                                             </td>
 
                                                             <td class="textos">
-                                                                <asp:TextBox ID="txt_ingreso_facturas" Style="text-align: right" ReadOnly="true" required="required" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_ingreso_facturas" ReadOnly="true" CssClass="sinBorde" runat="server"  value="0"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -276,7 +300,7 @@
                                                             </td>
 
                                                             <td class="textos">
-                                                                <asp:TextBox ID="txt_ingreso_nventas" Style="text-align: right" required="required" ReadOnly="true" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_ingreso_nventas" CssClass="sinBorde"  Value="0" ReadOnly="true" runat="server"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -294,7 +318,7 @@
                                                             </td>
 
                                                             <td class="textos">
-                                                                <asp:TextBox ID="txt_pefectivo_facturas" Style="text-align: right" required="required" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_pefectivo_facturas" ReadOnly="true" runat="server" CssClass="sinBorde" Value="0"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -312,7 +336,7 @@
                                                             </td>
 
                                                             <td class="busqueda">
-                                                                <asp:TextBox ID="txt_pefectivo_otros" Style="text-align: right" required="required" runat="server" value="0"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_pefectivo_otros" ReadOnly="true" CssClass="sinBorde"  runat="server" value="0"></asp:TextBox>
                                                             </td>
                                                             <td></td>
                                                         </tr>
@@ -326,7 +350,7 @@
                                                             </td>
 
                                                             <td class="textos">
-                                                                <asp:TextBox ID="txt_depositos" Style="text-align: right" required="required" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_depositos" CssClass="sinBorde" ReadOnly="true" Value="0" runat="server"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -334,20 +358,33 @@
                                                                 </div>
                                                             </td>
                                                         </tr>
+                                                        <tr>
+                                                            <td class="textos">
+                                                                <div align="left">+</div></td>
+                                                            <td class="textos">
+                                                                 <asp:Label ID="lbl_7" runat="server" Text="EFECTIVO PARA CAJA"></asp:Label></td>
+
+                                                            <td class="textos">
+                                                                <asp:TextBox ID="txt_efectivo_caja" CssClass="sinBorde" ReadOnly="true" Value="0" runat="server"></asp:TextBox>
+                                                              <td>
+                                                               <div class="noimp">
+                                                                    <asp:ImageButton ID="btn_efectivo_caja" src="../Tema/imagenes/search.png" runat="server" />
+                                                                </div></td>
+                                                        </tr>
                                                     </table>
                                                 </td>
                                                 <td>&nbsp;</td>
-                                                <td>
-                                                    <asp:GridView ID="Grid" runat="server"
-                                                        AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
-                                                        OnItemCommand="Grid_ItemCommand" AllowSorting="True" ShowFooter="True"
-                                                        PageSize="11" CellPadding="2" BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" ShowHeader="False">
+                                                <td valign="top">
+                                                    <asp:GridView ID="Grid" runat="server" ShowFooter="False"
+                                                        AutoGenerateColumns="False" AllowPaging="True" class="tftable"  BorderWidth="1px"
+                                                        OnItemCommand="Grid_ItemCommand" AllowSorting="False"
+                                                        PageSize="100" CellPadding="2" BackColor="White" BorderColor="#DD6D29"  CellSpacing="1" ShowHeader="False">
                                                         <Columns>
                                                             
                                                              <asp:BoundField DataField="Observaciones"  HeaderText="Observaciones" ItemStyle-CssClass="textos" SortExpression="id"  />
                                                             <asp:BoundField DataField="valor"  Visible="false" HeaderText="valor" ItemStyle-CssClass="textos" SortExpression="id"  />
-                                                            <asp:BoundField DataField="cantidad"  HeaderText="cantidad" ItemStyle-CssClass="textos" SortExpression="id"  />
-                                                            <asp:BoundField DataField="canti"  HeaderText="total" ItemStyle-CssClass="textos" SortExpression="id"  />
+                                                            <asp:BoundField DataField="cantidad"  HeaderText="cantidad" ItemStyle-CssClass="sinBorde" SortExpression="id"  />
+                                                            <asp:BoundField DataField="canti"  HeaderText="total" ItemStyle-CssClass="sinBorde" SortExpression="id"  />
                                                            
 
                                                         </Columns>
@@ -370,7 +407,7 @@
                                                                 <asp:Label ID="Label1" CssClass="fondo" runat="server" Text="SALDO EN CAJA FINAL DEL DÍA"></asp:Label>
                                                             </td>
                                                             <td>
-                                                                <asp:TextBox ID="txt_saldo_caja" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_saldo_caja" CssClass="sinBorde" ReadOnly="true" runat="server"></asp:TextBox>
                                                             </td>
                                                         </tr>
 
@@ -384,7 +421,7 @@
                                                                 <asp:Label ID="Label2" runat="server" CssClass="fondo" Text="VALOR EN CAJA"></asp:Label>
                                                             </td>
                                                             <td>
-                                                                <asp:TextBox ID="txt_valor_caja" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_valor_caja" CssClass="sinBorde" ReadOnly="true" runat="server"></asp:TextBox>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -392,7 +429,7 @@
                                                                 <asp:Label ID="Label3" runat="server" CssClass="fondo" Text="DIFERENCIA"></asp:Label>
                                                             </td>
                                                             <td>
-                                                                <asp:TextBox ID="txt_diferencia" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_diferencia" CssClass="sinBorde" ReadOnly="true" runat="server"></asp:TextBox>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -469,7 +506,9 @@
                         
                         &nbsp;&nbsp;&nbsp;
                                     <input type="button" id="imp" runat="server" class="botones" onclick="printDiv('areaImprimir')" value="Imprimir" />
+                       
                          &nbsp;&nbsp;&nbsp;
+                         <asp:Button ID="Btn_Refrescar" runat="server"  class="botones" Text="Limpiar"  OnClientClick="location.reload(true);" OnClick="Btn_Refrescar_Click1" />
                         
                     </td>
                 </tr>
@@ -477,6 +516,7 @@
                      
                 </table>
                     </div>
+                                
                   </form>
      <script>
         function printDiv(nombreDiv) {

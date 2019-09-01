@@ -299,6 +299,20 @@ namespace CapaWeb.WebForms
 
             DecimalesMoneda = null;
             DecimalesMoneda = BuscarDecimales();
+            //Guardar linea x linea DEPOSITOS DEL DIA
+            guardarCCcaja.signo = "+";
+            guardarCCcaja.secuencial = secuencialCierreResumenCaja;
+            guardarCCcaja.codigo = "EFPC";
+            guardarCCcaja.nombre = lbl_7.Text;
+            guardarCCcaja.valor = Convert.ToDecimal(txt_efectivo_caja.Text);
+            guardarCCcaja.usuario_mod = AmUsrLog;
+            guardarCCcaja.fecha_cie = lbl_fecha.Text;
+            guardarCCcaja.fecha_mod = DateTime.Today;
+            guardarCCcaja.cod_emp = ComPwm;
+            ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
+
+            DecimalesMoneda = null;
+            DecimalesMoneda = BuscarDecimales();
             //wmt_efectivoCaja
             Int64 secuencialEfectivoC = ConsultaEfectivoC.BuscarEfectivoSecuencial(lbl_fecha.Text, ComPwm);
             //Calcula datos de la grilla
@@ -387,7 +401,7 @@ namespace CapaWeb.WebForms
             txt_valor_caja.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, TotaValor);
             //Calcula datos de los txt
             
-            decimal  Total_saldo = Convert.ToDecimal(txt_ingreso_facturas.Text) + Convert.ToDecimal(txt_ingreso_nventas.Text) + Convert.ToDecimal(txt_valor_id.Text);
+            decimal  Total_saldo = Convert.ToDecimal(txt_ingreso_facturas.Text) + Convert.ToDecimal(txt_ingreso_nventas.Text) + Convert.ToDecimal(txt_valor_id.Text) + Convert.ToDecimal(txt_efectivo_caja.Text);
             decimal saldos_neg = Convert.ToDecimal(txt_pefectivo_facturas.Text )+ Convert.ToDecimal(txt_pefectivo_otros.Text) + Convert.ToDecimal(txt_depositos.Text);
             decimal total_SC = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (Total_saldo - saldos_neg));
             txt_saldo_caja.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, total_SC);
@@ -583,6 +597,31 @@ namespace CapaWeb.WebForms
                 lbl_mensaje.Text = "Números con formato incorrecto.";
             }   
             
+        }
+
+        protected void txt_efectivo_caja_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                lbl_mensaje.Text = "";
+
+                if (ValidarNumero(txt_efectivo_caja.Text))
+                {
+                    decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_efectivo_caja.Text));
+                    txt_efectivo_caja.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), valor);
+                }
+                else
+                {
+                    txt_efectivo_caja.Text = "";
+                    lbl_mensaje.Text = "Números con formato incorrecto.";
+                }
+            }
+            catch (Exception)
+            {
+
+                lbl_mensaje.Text = "Números con formato incorrecto.";
+            }
+
         }
     }
 }
