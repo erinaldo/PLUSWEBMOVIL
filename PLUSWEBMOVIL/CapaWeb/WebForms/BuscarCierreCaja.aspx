@@ -1,25 +1,26 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="BuscarCierreCaja.aspx.cs" Inherits="CapaWeb.WebForms.BuscarCierreCaja" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-      <script type="text/javascript">
 
-       
-        function validarCampos(){
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <script type="text/javascript">
+
+
+        function validarCampos() {
             var valor_inicioD = document.getElementById("<%= txt_valor_id.ClientID %>").value;
             var ingreso_facturas = document.getElementById("<%= txt_ingreso_facturas.ClientID %>").value;
             var ingreso_nventas = document.getElementById("<%= txt_ingreso_nventas.ClientID %>").value;
             var pefectivo_facturas = document.getElementById("<%= txt_pefectivo_facturas.ClientID %>").value;
             var pefectivo_otros = document.getElementById("<%=txt_pefectivo_otros.ClientID %>").value;
             var depositos = document.getElementById("<%= txt_depositos.ClientID %>").value;
-            
-            
+
+
             var respuesta;
-            if (valor_inicioD == null || valor_inicioD == "" || valor_inicioD <0) {
+            if (valor_inicioD == null || valor_inicioD == "" || valor_inicioD < 0) {
                 alert("Ingrese el valor");
-                respuesta =  false;
-            } else {             
+                respuesta = false;
+            } else {
                 respuesta = true;
             }
-           
+
             if (ingreso_facturas == null || ingreso_facturas == "" || ingreso_facturas < 0) {
                 alert("Ingrese el valor");
                 respuesta = false;
@@ -51,94 +52,95 @@
             } else {
                 respuesta = true;
             }
-           
+
             return respuesta
         }
-        
 
-       
+
+
     </script>
-      <form id="form1" name="form1" class="forms-sample" runat="server" method="post">
-         <div style="align-items: left">
+    <form id="form1" name="form1" class="forms-sample" runat="server" method="post">
+        <div style="align-items: left">
             <table>
-                 <tr>
-                        <td valign="top">
-                            <table width="100%" border="0" cellspacing="0">
-                                <tr>
-                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;Cierre Caja</td>
-                                </tr>
-                            </table>
-                        </td>
+                <tr>
+                    <td valign="top">
+                        <table width="100%" border="0" cellspacing="0">
+                            <tr>
+                                <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;Cierre Caja</td>
+                            </tr>
+                        </table>
+                    </td>
 
-                    </tr>
+                </tr>
                 <tr>
-                    <td>
-                      
-                        <asp:Label ID="lblAyuda" runat="server"  CssClass="Titulo" Text="Cierre de Caja Diario"></asp:Label>
-                        
-                        </td>
-                    </tr>
-                <tr>
-                    <td>
-                        <p class="Subtitulo2">Para realizar&nbsp; nuevo Cierre de Caja 
-                                <asp:Button ID="NuevoCierre" onclick="NuevoCierre_Click"  class="botones" runat="server" Text="AQUI" />
-                          </p>
-                        </td>
-                    </tr>
-               
-                
-                 <tr>
-                    <td>
-                        <asp:Label ID="txtAcceso" runat="server" Visible="false" CssClass="Titulo" Text="El Usuario registrado no tiene permiso para ejecutar estos procesos"></asp:Label>
-                        
-                        </td>
-                    </tr>
-                <tr>
-                    <td>
-                         <p class="Subtitulo1">Busque el registro deseado por:</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                         
-                      <table align="center">
-                      
-                         
-                        
-                        
-                        <tr valign="top">
-                         <td><asp:Label CssClass="busqueda" ID="Label5" runat="server" Text="Fecha Cierre:"></asp:Label></td>
-                          
-                          <td>
-                                <asp:TextBox ID="fechainicio" type="date"  Width="202" AutoPostBack = "True"  runat="server" OnTextChanged="fechainicio_TextChanged"></asp:TextBox>
-                            </td>
-                           
-                            <td >
-                                <asp:Label ID="lbl_busqueda" CssClass="busqueda" runat="server" Text="Lista"></asp:Label></td>
-                            <td>
-                                <asp:DropDownList ID="cbx_lista_cierres" CssClass="textos" runat="server"></asp:DropDownList>
-                            </td>
-                             <td aling="rigth">
-                                 <asp:Button ID="Buscar" runat="server" onclick="Buscar_Click"  class="botones" Text="Buscar" /></td>
-                            
-                            
-                             <td aling="rigth">
-                                 &nbsp;</td>
-                            
-                            
-                        </tr>
-   
-                        
-                      </table>
-                  </td>
-                        </tr>
-                      <tr>
                     <td>
 
-                         <hr />
+                        <asp:Label ID="lblAyuda" runat="server" CssClass="Titulo" Text="Cierre de Caja Diario"></asp:Label>
+
                     </td>
                 </tr>
-                        <tr>
+                <tr>
+                    <td>
+                        <p class="Subtitulo2">
+                            Para realizar&nbsp; nuevo Cierre de Caja 
+                                <asp:Button ID="NuevoCierre" OnClick="NuevoCierre_Click" class="botones" runat="server" Text="AQUI" />
+                        </p>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <asp:Label ID="txtAcceso" runat="server" Visible="false" CssClass="Titulo" Text="El Usuario registrado no tiene permiso para ejecutar estos procesos"></asp:Label>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="Subtitulo1">Busque el registro deseado por:</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                        <table align="center">
+
+
+
+
+                            <tr valign="top">
+                                <td>
+                                    <asp:Label CssClass="busqueda" ID="Label5" runat="server" Text="Fecha Cierre:"></asp:Label></td>
+
+                                <td>
+                                    <asp:TextBox ID="fechainicio" type="date" Width="202" AutoPostBack="True" runat="server" OnTextChanged="fechainicio_TextChanged"></asp:TextBox>
+                                </td>
+
+                                <td>
+                                    <asp:Label ID="lbl_busqueda" CssClass="busqueda" runat="server" Text="Lista"></asp:Label></td>
+                                <td>
+                                    <asp:DropDownList ID="cbx_lista_cierres" CssClass="textos" runat="server"></asp:DropDownList>
+                                </td>
+                                <td aling="rigth">
+                                    <asp:Button ID="Buscar" runat="server" OnClick="Buscar_Click" class="botones" Text="Buscar" /></td>
+
+
+                                <td aling="rigth">&nbsp;</td>
+
+
+                            </tr>
+
+
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
                     <td>
 
                         <div class="Subtitulo1">Listado de Cierres de Caja</div>
@@ -146,10 +148,9 @@
                 </tr>
                 <tr>
                     <td>
-                    <div id="areaImprimir" style="align-items: center">
+                        <div id="areaImprimir" style="align-items: center">
                             <style type="text/css">
-
-                                 .label {
+                                .label {
                                     color: white;
                                 }
 
@@ -212,37 +213,38 @@
                                     width: 140px;
                                 }
                             </style>
-                        <table style="width: 100%;">
-                       <tr rowspan="4">
+                            <table style="width: 100%;">
+                                <tr rowspan="4">
                                     <td colspan="4">
                                         <table style="width: 100%;" runat="server" id="Tabla">
                                             <tr>
                                                 <td colspan="3">
                                                     <table style="width: 100%;">
-                                                    <tr>
-                                    <td>
-                                        <asp:Label ID="Label4" runat="server" CssClass="Titulo" Text="Cierre Caja"></asp:Label>
-                                    </td>
-                                    <td style="width: 33px">
-                                        <div class="Subtitulo1">DIA:</div>
-                                    </td>
-                                    <td>
+                                                        <tr>
+                                                            <td>
+                                                                <asp:Label ID="Label4" runat="server" CssClass="Titulo" Text="Cierre Caja"></asp:Label>
+                                                            </td>
+                                                            <td style="width: 33px">
+                                                                <div class="Subtitulo1">DIA:</div>
+                                                            </td>
+                                                            <td>
 
-                                        <asp:Label ID="lbl_fecha" runat="server" class="Subtitulo1" Text="Label"></asp:Label>
+                                                                <asp:Label ID="lbl_fecha" runat="server" class="Subtitulo1" Text="Label"></asp:Label>
 
-                                    </td>
-                                    <td>
+                                                            </td>
+                                                            <td>
 
-                                        <asp:Label ID="lbl_dia" runat="server" class="Subtitulo1" Text="LUNES"></asp:Label>
+                                                                <asp:Label ID="lbl_dia" runat="server" class="Subtitulo1" Text="LUNES"></asp:Label>
 
-                                    </td>
-                                </tr>
-                                                    <tr>
-                                    <td colspan="4">
-                                        <hr />
-                                    </td>
-                                </tr>
-                                       </table>                  </td>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="4">
+                                                                <hr />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>
@@ -264,7 +266,7 @@
                                                             </td>
                                                             <td class="textos">
                                                                 <asp:Label ID="lbl_idc" runat="server" Text="VALOR EN CAJA INICIO DEL DIA"></asp:Label>
-                                                               
+
                                                             </td>
 
                                                             <td class="busqueda">
@@ -278,11 +280,11 @@
                                                             </td>
                                                             <td class="textos">
                                                                 <asp:Label ID="lbl_2" runat="server" Text="INGRESOS POR FACTURAS"></asp:Label>
-                                                              
+
                                                             </td>
 
                                                             <td class="textos">
-                                                                <asp:TextBox ID="txt_ingreso_facturas" ReadOnly="true" CssClass="sinBorde" runat="server"  value="0"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_ingreso_facturas" ReadOnly="true" CssClass="sinBorde" runat="server" value="0"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -296,11 +298,11 @@
                                                             </td>
                                                             <td class="textos">
                                                                 <asp:Label ID="lbl_3" runat="server" Text="INGRESOS POR NOTAS DE VENTA"></asp:Label>
-                                                                
+
                                                             </td>
 
                                                             <td class="textos">
-                                                                <asp:TextBox ID="txt_ingreso_nventas" CssClass="sinBorde"  Value="0" ReadOnly="true" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_ingreso_nventas" CssClass="sinBorde" Value="0" ReadOnly="true" runat="server"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
@@ -314,7 +316,7 @@
                                                             </td>
                                                             <td class="textos">
                                                                 <asp:Label ID="lbl_4" runat="server" Text="PAGOS EN EFECTIVO DE FACTURAS"></asp:Label>
-                                                                
+
                                                             </td>
 
                                                             <td class="textos">
@@ -332,11 +334,11 @@
                                                             </td>
                                                             <td class="textos">
                                                                 <asp:Label ID="lbl_5" runat="server" Text="PAGOS EN EFECTIVO OTROS"></asp:Label>
-                                                                
+
                                                             </td>
 
                                                             <td class="busqueda">
-                                                                <asp:TextBox ID="txt_pefectivo_otros" ReadOnly="true" CssClass="sinBorde"  runat="server" value="0"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_pefectivo_otros" ReadOnly="true" CssClass="sinBorde" runat="server" value="0"></asp:TextBox>
                                                             </td>
                                                             <td></td>
                                                         </tr>
@@ -346,7 +348,7 @@
                                                             </td>
                                                             <td class="textos">
                                                                 <asp:Label ID="lbl_6" runat="server" Text="DEPOSITOS DEL DIA"></asp:Label>
-                                                                
+
                                                             </td>
 
                                                             <td class="textos">
@@ -360,32 +362,34 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="textos">
-                                                                <div align="left">+</div></td>
+                                                                <div align="left">+</div>
+                                                            </td>
                                                             <td class="textos">
-                                                                 <asp:Label ID="lbl_7" runat="server" Text="EFECTIVO PARA CAJA"></asp:Label></td>
+                                                                <asp:Label ID="lbl_7" runat="server" Text="EFECTIVO PARA CAJA"></asp:Label></td>
 
                                                             <td class="textos">
                                                                 <asp:TextBox ID="txt_efectivo_caja" CssClass="sinBorde" ReadOnly="true" Value="0" runat="server"></asp:TextBox>
-                                                              <td>
-                                                               <div class="noimp">
-                                                                    <asp:ImageButton ID="btn_efectivo_caja" src="../Tema/imagenes/search.png" runat="server" />
-                                                                </div></td>
+                                                                <td>
+                                                                    <div class="noimp">
+                                                                        <asp:ImageButton ID="btn_efectivo_caja" src="../Tema/imagenes/search.png" runat="server" />
+                                                                    </div>
+                                                                </td>
                                                         </tr>
                                                     </table>
                                                 </td>
                                                 <td>&nbsp;</td>
                                                 <td valign="top">
                                                     <asp:GridView ID="Grid" runat="server" ShowFooter="False"
-                                                        AutoGenerateColumns="False" AllowPaging="True" class="tftable"  BorderWidth="1px"
+                                                        AutoGenerateColumns="False" AllowPaging="True" class="tftable" BorderWidth="1px"
                                                         OnItemCommand="Grid_ItemCommand" AllowSorting="False"
-                                                        PageSize="100" CellPadding="2" BackColor="White" BorderColor="#DD6D29"  CellSpacing="1" ShowHeader="False">
+                                                        PageSize="100" CellPadding="2" BackColor="White" BorderColor="#DD6D29" CellSpacing="1" ShowHeader="False">
                                                         <Columns>
-                                                            
-                                                             <asp:BoundField DataField="Observaciones"  HeaderText="Observaciones" ItemStyle-CssClass="textos" SortExpression="id"  />
-                                                            <asp:BoundField DataField="valor"  Visible="false" HeaderText="valor" ItemStyle-CssClass="textos" SortExpression="id"  />
-                                                            <asp:BoundField DataField="cantidad"  HeaderText="cantidad" ItemStyle-CssClass="sinBorde" SortExpression="id"  />
-                                                            <asp:BoundField DataField="canti"  HeaderText="total" ItemStyle-CssClass="sinBorde" SortExpression="id"  />
-                                                           
+
+                                                            <asp:BoundField DataField="Observaciones" HeaderText="Observaciones" ItemStyle-CssClass="textos" SortExpression="id" />
+                                                            <asp:BoundField DataField="valor" Visible="false" HeaderText="valor" ItemStyle-CssClass="textos" SortExpression="id" />
+                                                            <asp:BoundField DataField="cantidad" HeaderText="cantidad" ItemStyle-CssClass="sinBorde" SortExpression="id" />
+                                                            <asp:BoundField DataField="canti" HeaderText="total" ItemStyle-CssClass="sinBorde" SortExpression="id" />
+
 
                                                         </Columns>
 
@@ -443,7 +447,8 @@
                                             </tr>
 
                                             <tr>
-                                                <td><table style="width: 100%;  text-align: center;">
+                                                <td>
+                                                    <table style="width: 100%; text-align: center;">
                                                         <tr>
                                                             <td>
                                                                 <label class="label">
@@ -453,21 +458,24 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td >
-                                                                
+                                                            <td>
+
                                                                 <asp:Label ID="Lbl_Usuario" CssClass="label" runat="server" Text=""></asp:Label>
-                                                                
+
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td >
-                                                               <label  class="label">
-                                                                  RESPONSABLE DE LA CAJA                                                             
-                                                                </label></td>
+                                                            <td>
+                                                                <label class="label">
+                                                                    RESPONSABLE DE LA CAJA                                                             
+                                                                </label>
+                                                            </td>
                                                         </tr>
-                                                    </table></td>
+                                                    </table>
+                                                </td>
                                                 <td>&nbsp;</td>
-                                                <td><table style="width: 100%;  text-align: center;">
+                                                <td>
+                                                    <table style="width: 100%; text-align: center;">
                                                         <tr>
                                                             <td>
                                                                 <label class="label">
@@ -477,48 +485,45 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td >
-                                                                
-                                                                
-                                                                
-                                                            </td>
+                                                            <td></td>
                                                         </tr>
                                                         <tr>
-                                                            <td >
-                                                               <label  class="label">
-                                                                  SUPERVISOR                                                            
-                                                                </label></td>
+                                                            <td>
+                                                                <label class="label">
+                                                                    SUPERVISOR                                                            
+                                                                </label>
+                                                            </td>
                                                         </tr>
-                                                    </table></td>
-                                            </tr>
-                                        </table></td>
+                                                    </table>
+                                                </td>
                                             </tr>
                                         </table>
                                     </td>
                                 </tr>
-  </table>
-                                   
-                   </div>
+                            </table>
                     </td>
+                </tr>
+            </table>
+
+        </div>
+        </td>
                 </tr>
                 <tr>
-                    <td>
-                        
-                        &nbsp;&nbsp;&nbsp;
+                    <td>&nbsp;&nbsp;&nbsp;
                                     <input type="button" id="imp" runat="server" class="botones" onclick="printDiv('areaImprimir')" value="Imprimir" />
-                       
-                         &nbsp;&nbsp;&nbsp;
-                         <asp:Button ID="Btn_Refrescar" runat="server"  class="botones" Text="Limpiar"  OnClientClick="location.reload(true);" OnClick="Btn_Refrescar_Click1" />
-                        
+
+                        &nbsp;&nbsp;&nbsp;
+                         <asp:Button ID="Btn_Refrescar" runat="server" class="botones" Text="Limpiar" OnClientClick="location.reload(true);" OnClick="Btn_Refrescar_Click1" />
+
                     </td>
                 </tr>
-          
-                     
-                </table>
+
+
+        </table>
                     </div>
                                 
-                  </form>
-     <script>
+    </form>
+    <script>
         function printDiv(nombreDiv) {
             var contenido = document.getElementById(nombreDiv).innerHTML;
             var contenidoOriginal = document.body.innerHTML;

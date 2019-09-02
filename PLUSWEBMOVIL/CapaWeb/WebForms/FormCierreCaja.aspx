@@ -318,7 +318,7 @@
                                                         PageSize="1000" CellPadding="2" BorderWidth="1px" CellSpacing="1" ShowHeader="False">
                                                         <Columns>
                                                             <asp:BoundField DataField="id" HeaderText="Id" ItemStyle-CssClass="textos_prueba" SortExpression="id" ItemStyle-ForeColor="White">
-                                                                <ItemStyle CssClass="textos_prueba" ForeColor="White"></ItemStyle>
+                                                                <ItemStyle CssClass="noimp" ForeColor="White"></ItemStyle>
                                                             </asp:BoundField>
                                                             <asp:BoundField DataField="Observaciones" HeaderText="Denominación" ItemStyle-CssClass="textos" SortExpression="Observaciones">
                                                                 <ItemStyle CssClass="textos"></ItemStyle>

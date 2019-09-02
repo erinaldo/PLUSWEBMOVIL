@@ -121,6 +121,7 @@
     <Compile Include="Sql\FPagosPos.cs" />
     <Compile Include="Sql\HostMail\HostaMail.cs" />
     <Compile Include="Sql\ImpuestosRest.cs" />
+    <Compile Include="Sql\IngresosPFacturas.cs" />
     <Compile Include="Sql\MediosPago.cs" />
     <Compile Include="Sql\ModificarPrecioFactura.cs" />
     <Compile Include="Sql\Numeradores.cs" />
