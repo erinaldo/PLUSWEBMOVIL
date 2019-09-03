@@ -45,10 +45,19 @@ namespace CapaWeb.WebForms
 
         Consultawmsptitulares UsuarioDatos = new Consultawmsptitulares();
 
+        ConsultaIngresoFacturas consultaIngFaturas = new ConsultaIngresoFacturas();
+        modeloIngresoFacturas modeloFaturasPgs = new modeloIngresoFacturas();
+        List<modeloIngresoFacturas> listaIngresosFac = null;
+
+        ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
+        modelonumerador nrotrans = new modelonumerador();
+
         public string ComPwm;
         public string AmUsrLog;
         public string nro_trans = null;
         public string cod_proceso;
+        public string numerador = "trans";
+        public string valor_asignado = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             RecuperarCokie();
@@ -58,8 +67,10 @@ namespace CapaWeb.WebForms
                 Modelowmspclogo = item;
                 break;
             }
+            Session.Remove("valor_asignado");
             if (!IsPostBack)
             {
+                Session.Remove("valor_asignado");
                 DecimalesMoneda = null;
                 DecimalesMoneda = BuscarDecimales();
                 lbl_fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
@@ -86,9 +97,11 @@ namespace CapaWeb.WebForms
             }
             else
             {
-                txt_ingreso_facturas.Text = modeloTPFacturas.total.ToString();
+                decimal ipfac = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloTPFacturas.total));
+                txt_ingreso_facturas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), ipfac);
 
             }
+
            
             //TOTAL NOTAS DE VENTA DEL DIA
             listaTPFacturas = null;
@@ -106,7 +119,9 @@ namespace CapaWeb.WebForms
                 txt_ingreso_nventas.Text = "0.00";
             }else
             {
-                txt_ingreso_nventas.Text = modeloTPFacturas.total.ToString();
+               decimal inv = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloTPFacturas.total));
+               
+                txt_ingreso_nventas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), inv);
 
             }
             
@@ -224,7 +239,16 @@ namespace CapaWeb.WebForms
 
         protected void InsertarTotales()
         {
-
+            //Buscar nro_trans
+            if (Session["valor_asignado"] == null)
+            {
+             
+                //obtener numero de transaccion
+                nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
+                valor_asignado = nrotrans.valor_asignado;
+                //Guardar N° transaccion 
+                Session["valor_asignado"] = valor_asignado;
+            }
             Int64 secuencialCierreResumenCaja = ConsultaCCaja.BuscarCCajaFechaSecuencial(lbl_fecha.Text, ComPwm.Trim());
             //Recuperar si ya existe cierre del dia
 
@@ -240,6 +264,7 @@ namespace CapaWeb.WebForms
             guardarCCcaja.fecha_cie = lbl_fecha.Text;
             guardarCCcaja.fecha_mod = DateTime.Today;
             guardarCCcaja.cod_emp = ComPwm;
+            guardarCCcaja.nro_trans = valor_asignado;
             ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
             //Guardar linea x linea ingresos facturas
             guardarCCcaja.signo = "+";
@@ -251,6 +276,7 @@ namespace CapaWeb.WebForms
             guardarCCcaja.fecha_cie = lbl_fecha.Text;
             guardarCCcaja.fecha_mod = DateTime.Today;
             guardarCCcaja.cod_emp = ComPwm;
+            guardarCCcaja.nro_trans = valor_asignado;
             ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
             //Guardar linea x linea ingresos NOTAS VENTA
             guardarCCcaja.signo = "+";
@@ -262,6 +288,7 @@ namespace CapaWeb.WebForms
             guardarCCcaja.fecha_cie = lbl_fecha.Text;
             guardarCCcaja.fecha_mod = DateTime.Today;
             guardarCCcaja.cod_emp = ComPwm;
+            guardarCCcaja.nro_trans = valor_asignado;
             ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
             //Guardar linea x linea PAGOS EN FECTIVO FACTURAS
             guardarCCcaja.signo = "-";
@@ -273,6 +300,7 @@ namespace CapaWeb.WebForms
             guardarCCcaja.fecha_cie = lbl_fecha.Text;
             guardarCCcaja.fecha_mod = DateTime.Today;
             guardarCCcaja.cod_emp = ComPwm;
+            guardarCCcaja.nro_trans = valor_asignado;
             ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
             //Guardar linea x linea PAGOS EN FECTIVO OTROS
             guardarCCcaja.signo = "-";
@@ -284,6 +312,7 @@ namespace CapaWeb.WebForms
             guardarCCcaja.fecha_cie = lbl_fecha.Text;
             guardarCCcaja.fecha_mod = DateTime.Today;
             guardarCCcaja.cod_emp = ComPwm;
+            guardarCCcaja.nro_trans = valor_asignado;
             ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
             //Guardar linea x linea DEPOSITOS DEL DIA
             guardarCCcaja.signo = "-";
@@ -295,6 +324,7 @@ namespace CapaWeb.WebForms
             guardarCCcaja.fecha_cie = lbl_fecha.Text;
             guardarCCcaja.fecha_mod = DateTime.Today;
             guardarCCcaja.cod_emp = ComPwm;
+            guardarCCcaja.nro_trans = valor_asignado;
             ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
 
             DecimalesMoneda = null;
@@ -309,6 +339,7 @@ namespace CapaWeb.WebForms
             guardarCCcaja.fecha_cie = lbl_fecha.Text;
             guardarCCcaja.fecha_mod = DateTime.Today;
             guardarCCcaja.cod_emp = ComPwm;
+            guardarCCcaja.nro_trans = valor_asignado;
             ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
 
             DecimalesMoneda = null;
@@ -339,6 +370,7 @@ namespace CapaWeb.WebForms
                 guardarEfectivoC.fecha_efe = lbl_fecha.Text;
                 guardarEfectivoC.secuencial = secuencialEfectivoC;
                 guardarEfectivoC.cod_emp =ComPwm;
+                guardarEfectivoC.nro_trans = valor_asignado;
                 ConsultaEfectivoC.InsertarECaja(guardarEfectivoC);
 
             }
@@ -621,6 +653,20 @@ namespace CapaWeb.WebForms
 
                 lbl_mensaje.Text = "Números con formato incorrecto.";
             }
+
+        }
+
+        protected void btn_ingreso_facturas_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            Session["Fecha"] = lbl_fecha.Text;
+            this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarIngresoFacturasPgs.aspx', 'Ingreso Facturas', 'top=100,width=800 ,height=400, left=400');</script>");
+
+        }
+
+        protected void btn_ingreso_nventas_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            Session["Fecha"] = lbl_fecha.Text;
+            this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarNotasVenta.aspx', 'Notas Venta', 'top=100,width=800 ,height=400, left=400');</script>");
 
         }
     }

@@ -151,7 +151,7 @@ namespace CapaDatos.Sql
             {
                 using (cn = conexion.genearConexion())
                 {
-                    string insert = "INSERT INTO  wmt_efectivoCaja (denominacionMId,  valor,cantidad,total, usuario_mod, fecha_mod,fecha_efe, secuencial, cod_emp) VALUES (@denominacionMId,  @valor,@cantidad,@total, @usuario_mod, @fecha_mod,@fecha_efe, @secuencial, @cod_emp)";
+                    string insert = "INSERT INTO  wmt_efectivoCaja (denominacionMId,  valor,cantidad,total, usuario_mod, fecha_mod,fecha_efe, secuencial, cod_emp, nro_trans) VALUES (@denominacionMId,  @valor,@cantidad,@total, @usuario_mod, @fecha_mod,@fecha_efe, @secuencial, @cod_emp, @nro_trans)";
                     SqlCommand conmand = new SqlCommand(insert, cn);
                     conmand.Parameters.Add("@denominacionMId", SqlDbType.Decimal).Value = Efectivocaja.denominacionMId;
                     conmand.Parameters.Add("@valor", SqlDbType.Decimal).Value = Efectivocaja.valor;
@@ -162,6 +162,7 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@fecha_efe", SqlDbType.VarChar).Value = Efectivocaja.fecha_efe;
                     conmand.Parameters.Add("@secuencial", SqlDbType.BigInt).Value = Efectivocaja.secuencial;
                     conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = Efectivocaja.cod_emp;
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = Efectivocaja.nro_trans;
                     int dr = conmand.ExecuteNonQuery();
                     return "Efectivo Caja guardada correctamente";
                 }
@@ -237,7 +238,7 @@ namespace CapaDatos.Sql
             using (cn = conexion.genearConexion())
             {
                 List<modeloTotalPgsFacturas> lista = new List<modeloTotalPgsFacturas>();
-                string consulta = (" SELECT SUM(wmt_facturas_pgs.valor) AS total, SUM (wmt_facturas_pgs.recibido) as recibido, SUM(wmt_facturas_pgs.diferencia) AS vueltos FROM wmm_fpagoPOS, wmt_facturas_pgs, wmt_facturas_cab WHERE wmm_fpagoPOS.vuelto = 's' AND wmt_facturas_pgs.cod_fpago = wmm_fpagoPOS.cod_fpago AND wmt_facturas_cab.fec_doc = @fecha and wmt_facturas_cab.nro_trans = wmt_facturas_pgs.nro_trans AND wmt_facturas_cab.tipo IN ('POS','POSE')");
+                string consulta = (" SELECT SUM(wmt_facturas_pgs.valor) AS total, SUM (wmt_facturas_pgs.recibido) as recibido, SUM(wmt_facturas_pgs.diferencia) AS vueltos FROM wmm_fpagoPOS, wmt_facturas_pgs, wmt_facturas_cab WHERE wmm_fpagoPOS.vuelto = 's' AND wmt_facturas_pgs.cod_fpago = wmm_fpagoPOS.cod_fpago AND wmt_facturas_cab.fec_doc = @fecha and wmt_facturas_cab.nro_trans = wmt_facturas_pgs.nro_trans AND wmt_facturas_cab.tipo IN ('POS','POSE') AND wmt_facturas_cab.estado in('C','F')");
                 SqlCommand conmand = new SqlCommand(consulta, cn);
 
                 conmand.Parameters.Add("fecha", SqlDbType.VarChar).Value = fecha;

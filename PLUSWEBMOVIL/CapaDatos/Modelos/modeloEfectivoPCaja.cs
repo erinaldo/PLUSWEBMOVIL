@@ -5,10 +5,10 @@ using System.Text;
 
 namespace CapaDatos.Modelos
 {
-  public   class modeloCierreCaja
+    public class modeloEfectivoPCaja
     {
-        //Modelo cierre de caja tabla wmt_cierre_resumencaja
-        
+        //Cierre Caja Efectivo para caja ultimo campo
+
         public string id { get; set; }
         public Int64 secuencial { get; set; }
         public string cod_emp { get; set; }
@@ -25,7 +25,5 @@ namespace CapaDatos.Modelos
 
         public string cod_proc_aud { get; set; }
         public string nro_trans { get; set; }
-
-
     }
 }

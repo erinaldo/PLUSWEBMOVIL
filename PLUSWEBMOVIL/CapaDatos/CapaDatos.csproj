@@ -45,14 +45,18 @@
     <Compile Include="Modelos\modeloCierreCaja.cs" />
     <Compile Include="Modelos\modeloCodProcesoFactura.cs" />
     <Compile Include="Modelos\modeloDenominacionesMoneda.cs" />
+    <Compile Include="Modelos\modeloDepositosDia.cs" />
     <Compile Include="Modelos\ModeloDetalleFactura.cs" />
     <Compile Include="Modelos\ModeloDiferenciaPagos.cs" />
     <Compile Include="Modelos\modeloEfectivoCaja.cs" />
+    <Compile Include="Modelos\modeloEfectivoPCaja.cs" />
     <Compile Include="Modelos\modeloFacturaPgs.cs" />
     <Compile Include="Modelos\modeloFacturasPagos.cs" />
     <Compile Include="Modelos\ModeloHost\modeloHostmail.cs" />
+    <Compile Include="Modelos\modeloIngresoFacturas.cs" />
     <Compile Include="Modelos\modeloinsertarconfirmar.cs" />
     <Compile Include="Modelos\modeloMediosPago.cs" />
+    <Compile Include="Modelos\modeloPagosEfectivoFacturas.cs" />
     <Compile Include="Modelos\modeloRemisionesFactura.cs" />
     <Compile Include="Modelos\modeloRolesFacturacion.cs" />
     <Compile Include="Modelos\modeloRolModificarPrecio.cs" />
@@ -108,6 +112,7 @@
     <Compile Include="Sql\ConsultaProformas.cs" />
     <Compile Include="Sql\CotizacionMonedaTrm.cs" />
     <Compile Include="Sql\CuentasBanco.cs" />
+    <Compile Include="Sql\DepositosDiaCC.cs" />
     <Compile Include="Sql\DetalleProformaFac.cs" />
     <Compile Include="Sql\DetalleRemision.cs" />
     <Compile Include="Sql\Documento.cs" />

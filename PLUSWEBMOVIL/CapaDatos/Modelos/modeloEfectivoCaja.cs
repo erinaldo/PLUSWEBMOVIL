@@ -25,6 +25,7 @@ namespace CapaDatos.Modelos
         public string nro_audit { get; set; }
 
         public string cod_proc_aud { get; set; }
+        public string nro_trans { get; set; }
 
     }
 }

@@ -116,7 +116,9 @@
     <Content Include="WebForms\BuscarFacturaPos.aspx" />
     <Content Include="WebForms\BuscarFacturasNC.aspx" />
     <Content Include="WebForms\BuscarFacturasNCFin.aspx" />
+    <Content Include="WebForms\BuscarIngresoFacturasPgs.aspx" />
     <Content Include="WebForms\BuscarNotaDebito.aspx" />
+    <Content Include="WebForms\BuscarNotasVenta.aspx" />
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
     <Content Include="WebForms\FormCierreCaja.aspx" />
     <Content Include="WebForms\FormDenominaciones.aspx" />
@@ -240,12 +242,26 @@
     <Compile Include="WebForms\BuscarFacturasNCFin.aspx.designer.cs">
       <DependentUpon>BuscarFacturasNCFin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\BuscarIngresoFacturasPgs.aspx.cs">
+      <DependentUpon>BuscarIngresoFacturasPgs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarIngresoFacturasPgs.aspx.designer.cs">
+      <DependentUpon>BuscarIngresoFacturasPgs.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\BuscarNotaDebito.aspx.cs">
       <DependentUpon>BuscarNotaDebito.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\BuscarNotaDebito.aspx.designer.cs">
       <DependentUpon>BuscarNotaDebito.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarNotasVenta.aspx.cs">
+      <DependentUpon>BuscarNotasVenta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarNotasVenta.aspx.designer.cs">
+      <DependentUpon>BuscarNotasVenta.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormBuscarNotaCredito.aspx.cs">
       <DependentUpon>FormBuscarNotaCredito.aspx</DependentUpon>
