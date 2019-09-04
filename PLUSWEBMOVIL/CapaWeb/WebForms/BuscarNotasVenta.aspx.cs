@@ -77,17 +77,20 @@ namespace CapaWeb.WebForms
         {
             listaIngresosFac = consultaIngFaturas.BuscarNotasVenta(ComPwm, Session["Fecha"].ToString(), AmUsrLog, "clientes", "0", "0");
             if(listaIngresosFac.Count >0)
-            { 
-            string TotalFactura = "";
-            string TotalEfectivo = "";
+            {
+
+                DecimalesMoneda = null;
+                DecimalesMoneda = BuscarDecimales();
+                decimal TotalFactura = 0;
+             decimal TotalEfectivo = 0;
             foreach (GridViewRow item in gvProducto.Rows)
             {
-                TotalFactura += item.Cells[4].Text;
-                TotalEfectivo += item.Cells[5].Text;
+                TotalFactura += Convert.ToDecimal(item.Cells[4].Text);
+                TotalEfectivo += Convert.ToDecimal(item.Cells[5].Text);
             }
             gvProducto.FooterRow.Cells[3].Text = "TOTALES:";
-            gvProducto.FooterRow.Cells[4].Text = TotalFactura;
-            gvProducto.FooterRow.Cells[5].Text = TotalEfectivo;
+            gvProducto.FooterRow.Cells[4].Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, TotalFactura);
+            gvProducto.FooterRow.Cells[5].Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, TotalEfectivo);
             }
         }
         public void gvProducto_DataBound(Object sender, EventArgs e)

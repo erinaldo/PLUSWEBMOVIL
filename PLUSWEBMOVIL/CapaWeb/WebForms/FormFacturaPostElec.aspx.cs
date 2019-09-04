@@ -2267,7 +2267,7 @@ namespace CapaWeb.WebForms
                 count++;
                 break;
             }
-
+            Session.Remove("valor_asignado1");
             if (count == 0)
             {
                 this.Page.Response.Write("<script language='JavaScript'>window.alert('Usuario no tiene asignada sucursal, por favor asignar para continuar con el proceso ')+ error;</script>");
