@@ -22,55 +22,77 @@ namespace CapaWeb.WebForms
         ConsultaEmpresa consultaEmpresa = new ConsultaEmpresa();
         List<modelowmspcempresas> listaEmpresa = null;
         modelowmspcempresas modeloEmpresa = new modelowmspcempresas();
+
+        Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
+        List<modelowmtfacturascab> listaConsCab = null;
+        modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+        modelocabecerafactura cabecerafactura = new modelocabecerafactura();
+
+        public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
+        public ConsultaLogo consultaLogo = new ConsultaLogo();
+        public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
+
+   
         public string ComPwm;
         public string AmUsrLog;
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            if (Request.Cookies["ComPwm"] != null)
+            {
+                ComPwm = Request.Cookies["ComPwm"].Value;
+
+            }
+            if (Request.Cookies["AmUsrLog"] != null)
+            {
+                AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+
+
+            }
+            ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
+            foreach (var item in ListaModelowmspclogo)
+            {
+                Modelowmspclogo = item;
+                break;
+            }
             if (!IsPostBack)
             {
 
-
-                if (Request.Cookies["ComPwm"] != null)
-                {
-                    ComPwm = Request.Cookies["ComPwm"].Value;
-
-                }
-                if (Request.Cookies["AmUsrLog"] != null)
-                {
-                    AmUsrLog = Request.Cookies["AmUsrLog"].Value;
-
-
-                }
-                DecimalesMoneda = null;
-                DecimalesMoneda = BuscarDecimales();
                 if (Session["Fecha"] != null)
                 {
                     Session["Fecha1"] = Session["Fecha"];
                     listaIngresosFac = consultaIngFaturas.BuscarNotasVenta(ComPwm, Session["Fecha"].ToString(), AmUsrLog, "clientes", "0", "0");
-                    modeloFaturasPgs = null;
-                    decimal totalFacturado = 0;
-                    decimal totalEfecitivo = 0;
-                    foreach (modeloIngresoFacturas item in listaIngresosFac)
-                    {
+                 
+                  
 
-                        modeloFaturasPgs = item;
-                        totalFacturado += modeloFaturasPgs.total;
-                        totalEfecitivo += modeloFaturasPgs.efectivo;
-                    }
-                    //Decimales
-                    totalFacturado = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, totalFacturado);
-
-                    txt_total_nv.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, totalFacturado);
-                    totalEfecitivo = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, totalEfecitivo);
-
-                    txt_total_efectivo.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, totalEfecitivo);
-
-                    Grid.DataSource = listaIngresosFac;
-                    Grid.DataBind();
-                    // recupera la variable de secion con el objeto persona   
-                    //CargarGrid(Session["Fecha"].ToString());
+                    gvProducto.DataSource = listaIngresosFac;
+                    gvProducto.DataBind();
+                    
                 }
             }
+        }
+
+        //Calcular totales del grid
+        private void CalcularTotales()
+        {
+            listaIngresosFac = consultaIngFaturas.BuscarNotasVenta(ComPwm, Session["Fecha"].ToString(), AmUsrLog, "clientes", "0", "0");
+            if(listaIngresosFac.Count >0)
+            { 
+            string TotalFactura = "";
+            string TotalEfectivo = "";
+            foreach (GridViewRow item in gvProducto.Rows)
+            {
+                TotalFactura += item.Cells[4].Text;
+                TotalEfectivo += item.Cells[5].Text;
+            }
+            gvProducto.FooterRow.Cells[3].Text = "TOTALES:";
+            gvProducto.FooterRow.Cells[4].Text = TotalFactura;
+            gvProducto.FooterRow.Cells[5].Text = TotalEfectivo;
+            }
+        }
+        public void gvProducto_DataBound(Object sender, EventArgs e)
+        {
+            CalcularTotales();
         }
         public modelowmspcmonedas BuscarDecimales()
         {
@@ -98,53 +120,60 @@ namespace CapaWeb.WebForms
             Session["redondeo_pu"] = DecimalesMoneda.redondeo_pu;
             return DecimalesMoneda;
         }
-        protected void Grid_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
+
+        protected void gvProducto_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
-            Grid.CurrentPageIndex = 0;
-            Grid.CurrentPageIndex = e.NewPageIndex;
+            gvProducto.PageIndex = 0;
+            gvProducto.PageIndex = e.NewPageIndex;
+
             CargarGrid();
         }
         public void CargarGrid()
         {
             listaIngresosFac = consultaIngFaturas.BuscarNotasVenta(ComPwm, Session["Fecha1"].ToString(), AmUsrLog, "clientes", "0", "0");
-            Grid.DataSource = listaIngresosFac;
-            Grid.DataBind();
+            gvProducto.DataSource = listaIngresosFac;
+            gvProducto.DataBind();
         }
         protected void Cancelar_Click(object sender, EventArgs e)
         {
-            this.Page.Response.Write("<script language='JavaScript'>window.close('./BuscarNotasVent.aspx', 'Ingreso Notas Venta', 'top=100,width=800 ,height=600, left=400');</script>");
+            this.Page.Response.Write("<script language='JavaScript'>window.close('./BuscarNotasVenta.aspx', 'Ingreso Notas Venta', 'top=100,width=800 ,height=600, left=400');</script>");
         }
-
-        protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
+        protected void gvProducto_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //
+            // Se obtiene la fila seleccionada del gridview
+            //
+            GridViewRow row = gvProducto.SelectedRow;
 
-            //1 primero creo un objeto Clave/Valor de QueryString 
-            // QueryString qs = new QueryString();
-            //Escoger opcion
-
-            int Id;
-            string codigo = "";
-            string serie = "";
-            string nro = "";
-            string titular = "";
-            switch (e.CommandName) //ultilizo la variable para la opcion
+            //
+            // Obtengo el id de la entidad que se esta editando
+            // en este caso de la entidad Person
+            //
+            string nro_trans = Convert.ToString(gvProducto.DataKeys[row.RowIndex].Value);
+            //Buscar tipo factura
+            listaConsCab = ConsultaCabe.ConsultaTipoFactura(nro_trans.Trim());
+            conscabcera = null;
+            foreach (modelowmtfacturascab item in listaConsCab)
             {
-
-                case "Mostrar":
-                    Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
-                    codigo = Convert.ToString(((Label)e.Item.Cells[2].FindControl("cod_docum")).Text);
-                    nro = Convert.ToString(((Label)e.Item.Cells[3].FindControl("nro_docum")).Text);
-                    serie = Convert.ToString(((Label)e.Item.Cells[4].FindControl("serie_docum")).Text);
-                    titular = Convert.ToString(((Label)e.Item.Cells[5].FindControl("cod_tit")).Text);
-
-                    string pagina = "Cons_DetalleDocs.asp" + "?usuario=" + Session["usuario"] + "&cod_emp=" + Session["empresa"] + "&cod_docum=" + codigo.Trim() + "&nro_docum=" + nro.Trim() + "&serie_docum=" + serie.Trim() + "&cod_tit=" + titular.Trim() + "&tipo=C";
-
-
-                    Response.Write("<script> window.open('" + pagina + "','_blank');</script>");
-                    break;
+                conscabcera = item;
 
             }
+            string Tipo = conscabcera.tipo_nce.Trim();
+            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, "c", Tipo, nro_trans.Trim(), "0", "0", "0", "xxx", "0", "", "", "", "", "", "");
+            conscabcera = null;
+            foreach (modelowmtfacturascab item in listaConsCab)
+            {
+                conscabcera = item;
+
+            }
+            string pagina = Modelowmspclogo.sitio_app + "Cons_DetalleDocs.asp" + "?cod_docum=" + conscabcera.cod_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&cod_tit=" + conscabcera.cod_cliente.Trim() + "&tipo=C";
+
+
+            Response.Redirect(pagina);
+
+
         }
+
+       
     }
 }

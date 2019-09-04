@@ -288,7 +288,7 @@
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
-                                                                    <asp:ImageButton ID="btn_ingreso_facturas" src="../Tema/imagenes/search.png" runat="server" />
+                                                                    <asp:ImageButton ID="btn_ingreso_facturas" src="../Tema/imagenes/search.png" runat="server" OnClick="btn_ingreso_facturas_Click" />
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -306,7 +306,7 @@
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
-                                                                    <asp:ImageButton ID="btn_ingreso_nventas" src="../Tema/imagenes/search.png" runat="server" />
+                                                                    <asp:ImageButton ID="btn_ingreso_nventas" src="../Tema/imagenes/search.png" runat="server" OnClick="btn_ingreso_nventas_Click" />
                                                                 </div>
                                                             </td>
                                                         </tr>

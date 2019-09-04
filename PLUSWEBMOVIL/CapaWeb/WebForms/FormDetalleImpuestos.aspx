@@ -16,7 +16,7 @@
     <div>
          
 
-                        <h2 class="Titulo">Detalle de Impuestos</h2>
+                        <h2 class="Subtitulo1">Detalle de Impuestos</h2>
                         
 
 
@@ -34,22 +34,37 @@
 
                                              <asp:GridView ID="gvProducto"  runat="server" AutoGenerateColumns="False"
                                         CellPadding="4" BackColor="#DD6D29" DataKeyNames="cod_tipo_impu"
-                                         OnPageIndexChanging="gvProducto_PageIndexChanging" AllowPaging="true" >
+                                         OnPageIndexChanging="gvProducto_PageIndexChanging" AllowPaging="True" >
                                         <RowStyle BackColor="#EFF3FB" />
                                             <Columns>
-                                                <asp:BoundField  DataField="cod_tipo_impu"  HeaderText="IMPUESTO" />
-                                                <asp:BoundField  DataField="nom_impuesto"  HeaderText="DESCRIPCION"  />
-                                                <asp:BoundField  DataField="cod_tasa_impu" HeaderText="TASA"   />
-                                                <asp:BoundField  DataField="nom_tasa"  HeaderText="NOMBRE"   />
-                                                <asp:BoundField  DataField="base_impu1"  HeaderText="BASE" DataFormatString="{0:N}" />
-                                                <asp:BoundField  DataField="porc_impu1"  HeaderText="%" DataFormatString="{0:N}"/>
-                                                <asp:BoundField  DataField="valor_impu1"  HeaderText="VALOR"  DataFormatString="{0:N}" />
+                                                <asp:BoundField  DataField="cod_tipo_impu" ItemStyle-CssClass="textos"  HeaderText="IMPUESTO" >
+<ItemStyle CssClass="textos"></ItemStyle>
+                                                </asp:BoundField>
+                                                <asp:BoundField  DataField="nom_impuesto" ItemStyle-CssClass="textos" HeaderText="DESCRIPCION"  >
+<ItemStyle CssClass="textos"></ItemStyle>
+                                                </asp:BoundField>
+                                                <asp:BoundField  DataField="cod_tasa_impu" ItemStyle-CssClass="textos" HeaderText="TASA"   >
+<ItemStyle CssClass="textos"></ItemStyle>
+                                                </asp:BoundField>
+                                                <asp:BoundField  DataField="nom_tasa" ItemStyle-CssClass="textos" HeaderText="NOMBRE"   >
+<ItemStyle CssClass="textos"></ItemStyle>
+                                                </asp:BoundField>
+                                                <asp:BoundField  DataField="base_impu1" ItemStyle-CssClass="textos" HeaderText="BASE" DataFormatString="{0:N}" >
+<ItemStyle CssClass="textos"></ItemStyle>
+                                                </asp:BoundField>
+                                                <asp:BoundField  DataField="porc_impu1" ItemStyle-CssClass="textos" HeaderText="%" DataFormatString="{0:N}">
+<ItemStyle CssClass="textos"></ItemStyle>
+                                                </asp:BoundField>
+                                                <asp:BoundField  DataField="valor_impu1" ItemStyle-CssClass="textos" HeaderText="VALOR"  DataFormatString="{0:N}" >
+                                                
+<ItemStyle CssClass="textos"></ItemStyle>
+                                                </asp:BoundField>
                                                 
                                             </Columns>
                                               <FooterStyle BackColor="#CC0066" Font-Bold="True" ForeColor="White" />
                                         <PagerStyle BackColor="#DD6D29" ForeColor="White" HorizontalAlign="Center" BorderStyle="None" />
                                         <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />
+                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True"  CssClass="busqueda" ForeColor="White" />
                                         <EditRowStyle BackColor="#2461BF" />
                                         <AlternatingRowStyle BackColor="White" />
 

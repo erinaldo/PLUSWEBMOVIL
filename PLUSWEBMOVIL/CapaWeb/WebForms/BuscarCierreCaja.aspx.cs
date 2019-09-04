@@ -345,5 +345,18 @@ namespace CapaWeb.WebForms
         {
             Response.Redirect("BuscarCierreCaja.aspx");
         }
+
+        protected void btn_ingreso_facturas_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            Session["Fecha"] = lbl_fecha.Text;
+            this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarIngresoFacturasPgs.aspx', 'Ingreso Facturas', 'top=100,width=800 ,height=400, left=400');</script>");
+        }
+
+        protected void btn_ingreso_nventas_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            Session["Fecha"] = lbl_fecha.Text;
+            this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarNotasVenta.aspx', 'Notas Venta', 'top=100,width=800 ,height=400, left=400');</script>");
+
+        }
     }
 }
