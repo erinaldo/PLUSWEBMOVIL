@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 using CapaProceso.Consultas;
 using CapaProceso.Modelos;
 using CapaDatos.Modelos;
-
+using CapaWeb.Urlencriptacion;
 
 namespace CapaWeb.WebForms
 {
@@ -154,13 +154,12 @@ namespace CapaWeb.WebForms
             //
             GridViewRow row = gvProducto.SelectedRow;
 
-            //
-            // Obtengo el id de la entidad que se esta editando
-            // en este caso de la entidad Person
-            //
-            string nro_trans = Convert.ToString(gvProducto.DataKeys[row.RowIndex].Value);
+            //1 primero creo un objeto Clave/Valor de QueryString 
+            QueryString qs = new QueryString();
+
+            string Id = Convert.ToString(gvProducto.DataKeys[row.RowIndex].Value);
             //Buscar tipo factura
-            listaConsCab = ConsultaCabe.ConsultaTipoFactura(nro_trans.Trim());
+            listaConsCab = ConsultaCabe.ConsultaTipoFactura(Id.Trim());
             conscabcera = null;
             foreach (modelowmtfacturascab item in listaConsCab)
             {
@@ -168,21 +167,27 @@ namespace CapaWeb.WebForms
 
             }
             string Tipo = conscabcera.tipo_nce.Trim();
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, "c", Tipo, nro_trans.Trim(), "0", "0", "0", "xxx", "0", "", "", "", "", "", "");
-            conscabcera = null;
-            foreach (modelowmtfacturascab item in listaConsCab)
-            {
-                conscabcera = item;
 
-            }
-            string pagina = Modelowmspclogo.sitio_app + "Cons_DetalleDocs.asp" + "?cod_docum=" + conscabcera.cod_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&cod_tit=" + conscabcera.cod_cliente.Trim() + "&tipo=C";
+          
+            qs.Add("TRN", "VER");
+            qs.Add("Id", Id.ToString());
+            qs.Add("Tipo", Tipo);
+            Response.Redirect("VerDetalleFacturas.aspx" + Encryption.EncryptQueryString(qs).ToString());
+            /* listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, "c", Tipo, nro_trans.Trim(), "0", "0", "0", "xxx", "0", "", "", "", "", "", "");
+             conscabcera = null;
+             foreach (modelowmtfacturascab item in listaConsCab)
+             {
+                 conscabcera = item;
+
+             }
+             string pagina = Modelowmspclogo.sitio_app + "Cons_DetalleDocs.asp" + "?cod_docum=" + conscabcera.cod_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&cod_tit=" + conscabcera.cod_cliente.Trim() + "&tipo=C";
 
 
-            Response.Redirect(pagina);
-            
+             Response.Redirect(pagina);
+             */
 
         }
-            
-        }
+
+    }
 
     }

@@ -17,7 +17,7 @@
        <table border="0" id="MostrarOpciones" align="center" >
            <tr valign="center" >
                <td align="center" nowrap="nowrap" colspan="3" >
-                      <h2 class="textos">Medios de Pago</h2>
+                      <h2 class="Subtitulo1">Medios de Pago</h2>
                </td>
                </tr>
            <tr>

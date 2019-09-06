@@ -125,6 +125,7 @@
     <Content Include="WebForms\FormDetalleImpuestos.aspx" />
     <Content Include="WebForms\FormDocumentosElectronicos.aspx" />
     <Content Include="WebForms\FormFacturaPostElec.aspx" />
+    <Content Include="WebForms\FormFacturaVTA.aspx" />
     <Content Include="WebForms\FormHostMail.aspx" />
     <Content Include="WebForms\BuscarDenominaciones.aspx" />
     <Content Include="WebForms\FormListaHostMail.aspx" />
@@ -198,6 +199,7 @@
     <Content Include="WebForms\ReenviarNotaDebitoJson.aspx" />
     <Content Include="WebForms\ReporteNCAnuFac.aspx" />
     <Content Include="WebForms\ReporteFactura.aspx" />
+    <Content Include="WebForms\VerDetalleFacturas.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="WebForms\BuscaFacturasNCAn.aspx.cs">
@@ -304,6 +306,13 @@
     </Compile>
     <Compile Include="WebForms\FormFacturaPostElec.aspx.designer.cs">
       <DependentUpon>FormFacturaPostElec.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormFacturaVTA.aspx.cs">
+      <DependentUpon>FormFacturaVTA.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormFacturaVTA.aspx.designer.cs">
+      <DependentUpon>FormFacturaVTA.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormHostMail.aspx.cs">
       <DependentUpon>FormHostMail.aspx</DependentUpon>
@@ -524,6 +533,13 @@
     </Compile>
     <Compile Include="WebForms\ReporteFactura.aspx.designer.cs">
       <DependentUpon>ReporteFactura.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\VerDetalleFacturas.aspx.cs">
+      <DependentUpon>VerDetalleFacturas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\VerDetalleFacturas.aspx.designer.cs">
+      <DependentUpon>VerDetalleFacturas.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

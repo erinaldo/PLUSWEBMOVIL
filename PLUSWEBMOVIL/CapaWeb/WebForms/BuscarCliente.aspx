@@ -15,11 +15,11 @@
        <tr>
            <td colspan="4">
             
-               <asp:Label ID="Label1" runat="server" class="texto" Text="Label">Buscar Cliente</asp:Label>
+               <asp:Label ID="Label1" runat="server" class="Subtitulo1"  Text="Label">Buscar Cliente</asp:Label>
                 
               </td>
             <td colspan="4">
-                <asp:TextBox class="texto" size="40" maxlength="50"  ID="TxtBuscarCliente" AutoPostBack="True"  OnTextChanged="TxtBuscarCliente_TextChanged" placeholder="Identificación/ Nombre" runat="server" />
+                <asp:TextBox  size="40" maxlength="50" class="texto"  ID="TxtBuscarCliente" AutoPostBack="True"  OnTextChanged="TxtBuscarCliente_TextChanged" placeholder="Identificación/ Nombre" runat="server" />
            </tr>
         <tr>
 
@@ -41,9 +41,9 @@
                                         <RowStyle BackColor="#EFF3FB" />
                                         <Columns>
 
-                                            <asp:BoundField DataField="nom_tit" HeaderText="Cliente" />
-                                            <asp:BoundField DataField="nro_dgi2" HeaderText="Cédula" />
-                                            <asp:BoundField DataField="tel_tit" HeaderText="Teléfono" />
+                                            <asp:BoundField DataField="nom_tit" ItemStyle-CssClass="textos" HeaderText="Cliente" />
+                                            <asp:BoundField DataField="nro_dgi2" ItemStyle-CssClass="textos" HeaderText="Cédula" />
+                                            <asp:BoundField DataField="tel_tit" ItemStyle-CssClass="textos" HeaderText="Teléfono" />
 
                                             <asp:ButtonField ButtonType="Button"  ControlStyle-CssClass="botones" CommandName="Select" HeaderText="Seleccionar" ShowHeader="True" Text="Seleccionar" />
 
@@ -51,7 +51,7 @@
                                         <FooterStyle BackColor="#CC0066" Font-Bold="True" ForeColor="White" />
                                         <PagerStyle BackColor="#DD6D29" ForeColor="White" HorizontalAlign="Center" BorderStyle="None" />
                                         <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />
+                                        <HeaderStyle BackColor="#DD6D29" CssClass="busqueda" Font-Bold="True" ForeColor="White" />
                                         <EditRowStyle BackColor="#2461BF" />
                                         <AlternatingRowStyle BackColor="White" />
                                     </asp:GridView>

@@ -9,9 +9,8 @@ using CapaDatos.Modelos;
 
 namespace CapaWeb.WebForms
 {
-    public partial class FormFacturaPostElec : System.Web.UI.Page
+    public partial class FormFacturaVTA : System.Web.UI.Page
     {
-
         public ConsultaCodProceso ConsultaCodProceso = new ConsultaCodProceso();
         public modeloCodProcesoFactura ModeloCodProceso = new modeloCodProcesoFactura();
         public List<modeloCodProcesoFactura> ListaModeloCodProceso = null;
@@ -106,11 +105,6 @@ namespace CapaWeb.WebForms
 
         public modeloActualizarDatosTitular ModeloActualizarEmail = new modeloActualizarDatosTitular();
         public ConsultaActualizarTitular ConsultaDatosTitular = new ConsultaActualizarTitular();
-
-        ModeloDiferenciaPagos modeloDiferencia = new ModeloDiferenciaPagos(); //Trae los saldos
-        public List<ModeloDiferenciaPagos> listaSaldos = null;
-        ConsultaMediosPago consultaMediosPago = new ConsultaMediosPago();
-
         public string ComPwm;
         public string AmUsrLog;
         public string valor_asignado = null;
@@ -130,7 +124,7 @@ namespace CapaWeb.WebForms
         public string ArtB__compras = "0";
         public string ArtB__ventas = "S";
         public string Ccf_tipo1 = "C";
-        public string Ccf_tipo2 = "POSE";
+        public string Ccf_tipo2 = "VTAE";
         public string Ccf_nro_trans = "0";
         public string Ccf_estado = null;
         public string Ccf_cliente = null;
@@ -154,7 +148,8 @@ namespace CapaWeb.WebForms
         public decimal sumaIva15 = 0;
         public string auditoria = null;
         public string nro_trans = null;
-        public string tipo_tran = null;
+        public int decimal_valores = 0;
+        public int decimal_val_uni = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
             RecuperarCokie();
@@ -181,11 +176,11 @@ namespace CapaWeb.WebForms
             {
                 // recupera la variable de secion con el objetoarticulo
                 articulo = (modelowmspcarticulos)Session["articulo"];
-                txt_Descripcion.Text = articulo.nom_articulo;
-                txt_Precio.Text = articulo.precio_total;
-                txt_Codigo.Text = articulo.cod_articulo;
-                txt_Iva.Text = (articulo.porc_impuesto);
-                txt_Desc.Text = "0";
+                articulos.Text = articulo.nom_articulo;
+                precio.Text = articulo.precio_total;
+                BuscarArticulo.Text = articulo.cod_articulo;
+                iva.Text = (articulo.porc_impuesto);
+                porcdescto.Text = "0";
 
 
             }
@@ -206,8 +201,7 @@ namespace CapaWeb.WebForms
                 Session.Remove("sumaBase15");
                 Session.Remove("sumaIva19");
                 Session.Remove("sumaIva15");
-                Session.Remove("Tipo");
-                Session.Remove("valor_asignado1");
+
 
                 QueryString qs = ulrDesencriptada();
 
@@ -217,28 +211,23 @@ namespace CapaWeb.WebForms
 
                     case "INS":
                         cargarListaDesplegables();
-                         tipo_tran = "INS";
                         Session.Remove("listaCliente");
-                        Session.Remove("Tipo_Trans");
                         Session.Remove("valor_asignado");
-                        Session.Remove("Tipo_Trans");
-                        Session.Remove("Tipo");
-                        Session.Remove("valor_asignado1");
                         DateTime hoy = DateTime.Today;
                         fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
                         //Consultar tasa de cambio
                         ConsultarTasaCambioCanorus();
-                         ModeloRolMod = BuscarRolModificar( AmUsrLog, ComPwm, "VTA", "PR", "N");
-                         if (ModeloRolMod.control_uso == "readonly=\"readonly\"")
-                         {
-                             txt_Precio.Enabled = false;
-                         }
+                        ModeloRolMod = BuscarRolModificar(AmUsrLog, ComPwm, "VTA", "PR", "N");
+                        if (ModeloRolMod.control_uso == "readonly=\"readonly\"")
+                        {
+                            precio.Enabled = false;
+                        }
                         break;
 
                     case "UDP":
                         Int64 id = Int64.Parse(qs["Id"].ToString());
                         Session["valor_asignado"] = id.ToString();
-                        Session["Tipo_Trans"] = "UDP";
+
                         cargarListaDesplegables();
                         LlenarFactura();
 
@@ -247,7 +236,7 @@ namespace CapaWeb.WebForms
                     case "VER":
                         Int64 ide = Int64.Parse(qs["Id"].ToString());
                         Session["valor_asignado"] = ide.ToString();
-                        Session["Tipo_Trans"] = "VER";
+
                         cargarListaDesplegables();
                         LlenarFactura();
                         BloquearFactura();
@@ -259,6 +248,7 @@ namespace CapaWeb.WebForms
 
             }
         }
+
         protected void ConsultarTasaCambioCanorus()
         {
             DateTime hoy = DateTime.Today;
@@ -301,55 +291,16 @@ namespace CapaWeb.WebForms
             txtIva15.Enabled = false;
             txtIva19.Enabled = false;
             //botones
-            AgregarNC.Enabled = false;
+            AgregarProducto.Enabled = false;
             Confirmar.Visible = false;
-            
             btnGuardarDetalle.Visible = false;
             //detalle producto
-            txt_Codigo.Enabled = false;
-            txt_Descripcion.Enabled = false;
-            txt_Cantidad.Enabled = false;
-            txt_Precio.Enabled = false;
-            txt_Desc.Enabled = false;
-            txt_Iva.Enabled = false;
-        }
-        protected void BloquearFacturaPagos()
-        {
-            //inhabilitar cajas de texto cabecera factura
-            dniCliente.Enabled = false;
-            nombreCliente.Enabled = false;
-            fonoCliente.Enabled = false;
-            txtcorreo.Enabled = false;
-            fecha.Enabled = false;
-            cod_fpago.Enabled = false;
-            nro_pedido.Enabled = false;
-            cod_costos.Enabled = false;
-            serie_docum.Enabled = false;
-            ocompra.Enabled = false;
-            area.Enabled = false;
-            porc_descto.Enabled = false;
-            cmbCod_moneda.Enabled = false;
-            cod_vendedor.Enabled = false;
-            txtSumaSubTo.Enabled = false;
-            txtSumaTotal.Enabled = false;
-            txtSumaIva.Enabled = false;
-            txtSumaDesc.Enabled = false;
-            gv_Producto.Enabled = false;
-            txtBase15.Enabled = false;
-            txtBaseIva19.Enabled = false;
-            txtIva15.Enabled = false;
-            txtIva19.Enabled = false;
-            //botones
-            AgregarNC.Enabled = false;
-            
-            btnGuardarDetalle.Visible = false;
-            //detalle producto
-            txt_Codigo.Enabled = false;
-            txt_Descripcion.Enabled = false;
-            txt_Cantidad.Enabled = false;
-            txt_Precio.Enabled = false;
-            txt_Desc.Enabled = false;
-            txt_Iva.Enabled = false;
+            BuscarArticulo.Enabled = false;
+            articulos.Enabled = false;
+            cantidad.Enabled = false;
+            precio.Enabled = false;
+            porcdescto.Enabled = false;
+            iva.Enabled = false;
         }
         public modelowmspctctrxCotizacion BuscarCotizacion(string Ccf_usuario, string Ccf_cod_emp, string dia, string mes, string anio, string moneda)
         {
@@ -402,6 +353,7 @@ namespace CapaWeb.WebForms
             DecimalesMoneda = null;
             DecimalesMoneda = BuscarDecimales();
             //Formato totales
+
             txtSumaSubTo.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.subtotal);
             txtSumaTotal.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.total);
             txtSumaIva.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.iva);
@@ -506,6 +458,23 @@ namespace CapaWeb.WebForms
             cod_fpago.DataBind();
         }
 
+        //Buscar cantidad de decimales q se va ausar x tipo de moneda
+        public modelowmspcmonedas BuscarDecimales()
+        {
+
+            listaMonedas = ConsultaCMonedas.ConsultaCMonedas(AmUsrLog, ComPwm, cmbCod_moneda.SelectedValue);
+
+            DecimalesMoneda = null;
+            foreach (modelowmspcmonedas item in listaMonedas)
+            {
+
+                DecimalesMoneda = item;
+                break;
+
+            }
+
+            return DecimalesMoneda;
+        }
 
 
         public void InsertarDetalle()
@@ -524,13 +493,13 @@ namespace CapaWeb.WebForms
             {
                 lbl_trx.Text = " No existe Tipo de Cambio registrado para la fecha de la factura. Por favor registrar la tasa del dia y actualizar la pagina";
                 lbl_trx.Visible = true;
-                AgregarNC.Enabled = false;
+                AgregarProducto.Enabled = false;
             }
             else
             {
                 ModeloDetalleFactura item = new ModeloDetalleFactura();
                 articulo = null;
-                articulo = BuscarProducto(txt_Codigo.Text);
+                articulo = BuscarProducto(BuscarArticulo.Text);
                 //Consultamos cuantos descimales se van a usar redondeo
                 DecimalesMoneda = null;
                 DecimalesMoneda = BuscarDecimales();
@@ -612,21 +581,22 @@ namespace CapaWeb.WebForms
                             sumaIva15 -= itemSuma.detaiva;
                         }
                         /* sumo los numebos valores agregados al producto*/
-                        itemSuma.cantidad += Convert.ToDecimal(txt_Cantidad.Text);
-                        itemSuma.precio_unit = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(txt_Precio.Text));
-                        itemSuma.porc_iva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(txt_Iva.Text));
-                        itemSuma.porc_descto = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(txt_Iva.Text));
-                        itemSuma.subtotal = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (itemSuma.precio_unit * itemSuma.cantidad));
+                        itemSuma.cantidad += Convert.ToDecimal(cantidad.Text);
+                        itemSuma.precio_unit = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(precio.Text));
+                        itemSuma.porc_iva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(iva.Text));
+                        itemSuma.porc_descto = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(porcdescto.Text));
+                        itemSuma.subtotal = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(itemSuma.precio_unit * itemSuma.cantidad));
                         itemSuma.poriva = itemSuma.porc_iva / 100;
 
                         sumaSubtotal = itemSuma.subtotal;
                         Session["sumaSubtotal"] = sumaSubtotal.ToString();
-                        txtSumaSubTo.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo_pu, sumaSubtotal);
+                        txtSumaSubTo.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, sumaSubtotal);
 
                         if (itemSuma.porc_descto == 0)
                         {
                             itemSuma.descuento = 0;
                             itemSuma.detadescuento = 0;
+                            //Redondear valore totales
                             itemSuma.detaiva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (itemSuma.subtotal * itemSuma.poriva));
                             itemSuma.subdos = itemSuma.subtotal;
                             itemSuma.total = itemSuma.subdos + itemSuma.detaiva; //Suma total
@@ -634,9 +604,15 @@ namespace CapaWeb.WebForms
                         else
                         {
                             itemSuma.descuento = itemSuma.porc_descto / 100;
-                            itemSuma.detadescuento = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (itemSuma.subtotal - itemSuma.descuento));
-                            itemSuma.detaiva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (itemSuma.detadescuento * itemSuma.poriva));
-                            itemSuma.subdos = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (itemSuma.subtotal - itemSuma.descuento));
+                            //Redondear valore totales
+                            decimal precio_detadescuento = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(itemSuma.subtotal - itemSuma.descuento));
+                            itemSuma.detadescuento = precio_detadescuento;
+                            //Redondear valore totales
+                            decimal precio_detaiva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(itemSuma.detadescuento * itemSuma.poriva));
+                            itemSuma.detaiva = precio_detaiva;
+                            //Redondear valore totales
+                            decimal precio_subdos = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(itemSuma.subtotal - itemSuma.descuento));
+                            itemSuma.subdos = precio_subdos;
                             itemSuma.total = itemSuma.subdos + itemSuma.detaiva; //Suma total
                         }
 
@@ -687,17 +663,22 @@ namespace CapaWeb.WebForms
 
                 if (!existe)
                 {
-                    item.cod_articulo = txt_Codigo.Text;
-                    item.nom_articulo = txt_Descripcion.Text;
-                    item.nom_articulo2 = txt_Descripcion.Text;
+                    item.cod_articulo = BuscarArticulo.Text;
+                    item.nom_articulo = articulos.Text;
+                    item.nom_articulo2 = articulos.Text;
                     item.cod_ccostos = cod_costos.SelectedValue;
-                    item.cantidad =Convert.ToDecimal(txt_Cantidad.Text);
-                    decimal precio_unitario = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(txt_Precio.Text));
+
+                    item.cantidad = Convert.ToDecimal(cantidad.Text);
+                    //Redondear el numero a precios_uni
+                    decimal precio_unitario = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(precio.Text));
                     item.precio_unit = precio_unitario;
-                    decimal precio_iva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(txt_Iva.Text));
+                    //Redondear el numero a totales
+                    decimal precio_iva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(iva.Text));
                     item.porc_iva = precio_iva;
-                    decimal precio_des = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(txt_Desc.Text));
+                    //Redondear el numero a totales
+                    decimal precio_des = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(porcdescto.Text));
                     item.porc_descto = precio_des;
+                    //Redondear el numero a totales
                     decimal precio_sub = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(item.precio_unit * item.cantidad));
                     item.subtotal = precio_sub;
                     item.poriva = item.porc_iva / 100;
@@ -716,6 +697,8 @@ namespace CapaWeb.WebForms
                     {
                         item.descuento = 0;
                         item.detadescuento = 0;
+                        //Redondear el numero a totales
+                        decimal precio_detaiva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(item.subtotal * item.poriva));
                         item.detaiva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (item.subtotal * item.poriva));
                         item.subdos = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, item.subtotal);
                         item.total = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (item.subdos + item.detaiva)); //Suma total
@@ -723,7 +706,9 @@ namespace CapaWeb.WebForms
                     else
                     {
                         item.descuento = item.porc_descto / 100;
-                        item.detadescuento = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (item.subtotal - item.descuento));
+                        //Redondear el numero a totales
+                        decimal precio_detadescuento = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(item.subtotal - item.descuento));
+                        item.detadescuento = precio_detadescuento;
                         item.detaiva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (item.detadescuento * item.poriva));
                         item.subdos = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (item.subtotal - item.descuento));
                         item.total = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (item.subdos + item.detaiva)); //Suma total
@@ -818,12 +803,12 @@ namespace CapaWeb.WebForms
                 gv_Producto.DataSource = ModeloDetalleFactura;
                 gv_Producto.DataBind();
 
-                txt_Codigo.Text = "";
-                txt_Descripcion.Text = "";
-                txt_Precio.Text = "0";
-                txt_Iva.Text = "0";
-                txt_Desc.Text = "0";
-                txt_Cantidad.Text = "1";
+                BuscarArticulo.Text = "";
+                articulos.Text = "";
+                precio.Text = "0";
+                iva.Text = "0";
+                porcdescto.Text = "0";
+                cantidad.Text = "1";
                 item = null;
             }
         }
@@ -919,13 +904,13 @@ namespace CapaWeb.WebForms
             cabecerafactura.nro_audit = "0"; // por defecto va cero s disapra triger
             cabecerafactura.ocompra = ocompra.Text;
             cabecerafactura.cod_moneda = cmbCod_moneda.SelectedValue;
-            cabecerafactura.tipo = Ccf_tipo2; //TIPO POSE
+            cabecerafactura.tipo = Ccf_tipo2; //tipo vtae
             cabecerafactura.porc_descto = Convert.ToDecimal("0.00");
             cabecerafactura.descuento = Convert.ToDecimal("0.00");
             cabecerafactura.diar = "0";
             cabecerafactura.mesr = "0";
             cabecerafactura.anior = "0";
-            cabecerafactura.cod_proc_aud = "RCOMFACPOS";
+            cabecerafactura.cod_proc_aud = "RCOMFACT";
             cabecerafactura.cod_sucursal = ModeloUsuSucursal.cod_sucursal;
             cabecerafactura.nro_pedido = nro_pedido.Text;
 
@@ -1104,23 +1089,7 @@ namespace CapaWeb.WebForms
         }
 
 
-        //Buscar cantidad de decimales q se va ausar x tipo de moneda
-        public modelowmspcmonedas BuscarDecimales()
-        {
 
-            listaMonedas = ConsultaCMonedas.ConsultaCMonedas(AmUsrLog, ComPwm, cmbCod_moneda.SelectedValue);
-
-            DecimalesMoneda = null;
-            foreach (modelowmspcmonedas item in listaMonedas)
-            {
-
-                DecimalesMoneda = item;
-                break;
-
-            }
-
-            return DecimalesMoneda;
-        }
         protected void BuscarArticulo_TextChanged(object sender, EventArgs e)
         {
             //Bloquear combo de monedas
@@ -1128,13 +1097,14 @@ namespace CapaWeb.WebForms
             //Consultamos cuantos descimales se van a usar
             DecimalesMoneda = null;
             DecimalesMoneda = BuscarDecimales();
+
             int count = 0;
             articulo = null;
 
             if (Session["articulo"] == null)
             {
 
-                string ArtB__articulo = txt_Codigo.Text;
+                string ArtB__articulo = BuscarArticulo.Text;
 
                 listaArticulos = ConsultaArticulo.ConsultaArticulos(AmUsrLog, ComPwm, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
 
@@ -1164,21 +1134,20 @@ namespace CapaWeb.WebForms
 
                 if (articulo == null)
                 {
-                    txt_Codigo.Text = "No existe el producto/ servicio";
+                    BuscarArticulo.Text = "No existe el producto/ servicio";
                 }
                 else
                 {
-                    lblCan.Visible = true;
-                   txt_Cantidad.Visible = true;
+                    lblCantidad.Visible = true;
+                    cantidad.Visible = true;
                     Session.Remove("articulo");
-                    txt_Codigo.Text = articulo.cod_articulo;
-                    txt_Descripcion.Text = articulo.nom_articulo;
+                    BuscarArticulo.Text = articulo.cod_articulo;
+                    articulos.Text = articulo.nom_articulo;
                     //Redondear el numero a precios_uni
-                   
-                    decimal precio_unitario = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(consdetalle.precio_unit));
-                    txt_Precio.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo_pu, precio_unitario);
-                    txt_Iva.Text = articulo.porc_impuesto;
-                    txt_Desc.Text = "0";
+                    decimal precio_unitario = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(articulo.precio));
+                    precio.Text = precio_unitario.ToString();
+                    iva.Text = articulo.porc_impuesto;
+                    porcdescto.Text = "0";
                     Session.Remove("articulo");
 
                 }
@@ -1205,12 +1174,17 @@ namespace CapaWeb.WebForms
         public modelowmspcarticulos BuscarProducto(string ArtB__articulo)
         {
 
+
             listaArticulos = ConsultaArticulo.ConsultaArticulos(AmUsrLog, ComPwm, ArtB__articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
+
+
             articulo = null;
             foreach (modelowmspcarticulos item in listaArticulos)
             {
+
                 articulo = item;
                 break;
+
             }
 
             return articulo;
@@ -1218,23 +1192,11 @@ namespace CapaWeb.WebForms
 
         protected void Cancelar_Click(object sender, EventArgs e)
         {
-            Response.Redirect("BuscarFacturaPos.aspx");
+            Response.Redirect("BuscarFacturas.aspx");
         }
 
         protected void Confirmar_Click(object sender, EventArgs e)
         {
-            /*Antes de guardar verificar q esten guardados los medios de pago*/
-            listaSaldos = consultaMediosPago.BuscarDiferenciaSaldos(AmUsrLog, ComPwm, Session["valor_asignado"].ToString());
-            foreach (var item in listaSaldos)
-            {
-                modeloDiferencia = item;
-            }
-            if (modeloDiferencia.total != modeloDiferencia.pagado)
-             {
-                this.Page.Response.Write("<script language='JavaScript'>window.alert('Pago no existente, verifique que los pagos sean correctos ')+ error;</script>");
-
-            }
-            else { 
             //Consultar si el vendedor tiene asignada una sucursal
             ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
             int count = 0;
@@ -1273,19 +1235,8 @@ namespace CapaWeb.WebForms
                         {
                             string respuestaConfirmacionFAC = "";
                             //Boton Coonfirmar hace lo mismo que el salvar solo aumenta la insercion a la tabla wmt_facturas_ins
-                            
-                               string Ccf_nro_trans = Session["valor_asignado"].ToString();
-
-                                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-                                int count1 = 0;
-                                conscabcera = null;
-                                foreach (modelowmtfacturascab item in listaConsCab)
-                                {
-                                    count1++;
-                                    conscabcera = item;
-
-                                }
-                                /*Consultar la cabacecera de la factura sacar los datos e insertar en ins para q no se borre de la tabla wmt_facturas_pgs*/
+                            conscabcera = null;
+                            conscabcera = GuardarDetalle();
 
                             confirmarinsertar.nro_trans = conscabcera.nro_trans;
                             confirmarinsertar.cod_emp = conscabcera.cod_emp;
@@ -1298,20 +1249,20 @@ namespace CapaWeb.WebForms
                             {
                                 ConsumoRest consumoRest = new ConsumoRest();
                                 string respuesta = "";
-                                respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "POSE", conscabcera.nro_trans);
+                                respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTAE", conscabcera.nro_trans);
                                 if (respuesta == "")
                                 {
                                     mensaje.Text = "Su factura fue procesada exitosamente";
                                     Confirmar.Enabled = false;
                                     GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
-                                    Response.Redirect("BuscarFacturaPos.aspx");
+                                    Response.Redirect("BuscarFacturas.aspx");
 
                                 }
                                 else
                                 {
                                     GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
                                     mensaje.Text = respuesta;
-                                    Response.Redirect("BuscarFacturaPos.aspx");
+                                    Response.Redirect("BuscarFacturas.aspx");
 
                                 }
                             }
@@ -1326,7 +1277,6 @@ namespace CapaWeb.WebForms
                 }
             }
 
-            }
         }
 
         public void RecuperarCokie()
@@ -1347,6 +1297,7 @@ namespace CapaWeb.WebForms
 
             }
         }
+
 
 
 
@@ -1372,14 +1323,15 @@ namespace CapaWeb.WebForms
                 switch (e.CommandName) //ultilizo la variable para la opcion            
                 {
                     case "Editar":// lleno las cajas de texto con los datos para la edicon del item seleccionado
-                        txt_Codigo.Text = detalle.cod_articulo;
-                        txt_Descripcion.Text = detalle.nom_articulo;
-                        txt_Cantidad.Text = Convert.ToString(detalle.cantidad);
-                        txt_Desc.Text = Convert.ToString(detalle.porc_descto);
-                        txt_Precio.Text = Convert.ToString(detalle.precio_unit);
-                        txt_Iva.Text = detalle.porc_iva.ToString();
+                        BuscarArticulo.Text = detalle.cod_articulo;
+                        articulos.Text = detalle.nom_articulo;
+                        cantidad.Text = Convert.ToString(detalle.cantidad);
+                        porcdescto.Text = Convert.ToString(detalle.porc_descto);
+                        precio.Text = Convert.ToString(detalle.precio_unit);
+                        iva.Text = detalle.porc_iva.ToString();
 
                         break;
+
                     case "Eliminar":
                         /*Eliminar item de la grilla*/
 
@@ -1468,6 +1420,9 @@ namespace CapaWeb.WebForms
                         txtSumaIva.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, sumaIva);
                         //Eliminar base 19 y 15
 
+
+
+
                         ModeloDetalleFactura.RemoveAt(e.Item.ItemIndex);
                         Session["detalle"] = ModeloDetalleFactura;
                         ModeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);
@@ -1504,7 +1459,9 @@ namespace CapaWeb.WebForms
                     ModeloDetalleFactura item = new ModeloDetalleFactura();
                     articulo = null;
                     articulo = BuscarProducto(ModeloDetallePro.cod_articulo);
-
+                    //Consultamos cuantos descimales se van a usar redondeo
+                    DecimalesMoneda = null;
+                    DecimalesMoneda = BuscarDecimales();
 
                     if (Session["detalle"] == null)
                     {
@@ -1584,31 +1541,42 @@ namespace CapaWeb.WebForms
                             }
 
                             /* sumo los numebos valores agregados al producto*/
-                            itemSuma.cantidad += Convert.ToDecimal(txt_Cantidad.Text);
-                            itemSuma.precio_unit = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(txt_Precio.Text));
-                            itemSuma.porc_iva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(txt_Iva.Text));
-                            itemSuma.porc_descto = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(txt_Iva.Text));
-                            itemSuma.subtotal = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (itemSuma.precio_unit * itemSuma.cantidad));
+
+                            itemSuma.cantidad += Convert.ToDecimal(cantidad.Text);
+                            //Redondear el numero a precios_uni
+                            decimal precio_unitario = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(precio.Text));
+                            itemSuma.precio_unit = precio_unitario;
+
+                            //Redondear valore totales
+                            decimal precio_iva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(iva.Text));
+                            itemSuma.porc_iva = precio_iva;
+                            //Redondear valore totales
+                            decimal precio_des = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(porcdescto.Text));
+                            itemSuma.porc_descto = precio_des;
+                            //Redondear valore totales
+                            decimal precio_sub = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(itemSuma.precio_unit * itemSuma.cantidad));
+                            itemSuma.subtotal = precio_sub;
                             itemSuma.poriva = itemSuma.porc_iva / 100;
 
                             sumaSubtotal = itemSuma.subtotal;
                             Session["sumaSubtotal"] = sumaSubtotal.ToString();
-                            txtSumaSubTo.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo_pu, sumaSubtotal);
+                            txtSumaSubTo.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, sumaSubtotal);
+
 
                             if (itemSuma.porc_descto == 0)
                             {
                                 itemSuma.descuento = 0;
                                 itemSuma.detadescuento = 0;
-                                itemSuma.detaiva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (itemSuma.subtotal * itemSuma.poriva));
+                                itemSuma.detaiva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(itemSuma.subtotal * itemSuma.poriva));
                                 itemSuma.subdos = itemSuma.subtotal;
                                 itemSuma.total = itemSuma.subdos + itemSuma.detaiva; //Suma total
                             }
                             else
                             {
                                 itemSuma.descuento = itemSuma.porc_descto / 100;
-                                itemSuma.detadescuento = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (itemSuma.subtotal - itemSuma.descuento));
-                                itemSuma.detaiva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (itemSuma.detadescuento * itemSuma.poriva));
-                                itemSuma.subdos = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (itemSuma.subtotal - itemSuma.descuento));
+                                itemSuma.detadescuento = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(itemSuma.subtotal - itemSuma.descuento));
+                                itemSuma.detaiva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(itemSuma.detadescuento * itemSuma.poriva));
+                                itemSuma.subdos = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(itemSuma.subtotal - itemSuma.descuento));
                                 itemSuma.total = itemSuma.subdos + itemSuma.detaiva; //Suma total
                             }
 
@@ -1943,20 +1911,11 @@ namespace CapaWeb.WebForms
                             }
 
                             /* sumo los numebos valores agregados al producto*/
-                            itemSuma.cantidad += Convert.ToDecimal(txt_Cantidad.Text);
-                            //Redondear el numero a precios_uni
-                            decimal precio_unitario = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(txt_Precio.Text));
-                            itemSuma.precio_unit = precio_unitario;
-
-                            //Redondear valore totales
-                            decimal precio_iva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(txt_Iva.Text));
-                            itemSuma.porc_iva = precio_iva;
-                            //Redondear valore totales
-                            decimal precio_des = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(txt_Desc.Text));
-                            itemSuma.porc_descto = precio_des;
-                            //Redondear valore totales
-                            decimal precio_sub = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(itemSuma.precio_unit * itemSuma.cantidad));
-                            itemSuma.subtotal = precio_sub;
+                            itemSuma.cantidad += Convert.ToDecimal(cantidad.Text);
+                            itemSuma.precio_unit = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(precio.Text));
+                            itemSuma.porc_iva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(iva.Text));
+                            itemSuma.porc_descto = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(porcdescto.Text));
+                            itemSuma.subtotal = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(itemSuma.precio_unit * itemSuma.cantidad));
                             itemSuma.poriva = itemSuma.porc_iva / 100;
 
                             sumaSubtotal = itemSuma.subtotal;
@@ -2042,6 +2001,7 @@ namespace CapaWeb.WebForms
                         //Redondear el numero a totales
                         item.subtotal = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(ModeloDetalleRemision.subtotal)); ;
                         item.poriva = item.porc_iva / 100;
+
                         if (Session["sumaSubtotal"] != null)
                         {
                             sumaSubtotal = Convert.ToDecimal(Session["sumaSubtotal"]);
@@ -2049,13 +2009,14 @@ namespace CapaWeb.WebForms
 
                         sumaSubtotal += item.subtotal;
                         Session["sumaSubtotal"] = sumaSubtotal.ToString();
-
                         txtSumaSubTo.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, sumaSubtotal);
 
                         if (item.porc_descto == 0)
                         {
                             item.descuento = 0;
                             item.detadescuento = 0;
+                            //Redondear el numero a totales
+
                             item.detaiva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (item.subtotal * item.poriva));
                             item.subdos = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, item.subtotal);
                             item.total = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (item.subdos + item.detaiva)); //Suma total
@@ -2063,7 +2024,7 @@ namespace CapaWeb.WebForms
                         else
                         {
                             item.descuento = item.porc_descto / 100;
-                            item.detadescuento = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (item.subtotal - item.descuento));
+                            item.detadescuento = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(item.subtotal - item.descuento));
                             item.detaiva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (item.detadescuento * item.poriva));
                             item.subdos = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (item.subtotal - item.descuento));
                             item.total = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, (item.subdos + item.detaiva)); //Suma total
@@ -2094,8 +2055,8 @@ namespace CapaWeb.WebForms
                         sumaTotal += item.total;
                         Session["sumaTotal"] = sumaTotal.ToString();
                         txtSumaTotal.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, sumaTotal);
-                        //base iva 19 totales
 
+                        //base iva 19 totales
                         if (Session["sumaBase19"] != null)
                         {
                             sumaBase19 = Convert.ToDecimal(Session["sumaBase19"]);
@@ -2257,68 +2218,5 @@ namespace CapaWeb.WebForms
 
 
         }
-
-        protected void btn_Pagos_Click(object sender, EventArgs e)
-        {
-          
-            //Consultar si el vendedor tiene asignada una sucursal
-            ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
-            int count = 0;
-            foreach (var item in ListaModeloUsuarioSucursal)
-            {
-                ModelousuarioSucursal = item;
-                count++;
-                break;
-            }
-            Session.Remove("valor_asignado1");
-            if (count == 0)
-            {
-                this.Page.Response.Write("<script language='JavaScript'>window.alert('Usuario no tiene asignada sucursal, por favor asignar para continuar con el proceso ')+ error;</script>");
-            }
-            else
-            {
-                //Preguntar si existe detalle antes de confirmar
-                if (txtSumaTotal.Text == "")
-                {
-                    this.Page.Response.Write("<script language='JavaScript'>window.alert('No existen productos para facturar')+ error;</script>");
-                }
-                else
-                {
-                    if (txtSumaTotal.Text == "0.00")
-                    {
-                        this.Page.Response.Write("<script language='JavaScript'>window.alert('No existen productos para facturar')+ error;</script>");
-                    }
-                    else
-                    {
-                        if (Session["detalle"] == null)
-                        {
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('No existen productos para facturar')+ error;</script>");
-
-                        }
-                        else
-                        {
-
-                            if (txtSumaTotal.Text == "0.00" || txtSumaTotal.Text == null || txtSumaTotal.Text == "")
-                            {
-                                this.Page.Response.Write("<script language='JavaScript'>window.alert('No existe productos para Facturar')+ error;</script>");
-                            }
-                            else
-                            {
-                                Session.Remove("detallePagos");
-                                Session.Remove("Tipo");
-                                Session.Remove("valor_asignado1");
-                                Session.Remove("TotalFactura");
-                                BloquearFacturaPagos();
-                                Session["Tipo"] = Session["Tipo_Trans"];
-                                Session["valor_asignado1"] = Session["valor_asignado"];
-                                Session["TotalFactura"] = txtSumaTotal.Text;
-                                this.Page.Response.Write("<script language='JavaScript'>window.open('./MediosPagoPos.aspx', 'Medios Pago', 'top=100,width=900 ,height=500, left=500');</script>");
-
-                            }
-                        }
-                    }
-                }
-            }
-         }
     }
 }

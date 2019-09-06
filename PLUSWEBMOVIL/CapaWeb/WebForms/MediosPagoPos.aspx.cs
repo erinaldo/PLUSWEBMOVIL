@@ -592,6 +592,8 @@ namespace CapaWeb.WebForms
 
         protected void Cancelar_Click(object sender, EventArgs e)
         {
+            Session.Remove("valor_asignado1");
+            Session.Remove("Tipo");
             this.Page.Response.Write("<script language='JavaScript'>window.close('./MediosPagoPos.aspx', 'Medios Pago', 'top=100,width=800 ,height=600, left=400');</script>");
         }
 

@@ -49,7 +49,7 @@
                                             <asp:TemplateColumn HeaderText="CÓDIGO" >
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="cod_moneda" runat="server" Text='<%#Eval("cod_moneda") %>'></asp:Label>
+                                                        <asp:Label ID="cod_moneda" CssClass="textos" runat="server" Text='<%#Eval("cod_moneda") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -57,7 +57,7 @@
                                             <asp:TemplateColumn HeaderText="NOMBRE">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="nombre" runat="server" Text='<%#Eval("nombre") %>'></asp:Label>
+                                                        <asp:Label ID="nombre" runat="server" CssClass="textos"  Text='<%#Eval("nombre") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -65,7 +65,7 @@
                                             <asp:TemplateColumn HeaderText="VALOR">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="valor" runat="server" Text='<%#Eval("valor", "{0:N}") %>'></asp:Label>
+                                                        <asp:Label ID="valor" runat="server" CssClass="textos"  Text='<%#Eval("valor", "{0:N}") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>                                 
@@ -87,7 +87,7 @@
                                         </Columns>
                                         
                                         <FooterStyle BackColor="White" ForeColor="#00000f" />
-                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />
+                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" CssClass="busqueda" ForeColor="White" />
                                         <ItemStyle ForeColor="#00000f" />
                                         <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" Mode="NumericPages" />
                                         <SelectedItemStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />

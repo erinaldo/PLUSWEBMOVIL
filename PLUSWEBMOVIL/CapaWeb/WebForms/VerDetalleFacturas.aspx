@@ -1,6 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="FormFacturaPostElec.aspx.cs" Inherits="CapaWeb.WebForms.FormFacturaPostElec" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="VerDetalleFacturas.aspx.cs" Inherits="CapaWeb.WebForms.VerDetalleFacturas" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-     <script type="text/javascript">
+       <script type="text/javascript">
 
         function cuentaCaracteres() {
             var cantidadCaracteresPermitidos = 250;

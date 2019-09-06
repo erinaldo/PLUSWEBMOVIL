@@ -1,6 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="FormFacturaPostElec.aspx.cs" Inherits="CapaWeb.WebForms.FormFacturaPostElec" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="FormFacturaVTA.aspx.cs" Inherits="CapaWeb.WebForms.FormFacturaVTA" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-     <script type="text/javascript">
+       <script type="text/javascript">
 
         function cuentaCaracteres() {
             var cantidadCaracteresPermitidos = 250;
@@ -15,10 +15,10 @@
         }
 
         function validarCamposArticulo(){
-            var BuscarArticulo = document.getElementById("<%= txt_Codigo.ClientID %>").value;
-            var precio = document.getElementById("<%= txt_Precio.ClientID %>").value;
-            var cantidad = document.getElementById("<%= txt_Cantidad.ClientID %>").value;
-            var porcdescto = document.getElementById("<%= txt_Desc.ClientID %>").value;
+            var BuscarArticulo = document.getElementById("<%= BuscarArticulo.ClientID %>").value;
+            var precio = document.getElementById("<%= precio.ClientID %>").value;
+            var cantidad = document.getElementById("<%= cantidad.ClientID %>").value;
+            var porcdescto = document.getElementById("<%= porcdescto.ClientID %>").value;
             var area = document.getElementById("<%= area.ClientID %>").value;
             var txt = document.getElementById("<%= area.ClientID %>").value;
              var txtcorreo = document.getElementById("<%= txtcorreo.ClientID %>").value;
@@ -68,7 +68,7 @@
                         <td valign="top">
                             <table width="100%" border="0" cellspacing="0">
                                 <tr>
-                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="BuscarFacturaPos.aspx">Facturas Venta POS</a>---&gt;Nuevo</td>
+                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="BuscarFacturas.aspx">Facturas Venta</a>---&gt;Nuevo</td>
                                 </tr>
                             </table>
                         </td>
@@ -77,7 +77,7 @@
                 <tr>
                     <td>
                        
-                        <asp:Label ID="lblAyuda" runat="server"  CssClass="Titulo" Text="Facturas de Venta POS"></asp:Label>
+                        <asp:Label ID="lblAyuda" runat="server"  CssClass="Titulo" Text="Facturas de venta"></asp:Label>
                         
                         </td>
                 </tr>
@@ -101,6 +101,7 @@
                             <tr>
                                 <td colspan="4">
                                     <asp:Label ID="mensaje" name="mensaje" runat="server" Text=""></asp:Label>
+                                    <asp:Label ID="cod_tit" required="required" runat="server" Text="" Visible="False"></asp:Label>
                                 </td>
                             </tr>
 
@@ -110,19 +111,18 @@
                                 </td>
 
                                 <td class="textos">
-                                    <asp:TextBox ID="dniCliente" required="required" placeholder="Buscar..." size="28" runat="server" AutoPostBack="True" OnTextChanged="dniCliente_TextChanged"></asp:TextBox>
+                                    <asp:TextBox ID="dniCliente" required="required" placeholder="Buscar..." Width="202" runat="server" AutoPostBack="True" OnTextChanged="dniCliente_TextChanged"></asp:TextBox>
 
 
                                 </td>
-                                <td class="textos" colspan="2" align="right">
-                                    <asp:Label ID="cod_tit" required="required" runat="server" Text="" Visible="False"></asp:Label>
-                                    <asp:TextBox required="required" ID="nombreCliente" class="textos" size="44" MaxLength="50" runat="server" ReadOnly="true"></asp:TextBox>
+                                <td class="textos" colspan="2" align="left">
+                                    <asp:TextBox required="required" ID="nombreCliente" class="textos" Width="325" MaxLength="50" runat="server" ReadOnly="true"></asp:TextBox>
                                 </td>
                                  <td align="right" nowrap="nowrap" class="busqueda">
                                     <div align="left">Teléfono:</div>
                                 </td>
                                 <td class="textos">
-                                    <asp:TextBox required="required" ID="fonoCliente" class="textos" size="28" runat="server" ReadOnly="true"></asp:TextBox>
+                                    <asp:TextBox required="required" ID="fonoCliente" class="textos" Width="206" runat="server" ReadOnly="true"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr valign="top">
@@ -295,55 +295,60 @@
                         <div class="Subtitulo1">Nuevos Productos o Servicios</div>
                     </td>
                 </tr>
-                 <tr>
+                <tr>
                     <td>
 
 
                         <table border="0" id="MostrarDetalle" align="center" >
-                <tr>
-                                 <td class="busqueda">
-                                    <asp:Label ID="lblCod" class="busqueda" runat="server" Text="Label">Código</asp:Label></td>
+                            <tr>
+                                <td class="busqueda">
+                                    <asp:Label ID="Articulo" class="busqueda" runat="server" Text="Label">Articulo</asp:Label></td>
+                                <td>
+                                    <asp:Label ID="Producto" class="busqueda" runat="server" Text="Label">Descripción</asp:Label>
+                                </td>
                                 
-                                 <td class="busqueda">
-                                    <asp:Label ID="lblDes" class="busqueda" runat="server" Text="Label">Descripción</asp:Label></td>
-                                 <td class="busqueda">
-                                    <asp:Label ID="lblCan" class="busqueda" runat="server" Text="Label">Cantidad</asp:Label></td>
-                                 <td class="busqueda">
-                                    <asp:Label ID="lblPre" class="busqueda" runat="server" Text="Label">Precio</asp:Label></td>
-                                 <td class="busqueda">
-                                    <asp:Label ID="Label1" class="busqueda" runat="server" Text="Label">% Descto</asp:Label></td>
-                                 <td class="busqueda">
-                                    <asp:Label ID="Label2" class="busqueda" runat="server" Text="Label">% IVA</asp:Label></td>
-                                
+                                <td>
+                                    <asp:Label ID="lblCantidad" runat="server" class="busqueda" Text="Label">Cantidad</asp:Label>
+                                </td>
+                                <td>
+                                    <asp:Label ID="pvp" runat="server" class="busqueda" Text="Label">Precio</asp:Label>
+                                </td>
+                                <td>
+                                    <asp:Label ID="Label1" runat="server" class="busqueda" Text="Label">% Descto</asp:Label>
+                                </td>
+                                <td>
+                                    <asp:Label ID="Label2" runat="server" class="busqueda" Text="Label">% IVA</asp:Label>
+                                </td>
+                              
                             </tr>
                             <tr>
-                               <td>
-                                       <asp:TextBox ID="txt_Codigo"  CssClass="textos" placeholder="Buscar..."  AutoPostBack="True" OnTextChanged="BuscarArticulo_TextChanged" size="20" MaxLength="50" runat="server"></asp:TextBox>
-                                </td>
-                                <td >
-                                    <asp:TextBox ID="txt_Descripcion" CssClass="textos" Size="40" ReadOnly="true" runat="server"></asp:TextBox>
-                                 </td>
+
                                 <td>
-                                    <asp:TextBox ID="txt_Cantidad" CssClass="textos" min="1" step="0.01"  type="number" value="1" Width="60px"  runat="server"></asp:TextBox>
-                                    
+                                    <asp:TextBox ID="BuscarArticulo" runat="server" placeholder="Buscar..."  size="20" MaxLength="50" AutoPostBack="True" OnTextChanged="BuscarArticulo_TextChanged"></asp:TextBox>
                                 </td>
-                                 <td>
-                                    <asp:TextBox ID="txt_Precio" CssClass="textos" type="number"   step="0.01" value="0" Width="100px" runat="server"></asp:TextBox>
-                                    
+
+                                <td>
+                                    <asp:TextBox ID="articulos" CssClass="textos" runat="server" Rows="2" Size="40" ReadOnly="true"></asp:TextBox>
                                 </td>
-                                 <td>
-                                    <asp:TextBox ID="txt_Desc" CssClass="textos" min="0" step="0.01"  type="number" value="0"  Width="60px" runat="server"></asp:TextBox>
-                                    
-                                </td>
-                                 <td>
-                                    <asp:TextBox ID="txt_Iva" CssClass="textos" type="number" ReadOnly="true" Width="60px" runat="server"></asp:TextBox>
-                                    
+                                
+                                <td>
+                                    <asp:TextBox ID="cantidad" CssClass="textos"  min="1" step="0.01" type="number" value="1" Width="60px" runat="server"></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:Button ID="AgregarNC" onclick="AgregarProducto_Click" runat="server" OnClientClick="return validarCamposArticulo();" CssClass="botones" Text="Agregar" />
+                                    <asp:TextBox ID="precio"   CssClass="textos"  type="number" step="any"   value="0" runat="server" Width="100px"></asp:TextBox>
+                                </td>
+                                 <td>
+                                    <asp:TextBox ID="porcdescto" CssClass="textos" min="0" step="0.01" type="number" value="0"  Width="60px" runat="server"></asp:TextBox>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="iva" CssClass="textos" type="number" readonly="true" Width="60px" runat="server"></asp:TextBox>
+                                </td>
+                                <td>
+                                    <asp:Button ID="AgregarProducto"  CssClass="botones" runat="server" Text="Agregar" OnClick="AgregarProducto_Click" OnClientClick="return validarCamposArticulo();" />
                                 </td>
                             </tr>
-                   </table>
+
+                        </table>
 
                     </td>
                 </tr>
@@ -363,7 +368,7 @@
                                         
                                         AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
                                          AllowSorting="True" ShowFooter="True"
-                                          CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" OnItemCommand="gv_Producto_ItemCommand">
+                                          CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" OnItemCommand="gv_Producto_ItemCommand" PageSize="2000">
 
 
                                         <Columns>
@@ -572,10 +577,8 @@
                                 </td>
                                 <td >
                                     <asp:Button ID="Cancelar" Class="btnFactura1"  runat="server" onclick="Cancelar_Click" UseSubmitBehavior="False" Text="Cancelar" />
-                                    <asp:Button ID="Confirmar"  Class="btnFactura1" runat="server"  OnClientClick="return confirm('¿Desea guardar la factura?');" OnClick="Confirmar_Click" Text="Confirmar" />
-                                     <asp:Button ID="btn_Pagos"  Class="btnFactura1" runat="server" OnClick="btn_Pagos_Click" Text="Medios Pago" />
-                               
-                                  </td>
+                                    <asp:Button ID="Confirmar"  Class="btnFactura1" runat="server" OnClientClick="return confirm('¿Desea guardar la factura?');" OnClick="Confirmar_Click" Text="Confirmar" />
+                                </td>
                     
                             </tr>
                         </table>

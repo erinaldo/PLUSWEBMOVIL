@@ -5,6 +5,7 @@ using CapaProceso.Modelos;
 using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
 using CapaDatos.Modelos;
+using System.IO;
 
 namespace CapaWeb.WebForms
 {
@@ -51,10 +52,21 @@ namespace CapaWeb.WebForms
         }
         protected void Grid_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
         {
-            // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
-            Grid.CurrentPageIndex = 0;
-            Grid.CurrentPageIndex = e.NewPageIndex;
-            CargarGrilla();
+            
+            try
+            {
+                // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
+                Grid.CurrentPageIndex = 0;
+                Grid.CurrentPageIndex = e.NewPageIndex;
+                CargarGrilla();
+            }
+            catch (IOException ex)
+            {
+                //Insertar ecepcion
+                //ex.ToString();
+               //mandar mensaje de error a label
+            }
+           
         }
 
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)

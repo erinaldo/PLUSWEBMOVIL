@@ -14,7 +14,7 @@
     <div>
          
 
-                        <h2 class="textos">Buscar Producto/ servicio</h2>
+                        <h2 class="Subtitulo1">Buscar Producto/ servicio</h2>
                         <asp:TextBox class="form-control" ID="TxtBuscarProducto" AutoPostBack="True" OnTextChanged="TxtBuscarProducto_TextChanged" placeholder="Buscar..." runat="server"  />
 
 
@@ -35,16 +35,16 @@
                                          OnPageIndexChanging="gvProducto_PageIndexChanging" AllowPaging="true" OnSelectedIndexChanged="gvProducto_SelectedIndexChanged">
                                         <RowStyle BackColor="#EFF3FB" />
                                             <Columns>
-                                                <asp:BoundField  DataField="cod_articulo"  HeaderText="Código" />
-                                                <asp:BoundField  DataField="nom_articulo"  HeaderText="Descripción" />
+                                                <asp:BoundField  DataField="cod_articulo" ItemStyle-CssClass="textos"  HeaderText="Código" />
+                                                <asp:BoundField  DataField="nom_articulo" ItemStyle-CssClass="textos" HeaderText="Descripción" />
                                                 
-                                                <asp:BoundField  DataField="nc_iva" HeaderText="% IVA" />
-                                                <asp:BoundField  DataField="nc_pvp"  HeaderText="P.V.P" />
+                                                <asp:BoundField  DataField="nc_iva" ItemStyle-CssClass="textos" HeaderText="% IVA" />
+                                                <asp:BoundField  DataField="nc_pvp" ItemStyle-CssClass="textos" HeaderText="P.V.P" />
                                                 <asp:ButtonField ButtonType="Button"  ControlStyle-CssClass="botones" CommandName="Select" HeaderText="Seleccionar" ShowHeader="True" Text="Seleccionar" />
                                             </Columns>
                                               <FooterStyle BackColor="#CC0066" Font-Bold="True" ForeColor="White" />
                                         <PagerStyle BackColor="#DD6D29" ForeColor="White" HorizontalAlign="Center" BorderStyle="None" />
-                                        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                        <SelectedRowStyle BackColor="#D1DDF1" CssClass="busqueda" Font-Bold="True" ForeColor="#333333" />
                                         <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />
                                         <EditRowStyle BackColor="#2461BF" />
                                         <AlternatingRowStyle BackColor="White" />

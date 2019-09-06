@@ -8,6 +8,7 @@ namespace CapaDatos.Modelos
    public  class modeloDepositosDia
     {
         //Cierre de caja Depositos del dia
+        
         public string id { get; set; }
         public Int64 secuencial { get; set; }
         public string cod_emp { get; set; }
