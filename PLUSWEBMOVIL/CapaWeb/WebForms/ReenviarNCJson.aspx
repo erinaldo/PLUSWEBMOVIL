@@ -18,6 +18,12 @@
                         <p class="Subtitulo1">Reenviar Nota Crédito</p>
                     </td>
                 </tr>
+                  <tr>
+                    <td>
+                        <asp:Label ID="lbl_error" runat="server"  CssClass="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
                 <tr>
                     <td>
 

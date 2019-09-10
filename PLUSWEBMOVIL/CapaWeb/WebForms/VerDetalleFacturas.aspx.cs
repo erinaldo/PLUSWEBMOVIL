@@ -110,6 +110,9 @@ namespace CapaWeb.WebForms
         public List<ModeloDiferenciaPagos> listaSaldos = null;
         ConsultaMediosPago consultaMediosPago = new ConsultaMediosPago();
 
+        ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
+        modeloExepciones ModeloExcepcion = new modeloExepciones();
+
         public string ComPwm;
         public string AmUsrLog;
         public string valor_asignado = null;
@@ -156,102 +159,128 @@ namespace CapaWeb.WebForms
         public string tipo_tran = null;
         protected void Page_Load(object sender, EventArgs e)
         {
-            RecuperarCokie();
-            ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
-            foreach (var item in ListaModelowmspclogo)
+            try
             {
-                Modelowmspclogo = item;
-                break;
-            }
+                lbl_error.Text = "";
 
-
-            if (Session["cliente"] != null)
-            {
-                // recupera la variable de secion con el objeto persona
-                cliente = (modelowmspctitulares)Session["cliente"];
-                nombreCliente.Text = cliente.nom_tit;
-                dniCliente.Text = cliente.nro_dgi2;
-                fonoCliente.Text = cliente.tel_tit;
-                txtcorreo.Text = cliente.email_tit;
-
-            }
-
-            if (Session["articulo"] != null)
-            {
-                // recupera la variable de secion con el objetoarticulo
-                articulo = (modelowmspcarticulos)Session["articulo"];
-                txt_Descripcion.Text = articulo.nom_articulo;
-                txt_Precio.Text = articulo.precio_total;
-                txt_Codigo.Text = articulo.cod_articulo;
-                txt_Iva.Text = (articulo.porc_impuesto);
-                txt_Desc.Text = "0";
-
-
-            }
-
-            ConsultarTasaCambioCanorus();
-
-            if (!IsPostBack)
-            {
-                Session.Remove("listaProducto");
-                Session.Remove("articulo");
-                Session.Remove("sumaSubtotal");
-                Session.Remove("sumaTotal");
-                Session.Remove("sumaIva");
-                Session.Remove("sumaDescuento");
-                Session.Remove("cliente");
-                Session.Remove("detalle");
-                Session.Remove("sumaBase19");
-                Session.Remove("sumaBase15");
-                Session.Remove("sumaIva19");
-                Session.Remove("sumaIva15");
-
-
-                QueryString qs = ulrDesencriptada();
-
-                //Recibir opciones
-                switch (qs["TRN"].Substring(0, 3))
+                RecuperarCokie();
+                ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
+                foreach (var item in ListaModelowmspclogo)
                 {
-
-                    case "INS":
-                        cargarListaDesplegables();
-                        tipo_tran = "INS";
-                        Session.Remove("listaCliente");
-                        Session.Remove("Tipo_Trans");
-                        Session.Remove("valor_asignado");
-                        Session.Remove("Tipo_Trans");
-                        DateTime hoy = DateTime.Today;
-                        fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
-                        //Consultar tasa de cambio
-                        ConsultarTasaCambioCanorus();
-                        ModeloRolMod = BuscarRolModificar(AmUsrLog, ComPwm, "VTA", "PR", "N");
-                        if (ModeloRolMod.control_uso == "readonly=\"readonly\"")
-                        {
-                            txt_Precio.Enabled = false;
-                        }
-                        break;
-
-                    case "UDP":
-                        Int64 id = Int64.Parse(qs["Id"].ToString());
-                        Session["valor_asignado"] = id.ToString();
-                        Session["Tipo_Trans"] = "UDP";
-                        cargarListaDesplegables();
-                      //  LlenarFactura();
-
-                        break;
-
-                    case "VER":
-                        Int64 ide = Int64.Parse(qs["Id"].ToString());
-                        string Tipo = (qs["Tipo"].ToString());
-                        Session["valor_asignado"] = ide.ToString();
-                        Session["Tipo_Trans"] = "VER";
-                        cargarListaDesplegables();
-                        LlenarFactura(Tipo);
-                        BloquearFactura();
-                        break;
+                    Modelowmspclogo = item;
+                    break;
                 }
 
+
+                if (Session["cliente"] != null)
+                {
+                    // recupera la variable de secion con el objeto persona
+                    cliente = (modelowmspctitulares)Session["cliente"];
+                    nombreCliente.Text = cliente.nom_tit;
+                    dniCliente.Text = cliente.nro_dgi2;
+                    fonoCliente.Text = cliente.tel_tit;
+                    txtcorreo.Text = cliente.email_tit;
+
+                }
+
+                if (Session["articulo"] != null)
+                {
+                    // recupera la variable de secion con el objetoarticulo
+                    articulo = (modelowmspcarticulos)Session["articulo"];
+                    txt_Descripcion.Text = articulo.nom_articulo;
+                    txt_Precio.Text = articulo.precio_total;
+                    txt_Codigo.Text = articulo.cod_articulo;
+                    txt_Iva.Text = (articulo.porc_impuesto);
+                    txt_Desc.Text = "0";
+
+
+                }
+
+                ConsultarTasaCambioCanorus();
+
+                if (!IsPostBack)
+                {
+                    Session.Remove("listaProducto");
+                    Session.Remove("articulo");
+                    Session.Remove("sumaSubtotal");
+                    Session.Remove("sumaTotal");
+                    Session.Remove("sumaIva");
+                    Session.Remove("sumaDescuento");
+                    Session.Remove("cliente");
+                    Session.Remove("detalle");
+                    Session.Remove("sumaBase19");
+                    Session.Remove("sumaBase15");
+                    Session.Remove("sumaIva19");
+                    Session.Remove("sumaIva15");
+
+
+                    QueryString qs = ulrDesencriptada();
+
+                    //Recibir opciones
+                    switch (qs["TRN"].Substring(0, 3))
+                    {
+
+                        case "INS":
+                            cargarListaDesplegables();
+                            tipo_tran = "INS";
+                            Session.Remove("listaCliente");
+                            Session.Remove("Tipo_Trans");
+                            Session.Remove("valor_asignado");
+                            Session.Remove("Tipo_Trans");
+                            DateTime hoy = DateTime.Today;
+                            fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                            //Consultar tasa de cambio
+                            ConsultarTasaCambioCanorus();
+                            ModeloRolMod = BuscarRolModificar(AmUsrLog, ComPwm, "VTA", "PR", "N");
+                            if (ModeloRolMod.control_uso == "readonly=\"readonly\"")
+                            {
+                                txt_Precio.Enabled = false;
+                            }
+                            break;
+
+                        case "UDP":
+                            Int64 id = Int64.Parse(qs["Id"].ToString());
+                            Session["valor_asignado"] = id.ToString();
+                            Session["Tipo_Trans"] = "UDP";
+                            cargarListaDesplegables();
+                            //  LlenarFactura();
+
+                            break;
+
+                        case "VER":
+                            Int64 ide = Int64.Parse(qs["Id"].ToString());
+                            string Tipo = (qs["Tipo"].ToString());
+                            Session["valor_asignado"] = ide.ToString();
+                            Session["Tipo_Trans"] = "VER";
+                            cargarListaDesplegables();
+                            LlenarFactura(Tipo);
+                            BloquearFactura();
+                            break;
+                    }
+
+                }
             }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("Page_Load", ex.ToString());
+
+            }
+        }
+        public void GuardarExcepciones(string metodo, string error)
+        {
+            //obtener numero de transaccion
+
+            ModeloExcepcion.cod_emp = ComPwm;
+            ModeloExcepcion.proceso = "verDetalleFacturas.aspx";
+            ModeloExcepcion.metodo = metodo;
+            ModeloExcepcion.error = error;
+            ModeloExcepcion.fecha_hora = DateTime.Today;
+            ModeloExcepcion.usuario_mod = AmUsrLog;
+
+            consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
+            //mandar mensaje de error a label
+            lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
+
         }
 
         protected void ConsultarTasaCambioCanorus()
@@ -362,90 +391,100 @@ namespace CapaWeb.WebForms
         }
         protected void LlenarFactura(string Tipo2)
         {
-            //llenar formulario para la actualizacion de datos
-
-
-            string Ccf_nro_trans = Session["valor_asignado"].ToString();
-
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-            int count = 0;
-            conscabcera = null;
-            foreach (modelowmtfacturascab item in listaConsCab)
+            try
             {
-                count++;
-                conscabcera = item;
+                lbl_error.Text = "";
+
+                //llenar formulario para la actualizacion de datos
+
+
+                string Ccf_nro_trans = Session["valor_asignado"].ToString();
+
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
+
+                }
+
+
+                auditoria = conscabcera.nro_audit;
+                dniCliente.Text = conscabcera.nro_dgi2;
+                nombreCliente.Text = conscabcera.nom_tit;
+                fonoCliente.Text = conscabcera.tel_tit;
+                txtcorreo.Text = conscabcera.email_tit;
+                DateTime dtfec_doc = Convert.ToDateTime(conscabcera.fec_doc);
+                fecha.Text = dtfec_doc.ToString("yyyy-MM-dd");
+                cod_fpago.SelectedValue = conscabcera.cod_fpago;
+                nro_pedido.Text = conscabcera.nro_pedido;
+                area.Text = conscabcera.observaciones;
+                ocompra.Text = conscabcera.ocompra;
+                porc_descto.Text = Convert.ToString(conscabcera.porc_descto);
+                cod_costos.SelectedValue = conscabcera.cod_ccostos;
+                cmbCod_moneda.SelectedValue = conscabcera.cod_moneda.Trim();
+                cod_vendedor.SelectedValue = conscabcera.cod_vendedor;
+                //Consultamos cuantos descimales se van a usar redondeo
+                DecimalesMoneda = null;
+                DecimalesMoneda = BuscarDecimales();
+                //Formato totales
+                txtSumaSubTo.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.subtotal);
+                txtSumaTotal.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.total);
+                txtSumaIva.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.iva);
+                txtSumaDesc.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.descuento);
+
+                Session["sumaSubtotal"] = Convert.ToString(conscabcera.subtotal);
+                Session["sumaDescuento"] = Convert.ToString(conscabcera.descuento);
+                Session["sumaIva"] = Convert.ToString(conscabcera.iva);
+                Session["sumaTotal"] = Convert.ToString(conscabcera.total);
+
+
+                //Carga detalle factura
+                string nro_trans = Ccf_nro_trans;
+
+                listaConsDetalle = ConsultaDeta.ConsultaDetalleFacura(nro_trans);
+                Session["detalle"] = listaConsDetalle;
+
+                //Consulta de bases e ivas
+                decimal baseiva19 = 0;
+                decimal iva19 = 0;
+                decimal baseiva15 = 0;
+                decimal iva15 = 0;
+                foreach (ModeloDetalleFactura item in listaConsDetalle)
+                {
+                    if (item.porc_iva == 19)
+                    {
+                        baseiva19 += item.base_iva;
+                        iva19 += item.valor_iva;
+                    }
+                    if (item.porc_iva == 5)
+                    {
+                        baseiva15 += item.base_iva;
+                        iva15 += item.valor_iva;
+                    }
+                }
+                txtBaseIva19.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, baseiva19);
+                txtBase15.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, baseiva15);
+                txtIva19.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, iva19);
+                txtIva15.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, iva15);
+
+                //Llenar variables de seccion de bae e ivas
+
+                Session["sumaBase19"] = baseiva19;
+                Session["sumaBase15"] = baseiva15;
+                Session["sumaIva19"] = iva19;
+                Session["sumaIva15"] = iva15;
+                gv_Producto.DataSource = listaConsDetalle;
+                gv_Producto.DataBind();
+                gv_Producto.Height = 100;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("LlenarFactura", ex.ToString());
 
             }
-
-
-            auditoria = conscabcera.nro_audit;
-            dniCliente.Text = conscabcera.nro_dgi2;
-            nombreCliente.Text = conscabcera.nom_tit;
-            fonoCliente.Text = conscabcera.tel_tit;
-            txtcorreo.Text = conscabcera.email_tit;
-            DateTime dtfec_doc = Convert.ToDateTime(conscabcera.fec_doc);
-            fecha.Text = dtfec_doc.ToString("yyyy-MM-dd");
-            cod_fpago.SelectedValue = conscabcera.cod_fpago;
-            nro_pedido.Text = conscabcera.nro_pedido;
-            area.Text = conscabcera.observaciones;
-            ocompra.Text = conscabcera.ocompra;
-            porc_descto.Text = Convert.ToString(conscabcera.porc_descto);
-            cod_costos.SelectedValue = conscabcera.cod_ccostos;
-            cmbCod_moneda.SelectedValue = conscabcera.cod_moneda.Trim();
-            cod_vendedor.SelectedValue = conscabcera.cod_vendedor;
-            //Consultamos cuantos descimales se van a usar redondeo
-            DecimalesMoneda = null;
-            DecimalesMoneda = BuscarDecimales();
-            //Formato totales
-            txtSumaSubTo.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.subtotal);
-            txtSumaTotal.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.total);
-            txtSumaIva.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.iva);
-            txtSumaDesc.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.descuento);
-
-            Session["sumaSubtotal"] = Convert.ToString(conscabcera.subtotal);
-            Session["sumaDescuento"] = Convert.ToString(conscabcera.descuento);
-            Session["sumaIva"] = Convert.ToString(conscabcera.iva);
-            Session["sumaTotal"] = Convert.ToString(conscabcera.total);
-
-
-            //Carga detalle factura
-            string nro_trans = Ccf_nro_trans;
-
-            listaConsDetalle = ConsultaDeta.ConsultaDetalleFacura(nro_trans);
-            Session["detalle"] = listaConsDetalle;
-
-            //Consulta de bases e ivas
-            decimal baseiva19 = 0;
-            decimal iva19 = 0;
-            decimal baseiva15 = 0;
-            decimal iva15 = 0;
-            foreach (ModeloDetalleFactura item in listaConsDetalle)
-            {
-                if (item.porc_iva == 19)
-                {
-                    baseiva19 += item.base_iva;
-                    iva19 += item.valor_iva;
-                }
-                if (item.porc_iva == 5)
-                {
-                    baseiva15 += item.base_iva;
-                    iva15 += item.valor_iva;
-                }
-            }
-            txtBaseIva19.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, baseiva19);
-            txtBase15.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, baseiva15);
-            txtIva19.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, iva19);
-            txtIva15.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, iva15);
-
-            //Llenar variables de seccion de bae e ivas
-
-            Session["sumaBase19"] = baseiva19;
-            Session["sumaBase15"] = baseiva15;
-            Session["sumaIva19"] = iva19;
-            Session["sumaIva15"] = iva15;
-            gv_Producto.DataSource = listaConsDetalle;
-            gv_Producto.DataBind();
-            gv_Producto.Height = 100;
 
 
         }
@@ -462,43 +501,52 @@ namespace CapaWeb.WebForms
         }
         public void cargarListaDesplegables()
         {
-            //lista proformas
 
-            //LIsta Resolucion facturas
-            listaRes = ConsultaResolucion.ConsultaResolusiones(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo);
-            serie_docum.DataSource = listaRes;
-            serie_docum.DataTextField = "serie_docum";
-            serie_docum.DataValueField = "serie_docum";
-            serie_docum.DataBind();
+            try
+            {
+                lbl_error.Text = "";
 
-            //lista ccostos
-            listaCostos = ConsultaCCostos.ConsultaCCostos(AmUsrLog, ComPwm, CC__cod_dpto);
-            cod_costos.DataSource = listaCostos;
-            cod_costos.DataTextField = "descripcion";
-            cod_costos.DataValueField = "cod_dpto";
-            cod_costos.DataBind();
+                //LIsta Resolucion facturas
+                listaRes = ConsultaResolucion.ConsultaResolusiones(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo);
+                serie_docum.DataSource = listaRes;
+                serie_docum.DataTextField = "serie_docum";
+                serie_docum.DataValueField = "serie_docum";
+                serie_docum.DataBind();
+
+                //lista ccostos
+                listaCostos = ConsultaCCostos.ConsultaCCostos(AmUsrLog, ComPwm, CC__cod_dpto);
+                cod_costos.DataSource = listaCostos;
+                cod_costos.DataTextField = "descripcion";
+                cod_costos.DataValueField = "cod_dpto";
+                cod_costos.DataBind();
 
 
-            //lissta moneedaa
-            listaMonedas = ConsultaCMonedas.ConsultaCMonedas(AmUsrLog, ComPwm, MonB__moneda);
-            cmbCod_moneda.DataSource = listaMonedas;
-            cmbCod_moneda.DataTextField = "descripcion";
-            cmbCod_moneda.DataValueField = "cod_moneda";
-            cmbCod_moneda.DataBind();
+                //lissta moneedaa
+                listaMonedas = ConsultaCMonedas.ConsultaCMonedas(AmUsrLog, ComPwm, MonB__moneda);
+                cmbCod_moneda.DataSource = listaMonedas;
+                cmbCod_moneda.DataTextField = "descripcion";
+                cmbCod_moneda.DataValueField = "cod_moneda";
+                cmbCod_moneda.DataBind();
 
-            //lissta vendedores
-            listaVendedores = ConsultaVendedores.ConsultaVendedores(AmUsrLog, ComPwm, Vend__cod_tipotit, Vend__cod_tit, Ven__cod_dgi);
-            cod_vendedor.DataSource = listaVendedores;
-            cod_vendedor.DataTextField = "nom_tit";
-            cod_vendedor.DataValueField = "cod_tit";
-            cod_vendedor.DataBind();
+                //lissta vendedores
+                listaVendedores = ConsultaVendedores.ConsultaVendedores(AmUsrLog, ComPwm, Vend__cod_tipotit, Vend__cod_tit, Ven__cod_dgi);
+                cod_vendedor.DataSource = listaVendedores;
+                cod_vendedor.DataTextField = "nom_tit";
+                cod_vendedor.DataValueField = "cod_tit";
+                cod_vendedor.DataBind();
 
-            //lissta fpago
-            listaPagos = ConsultaFPagos.ConsultaFpagos(AmUsrLog, ComPwm, FP__cod_fpago);
-            cod_fpago.DataSource = listaPagos;
-            cod_fpago.DataTextField = "descripcion";
-            cod_fpago.DataValueField = "cod_fpago";
-            cod_fpago.DataBind();
+                //lissta fpago
+                listaPagos = ConsultaFPagos.ConsultaFpagos(AmUsrLog, ComPwm, FP__cod_fpago);
+                cod_fpago.DataSource = listaPagos;
+                cod_fpago.DataTextField = "descripcion";
+                cod_fpago.DataValueField = "cod_fpago";
+                cod_fpago.DataBind();
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("cargarListaDesplegables", ex.ToString());
+
+            }
         }
 
 

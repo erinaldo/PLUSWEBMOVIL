@@ -38,45 +38,92 @@ namespace CapaWeb.WebForms
 
 
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
-        modelowmtfacturascab conscabcera = new modelowmtfacturascab();        
-        
+        modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+        ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
+        modeloExepciones ModeloExcepcion = new modeloExepciones();
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            RecuperarCokie();
+            try
+            {
 
-            QueryString qs = ulrDesencriptada();
-            Int64 id = Int64.Parse(qs["Id"].ToString());
-            Ccf_nro_trans = id.ToString();
 
-            PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
-            string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                RecuperarCokie();
 
-            Response.ContentType = "application/pdf";
-            Response.WriteFile(pathPdf);            
-            Response.End();
+                QueryString qs = ulrDesencriptada();
+                Int64 id = Int64.Parse(qs["Id"].ToString());
+                Ccf_nro_trans = id.ToString();
+
+                PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
+                string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+
+                Response.ContentType = "application/pdf";
+                Response.WriteFile(pathPdf);
+                Response.End();
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("Page_Load", ex.ToString());
+
+            }
 
         }
 
-   
+        public void GuardarExcepciones(string metodo, string error)
+        {
+            //obtener numero de transaccion
+
+            ModeloExcepcion.cod_emp = ComPwm;
+            ModeloExcepcion.proceso = "ReporteNCAbuFac.aspx";
+            ModeloExcepcion.metodo = metodo;
+            ModeloExcepcion.error = error;
+            ModeloExcepcion.fecha_hora = DateTime.Today;
+            ModeloExcepcion.usuario_mod = AmUsrLog;
+
+            consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
+            //mandar mensaje de error a label
+            
+
+        }
+
         public QueryString ulrDesencriptada()
         {
-            //1- guardo el Querystring encriptado que viene desde el request en mi objeto
-            QueryString qs = new QueryString(Request.QueryString);
+            try
+            {
+                //1- guardo el Querystring encriptado que viene desde el request en mi objeto
+                QueryString qs = new QueryString(Request.QueryString);
 
-            ////2- Descencripto y de esta manera obtengo un array Clave/Valor normal
-            qs = Encryption.DecryptQueryString(qs);
-            return qs;
+                ////2- Descencripto y de esta manera obtengo un array Clave/Valor normal
+                qs = Encryption.DecryptQueryString(qs);
+                return qs;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("ulrDesencriptada", ex.ToString());
+                return null;
+
+            }
         }
         public void RecuperarCokie()
         {
-            if (Request.Cookies["ComPwm"] != null)
+            try
             {
-                ComPwm = Request.Cookies["ComPwm"].Value;
-            }
 
-            if (Request.Cookies["ComPwm"] != null)
+
+                if (Request.Cookies["ComPwm"] != null)
+                {
+                    ComPwm = Request.Cookies["ComPwm"].Value;
+                }
+
+                if (Request.Cookies["ComPwm"] != null)
+                {
+                    AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+
+                }
+            }
+            catch (Exception ex)
             {
-                AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+                GuardarExcepciones("RecuperarCokie", ex.ToString());
 
             }
         }

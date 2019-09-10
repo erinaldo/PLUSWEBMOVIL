@@ -40,72 +40,129 @@ namespace CapaWeb.WebForms
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
         modelowmtfacturascab conscabcera = new modelowmtfacturascab();
         modelocabecerafactura cabecerafactura = new modelocabecerafactura();
-            
+        ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
+        modeloExepciones ModeloExcepcion = new modeloExepciones();
+
         List<modelowmtfacturascab> listaConsCab = null;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            RecuperarCokie();
-
-            QueryString qs = ulrDesencriptada();
-            Int64 id = Int64.Parse(qs["Id"].ToString());
-            Ccf_nro_trans = id.ToString();
-
-            //Buscar que tipo de factura es pose / vtae
-            conscabcera = null;
-            conscabcera = buscarTipoFac(Ccf_nro_trans);
-            if(conscabcera.tipo_nce.Trim() == "VTAE")
+            try
             {
-                Ccf_tipo2 = "VTAE";
+              
+
+                RecuperarCokie();
+
+                QueryString qs = ulrDesencriptada();
+                Int64 id = Int64.Parse(qs["Id"].ToString());
+                Ccf_nro_trans = id.ToString();
+
+                //Buscar que tipo de factura es pose / vtae
+                conscabcera = null;
+                conscabcera = buscarTipoFac(Ccf_nro_trans);
+                if (conscabcera.tipo_nce.Trim() == "VTAE")
+                {
+                    Ccf_tipo2 = "VTAE";
+                }
+                else
+                {
+                    Ccf_tipo2 = "POSE";
+                }
+                PdfFacturaElectronica pdf = new PdfFacturaElectronica();
+                string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+
+
+                Response.ContentType = "application/pdf";
+                Response.WriteFile(pathPdf);
+                Response.End();
             }
-            else
+            catch (Exception ex)
             {
-                Ccf_tipo2 = "POSE";
+                GuardarExcepciones("Page_Load", ex.ToString());
+
             }
-            PdfFacturaElectronica pdf = new PdfFacturaElectronica();
-            string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
-          
-            Response.ContentType = "application/pdf";
-            Response.WriteFile(pathPdf);            
-            Response.End();
+        }
 
+        public void GuardarExcepciones(string metodo, string error)
+        {
+            //obtener numero de transaccion
+
+            ModeloExcepcion.cod_emp = ComPwm;
+            ModeloExcepcion.proceso = "ReporteFactura.aspx";
+            ModeloExcepcion.metodo = metodo;
+            ModeloExcepcion.error = error;
+            ModeloExcepcion.fecha_hora = DateTime.Today;
+            ModeloExcepcion.usuario_mod = AmUsrLog;
+
+            consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
+            //mandar mensaje de error a label
+            
         }
 
         public modelowmtfacturascab buscarTipoFac(string nro_trans)
         {
-
-            listaConsCab = ConsultaCabe.ConsultaTipoFactura(nro_trans);
-            int count = 0;
-            conscabcera = null;
-            foreach (modelowmtfacturascab item in listaConsCab)
+            try
             {
-                count++;
-                conscabcera = item;
 
+
+
+                listaConsCab = ConsultaCabe.ConsultaTipoFactura(nro_trans);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
+
+                }
+                return conscabcera;
             }
-            return conscabcera;
+            catch (Exception ex)
+            {
+                GuardarExcepciones("buscarTipoFac", ex.ToString());
+                return null;
+            }
         }
 
         public QueryString ulrDesencriptada()
         {
-            //1- guardo el Querystring encriptado que viene desde el request en mi objeto
-            QueryString qs = new QueryString(Request.QueryString);
+            try
+            {
+                //1- guardo el Querystring encriptado que viene desde el request en mi objeto
+                QueryString qs = new QueryString(Request.QueryString);
 
-            ////2- Descencripto y de esta manera obtengo un array Clave/Valor normal
-            qs = Encryption.DecryptQueryString(qs);
-            return qs;
+                ////2- Descencripto y de esta manera obtengo un array Clave/Valor normal
+                qs = Encryption.DecryptQueryString(qs);
+                return qs;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("ulrDesencriptada", ex.ToString());
+                return null;
+
+            }
         }
         public void RecuperarCokie()
         {
-            if (Request.Cookies["ComPwm"] != null)
+            try
             {
-                ComPwm = Request.Cookies["ComPwm"].Value;
-            }
+                
 
-            if (Request.Cookies["ComPwm"] != null)
+                if (Request.Cookies["ComPwm"] != null)
+                {
+                    ComPwm = Request.Cookies["ComPwm"].Value;
+                }
+
+                if (Request.Cookies["ComPwm"] != null)
+                {
+                    AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+
+                }
+            }
+            catch (Exception ex)
             {
-                AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+                GuardarExcepciones("RecuperarCokie", ex.ToString());
 
             }
         }
