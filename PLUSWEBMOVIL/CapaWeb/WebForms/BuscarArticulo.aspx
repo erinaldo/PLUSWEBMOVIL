@@ -19,6 +19,13 @@
 
 
                        </div>
+        <tr>
+                    <td>
+                        <asp:Label ID="lbl_error" runat="server"  class="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
+
          <tr>
                     <td>
 

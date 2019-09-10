@@ -50,6 +50,7 @@
     <Compile Include="Modelos\ModeloDiferenciaPagos.cs" />
     <Compile Include="Modelos\modeloEfectivoCaja.cs" />
     <Compile Include="Modelos\modeloEfectivoPCaja.cs" />
+    <Compile Include="Modelos\modeloExepciones.cs" />
     <Compile Include="Modelos\modeloFacturaPgs.cs" />
     <Compile Include="Modelos\modeloFacturasPagos.cs" />
     <Compile Include="Modelos\ModeloHost\modeloHostmail.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Sql\EfectivoCaja.cs" />
     <Compile Include="Sql\Empresa.cs" />
     <Compile Include="Sql\EstadosFactura.cs" />
+    <Compile Include="Sql\ExepcionesPW.cs" />
     <Compile Include="Sql\FacturACab.cs" />
     <Compile Include="Sql\FacturaDetalle.cs" />
     <Compile Include="Sql\FormatoCantidades.cs" />

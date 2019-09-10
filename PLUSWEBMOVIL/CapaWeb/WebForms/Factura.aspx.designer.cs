@@ -30,7 +30,7 @@ namespace CapaWeb.WebForms {
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label mensaje;
         protected global::System.Web.UI.WebControls.Label lbl_trx;
-
+        protected global::System.Web.UI.WebControls.Label lbl_error;
         /// <summary>
         /// Control dniCliente.
         /// </summary>

@@ -21,6 +21,12 @@
                         <p class="Subtitulo1">Por favor ingrese los datos solicitados:</p>
                     </td>
                 </tr>
+                 <tr>
+                    <td>
+                        <asp:Label ID="lbl_error" runat="server"  class="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
                 <tr>
                     <td>
 

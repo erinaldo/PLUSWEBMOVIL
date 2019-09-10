@@ -36,6 +36,10 @@ namespace CapaWeb.WebForms
 
         ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
         modelonumerador nrotrans = new modelonumerador();
+        ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
+        modeloExepciones ModeloExcepcion = new modeloExepciones();
+        public string numerador1 = "trans";
+
         public string numerador = "auditoria";
         public string ComPwm;
         public string AmUsrLog;
@@ -43,43 +47,72 @@ namespace CapaWeb.WebForms
         public string cod_proceso ;
         protected void Page_Load(object sender, EventArgs e)
         {
-            RecuperarCokie();
-            ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
-            foreach (var item in ListaModelowmspclogo)
+            try
             {
-                Modelowmspclogo = item;
-                break;
-            }
-            if (!IsPostBack)
-            {
-                QueryString qs = ulrDesencriptada();
+                lbl_error.Text = "";
 
-                //Recibir opciones
-                switch (qs["TRN"].Substring(0, 3))
+                RecuperarCokie();
+                ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
+                foreach (var item in ListaModelowmspclogo)
                 {
+                    Modelowmspclogo = item;
+                    break;
+                }
+                if (!IsPostBack)
+                {
+                    QueryString qs = ulrDesencriptada();
 
-                    case "INS":
-                        cargarListaDesplegables();
-                        break;
+                    //Recibir opciones
+                    switch (qs["TRN"].Substring(0, 3))
+                    {
 
-                    case "UDP":
-                        string ide = (qs["Id"].ToString());
-                        string usuario = ide.ToString();
-                        cargarListaDesplegables();
-                        CargarFormularioSucursal(usuario);
-                        break;
+                        case "INS":
+                            cargarListaDesplegables();
+                            break;
 
-                    case "DLT":
-                        cargarListaDesplegables();
-                        string id = (qs["Id"].ToString());
-                        usuario = id.ToString();
-                        CargarFormularioSucursal(usuario);
-                        BloquearFormularioSucursal();
-                        break;
+                        case "UDP":
+                            string ide = (qs["Id"].ToString());
+                            string usuario = ide.ToString();
+                            cargarListaDesplegables();
+                            CargarFormularioSucursal(usuario);
+                            break;
+
+                        case "DLT":
+                            cargarListaDesplegables();
+                            string id = (qs["Id"].ToString());
+                            usuario = id.ToString();
+                            CargarFormularioSucursal(usuario);
+                            BloquearFormularioSucursal();
+                            break;
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("Page_Load", ex.ToString());
 
-          }
+            }
+
+        }
+
+        public void GuardarExcepciones(string metodo, string error)
+        {
+            //obtener numero de transaccion
+            nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
+            //Insertar excepcion
+            ModeloExcepcion.nro_trans = nrotrans.valor_asignado;
+            ModeloExcepcion.cod_emp = ComPwm;
+            ModeloExcepcion.proceso = "FormUsuariosucursal.aspx";
+            ModeloExcepcion.metodo = metodo;
+            ModeloExcepcion.error = error;
+            ModeloExcepcion.fecha_hora = DateTime.Today;
+            ModeloExcepcion.usuario_mod = AmUsrLog;
+            ModeloExcepcion.fecha_mod = DateTime.Today;
+            consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
+            //mandar mensaje de error a label
+            lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
+
+        }
         private void BloquearFormularioSucursal()
         {
 
@@ -90,17 +123,26 @@ namespace CapaWeb.WebForms
         }
         private void CargarFormularioSucursal(string usuario)
         {
-
-            ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, usuario);
-            int count = 0;
-            foreach (var item in ListaModeloUsuarioSucursal)
+            try
             {
-                ModelousuarioSucursal = item;
-                count++;
-                break;
+                lbl_error.Text = "";
+
+                ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, usuario);
+                int count = 0;
+                foreach (var item in ListaModeloUsuarioSucursal)
+                {
+                    ModelousuarioSucursal = item;
+                    count++;
+                    break;
+                }
+                cbx_sucursal.SelectedValue = ModelousuarioSucursal.cod_sucursal;
+                cbx_usuarios.SelectedValue = ModelousuarioSucursal.usuario;
             }
-            cbx_sucursal.SelectedValue = ModelousuarioSucursal.cod_sucursal;
-            cbx_usuarios.SelectedValue = ModelousuarioSucursal.usuario;
+            catch (Exception ex)
+            {
+                GuardarExcepciones("CargarFormularioSucursal", ex.ToString());
+
+            }
 
         }
         public QueryString ulrDesencriptada()

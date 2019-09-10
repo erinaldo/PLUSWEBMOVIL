@@ -27,47 +27,91 @@ namespace CapaWeb.WebForms
         public JsonRespuestaDE ModeloResQr = new JsonRespuestaDE();
         public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
 
+        ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
+        modelonumerador nrotrans = new modelonumerador();
+        ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
+        modeloExepciones ModeloExcepcion = new modeloExepciones();
+        public string numerador = "trans";
+
         public string ComPwm;
         public string AmUsrLog;
         public string nro_trans = null;
         protected void Page_Load(object sender, EventArgs e)
         {
-            RecuperarCokie();
-            ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
-            foreach (var item in ListaModelowmspclogo)
+            try
             {
-                Modelowmspclogo = item;
-                break;
-            }
-            if (!IsPostBack)
-            {
+                lbl_error.Text = "";
 
-                QueryString qs = ulrDesencriptada();
-
-                //Recibir opciones
-                switch (qs["TRN"].Substring(0, 3))
+                RecuperarCokie();
+                ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
+                foreach (var item in ListaModelowmspclogo)
+                {
+                    Modelowmspclogo = item;
+                    break;
+                }
+                if (!IsPostBack)
                 {
 
-                    case "INS":
+                    QueryString qs = ulrDesencriptada();
 
-                        break;
+                    //Recibir opciones
+                    switch (qs["TRN"].Substring(0, 3))
+                    {
 
-                    case "UDP":
-                        break;
+                        case "INS":
 
-                    case "MTR":
-                        Int64 ide = Int64.Parse(qs["Id"].ToString());
-                        Int64 lin = Int64.Parse(qs["linea"].ToString());
-                        
-                        string nro_trans = ide.ToString();
-                        mensaje.Text = nro_trans;
-                        string linea = lin.ToString();
-                        CargarFormularioRespuestaDS(nro_trans, linea);
-                       
-                        break;
+                            break;
+
+                        case "UDP":
+                            break;
+
+                        case "MTR":
+                            try
+                            {
+                                Int64 ide = Int64.Parse(qs["Id"].ToString());
+                                Int64 lin = Int64.Parse(qs["linea"].ToString());
+
+                                string nro_trans = ide.ToString();
+                                mensaje.Text = nro_trans;
+                                string linea = lin.ToString();
+                                CargarFormularioRespuestaDS(nro_trans, linea);
+
+                                break;
+                            }
+                            catch (Exception ex)
+                            {
+                                GuardarExcepciones("Page_Load, MTR", ex.ToString());
+
+                            }
+                            break;
+                    }
+
                 }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("Page_Load", ex.ToString());
 
             }
+        }
+
+        public void GuardarExcepciones(string metodo, string error)
+        {
+            //obtener numero de transaccion
+            nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
+            //Insertar excepcion
+            ModeloExcepcion.nro_trans = nrotrans.valor_asignado;
+            ModeloExcepcion.cod_emp = ComPwm;
+            ModeloExcepcion.proceso = "FormRespuestaJsonNC.aspx";
+            ModeloExcepcion.metodo = metodo;
+            ModeloExcepcion.error = error;
+            ModeloExcepcion.fecha_hora = DateTime.Today;
+            ModeloExcepcion.usuario_mod = AmUsrLog;
+            ModeloExcepcion.fecha_mod = DateTime.Today;
+            consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
+            //mandar mensaje de error a label
+            lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
+
         }
 
         public void RecuperarCokie()

@@ -19,6 +19,12 @@
                         <p class="Subtitulo1">Lista de incidencias</p>
                     </td>
                 </tr>
+                  <tr>
+                    <td>
+                        <asp:Label ID="lbl_error" runat="server"  class="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
                 <tr>
                     <td>
 
@@ -30,7 +36,7 @@
                         <table align="center" id="FormularioRes" runat="server" visible="False" >
                             <tr>
                                 <td colspan="4">
-                                    <asp:Label ID="mensaje" name="mensaje" runat="server" Text=""></asp:Label>
+                                    <asp:Label id="mensaje" name="mensaje" runat="server" Text=""></asp:Label>
                                 </td>
                             </tr>
 

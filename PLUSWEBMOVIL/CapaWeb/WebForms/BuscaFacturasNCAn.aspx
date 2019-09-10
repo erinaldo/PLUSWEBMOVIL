@@ -20,12 +20,19 @@
                          <hr />
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <asp:Label ID="lbl_error" runat="server"  class="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
                         <tr>
                     <td>
 
                         <div class="Subtitulo1">Listado de Facturas</div>
                     </td>
                 </tr>
+                  
                         <tr>
                     <td>
                         <table border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#0E748A">

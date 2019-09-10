@@ -20,6 +20,12 @@
                           </p>
                         </td>
                     </tr>
+                       <tr>
+                    <td>
+                        <asp:Label ID="lbl_error" runat="server"  class="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
                 <tr>
                     <td>
                          <p class="Subtitulo1">Busque Sucursal por Empresa:</p>
@@ -41,7 +47,7 @@
                                             <asp:TemplateColumn HeaderText="CÓDIGO" >
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="cod_sucursal" runat="server" Text='<%#Eval("cod_sucursal") %>'></asp:Label>
+                                                        <asp:Label ID="cod_sucursal" CssClass="textos" runat="server" Text='<%#Eval("cod_sucursal") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -49,7 +55,7 @@
                                             <asp:TemplateColumn HeaderText="SUCURSAL">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="nom_sucursal" runat="server" Text='<%#Eval("nom_sucursal") %>'></asp:Label>
+                                                        <asp:Label ID="nom_sucursal" CssClass="textos"  runat="server" Text='<%#Eval("nom_sucursal") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -57,7 +63,7 @@
                                             <asp:TemplateColumn HeaderText="DIRECCIÓN">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="dir_sucursal" runat="server" Text='<%#Eval("dir_sucursal") %>'></asp:Label>
+                                                        <asp:Label ID="dir_sucursal" CssClass="textos"  runat="server" Text='<%#Eval("dir_sucursal") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -65,7 +71,7 @@
                                             <asp:TemplateColumn HeaderText="EMAIL">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="email_sucursal" runat="server" Text='<%#Eval("email_sucursal") %>'></asp:Label>
+                                                        <asp:Label ID="email_sucursal" CssClass="textos"  runat="server" Text='<%#Eval("email_sucursal") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                                 <ItemStyle Font-Bold="False" Font-Italic="False" Font-Overline="False" Font-Strikeout="False" Font-Underline="False" HorizontalAlign="Center" />
@@ -88,7 +94,7 @@
                                         </Columns>
                                         
                                         <FooterStyle BackColor="White" ForeColor="#00000f" />
-                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />
+                                        <HeaderStyle BackColor="#DD6D29" CssClass="busqueda" Font-Bold="True" ForeColor="White" />
                                         <ItemStyle ForeColor="#00000f" />
                                         <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" Mode="NumericPages" />
                                         <SelectedItemStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />

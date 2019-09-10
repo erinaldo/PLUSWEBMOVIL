@@ -46,6 +46,13 @@ namespace CapaWeb.WebForms
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
         List<modelowmtfacturascab> listaConsCab = null;
         modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+
+        ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
+        modelonumerador nrotrans = new modelonumerador();
+        ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
+        modeloExepciones ModeloExcepcion = new modeloExepciones();
+        public string numerador = "trans";
+
         public string ComPwm;
         public string AmUsrLog;
         public decimal sumaTotalPago;
@@ -67,43 +74,72 @@ namespace CapaWeb.WebForms
         public string Ccf_aniof = null;
         protected void Page_Load(object sender, EventArgs e)
         {
-            RecuperarCokie();
-
-            if (!IsPostBack)
+            try
             {
+                lbl_error.Text = "";
 
-                if (Request.Cookies["ComPwm"] != null)
-                {
-                    string ComPwm = Request.Cookies["ComPwm"].Value;
+                RecuperarCokie();
 
-                }
-                if (Session["TotalFactura"] != null)
-                {
-                    txt_total_factura.Text = Session["TotalFactura"].ToString();
-                }
-                if (Session["valor_asignado1"] != null)
-                {
-                    txt_nro_trans.Text = Session["valor_asignado1"].ToString();
-                }
-                if (Session["Tipo"] != null)
+                if (!IsPostBack)
                 {
 
-                    transaccion = Session["Tipo"].ToString();
-                    if (transaccion.Trim() == "UDP")
+                    if (Request.Cookies["ComPwm"] != null)
                     {
-                        BuscarPagosPrevios();
+                        string ComPwm = Request.Cookies["ComPwm"].Value;
+
                     }
-                    if (transaccion.Trim() == "VER")
+                    if (Session["TotalFactura"] != null)
                     {
-                        BuscarPagosPrevios();
-                        Agregar_MedioPago.Visible = false;
+                        txt_total_factura.Text = Session["TotalFactura"].ToString();
                     }
+                    if (Session["valor_asignado1"] != null)
+                    {
+                        txt_nro_trans.Text = Session["valor_asignado1"].ToString();
+                    }
+                    if (Session["Tipo"] != null)
+                    {
+
+                        transaccion = Session["Tipo"].ToString();
+                        if (transaccion.Trim() == "UDP")
+                        {
+                            BuscarPagosPrevios();
+                        }
+                        if (transaccion.Trim() == "VER")
+                        {
+                            BuscarPagosPrevios();
+                            Agregar_MedioPago.Visible = false;
+                        }
 
 
 
+                    }
+                    cargarListaDesplegables();
                 }
-                cargarListaDesplegables();
             }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("Page_Load", ex.ToString());
+
+            }
+        }
+
+        public void GuardarExcepciones(string metodo, string error)
+        {
+            //obtener numero de transaccion
+            nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
+            //Insertar excepcion
+            ModeloExcepcion.nro_trans = nrotrans.valor_asignado;
+            ModeloExcepcion.cod_emp = ComPwm;
+            ModeloExcepcion.proceso = "MediosPagosPos.aspx";
+            ModeloExcepcion.metodo = metodo;
+            ModeloExcepcion.error = error;
+            ModeloExcepcion.fecha_hora = DateTime.Today;
+            ModeloExcepcion.usuario_mod = AmUsrLog;
+            ModeloExcepcion.fecha_mod = DateTime.Today;
+            consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
+            //mandar mensaje de error a label
+            lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
+
         }
 
         public void cargarListaDesplegables()

@@ -164,6 +164,13 @@
 
                                     </td>
                                 </tr>
+                                <tr rowspan="4">
+                                    <td colspan="4">
+
+                                        <asp:Label ID="lbl_error" runat="server" class="textos_error"></asp:Label>
+
+                                    </td>
+                                </tr>
 
                                 <tr rowspan="4">
                                     <td colspan="4">
@@ -290,9 +297,7 @@
                                                                 <asp:TextBox ID="txt_depositos" CssClass="sinBorde" required="required" AutoPostBack="True" Style="text-align: right" runat="server" value="0" OnTextChanged="txt_depositos_TextChanged"></asp:TextBox>
                                                             </td>
                                                             <td>
-                                                                <div class="noimp">
-                                                                    <asp:ImageButton ID="btn_depositos" src="../Tema/imagenes/search.png" runat="server" />
-                                                                </div>
+                                                                
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -463,7 +468,9 @@
                     <td>
                         <asp:Button ID="Btn_Calcular" CssClass="botones" runat="server" OnClientClick="return validarCampos();" OnClick="Btn_Calcular_Click" Text="Calcular" />
                         &nbsp;&nbsp;&nbsp;
-                                    <input type="button" class="botones" onclick="printDiv('areaImprimir')" value="Imprimir" />
+                        <asp:Button ID="btn_confirmar" CssClass="botones" OnClick="btn_confirmar_Click" OnClientClick="return confirm('¿Desea guardar el cierre de caja?');" runat="server" Text="Finalizar" />
+                         &nbsp;&nbsp;&nbsp;
+                                    <input type="button" class="botones"  onclick="printDiv('areaImprimir')" value="Imprimir" aria-hidden="True" />
                         &nbsp;&nbsp;&nbsp;
                         <asp:Button ID="btn_cancelar" CssClass="botones" runat="server" Text="Cancelar" OnClick="btn_cancelar_Click" />
                     </td>

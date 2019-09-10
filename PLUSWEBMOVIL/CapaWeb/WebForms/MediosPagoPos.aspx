@@ -20,6 +20,11 @@
                       <h2 class="Subtitulo1">Medios de Pago</h2>
                </td>
                </tr>
+           <tr valign="center" >
+               <td align="center" nowrap="nowrap" colspan="3" >
+                   <asp:Label ID="lbl_error" CssClass="textos_error" runat="server" Text=""></asp:Label>
+               </td>
+               </tr>
            <tr>
                <td class="busqueda">
                      <asp:Label ID="lbl_tot_fac" class="busqueda" runat="server" Text="Label">Total a Pagar:</asp:Label></td>

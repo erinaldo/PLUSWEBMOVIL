@@ -19,6 +19,12 @@
                         <p class="Subtitulo1">Lista de incidencias</p>
                     </td>
                 </tr>
+                       <tr>
+                    <td>
+                        <asp:Label ID="lbl_error" runat="server"  class="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
                 <tr>
                     <td>
 

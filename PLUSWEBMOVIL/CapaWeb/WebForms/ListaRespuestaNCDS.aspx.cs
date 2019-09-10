@@ -28,73 +28,92 @@ namespace CapaWeb.WebForms
         public JsonRespuestaDE ModeloResQr = new JsonRespuestaDE();
         public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
 
+        ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
+        modelonumerador nrotrans = new modelonumerador();
+        ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
+        modeloExepciones ModeloExcepcion = new modeloExepciones();
+        public string numerador = "trans";
+
         public string ComPwm;
         public string AmUsrLog;
         public string nro_trans = null;
         protected void Page_Load(object sender, EventArgs e)
         {
-            RecuperarCokie();
-            ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
-            foreach (var item in ListaModelowmspclogo)
+            try
             {
-                Modelowmspclogo = item;
-                break;
-            }
-            if (!IsPostBack)
-            {
+                lbl_error.Text = "";
 
-                QueryString qs = ulrDesencriptada();
 
-                //Recibir opciones
-                switch (qs["TRN"].Substring(0, 3))
+                RecuperarCokie();
+                ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
+                foreach (var item in ListaModelowmspclogo)
+                {
+                    Modelowmspclogo = item;
+                    break;
+                }
+                if (!IsPostBack)
                 {
 
-                    case "INS":
+                    QueryString qs = ulrDesencriptada();
 
-                        break;
+                    //Recibir opciones
+                    switch (qs["TRN"].Substring(0, 3))
+                    {
 
-                    case "UDP":
-                        break;
+                        case "INS":
 
-                    case "MTR":
-                        Int64 ide = Int64.Parse(qs["Id"].ToString());
-                        string nro_trans = ide.ToString();
-                        //CargarFormularioRespuestaDS(nro_trans);
-                        CargarGrilla(nro_trans);
-                        FormularioRes.Visible = false;
-                        break;
+                            break;
+
+                        case "UDP":
+                            break;
+
+                        case "MTR":
+                            try
+                            {
+                                Int64 ide = Int64.Parse(qs["Id"].ToString());
+                                string nro_trans = ide.ToString();
+                                //CargarFormularioRespuestaDS(nro_trans);
+                                CargarGrilla(nro_trans);
+
+                                break;
+                            }
+                            catch (Exception ex)
+                            {
+                                GuardarExcepciones("Page_Load, MTR", ex.ToString());
+
+                            }
+                            break;
+                    }
+
                 }
-
             }
-        }
-        private void MostrarCamposFormulario()
-        {
-            FormularioRes.Visible = true;
-        }
-
-        private void CargarFormularioRespuestaDS(string nro_trans, string linea)
-        {
-
-            ListaModelorespuestaDs = consultaRespuestaDS.RespuestaLineaQr(nro_trans, linea);
-            int count = 0;
-            foreach (var item in ListaModelorespuestaDs)
+            catch (Exception ex)
             {
-                ModeloResQr = item;
-                count++;
-                break;
+                GuardarExcepciones("Page_Load", ex.ToString());
+
             }
+        }
 
-            txt_nro_trans.Text = ModeloResQr.nro_trans;
-            txt_linea.Text = Convert.ToString(ModeloResQr.linea);
-            txt_id.Text = ModeloResQr.id;
-            txt_qrdata.Text = ModeloResQr.qrdata;
-            txt_xml.Text = ModeloResQr.xml;
-            txt_cufe.Text = ModeloResQr.cufe;
-            txt_error.Text = ModeloResQr.error;
-            txt_json.Text = ModeloResQr.json;
-
+        public void GuardarExcepciones(string metodo, string error)
+        {
+            //obtener numero de transaccion
+            nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
+            //Insertar excepcion
+            ModeloExcepcion.nro_trans = nrotrans.valor_asignado;
+            ModeloExcepcion.cod_emp = ComPwm;
+            ModeloExcepcion.proceso = "ListaRespuestaNCDS.aspx";
+            ModeloExcepcion.metodo = metodo;
+            ModeloExcepcion.error = error;
+            ModeloExcepcion.fecha_hora = DateTime.Today;
+            ModeloExcepcion.usuario_mod = AmUsrLog;
+            ModeloExcepcion.fecha_mod = DateTime.Today;
+            consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
+            //mandar mensaje de error a label
+            lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
 
         }
+
+
         private void CargarGrilla(string nro_trans)
         {
 

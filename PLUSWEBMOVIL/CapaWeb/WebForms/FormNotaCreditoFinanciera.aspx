@@ -86,6 +86,11 @@
                         <p class="Subtitulo2" >Nota de Crédito Financiera</p>
                     </td>
                 </tr>
+                 <tr>
+                    <td>
+                        <asp:Label ID="lbl_error" CssClass="textos_error" runat="server" Text=""></asp:Label>
+                        </td>
+                    </tr>
                 <tr>
                     <td>
                         <p class="Subtitulo1">Por favor ingrese los datos solicitados:</p>

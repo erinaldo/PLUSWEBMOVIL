@@ -95,6 +95,12 @@
 
                     </td>
                 </tr>
+                  <tr>
+                    <td>
+                        <asp:Label ID="lbl_error" runat="server"  CssClass="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
                 <tr>
                     <td>
                         <p class="Subtitulo1">Busque el registro deseado por:</p>

@@ -3,6 +3,11 @@
 	font-size: 12px;
 	color: #000000;
 }
+.textos_error {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	color: #cb3234;
+}
 
 .btn {
   background: #428bca;

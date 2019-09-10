@@ -49,6 +49,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label lbl_dia;
         
         /// <summary>
+        /// Control lbl_error.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_error;
+        
+        /// <summary>
         /// Control lbl_mensaje.
         /// </summary>
         /// <remarks>
@@ -211,15 +220,6 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox txt_depositos;
         
         /// <summary>
-        /// Control btn_depositos.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btn_depositos;
-        
-        /// <summary>
         /// Control lbl_7.
         /// </summary>
         /// <remarks>
@@ -326,6 +326,15 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button Btn_Calcular;
+        
+        /// <summary>
+        /// Control btn_confirmar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_confirmar;
         
         /// <summary>
         /// Control btn_cancelar.

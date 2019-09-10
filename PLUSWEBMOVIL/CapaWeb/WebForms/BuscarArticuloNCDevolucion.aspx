@@ -25,6 +25,12 @@
                         <hr />
                     </td>
                 </tr>
+                    <tr>
+                    <td>
+                        <asp:Label ID="lbl_error" runat="server"  class="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
                     <div>
                             <table border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#0E748A">
                                 <tr>
@@ -45,7 +51,7 @@
                                               <FooterStyle BackColor="#CC0066" Font-Bold="True" ForeColor="White" />
                                         <PagerStyle BackColor="#DD6D29" ForeColor="White" HorizontalAlign="Center" BorderStyle="None" />
                                         <SelectedRowStyle BackColor="#D1DDF1" CssClass="busqueda" Font-Bold="True" ForeColor="#333333" />
-                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />
+                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" CssClass="busqueda" ForeColor="White" />
                                         <EditRowStyle BackColor="#2461BF" />
                                         <AlternatingRowStyle BackColor="White" />
 

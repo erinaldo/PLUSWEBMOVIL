@@ -31,6 +31,11 @@
 
 
                         <table align="center">
+                             <tr>
+                                <td colspan="4">
+                                    <asp:Label ID="lbl_error" class="textos_error" runat="server" Text=""></asp:Label>
+                                </td>
+                            </tr>
                             <tr>
                                 <td colspan="4">
                                     <asp:Label ID="mensaje" name="mensaje" runat="server" Text=""></asp:Label>

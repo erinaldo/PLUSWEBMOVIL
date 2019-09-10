@@ -18,7 +18,11 @@
     left: 0px;
    
 }
-
+.textos_error {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	color: #cb3234;
+}
 
 .btnFactura1 {
   -webkit-border-radius: 5;

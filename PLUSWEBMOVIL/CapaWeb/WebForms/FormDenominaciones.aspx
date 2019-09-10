@@ -31,9 +31,14 @@
 
 
                         <table align="center">
+                             <tr>
+                                <td colspan="4">
+                                    <asp:Label ID="lbl_error" name="lbl_error" CssClass="textos_error" runat="server" Text=""></asp:Label>
+                                </td>
+                            </tr>
                             <tr>
                                 <td colspan="4">
-                                    <asp:Label ID="mensaje" name="mensaje" runat="server" Text=""></asp:Label>
+                                    <asp:Label ID="mensaje" name="mensaje" CssClass="botones" runat="server" Text=""></asp:Label>
                                 </td>
                             </tr>
                                 <tr valign="top">

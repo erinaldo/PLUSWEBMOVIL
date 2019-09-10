@@ -20,6 +20,12 @@
                           </p>
                         </td>
                     </tr>
+                       <tr>
+                    <td>
+                        <asp:Label ID="lbl_error" runat="server"  class="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
                   <tr>
                     <td>
                         <p class="Subtitulo2">Para agregar nuevo Host Mail
@@ -48,7 +54,7 @@
                                             <asp:TemplateColumn HeaderText="CÓDIGO" >
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="cod_emp" runat="server" Text='<%#Eval("cod_emp") %>'></asp:Label>
+                                                        <asp:Label ID="cod_emp" CssClass="textos" runat="server" Text='<%#Eval("cod_emp") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -56,7 +62,7 @@
                                             <asp:TemplateColumn HeaderText="NOMBRE">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="nom_empresa" runat="server" Text='<%#Eval("nom_empresa") %>'></asp:Label>
+                                                        <asp:Label ID="nom_empresa" CssClass="textos"  runat="server" Text='<%#Eval("nom_empresa") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -82,7 +88,7 @@
                                         </Columns>
                                         
                                         <FooterStyle BackColor="White" ForeColor="#00000f" />
-                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />
+                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" CssClass="busqueda" ForeColor="White" />
                                         <ItemStyle ForeColor="#00000f" />
                                         <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" Mode="NumericPages" />
                                         <SelectedItemStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
