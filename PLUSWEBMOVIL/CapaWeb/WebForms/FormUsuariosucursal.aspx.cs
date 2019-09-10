@@ -97,17 +97,14 @@ namespace CapaWeb.WebForms
 
         public void GuardarExcepciones(string metodo, string error)
         {
-            //obtener numero de transaccion
-            nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
-            //Insertar excepcion
-            ModeloExcepcion.nro_trans = nrotrans.valor_asignado;
+            
             ModeloExcepcion.cod_emp = ComPwm;
             ModeloExcepcion.proceso = "FormUsuariosucursal.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Today;
             ModeloExcepcion.usuario_mod = AmUsrLog;
-            ModeloExcepcion.fecha_mod = DateTime.Today;
+            
             consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
             //mandar mensaje de error a label
             lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
@@ -147,158 +144,236 @@ namespace CapaWeb.WebForms
         }
         public QueryString ulrDesencriptada()
         {
-            //1- guardo el Querystring encriptado que viene desde el request en mi objeto
-            QueryString qs = new QueryString(Request.QueryString);
+            try
+            {
+                lbl_error.Text = "";
 
-            ////2- Descencripto y de esta manera obtengo un array Clave/Valor normal
-            qs = Encryption.DecryptQueryString(qs);
-            return qs;
+                //1- guardo el Querystring encriptado que viene desde el request en mi objeto
+                QueryString qs = new QueryString(Request.QueryString);
+
+                ////2- Descencripto y de esta manera obtengo un array Clave/Valor normal
+                qs = Encryption.DecryptQueryString(qs);
+                return qs;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("ulrDesencriptada", ex.ToString());
+                return null;
+            }
         }
         public void cargarListaDesplegables()
         {
-            //LIsta sucursales x empresa
-            ListaSucursalEmpresa = consultaSucursalEmpresa.ConsultaSucursalEmpresa(ComPwm);
-            cbx_sucursal.DataSource = ListaSucursalEmpresa;
-            cbx_sucursal.DataTextField = "sucursales";
-            cbx_sucursal.DataValueField = "cod_sucursal";
-            cbx_sucursal.DataBind();
+            try
+            {
+                lbl_error.Text = "";
 
-            //LIsta usuario x empresa
-            ListausuarioEmpresa = consultaUsuarioEmp.ConsultaUsuariosEmpresa(ComPwm);
-            cbx_usuarios.DataSource = ListausuarioEmpresa;
-            cbx_usuarios.DataTextField = "usuario";
-            cbx_usuarios.DataValueField = "usuario";
-            cbx_usuarios.DataBind();
+                //LIsta sucursales x empresa
+                ListaSucursalEmpresa = consultaSucursalEmpresa.ConsultaSucursalEmpresa(ComPwm);
+                cbx_sucursal.DataSource = ListaSucursalEmpresa;
+                cbx_sucursal.DataTextField = "sucursales";
+                cbx_sucursal.DataValueField = "cod_sucursal";
+                cbx_sucursal.DataBind();
+
+                //LIsta usuario x empresa
+                ListausuarioEmpresa = consultaUsuarioEmp.ConsultaUsuariosEmpresa(ComPwm);
+                cbx_usuarios.DataSource = ListausuarioEmpresa;
+                cbx_usuarios.DataTextField = "usuario";
+                cbx_usuarios.DataValueField = "usuario";
+                cbx_usuarios.DataBind();
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("cargarListaDesplegables", ex.ToString());
+
+            }
 
         }
 
         public void RecuperarCokie()
         {
-            if (Request.Cookies["ComPwm"] != null)
+            try
             {
-                ComPwm = Request.Cookies["ComPwm"].Value;
-            }
-            else
-            {
-                Response.Redirect("../Inicio.asp");
-            }
+                lbl_error.Text = "";
 
-
-            if (Request.Cookies["AmUsrLog"] != null)
-            {
-                AmUsrLog = Request.Cookies["AmUsrLog"].Value;
-
-            }
-            if (Request.Cookies["ProcAud"] != null)
-            {
-                cod_proceso = Request.Cookies["ProcAud"].Value;
-            }
-            else
-            {
-                cod_proceso = Convert.ToString(Request.QueryString["cod_proceso"]);
-                if (cod_proceso != null)
+                if (Request.Cookies["ComPwm"] != null)
                 {
-                    //Crear cookie de cod_proceso
-                    Response.Cookies["ProcAud"].Value = cod_proceso;
+                    ComPwm = Request.Cookies["ComPwm"].Value;
                 }
+                else
+                {
+                    Response.Redirect("../Inicio.asp");
+                }
+
+
+                if (Request.Cookies["AmUsrLog"] != null)
+                {
+                    AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+
+                }
+                if (Request.Cookies["ProcAud"] != null)
+                {
+                    cod_proceso = Request.Cookies["ProcAud"].Value;
+                }
+                else
+                {
+                    cod_proceso = Convert.ToString(Request.QueryString["cod_proceso"]);
+                    if (cod_proceso != null)
+                    {
+                        //Crear cookie de cod_proceso
+                        Response.Cookies["ProcAud"].Value = cod_proceso;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("RecuperarCokie", ex.ToString());
+
             }
         }
 
         protected void btn_guardar_Click(object sender, EventArgs e)
         {
-            QueryString qs = ulrDesencriptada();
-            string error = "";
-         
-
-            switch (qs["TRN"].Substring(0, 3)) //ultilizo la variable para la opcion
+            try
             {
-                case "INS":
-                    //verificar si es unico
-                    ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, cbx_usuarios.SelectedValue);
-                    int count = 0;
-                    foreach (var item in ListaModeloUsuarioSucursal)
-                    {
-                        ModelousuarioSucursal = item;
-                        count++;
+                lbl_error.Text = "";
+
+                QueryString qs = ulrDesencriptada();
+                string error = "";
+
+
+                switch (qs["TRN"].Substring(0, 3)) //ultilizo la variable para la opcion
+                {
+                    case "INS":
+                        try
+                        {
+                            //verificar si es unico
+                            ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, cbx_usuarios.SelectedValue);
+                            int count = 0;
+                            foreach (var item in ListaModeloUsuarioSucursal)
+                            {
+                                ModelousuarioSucursal = item;
+                                count++;
+                                break;
+                            }
+                            if (count > 0)
+                            {
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('Usuario ya existe')+ error;</script>");
+                            }
+                            else
+                            {
+                                //obtener numero de auditoria
+                                nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
+                                string nro_audit = nrotrans.valor_asignado;
+                                DateTime hoy = DateTime.Today;
+                                ModelousuarioSucursal.cod_emp = ComPwm;
+                                ModelousuarioSucursal.cod_sucursal = cbx_sucursal.SelectedValue.Trim();
+                                ModelousuarioSucursal.usuario = cbx_usuarios.SelectedValue.Trim();
+                                ModelousuarioSucursal.fecha_mod = hoy;
+                                ModelousuarioSucursal.usuario_mod = AmUsrLog;
+                                ModelousuarioSucursal.nro_audit = nro_audit;
+                                ModelousuarioSucursal.cod_proc_aud = "AUSRXSUC";
+                                error = consultaUsuarioSucursal.InsertarUsuarioSucursal(ModelousuarioSucursal);
+
+                                if (string.IsNullOrEmpty(error))
+                                {
+
+                                }
+                                else
+                                {
+
+                                    this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+                                    Response.Redirect("FormListaUsuarioSucursal.aspx");
+                                }
+                            }
+
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            GuardarExcepciones("btn_guardar_Click, INS", ex.ToString());
+
+                        }
                         break;
-                    }
-                    if (count > 0)
-                    {
-                        this.Page.Response.Write("<script language='JavaScript'>window.alert('Usuario ya existe')+ error;</script>");
-                    }
-                    else
-                    {
-                        //obtener numero de auditoria
-                        nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
-                        string nro_audit = nrotrans.valor_asignado;
-                        DateTime hoy = DateTime.Today;
-                        ModelousuarioSucursal.cod_emp = ComPwm;
-                        ModelousuarioSucursal.cod_sucursal = cbx_sucursal.SelectedValue.Trim();
-                        ModelousuarioSucursal.usuario = cbx_usuarios.SelectedValue.Trim();
-                        ModelousuarioSucursal.fecha_mod = hoy;
-                        ModelousuarioSucursal.usuario_mod = AmUsrLog;
-                        ModelousuarioSucursal.nro_audit = nro_audit;
-                        ModelousuarioSucursal.cod_proc_aud = "AUSRXSUC";
-                        error = consultaUsuarioSucursal.InsertarUsuarioSucursal(ModelousuarioSucursal);
-
-                        if (string.IsNullOrEmpty(error))
+                    case "UDP":
+                        try
                         {
+                            string ide = (qs["Id"].ToString());
+                            string usuario = ide.ToString();
+                            DateTime hoy1 = DateTime.Today;
+                            ModelousuarioSucursal.cod_emp = ComPwm;
+                            ModelousuarioSucursal.cod_sucursal = cbx_sucursal.SelectedValue.Trim();
+                            ModelousuarioSucursal.usuario = cbx_usuarios.SelectedValue.Trim();
+                            ModelousuarioSucursal.fecha_mod = hoy1;
+                            ModelousuarioSucursal.usuario_mod = AmUsrLog;
+                            ModelousuarioSucursal.usu_ante = usuario;
+                            error = consultaUsuarioSucursal.ActualizarUsuarioSucursal(ModelousuarioSucursal);
+
+                            if (string.IsNullOrEmpty(error))
+                            {
+
+                            }
+                            else
+                            {
+
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+                                Response.Redirect("FormListaUsuarioSucursal.aspx");
+                            }
+                            break;
+                            }
+                        catch (Exception ex)
+                        {
+                            GuardarExcepciones("btn_guardar_Click, UDP", ex.ToString());
 
                         }
-                        else
+                        break;
+                    case "DLT":
+                        try
                         {
+                            ModelousuarioSucursal.cod_emp = ComPwm;
+                            ModelousuarioSucursal.cod_sucursal = cbx_sucursal.SelectedValue;
+                            ModelousuarioSucursal.usuario = cbx_usuarios.SelectedValue;
+                            error = consultaUsuarioSucursal.EliminarrUsuarioSucursal(ModelousuarioSucursal);
+                            if (string.IsNullOrEmpty(error))
+                            {
 
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
-                            Response.Redirect("FormListaUsuarioSucursal.aspx");
+                            }
+                            else
+                            {
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "');</script>");
+                                Response.Redirect("FormListaUsuarioSucursal.aspx");
+                            }
+
+                            break;
                         }
-                    }
-                    break;
-                case "UDP":
-                    string ide = (qs["Id"].ToString());
-                    string usuario = ide.ToString();
-                    DateTime hoy1 = DateTime.Today;
-                    ModelousuarioSucursal.cod_emp = ComPwm;
-                    ModelousuarioSucursal.cod_sucursal = cbx_sucursal.SelectedValue.Trim();
-                    ModelousuarioSucursal.usuario = cbx_usuarios.SelectedValue.Trim();
-                    ModelousuarioSucursal.fecha_mod = hoy1;
-                    ModelousuarioSucursal.usuario_mod = AmUsrLog;
-                    ModelousuarioSucursal.usu_ante = usuario;
-                    error = consultaUsuarioSucursal.ActualizarUsuarioSucursal(ModelousuarioSucursal);
+                        catch (Exception ex)
+                        {
+                            GuardarExcepciones("btn_guardar_Click, DLT", ex.ToString());
 
-                    if (string.IsNullOrEmpty(error))
-                    {
+                        }
+                        break;
 
-                    }
-                    else
-                    {
+                }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("btn_guardar_Click", ex.ToString());
 
-                        this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
-                        Response.Redirect("FormListaUsuarioSucursal.aspx");
-                    }
-                    break;
-                case "DLT":
-                    ModelousuarioSucursal.cod_emp = ComPwm;
-                    ModelousuarioSucursal.cod_sucursal = cbx_sucursal.SelectedValue;
-                    ModelousuarioSucursal.usuario = cbx_usuarios.SelectedValue;
-                    error = consultaUsuarioSucursal.EliminarrUsuarioSucursal(ModelousuarioSucursal);
-                    if (string.IsNullOrEmpty(error))
-                    {
-                        
-                    }
-                    else
-                    {
-                        this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "');</script>");
-                        Response.Redirect("FormListaUsuarioSucursal.aspx");
-                    }
-
-                    break;
-                   
             }
         }
 
         protected void btn_cancela_Click(object sender, EventArgs e)
         {
-            Response.Redirect("FormListaUsuarioSucursal.aspx");
+            try
+            {
+                lbl_error.Text = "";
+
+                Response.Redirect("FormListaUsuarioSucursal.aspx");
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("btn_cancela_Click", ex.ToString());
+
+            }
         }
     }
 }

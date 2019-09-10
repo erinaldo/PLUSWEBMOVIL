@@ -23,7 +23,13 @@
            </tr>
         <tr>
 
-        </tr>   
+        </tr>
+          <tr>
+                    <td>
+                        <asp:Label ID="lbl_error" runat="server"  class="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>   
                 <tr>
                   <br />
                     <br />  

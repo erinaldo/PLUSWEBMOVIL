@@ -15,6 +15,8 @@ namespace CapaWeb.WebForms
         Consultawmsptitulares ConsultaTitulares = new Consultawmsptitulares();
         public List<modelowmspctitulares> lista = null;
         modelowmspctitulares cliente = new modelowmspctitulares();
+        ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
+        modeloExepciones ModeloExcepcion = new modeloExepciones();
 
         public string ComPwm;
         public string AmUsrLog;        
@@ -25,108 +27,183 @@ namespace CapaWeb.WebForms
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            RecuperarCokie();
-            if (!IsPostBack)
+            try
             {
-               
-                Session.Remove("cliente");
+                lbl_error.Text = "";
 
-                if (Request.Cookies["ComPwm"] != null)
+                RecuperarCokie();
+                if (!IsPostBack)
                 {
-                    string ComPwm = Request.Cookies["ComPwm"].Value;
+
+                    Session.Remove("cliente");
+
+                    if (Request.Cookies["ComPwm"] != null)
+                    {
+                        string ComPwm = Request.Cookies["ComPwm"].Value;
+
+                    }
+
+                    if (Session["listaCliente"] != null)
+                    {
+                        // recupera la variable de secion con el objeto persona   
+                        lista = (List<modelowmspctitulares>)Session["listaCliente"];
+                        Session["lista"] = lista;
+                        gvPerson.DataSource = lista;
+                        gvPerson.DataBind();
+
+                    }
+
 
                 }
-
-                if (Session["listaCliente"] != null)
-                {
-                    // recupera la variable de secion con el objeto persona   
-                    lista = (List<modelowmspctitulares>)Session["listaCliente"];
-                    Session["lista"] = lista;
-                    gvPerson.DataSource = lista;
-                    gvPerson.DataBind();
-
-                }
-
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("Page_Load", ex.ToString());
 
             }
 
         }
-       
+        public void GuardarExcepciones(string metodo, string error)
+        {
+
+            ModeloExcepcion.cod_emp = ComPwm;
+            ModeloExcepcion.proceso = "BuscarCliente.aspx";
+            ModeloExcepcion.metodo = metodo;
+            ModeloExcepcion.error = error;
+            ModeloExcepcion.fecha_hora = DateTime.Today;
+            ModeloExcepcion.usuario_mod = AmUsrLog;
+
+            consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
+            //mandar mensaje de error a label
+            lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
+
+        }
+
         protected void TxtBuscarCliente_TextChanged(object sender, EventArgs e)
         {
-            CargarGrilla(TxtBuscarCliente.Text);
+            try
+            {
+                lbl_error.Text = "";
+
+                CargarGrilla(TxtBuscarCliente.Text);
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("TxtBuscarCliente_TextChanged", ex.ToString());
+
+            }
         }
 
 
         private void CargarGrilla(string Ven__cod_tit)
         {
-            
-            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+            try
+            {
+                lbl_error.Text = "";
 
-            Session["lista"] = lista;
-            gvPerson.DataSource = lista;
-            gvPerson.DataBind();
-           
+                lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+
+                Session["lista"] = lista;
+                gvPerson.DataSource = lista;
+                gvPerson.DataBind();
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("CargarGrilla", ex.ToString());
+
+            }
+
         }
        
         protected void gvPerson_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //
-            // Se obtiene la fila seleccionada del gridview
-            //
-            GridViewRow row = gvPerson.SelectedRow;
-            
-            //
-            // Obtengo el id de la entidad que se esta editando
-            // en este caso de la entidad Person
-            //
-            string cod_tit = Convert.ToString(gvPerson.DataKeys[row.RowIndex].Value);
-
-            lista = (List<modelowmspctitulares>) Session["lista"];
-            foreach (var item in lista)
+            try
             {
-                if (item.cod_tit == cod_tit)
+                lbl_error.Text = "";
+
+                //
+                // Se obtiene la fila seleccionada del gridview
+                //
+                GridViewRow row = gvPerson.SelectedRow;
+
+                //
+                // Obtengo el id de la entidad que se esta editando
+                // en este caso de la entidad Person
+                //
+                string cod_tit = Convert.ToString(gvPerson.DataKeys[row.RowIndex].Value);
+
+                lista = (List<modelowmspctitulares>)Session["lista"];
+                foreach (var item in lista)
                 {
-                    cliente = item;
+                    if (item.cod_tit == cod_tit)
+                    {
+                        cliente = item;
 
-                    break;
+                        break;
+                    }
+
                 }
-                
+                // Crea la variable de sessión
+                Session["cliente"] = cliente;
+
+                // Refrescamos el formuario padre
+                ClientScript.RegisterClientScriptBlock(GetType(), "Refresca", "window.opener.location.reload(); window.close();", true);
             }
-            // Crea la variable de sessión
-            Session["cliente"] = cliente;
+            catch (Exception ex)
+            {
+                GuardarExcepciones("gvPerson_SelectedIndexChanged", ex.ToString());
 
-            // Refrescamos el formuario padre
-            ClientScript.RegisterClientScriptBlock(GetType(), "Refresca", "window.opener.location.reload(); window.close();", true);
+            }
 
-           
+
         }
 
        
 
         protected void gvPerson_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            gvPerson.PageIndex = 0;
-            gvPerson.PageIndex = e.NewPageIndex;
+            try
+            {
+                lbl_error.Text = "";
 
-            CargarGrilla(TxtBuscarCliente.Text);
+                gvPerson.PageIndex = 0;
+                gvPerson.PageIndex = e.NewPageIndex;
+
+                CargarGrilla(TxtBuscarCliente.Text);
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("gvPerson_PageIndexChanging", ex.ToString());
+
+            }
         }
 
         public void RecuperarCokie()
         {
-            if (Request.Cookies["ComPwm"] != null)
+
+            try
             {
-                ComPwm = Request.Cookies["ComPwm"].Value;
-            }
-            else
-            {
-                Response.Redirect("../Inicio.asp");
-            }
+                lbl_error.Text = "";
+
+                if (Request.Cookies["ComPwm"] != null)
+                {
+                    ComPwm = Request.Cookies["ComPwm"].Value;
+                }
+                else
+                {
+                    Response.Redirect("../Inicio.asp");
+                }
 
 
-            if (Request.Cookies["AmUsrLog"] != null)
+                if (Request.Cookies["AmUsrLog"] != null)
+                {
+                    AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+
+                }
+            }
+            catch (Exception ex)
             {
-                AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+                GuardarExcepciones("RecuperarCokie", ex.ToString());
 
             }
         }

@@ -94,17 +94,13 @@ namespace CapaWeb.WebForms
         }
         public void GuardarExcepciones(string metodo, string error)
         {
-            //obtener numero de transaccion
-            nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
-            //Insertar excepcion
-            ModeloExcepcion.nro_trans = nrotrans.valor_asignado;
             ModeloExcepcion.cod_emp = ComPwm;
             ModeloExcepcion.proceso = "FormCierreCaja.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Today;
             ModeloExcepcion.usuario_mod = AmUsrLog;
-            ModeloExcepcion.fecha_mod = DateTime.Today;
+            
             consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
             //mandar mensaje de error a label
             lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
@@ -898,7 +894,7 @@ namespace CapaWeb.WebForms
             }
             catch (Exception ex)
             {
-                GuardarExcepciones("Btn_Calcular_Click", ex.ToString());
+                GuardarExcepciones("btn_confirmar_Click", ex.ToString());
 
             }
         }

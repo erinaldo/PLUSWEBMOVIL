@@ -65,17 +65,14 @@ namespace CapaWeb.WebForms
                         Session["valor_asignado"] = ide.ToString();
                         //CargarFormularioRespuestaDS(nro_trans);
                         CargarGrilla(nro_trans);
-                        FormularioRes.Visible = false;
+                        
                         break;
                 }
 
             }
         }
 
-        private void MostrarCamposFormulario()
-        {
-            FormularioRes.Visible = true;
-        }
+      
        
         private void CargarFormularioRespuestaDS(string nro_trans, string linea)
         {
@@ -89,15 +86,7 @@ namespace CapaWeb.WebForms
                 break;
             }
 
-            txt_nro_trans.Text = ModeloResQr.nro_trans;
-            txt_linea.Text = Convert.ToString(ModeloResQr.linea);
-            txt_id.Text = ModeloResQr.id;
-            txt_qrdata.Text = ModeloResQr.qrdata;
-            txt_xml.Text = ModeloResQr.xml;
-            txt_cufe.Text = ModeloResQr.cufe;
-            txt_error.Text = ModeloResQr.error;
-            txt_json.Text = ModeloResQr.json;
-
+       
 
         }
         private void CargarGrilla(string nro_trans)
