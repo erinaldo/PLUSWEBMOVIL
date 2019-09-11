@@ -15,14 +15,14 @@ namespace CapaProceso.RestClientePdf
         public string contenidopdf { get; set; }
     }
 
-    public class Documento
+    public class DocumentoFac
     {
         public Encabezado encabezado { get; set; }
     }
 
     public class JsonFdfFacturaElectronica
     {
-        public Documento documento { get; set; }
+        public DocumentoFac documento { get; set; }
     }
 
 }

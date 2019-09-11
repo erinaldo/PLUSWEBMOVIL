@@ -13,13 +13,23 @@ namespace CapaProceso.Consultas
     {
         EstadosFactura estados = new EstadosFactura();
         modeloestadosfactura modelestafactura = new modeloestadosfactura();
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
 
         public List<modeloestadosfactura> ConsultaEstadosFac(string EstF_proceso)
         {
-            List<modeloestadosfactura> lista = new List<modeloestadosfactura>();
-            lista = estados.ListaEstadosFactura(EstF_proceso);
-           
-            return lista;
+            try
+            {
+                List<modeloestadosfactura> lista = new List<modeloestadosfactura>();
+                lista = estados.ListaEstadosFactura(EstF_proceso);
+
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", "Consultaestadosfactura.cs", "ConsultaEstadosFac", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
     }
 }

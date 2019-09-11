@@ -13,6 +13,8 @@ namespace CapaDatos.Sql
     {
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo = "UsuarioSucursal.cs";
         //Eliminar usuario x sucursal
         public string EliminarUsuarioSucursal(modeloUsuariosucursal sucursalEmpresa)
         {
@@ -20,10 +22,11 @@ namespace CapaDatos.Sql
             {
                 using (cn = conexion.genearConexion())
                 {
-                    string insert = "DELETE FROM wmm_userxsucur WHERE  usuario = @usuario AND cod_sucursal = @cod_sucursal";
+                    string insert = "DELETE FROM wmm_userxsucur WHERE  usuario = @usuario AND cod_sucursal = @cod_sucursal AND cod_emp =@cod_emp";
                     SqlCommand conmand = new SqlCommand(insert, cn);
                     conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = sucursalEmpresa.usuario;
                     conmand.Parameters.Add("@cod_sucursal", SqlDbType.VarChar).Value = sucursalEmpresa.cod_sucursal;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = sucursalEmpresa.cod_emp;
 
                     int dr = conmand.ExecuteNonQuery();
                     return "Usuario eliminado correctamente";
@@ -32,7 +35,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(sucursalEmpresa.cod_emp, metodo, "EliminarUsuarioSucursal", e.ToString(), DateTime.Today, sucursalEmpresa.usuario_mod);
+                return "No se pudo completar la acción." + "EliminarUsuarioSucursal." + " Por favor notificar al administrador.";
             }
 
         }
@@ -62,7 +66,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(sucursalEmpresa.cod_emp, metodo, "ActualizarUsuarioSucursal", e.ToString(), DateTime.Today, sucursalEmpresa.usuario_mod);
+                return "No se pudo completar la acción." + "ActualizarUsuarioSucursal." + " Por favor notificar al administrador.";
             }
 
         }
@@ -90,102 +95,130 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(usuariosucursal.cod_emp, metodo, "InsertarUsuarioSucursal", e.ToString(), DateTime.Today, usuariosucursal.usuario_mod);
+                return "No se pudo completar la acción." + "InsertarUsuarioSucursal." + " Por favor notificar al administrador.";
             }
 
         }
         //CArgar vista principal
         public List<modeloUsuariosucursal> ListaUsuarioxSucursal(string cod_emp)
         {
-            using (cn = conexion.genearConexion())
+            try
             {
-                List<modeloUsuariosucursal> lista = new List<modeloUsuariosucursal>();
-                string consulta = "SELECT wmm_userxsucur.cod_emp,wmm_userxsucur.cod_sucursal,wmm_userxsucur.usuario,wmm_userxsucur.usuario_mod,wmm_userxsucur.fecha_mod,wmm_userxsucur.nro_audit,wmm_userxsucur.cod_proc_aud,wmm_sucuremp.nom_sucursal FROM wmm_userxsucur ,wmm_sucuremp WHERE wmm_userxsucur.cod_emp = @cod_emp AND wmm_userxsucur.cod_sucursal = wmm_sucuremp.cod_sucursal ";
-                SqlCommand conmand = new SqlCommand(consulta, cn);
-
-                conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
-               
-                SqlDataReader dr = conmand.ExecuteReader();
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
-                    modeloUsuariosucursal item = new modeloUsuariosucursal();
-                    item.cod_emp = Convert.ToString(dr["cod_emp"]);
-                    item.cod_sucursal = Convert.ToString(dr["cod_sucursal"]);
-                    item.usuario = Convert.ToString(dr["usuario"]);
-                    item.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
-                    item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
-                    item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
-                    item.nro_audit = Convert.ToString(dr["nro_audit"]);
-                    item.nom_sucursal = Convert.ToString(dr["nom_sucursal"]);
-                    item.usu_ante = Convert.ToString(dr["usuario"]);
-                    lista.Add(item);
+                    List<modeloUsuariosucursal> lista = new List<modeloUsuariosucursal>();
+                    string consulta = "SELECT wmm_userxsucur.cod_emp,wmm_userxsucur.cod_sucursal,wmm_userxsucur.usuario,wmm_userxsucur.usuario_mod,wmm_userxsucur.fecha_mod,wmm_userxsucur.nro_audit,wmm_userxsucur.cod_proc_aud,wmm_sucuremp.nom_sucursal FROM wmm_userxsucur ,wmm_sucuremp WHERE wmm_userxsucur.cod_emp = @cod_emp AND wmm_userxsucur.cod_sucursal = wmm_sucuremp.cod_sucursal ";
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        modeloUsuariosucursal item = new modeloUsuariosucursal();
+                        item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                        item.cod_sucursal = Convert.ToString(dr["cod_sucursal"]);
+                        item.usuario = Convert.ToString(dr["usuario"]);
+                        item.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
+                        item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                        item.nom_sucursal = Convert.ToString(dr["nom_sucursal"]);
+                        item.usu_ante = Convert.ToString(dr["usuario"]);
+                        lista.Add(item);
+                    }
+                    return lista;
                 }
-                return lista;
             }
-            
-           
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaUsuarioxSucursal", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
+
+
         }
 
         //Consultar si el vendedor tiene asignado una sucursal
         public List<modeloUsuariosucursal> ConsultaUsuarioxSucursal(string cod_emp, string usuario)
         {
-            using (cn = conexion.genearConexion())
+            try
             {
-                List<modeloUsuariosucursal> lista = new List<modeloUsuariosucursal>();
-                string consulta = "SELECT TOP 1 * FROM wmm_userxsucur WHERE cod_emp =@cod_emp AND usuario = @usuario";
-                SqlCommand conmand = new SqlCommand(consulta, cn);
-
-                conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
-                conmand.Parameters.Add("usuario", SqlDbType.VarChar).Value = usuario;
-
-                SqlDataReader dr = conmand.ExecuteReader();
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
-                    modeloUsuariosucursal item = new modeloUsuariosucursal();
-                    item.cod_emp = Convert.ToString(dr["cod_emp"]);
-                    item.cod_sucursal = Convert.ToString(dr["cod_sucursal"]);
-                    item.usuario = Convert.ToString(dr["usuario"]);
-                    item.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
-                    item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
-                    item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
-                    item.nro_audit = Convert.ToString(dr["nro_audit"]);
-                    item.usu_ante = Convert.ToString(dr["usuario"]);
-                    lista.Add(item);
+                    List<modeloUsuariosucursal> lista = new List<modeloUsuariosucursal>();
+                    string consulta = "SELECT TOP 1 * FROM wmm_userxsucur WHERE cod_emp =@cod_emp AND usuario = @usuario";
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("usuario", SqlDbType.VarChar).Value = usuario;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        modeloUsuariosucursal item = new modeloUsuariosucursal();
+                        item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                        item.cod_sucursal = Convert.ToString(dr["cod_sucursal"]);
+                        item.usuario = Convert.ToString(dr["usuario"]);
+                        item.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
+                        item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                        item.usu_ante = Convert.ToString(dr["usuario"]);
+                        lista.Add(item);
+                    }
+                    return lista;
                 }
-                return lista;
-            }            
-           
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ConsultaUsuarioxSucursal", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
+
+
         }
         /*Buscar Unico usuario x sucursal*/
         public List<modeloUsuariosucursal> UnicoUsuarioxSucursal(string cod_emp,  string usuario, string cod_sucursal)
         {
-            using (cn = conexion.genearConexion())
+            try
             {
-                List<modeloUsuariosucursal> lista = new List<modeloUsuariosucursal>();
-                string consulta = "SELECT  * FROM wmm_userxsucur WHERE cod_emp =@cod_emp AND usuario = @usuario AND cod_sucursal = @cod_sucursal";
-                SqlCommand conmand = new SqlCommand(consulta, cn);
-
-                conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
-                conmand.Parameters.Add("usuario", SqlDbType.VarChar).Value = usuario;
-                conmand.Parameters.Add("cod_sucursal", SqlDbType.VarChar).Value = cod_sucursal;
-
-                SqlDataReader dr = conmand.ExecuteReader();
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
-                    modeloUsuariosucursal item = new modeloUsuariosucursal();
-                    item.cod_emp = Convert.ToString(dr["cod_emp"]);
-                    item.cod_sucursal = Convert.ToString(dr["cod_sucursal"]);
-                    item.usuario = Convert.ToString(dr["usuario"]);
-                    item.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
-                    item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
-                    item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
-                    item.nro_audit = Convert.ToString(dr["nro_audit"]);
-                    item.usu_ante = Convert.ToString(dr["usuario"]);
-                    lista.Add(item);
+                    List<modeloUsuariosucursal> lista = new List<modeloUsuariosucursal>();
+                    string consulta = "SELECT  * FROM wmm_userxsucur WHERE cod_emp =@cod_emp AND usuario = @usuario AND cod_sucursal = @cod_sucursal";
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("usuario", SqlDbType.VarChar).Value = usuario;
+                    conmand.Parameters.Add("cod_sucursal", SqlDbType.VarChar).Value = cod_sucursal;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        modeloUsuariosucursal item = new modeloUsuariosucursal();
+                        item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                        item.cod_sucursal = Convert.ToString(dr["cod_sucursal"]);
+                        item.usuario = Convert.ToString(dr["usuario"]);
+                        item.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
+                        item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                        item.usu_ante = Convert.ToString(dr["usuario"]);
+                        lista.Add(item);
+                    }
+                    return lista;
                 }
-                return lista;
-            }            
-            
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "UnicoUsuarioxSucursal", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
         
     }

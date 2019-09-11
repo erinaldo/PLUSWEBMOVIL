@@ -12,89 +12,109 @@ public class Numeradores
     {
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
-        
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
+
         /*Consultamos el nro_trans de la tabla numeradores para la factura*/
         public modelonumerador ConsultaNroTransaccion(string numerador)
         {
-            using (cn = conexion.genearConexion())
+            try
             {
-                modelonumerador Mnumerador = new modelonumerador();
-
-                string insert = "UPDATE n SET n.valor_asignado = (SELECT SUM (valor_asignado + incremento)AS TotAcum FROM wm_numeradores  WHERE numerador = @numerador) FROM wm_numeradores n WHERE n.numerador = @numerador";
-
-                SqlCommand conmand = new SqlCommand(insert, cn);
-
-                conmand.Parameters.Add("@numerador", SqlDbType.VarChar).Value = numerador;
-
-                conmand.ExecuteNonQuery();
-
-
-                string consulta = "SELECT TOP 1 *  FROM wm_numeradores WHERE numerador = @numerador";
-                conmand = new SqlCommand(consulta, cn);
-
-                conmand.Parameters.Add("@numerador", SqlDbType.VarChar).Value = numerador;
-
-                SqlDataReader dr = conmand.ExecuteReader();
-
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
+                    modelonumerador Mnumerador = new modelonumerador();
+
+                    string insert = "UPDATE n SET n.valor_asignado = (SELECT SUM (valor_asignado + incremento)AS TotAcum FROM wm_numeradores  WHERE numerador = @numerador) FROM wm_numeradores n WHERE n.numerador = @numerador";
+
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+
+                    conmand.Parameters.Add("@numerador", SqlDbType.VarChar).Value = numerador;
+
+                    conmand.ExecuteNonQuery();
 
 
-                    Mnumerador.numerador = Convert.ToString(dr["numerador"]);
-                    Mnumerador.nombre = Convert.ToString(dr["nombre"]);
-                    Mnumerador.valor_asignado = Convert.ToString(dr["valor_asignado"]);
-                    Mnumerador.incremento = Convert.ToString(dr["incremento"]);
-                    Mnumerador.usuario_mod = Convert.ToString(dr["usuario_mod"]);
-                    Mnumerador.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
-                    Mnumerador.nro_audit = Convert.ToString(dr["nro_audit"]);
-                    Mnumerador.cod_pro_aud = Convert.ToString(dr["cod_proc_aud"]);
+                    string consulta = "SELECT TOP 1 *  FROM wm_numeradores WHERE numerador = @numerador";
+                    conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@numerador", SqlDbType.VarChar).Value = numerador;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
 
 
+                        Mnumerador.numerador = Convert.ToString(dr["numerador"]);
+                        Mnumerador.nombre = Convert.ToString(dr["nombre"]);
+                        Mnumerador.valor_asignado = Convert.ToString(dr["valor_asignado"]);
+                        Mnumerador.incremento = Convert.ToString(dr["incremento"]);
+                        Mnumerador.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        Mnumerador.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
+                        Mnumerador.nro_audit = Convert.ToString(dr["nro_audit"]);
+                        Mnumerador.cod_pro_aud = Convert.ToString(dr["cod_proc_aud"]);
+
+
+                    }
+
+                    return Mnumerador;
                 }
-
-                return Mnumerador;
             }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", "Numeradores.cs", "ConsultaNroTransaccion", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
+
         }
         /*Consultamos el nro_audit de la tabla numeradores para sucursal empresa y sucursal usuario*/
         public modelonumerador ConsultaNroAuditoria(string numerador)
         {
-            using (cn = conexion.genearConexion())
+            try
             {
-                modelonumerador Mnumerador = new modelonumerador();
-
-                string insert = "UPDATE n SET n.valor_asignado = (SELECT SUM (valor_asignado + incremento)AS TotAcum FROM wm_numeradores  WHERE numerador = @numerador) FROM wm_numeradores n WHERE n.numerador = @numerador";
-
-                SqlCommand conmand = new SqlCommand(insert, cn);
-
-                conmand.Parameters.Add("@numerador", SqlDbType.VarChar).Value = numerador;
-
-                conmand.ExecuteNonQuery();
-
-
-                string consulta = "SELECT TOP 1 *  FROM wm_numeradores WHERE numerador = @numerador";
-                conmand = new SqlCommand(consulta, cn);
-
-                conmand.Parameters.Add("@numerador", SqlDbType.VarChar).Value = numerador;
-
-                SqlDataReader dr = conmand.ExecuteReader();
-
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
+                    modelonumerador Mnumerador = new modelonumerador();
+
+                    string insert = "UPDATE n SET n.valor_asignado = (SELECT SUM (valor_asignado + incremento)AS TotAcum FROM wm_numeradores  WHERE numerador = @numerador) FROM wm_numeradores n WHERE n.numerador = @numerador";
+
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+
+                    conmand.Parameters.Add("@numerador", SqlDbType.VarChar).Value = numerador;
+
+                    conmand.ExecuteNonQuery();
 
 
-                    Mnumerador.numerador = Convert.ToString(dr["numerador"]);
-                    Mnumerador.nombre = Convert.ToString(dr["nombre"]);
-                    Mnumerador.valor_asignado = Convert.ToString(dr["valor_asignado"]);
-                    Mnumerador.incremento = Convert.ToString(dr["incremento"]);
-                    Mnumerador.usuario_mod = Convert.ToString(dr["usuario_mod"]);
-                    Mnumerador.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
-                    Mnumerador.nro_audit = Convert.ToString(dr["nro_audit"]);
-                    Mnumerador.cod_pro_aud = Convert.ToString(dr["cod_proc_aud"]);
+                    string consulta = "SELECT TOP 1 *  FROM wm_numeradores WHERE numerador = @numerador";
+                    conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@numerador", SqlDbType.VarChar).Value = numerador;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
 
 
+                        Mnumerador.numerador = Convert.ToString(dr["numerador"]);
+                        Mnumerador.nombre = Convert.ToString(dr["nombre"]);
+                        Mnumerador.valor_asignado = Convert.ToString(dr["valor_asignado"]);
+                        Mnumerador.incremento = Convert.ToString(dr["incremento"]);
+                        Mnumerador.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        Mnumerador.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
+                        Mnumerador.nro_audit = Convert.ToString(dr["nro_audit"]);
+                        Mnumerador.cod_pro_aud = Convert.ToString(dr["cod_proc_aud"]);
+
+
+                    }
+
+                    return Mnumerador;
                 }
+            }
+            catch (Exception e)
+            {
 
-                return Mnumerador;
+                guardarExcepcion.ClaseInsertarExcepcion("0", "Numeradores.cs", "ConsultaNroAuditoria", e.ToString(), DateTime.Today, "consulta");
+                return null;
             }
         }
     }

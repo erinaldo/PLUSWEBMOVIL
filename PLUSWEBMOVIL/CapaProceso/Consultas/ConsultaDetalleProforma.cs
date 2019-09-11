@@ -12,11 +12,21 @@ namespace CapaProceso.Consultas
    public  class ConsultaDetalleProforma
     {
         DetalleProformaFac consultaProformasDetalle = new DetalleProformaFac();
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
         public List<modeloDetalleProforma> BuscarProformasDetalle(string nro_trans)
         {
-            List<modeloDetalleProforma> lista = new List<modeloDetalleProforma>();
-            lista = consultaProformasDetalle.ListaProformasDetalle(nro_trans);           
-            return lista;
+            try
+            {
+                List<modeloDetalleProforma> lista = new List<modeloDetalleProforma>();
+                lista = consultaProformasDetalle.ListaProformasDetalle(nro_trans);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "ConsulyaDetalleProforma.cs", "BuscarProformasDetalle", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
     }
 }

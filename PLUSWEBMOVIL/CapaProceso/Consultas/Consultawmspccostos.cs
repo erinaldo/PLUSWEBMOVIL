@@ -13,12 +13,22 @@ namespace CapaProceso.Consultas
     {
         CCostos ccostos = new CCostos();
         modelowmspcccostos moedlocostos = new modelowmspcccostos();
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
         public List<modelowmspcccostos> ConsultaCCostos(string CC__usuario, string CC__cod_emp, string CC__cod_dpto)
         {
-            List<modelowmspcccostos> lista = new List<modelowmspcccostos>();
-            lista = ccostos.ListaBuscaCCostos(CC__usuario,  CC__cod_emp, CC__cod_dpto);
-            
-            return lista;
+            try
+            {
+                List<modelowmspcccostos> lista = new List<modelowmspcccostos>();
+                lista = ccostos.ListaBuscaCCostos(CC__usuario, CC__cod_emp, CC__cod_dpto);
+
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(CC__cod_emp, "Consultawmspccostos.cs", "ConsultaCCostos", e.ToString(), DateTime.Today, CC__usuario);
+                return null;
+            }
         }
     }
 }

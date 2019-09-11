@@ -7,6 +7,7 @@ namespace CapaDatos.Sql
 {
    public  class FormatoCantidades
     {
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
 
         //Dar formato a las cantidades y decir cuantos decimales se quieren para visualizar
         public string FormatoNumero(string nro_decimales, decimal numero)

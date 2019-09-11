@@ -14,11 +14,21 @@ namespace CapaProceso.Consultas
     {
         DetalleProformaFac consultaProformasDetalle = new DetalleProformaFac();
         DetalleRemision consRemFac = new DetalleRemision();
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
         public List<modeloDetalleRemision> BuscarRemisionDetalle(string nro_trans)
         {
-            List<modeloDetalleRemision> lista = new List<modeloDetalleRemision>();
-            lista = consRemFac.ListaRemisionDetalle(nro_trans);            
-            return lista;
+            try
+            {
+                List<modeloDetalleRemision> lista = new List<modeloDetalleRemision>();
+                lista = consRemFac.ListaRemisionDetalle(nro_trans);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "ConsultaDetalleRemision.cs", "BuscarRemisionDetalle", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
 
     }

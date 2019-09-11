@@ -14,6 +14,7 @@ namespace CapaProceso.Consultas
         //Actualizar datos de titulares en RP
         ActualizarDatosTitular updateTitular = new ActualizarDatosTitular();
         modeloActualizarDatosTitular ModeloActualizarTit = new modeloActualizarDatosTitular();
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
 
         public string ActualizarDatosTitulares(modeloActualizarDatosTitular ActualizarDatos)
         {

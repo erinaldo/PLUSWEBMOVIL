@@ -1,4 +1,5 @@
 ﻿using CapaDatos.Modelos;
+using CapaDatos.Sql;
 using CapaProceso.Modelos;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace CapaProceso.Consultas
         Consultawmsptitulares ConsultaTitulares = new Consultawmsptitulares();
         public List<modelowmspctitulares> lista = null;
         modelowmspctitulares cliente = new modelowmspctitulares();
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
 
         public string Ccf_estado = null;
         public string Ccf_cliente = null;
@@ -33,109 +35,134 @@ namespace CapaProceso.Consultas
         public string Ven__cod_tit = " ";
         public string Ven__cod_dgi = "0";
         public string Ven__fono = "0";
+        string metodo ="Enviarcorreocliente.cs";
 
         public modelowmtfacturascab buscarCabezeraFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
 
-
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-            int count = 0;
-            conscabcera = null;
-            foreach (modelowmtfacturascab item in listaConsCab)
+            try
             {
-                count++;
-                conscabcera = item;
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
 
+                }
+                return conscabcera;
             }
-            return conscabcera;
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "buscarCabezeraFactura", e.ToString(), DateTime.Today, Ccf_usuario);
+                return null;
+            }
         }
 
         public modelowmspctitulares buscarCliente(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi, string Ven__fono)
         {
 
-
-            lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
-            int count = 0;
-            cliente = null;
-            foreach (modelowmspctitulares item in lista)
+            try
             {
-                count++;
-                cliente = item;
+                lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                int count = 0;
+                cliente = null;
+                foreach (modelowmspctitulares item in lista)
+                {
+                    count++;
+                    cliente = item;
 
+                }
+                return cliente;
             }
-            return cliente;
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(Ven__cod_emp, metodo, "buscarCliente", e.ToString(), DateTime.Today, Ven__usuario);
+                return null;
+            }
         }
 
 
         public Boolean EnviarCorreoCliente(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string pathPdf, string pathXml)
         {
-            
-            //Consultamos los datos del cliente
-            modelowmspctitulares cliente = new modelowmspctitulares();
-            conscabcera = null;
-            conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-
-            //Buscar datos especificos del cliente
-
-            string Ven__cod_tit = conscabcera.cod_cliente;
-            cliente = null;
-            cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, Ven__fono);
-
-            if(cliente != null)
+            try
             {
-                EnviarCorreo correo = new EnviarCorreo();
-                string nombre = "";
-                string email = "";
+                //Consultamos los datos del cliente
+                modelowmspctitulares cliente = new modelowmspctitulares();
+                conscabcera = null;
+                conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
-                nombre = cliente.nom_tit;
-                email = cliente.email_tit;
-                if (email == "")
+                //Buscar datos especificos del cliente
+
+                string Ven__cod_tit = conscabcera.cod_cliente;
+                cliente = null;
+                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, Ven__fono);
+
+                if (cliente != null)
                 {
+                    EnviarCorreo correo = new EnviarCorreo();
+                    string nombre = "";
+                    string email = "";
 
-                    string mensaje = "Cliente no tiene email valido";
-                    return false;
+                    nombre = cliente.nom_tit;
+                    email = cliente.email_tit;
+                    if (email == "")
+                    {
+
+                        string mensaje = "Cliente no tiene email valido";
+                        return false;
+
+
+                    }
+                    else
+                    {
+                        string mensaje = "<strong> Estimado(a): </strong>" + nombre.ToUpper() + "<br/>" + "Se a generado el Documento Electrónico N°: " + conscabcera.observacion;
+
+                        List<string> listaPath = new List<string>();// lista de archivos adjuntos
+                        listaPath.Add(pathPdf);
+                        listaPath.Add(pathXml);
+                        correo.enviarcorreo("Envio de  Documento Electrónico", mensaje, email, listaPath, Ccf_cod_emp);
+                        return true;
+
+
+                    }
+
 
 
                 }
                 else
                 {
+
+                    EnviarCorreo correo = new EnviarCorreo();
+                    string nombre = "";
+                    string email = "";
+
+                    nombre = cliente.nom_tit;
+                    email = cliente.email_tit;
+
+
                     string mensaje = "<strong> Estimado(a): </strong>" + nombre.ToUpper() + "<br/>" + "Se a generado el Documento Electrónico N°: " + conscabcera.observacion;
 
                     List<string> listaPath = new List<string>();// lista de archivos adjuntos
                     listaPath.Add(pathPdf);
                     listaPath.Add(pathXml);
                     correo.enviarcorreo("Envio de  Documento Electrónico", mensaje, email, listaPath, Ccf_cod_emp);
+
+
                     return true;
-
-
                 }
-
-
-                
             }
-            else
+            catch (Exception e)
             {
 
-                EnviarCorreo correo = new EnviarCorreo();
-                string nombre = "";
-                string email = "";
-
-                nombre = cliente.nom_tit;
-                email = cliente.email_tit;
-
-
-                string mensaje = "<strong> Estimado(a): </strong>" + nombre.ToUpper() + "<br/>" + "Se a generado el Documento Electrónico N°: " + conscabcera.observacion;
-
-                List<string> listaPath = new List<string>();// lista de archivos adjuntos
-                listaPath.Add(pathPdf);
-                listaPath.Add(pathXml);
-                correo.enviarcorreo("Envio de  Documento Electrónico", mensaje, email, listaPath, Ccf_cod_emp);
-
-
-                return true;
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "EnviarCorreoCliente", e.ToString(), DateTime.Today, Ccf_usuario);
+                return false;
             }
 
-          
+
         }
 
     }

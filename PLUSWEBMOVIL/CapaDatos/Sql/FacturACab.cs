@@ -14,6 +14,8 @@ namespace CapaDatos.Sql
     {
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo = "FacturaACab.cs";
 
         //ACTUALIXAR ESTADO FACTURA
         public string ActualizarEstadoFactura(string nro_trans, string estado)
@@ -37,7 +39,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ActualizarEstadoFactura", e.ToString(), DateTime.Today,"UDP");
+                return "No se pudo completar la acción." + "ActualizarEstadoFactura." + " Por favor notificar al administrador.";
             }
 
         }
@@ -69,7 +72,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "EliminarCabDetFactura", e.ToString(), DateTime.Today, "DLT");
+                return "No se pudo completar la acción." + "EliminarCabDetFactura." + " Por favor notificar al administrador.";
             }
 
         }
@@ -107,8 +111,9 @@ namespace CapaDatos.Sql
             }
             catch (Exception e)
             {
-                List<modelowmtfacturascab> lista = new List<modelowmtfacturascab>();
-                return lista;
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ConsultaTipoFC", e.ToString(), DateTime.Today, "consulta");
+                return null;
             }
 
 
@@ -148,8 +153,9 @@ namespace CapaDatos.Sql
             }
             catch (Exception e)
             {
-                List<modelowmtfacturascab> lista = new List<modelowmtfacturascab>();
-                return lista;
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ConsultaDatosNCPadre", e.ToString(), DateTime.Today, "consulta");
+                return null;
             }
 
 
@@ -266,15 +272,16 @@ namespace CapaDatos.Sql
             }
             catch (Exception e)
             {
-                List<modelowmtfacturascab> lista = new List<modelowmtfacturascab>();
-                return lista;
-            }
-            
-              
-        }
 
-       
-        public List<modelowmtfacturascab> ConsultaNCENroTran(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string Ccf_estado, string Ccf_cliente, string Ccf_cod_docum, string Ccf_serie_docum, string Ccf_nro_docum, string Ccf_diai, string Ccf_mesi, string Ccf_anioi, string Ccf_diaf, string Ccf_mesf, string Ccf_aniof)
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "ConsultaFacturaNroTran", e.ToString(), DateTime.Today, Ccf_usuario);
+                return null;
+            }
+
+
+        }
+     
+
+    public List<modelowmtfacturascab> ConsultaNCENroTran(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string Ccf_estado, string Ccf_cliente, string Ccf_cod_docum, string Ccf_serie_docum, string Ccf_nro_docum, string Ccf_diai, string Ccf_mesi, string Ccf_anioi, string Ccf_diaf, string Ccf_mesf, string Ccf_aniof)
         {
             try
             {
@@ -387,8 +394,9 @@ namespace CapaDatos.Sql
             }
             catch (Exception e)
             {
-                List<modelowmtfacturascab> lista = new List<modelowmtfacturascab>();
-                return lista;
+
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "ConsultaNCENroTran", e.ToString(), DateTime.Today, Ccf_usuario);
+                return null;
             }
 
 
@@ -446,15 +454,17 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
-            }        
+                guardarExcepcion.ClaseInsertarExcepcion(cabezeraFactura.cod_emp, metodo, "InsertarCabcecera", e.ToString(), DateTime.Today, cabezeraFactura.usuario_mod);
+                return "No se pudo completar la acción." + "InsertarCabcecera." + " Por favor notificar al administrador.";
+            }
 
-           
 
         }
 
-        //Insertar cabecera de NOTA CREDITO FINANCIERA/devolucion/anulacion
-        public string InsertarCabeceraNCFinan(modelocabecerafactura cabezeraFactura)
+        
+
+    //Insertar cabecera de NOTA CREDITO FINANCIERA/devolucion/anulacion
+    public string InsertarCabeceraNCFinan(modelocabecerafactura cabezeraFactura)
         {
             try
             {
@@ -509,9 +519,9 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(cabezeraFactura.cod_emp, metodo, "InsertarCabeceraNCFinan", e.ToString(), DateTime.Today, cabezeraFactura.usuario_mod);
+                return "No se pudo completar la acción." + "InsertarCabeceraNCFinan." + " Por favor notificar al administrador.";
             }
-
 
 
         }
@@ -552,8 +562,9 @@ namespace CapaDatos.Sql
             }
             catch (Exception e)
             {
-                modeloFacturasElecSaldos item = new modeloFacturasElecSaldos();
-                return item;
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ConsultaDocumEletronicos", e.ToString(), DateTime.Today, "consulta");
+                return null;
             }
 
 

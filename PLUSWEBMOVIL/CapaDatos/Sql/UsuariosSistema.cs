@@ -12,29 +12,38 @@ namespace CapaDatos.Sql
     {
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
 
         public string  NombreUsuario(string usuario)
         {
-
-            string Nombre_usu = "";
-            using (cn = conexion.genearConexion())
+            try
             {
-                string insert = "SELECT Nombre FROM wm_usuario where usuario= @usuario ";
-                SqlCommand conmand = new SqlCommand(insert, cn);
-
-                conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
-
-
-                SqlDataReader dr = conmand.ExecuteReader();
-
-                while (dr.Read())
+                string Nombre_usu = "";
+                using (cn = conexion.genearConexion())
                 {
-                    Nombre_usu = Convert.ToString(dr["Nombre"]);
+                    string insert = "SELECT Nombre FROM wm_usuario where usuario= @usuario ";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
 
 
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        Nombre_usu = Convert.ToString(dr["Nombre"]);
+
+
+                    }
+
+                    return Nombre_usu;
                 }
+            }
+            catch (Exception e)
+            {
 
-                return Nombre_usu;
+                guardarExcepcion.ClaseInsertarExcepcion("0", "UsuarioSistema.cs", "NombreUsuario", e.ToString(), DateTime.Today, usuario);
+                return "No se pudo completar la acción." + "NombreUsuario." + " Por favor notificar al administrador.";
             }
         }
     }

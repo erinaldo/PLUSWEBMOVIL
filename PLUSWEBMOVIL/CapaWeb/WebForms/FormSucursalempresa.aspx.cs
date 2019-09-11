@@ -116,161 +116,234 @@ namespace CapaWeb.WebForms
         }
         private void CargarFormularioSucursal(string cod_sucursal)
         {
-
-            ListaModeloSucursalEmpresa  = ConsultaSucursal.ConsultaSucursalUnico(ComPwm, cod_sucursal);
-            int count = 0;
-            foreach (var item in ListaModeloSucursalEmpresa)
+            try
             {
-                ModelosucursalEmpresa = item;
-                count++;
-                break;
+                ListaModeloSucursalEmpresa = ConsultaSucursal.ConsultaSucursalUnico(ComPwm, cod_sucursal);
+                int count = 0;
+                foreach (var item in ListaModeloSucursalEmpresa)
+                {
+                    ModelosucursalEmpresa = item;
+                    count++;
+                    break;
+                }
+                txt_cod_sucursal.Text = ModelosucursalEmpresa.cod_sucursal;
+                txt_nom_sucursal.Text = ModelosucursalEmpresa.nom_sucursal;
+                txt_dir_sucursal.Text = ModelosucursalEmpresa.dir_sucursal;
+                txt_tel_sucursal.Text = ModelosucursalEmpresa.tel_sucursal;
+                txt_email_sucursal.Text = ModelosucursalEmpresa.email_sucursal;
+                txt_cod_sucursal.Enabled = false;
             }
-            txt_cod_sucursal.Text = ModelosucursalEmpresa.cod_sucursal;
-            txt_nom_sucursal.Text = ModelosucursalEmpresa.nom_sucursal;
-            txt_dir_sucursal.Text = ModelosucursalEmpresa.dir_sucursal;
-            txt_tel_sucursal.Text = ModelosucursalEmpresa.tel_sucursal;
-            txt_email_sucursal.Text = ModelosucursalEmpresa.email_sucursal;
-            txt_cod_sucursal.Enabled = false;
-            
-          
+            catch (Exception ex)
+            {
+                GuardarExcepciones("CargarFormularioSucursal", ex.ToString());
+
+            }
+
         }
         public QueryString ulrDesencriptada()
         {
-            //1- guardo el Querystring encriptado que viene desde el request en mi objeto
-            QueryString qs = new QueryString(Request.QueryString);
+            try
+            {
+                lbl_error.Text = "";
 
-            ////2- Descencripto y de esta manera obtengo un array Clave/Valor normal
-            qs = Encryption.DecryptQueryString(qs);
-            return qs;
+                //1- guardo el Querystring encriptado que viene desde el request en mi objeto
+                QueryString qs = new QueryString(Request.QueryString);
+
+                ////2- Descencripto y de esta manera obtengo un array Clave/Valor normal
+                qs = Encryption.DecryptQueryString(qs);
+                return qs;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("ulrDesencriptada", ex.ToString());
+                return null;
+            }
         }
         public void RecuperarCokie()
         {
-            if (Request.Cookies["ComPwm"] != null)
+            try
             {
-                ComPwm = Request.Cookies["ComPwm"].Value;
-            }
-            else
-            {
-                Response.Redirect("../Inicio.asp");
-            }
-
-
-            if (Request.Cookies["AmUsrLog"] != null)
-            {
-                AmUsrLog = Request.Cookies["AmUsrLog"].Value;
-
-            }
-            if (Request.Cookies["ProcAud"] != null)
-            {
-                cod_proceso = Request.Cookies["ProcAud"].Value;
-            }
-            else
-            {
-                cod_proceso = Convert.ToString(Request.QueryString["cod_proceso"]);
-                if (cod_proceso != null)
+                lbl_error.Text = "";
+                if (Request.Cookies["ComPwm"] != null)
                 {
-                    //Crear cookie de cod_proceso
-                    Response.Cookies["ProcAud"].Value = cod_proceso;
+                    ComPwm = Request.Cookies["ComPwm"].Value;
                 }
+                else
+                {
+                    Response.Redirect("../Inicio.asp");
+                }
+
+
+                if (Request.Cookies["AmUsrLog"] != null)
+                {
+                    AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+
+                }
+                if (Request.Cookies["ProcAud"] != null)
+                {
+                    cod_proceso = Request.Cookies["ProcAud"].Value;
+                }
+                else
+                {
+                    cod_proceso = Convert.ToString(Request.QueryString["cod_proceso"]);
+                    if (cod_proceso != null)
+                    {
+                        //Crear cookie de cod_proceso
+                        Response.Cookies["ProcAud"].Value = cod_proceso;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("RecuperarCokie", ex.ToString());
+
             }
         }
         protected void btn_guardar_Click(object sender, EventArgs e)
         {
-            QueryString qs = ulrDesencriptada();
-            string error = "";
-            
-
-            switch (qs["TRN"].Substring(0, 3)) //ultilizo la variable para la opcion
+            try
             {
-                case "INS":
-                    ListaModeloSucursalEmpresa = ConsultaSucursal.UnicoSucursalEmpresa(ComPwm, txt_cod_sucursal.Text);
-                    int count = 0;
-                    foreach (var item in ListaModeloSucursalEmpresa)
-                    {
-                        ModelosucursalEmpresa = item;
-                        count++;
+                lbl_error.Text = "";
+                QueryString qs = ulrDesencriptada();
+                string error = "";
+
+
+                switch (qs["TRN"].Substring(0, 3)) //ultilizo la variable para la opcion
+                {
+                    case "INS":
+                        try
+                        {
+                            lbl_error.Text = "";
+                            ListaModeloSucursalEmpresa = ConsultaSucursal.UnicoSucursalEmpresa(ComPwm, txt_cod_sucursal.Text);
+                            int count = 0;
+                            foreach (var item in ListaModeloSucursalEmpresa)
+                            {
+                                ModelosucursalEmpresa = item;
+                                count++;
+                                break;
+                            }
+                            if (count > 0)
+                            {
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('Sucursal ya existe')+ error;</script>");
+                            }
+                            else
+                            {
+                                //obtener numero de transaccion
+                                nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
+                                string nro_audit = nrotrans.valor_asignado;
+                                DateTime hoy = DateTime.Today;
+                                ModelosucursalEmpresa.cod_emp = ComPwm;
+                                ModelosucursalEmpresa.cod_sucursal = txt_cod_sucursal.Text;
+                                ModelosucursalEmpresa.nom_sucursal = txt_nom_sucursal.Text;
+                                ModelosucursalEmpresa.dir_sucursal = txt_dir_sucursal.Text;
+                                ModelosucursalEmpresa.email_sucursal = txt_email_sucursal.Text;
+                                ModelosucursalEmpresa.tel_sucursal = txt_tel_sucursal.Text;
+                                ModelosucursalEmpresa.fecha_mod = hoy;
+                                ModelosucursalEmpresa.usuario_mod = AmUsrLog;
+                                ModelosucursalEmpresa.nro_audit = nro_audit;
+                                ModelosucursalEmpresa.cod_proc_aud = "AEMPSUC";
+                                error = ConsultaSucEmpresa.InsertarSucursalEmpresa(ModelosucursalEmpresa);
+
+                                if (string.IsNullOrEmpty(error))
+                                {
+
+                                }
+                                else
+                                {
+
+                                    this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+                                    Response.Redirect("FormListaSucursalEmpresa.aspx");
+                                }
+                            }
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            GuardarExcepciones("btn_guardar_Click, INS", ex.ToString());
+
+                        }
                         break;
-                    }
-                    if (count > 0)
-                    {
-                        this.Page.Response.Write("<script language='JavaScript'>window.alert('Sucursal ya existe')+ error;</script>");
-                    }
-                    else
-                    {
-                        //obtener numero de transaccion
-                        nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
-                        string nro_audit = nrotrans.valor_asignado;
-                        DateTime hoy = DateTime.Today;
-                        ModelosucursalEmpresa.cod_emp = ComPwm;
-                        ModelosucursalEmpresa.cod_sucursal = txt_cod_sucursal.Text;
-                        ModelosucursalEmpresa.nom_sucursal = txt_nom_sucursal.Text;
-                        ModelosucursalEmpresa.dir_sucursal = txt_dir_sucursal.Text;
-                        ModelosucursalEmpresa.email_sucursal = txt_email_sucursal.Text;
-                        ModelosucursalEmpresa.tel_sucursal = txt_tel_sucursal.Text;
-                        ModelosucursalEmpresa.fecha_mod = hoy;
-                        ModelosucursalEmpresa.usuario_mod = AmUsrLog;
-                        ModelosucursalEmpresa.nro_audit = nro_audit;
-                        ModelosucursalEmpresa.cod_proc_aud = "AEMPSUC";
-                        error = ConsultaSucEmpresa.InsertarSucursalEmpresa(ModelosucursalEmpresa);
-
-                        if (string.IsNullOrEmpty(error))
+                    case "UDP":
+                        try
                         {
+                            DateTime hoy1 = DateTime.Today;
+                            ModelosucursalEmpresa.cod_emp = ComPwm;
+                            ModelosucursalEmpresa.cod_sucursal = txt_cod_sucursal.Text;
+                            ModelosucursalEmpresa.nom_sucursal = txt_nom_sucursal.Text;
+                            ModelosucursalEmpresa.dir_sucursal = txt_dir_sucursal.Text;
+                            ModelosucursalEmpresa.email_sucursal = txt_email_sucursal.Text;
+                            ModelosucursalEmpresa.tel_sucursal = txt_tel_sucursal.Text;
+                            ModelosucursalEmpresa.fecha_mod = hoy1;
+                            ModelosucursalEmpresa.usuario_mod = AmUsrLog;
+                            error = ConsultaSucEmpresa.ActualizarSucursalEmpresa(ModelosucursalEmpresa);
+
+                            if (string.IsNullOrEmpty(error))
+                            {
+
+                            }
+                            else
+                            {
+
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+                                Response.Redirect("FormListaSucursalEmpresa.aspx");
+                            }
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            GuardarExcepciones("btn_guardar_Click, UDP", ex.ToString());
 
                         }
-                        else
+                        break;
+                    case "DLT":
+                        try
                         {
+                            ModelosucursalEmpresa.cod_sucursal = txt_cod_sucursal.Text;
+                            ModelosucursalEmpresa.cod_emp = ComPwm;
+                            ModelosucursalEmpresa.cod_emp = AmUsrLog;
+                            error = ConsultaSucEmpresa.EliminarSucursalEmpresa(ModelosucursalEmpresa);
 
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
-                            Response.Redirect("FormListaSucursalEmpresa.aspx");
+                            if (string.IsNullOrEmpty(error))
+                            {
+
+                            }
+                            else
+                            {
+
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+                                Response.Redirect("FormListaSucursalEmpresa.aspx");
+                            }
+                            break;
                         }
-                    }
-                    break;
-                case "UDP":
+                        catch (Exception ex)
+                        {
+                            GuardarExcepciones("btn_guardar_Click, DLT", ex.ToString());
 
-                    DateTime hoy1 = DateTime.Today;
-                    ModelosucursalEmpresa.cod_emp = ComPwm;
-                    ModelosucursalEmpresa.cod_sucursal = txt_cod_sucursal.Text;
-                    ModelosucursalEmpresa.nom_sucursal = txt_nom_sucursal.Text;
-                    ModelosucursalEmpresa.dir_sucursal = txt_dir_sucursal.Text;
-                    ModelosucursalEmpresa.email_sucursal = txt_email_sucursal.Text;
-                    ModelosucursalEmpresa.tel_sucursal = txt_tel_sucursal.Text;
-                    ModelosucursalEmpresa.fecha_mod = hoy1;
-                    ModelosucursalEmpresa.usuario_mod = AmUsrLog;
-                    error = ConsultaSucEmpresa.ActualizarSucursalEmpresa(ModelosucursalEmpresa);
+                        }
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("btn_guardar_Click", ex.ToString());
 
-                    if (string.IsNullOrEmpty(error))
-                    {
-
-                    }
-                    else
-                    {
-
-                        this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
-                        Response.Redirect("FormListaSucursalEmpresa.aspx");
-                    }
-                    break;
-                case "DLT":
-
-                    ModelosucursalEmpresa.cod_sucursal = txt_cod_sucursal.Text;
-                     error = ConsultaSucEmpresa.EliminarSucursalEmpresa(ModelosucursalEmpresa);
-
-                    if (string.IsNullOrEmpty(error))
-                    {
-
-                    }
-                    else
-                    {
-
-                        this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
-                        Response.Redirect("FormListaSucursalEmpresa.aspx");
-                    }
-                    break;
             }
         }
 
         protected void btn_cancela_Click(object sender, EventArgs e)
         {
-            Response.Redirect("FormListaSucursalEmpresa.aspx");
+            try
+            {
+                lbl_error.Text = "";
+
+
+                Response.Redirect("FormListaSucursalEmpresa.aspx");
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("btn_cancela_Click", ex.ToString());
+
+            }
         }
     }
 }

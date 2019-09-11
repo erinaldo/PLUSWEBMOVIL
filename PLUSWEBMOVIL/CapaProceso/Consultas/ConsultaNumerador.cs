@@ -13,14 +13,24 @@ namespace CapaProceso.Consultas
     {
         Numeradores numeradores = new Numeradores();
         modelonumerador modelonum = new modelonumerador();
-      
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
+
         public modelonumerador ConsultaNumeradores(string numerador)
         {
-            modelonumerador Mnumerador = new modelonumerador();
+            try
+            {
+                modelonumerador Mnumerador = new modelonumerador();
 
-            Mnumerador = numeradores.ConsultaNroTransaccion(numerador);
-            
-            return Mnumerador;
+                Mnumerador = numeradores.ConsultaNroTransaccion(numerador);
+
+                return Mnumerador;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", "ConsultaNumerador.cs", "ConsultaNumeradores", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
     }
 }

@@ -13,44 +13,54 @@ namespace CapaDatos.Sql.HostMail
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
        modeloHostmail modelohostMail = new modeloHostmail();
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo = "HostMail.cs";
         //Lista de host mail
         public List<modeloHostmail> ListaHostMail(string cod_emp)
         {
-
-            using (cn = conexion.genearConexion())
+            try
             {
-                List<modeloHostmail> lista = new List<modeloHostmail>();
-
-                string consulta = ("SELECT * FROM wmm_host_mail where cod_emp = @cod_emp");
-                SqlCommand conmand = new SqlCommand(consulta, cn);
-
-             
-                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value =cod_emp;
-    
-                SqlDataReader dr = conmand.ExecuteReader();
-
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
+                    List<modeloHostmail> lista = new List<modeloHostmail>();
 
-                    modeloHostmail item = new modeloHostmail();
-                    item.cod_emp = Convert.ToString(dr["cod_emp"]);
-                    item.nom_empresa = Convert.ToString(dr["nom_empresa"]);
-                    item.remitente = Convert.ToString(dr["remitente"]);
-                    item.correo = Convert.ToString(dr["correo"]);
-                    item.contrasenia = Convert.ToString(dr["contrasenia"]);
-                    item.puerto = Convert.ToInt32(dr["puerto"]);
-                    item.smtp = Convert.ToString(dr["smtp"]);
-                    item.autentificacion = Convert.ToInt32(dr["autentificacion"]);
-                    item.secure = Convert.ToInt32(dr["secure"]);
-                    item.subject = Convert.ToString(dr["subject"]);
-                    item.html_text = Convert.ToString(dr["html_text"]);
-                    item.firma = Convert.ToString(dr["firma"]);
+                    string consulta = ("SELECT * FROM wmm_host_mail where cod_emp = @cod_emp");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                    lista.Add(item);
 
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloHostmail item = new modeloHostmail();
+                        item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                        item.nom_empresa = Convert.ToString(dr["nom_empresa"]);
+                        item.remitente = Convert.ToString(dr["remitente"]);
+                        item.correo = Convert.ToString(dr["correo"]);
+                        item.contrasenia = Convert.ToString(dr["contrasenia"]);
+                        item.puerto = Convert.ToInt32(dr["puerto"]);
+                        item.smtp = Convert.ToString(dr["smtp"]);
+                        item.autentificacion = Convert.ToInt32(dr["autentificacion"]);
+                        item.secure = Convert.ToInt32(dr["secure"]);
+                        item.subject = Convert.ToString(dr["subject"]);
+                        item.html_text = Convert.ToString(dr["html_text"]);
+                        item.firma = Convert.ToString(dr["firma"]);
+
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
                 }
+            }
+            catch (Exception e)
+            {
 
-                return lista;
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaHostMail", e.ToString(), DateTime.Today, "consulta");
+                return null;
             }
         }
 
@@ -72,7 +82,8 @@ namespace CapaDatos.Sql.HostMail
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(hostMail.cod_emp, metodo, "EliminarHostMail", e.ToString(), DateTime.Today,"DLT");
+                return "No se pudo completar la acción." + "EliminarHostMail." + " Por favor notificar al administrador.";
             }
 
         }
@@ -105,8 +116,10 @@ namespace CapaDatos.Sql.HostMail
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(hostMail.cod_emp, metodo, "ActualizarHostMail", e.ToString(), DateTime.Today, "UDP");
+                return "No se pudo completar la acción." + "ActualizarHostMail." + " Por favor notificar al administrador.";
             }
+
 
         }
         public string InsertarHostmaila(modeloHostmail hostMail)
@@ -135,7 +148,8 @@ namespace CapaDatos.Sql.HostMail
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(hostMail.cod_emp, metodo, "InsertarHostmaila", e.ToString(), DateTime.Today, "INS");
+                return "No se pudo completar la acción." + "InsertarHostmaila." + " Por favor notificar al administrador.";
             }
 
         }

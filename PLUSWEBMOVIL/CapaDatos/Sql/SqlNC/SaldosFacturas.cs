@@ -13,6 +13,7 @@ namespace CapaDatos.Sql.SqlNC
     {
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
         //Saldos y totales de facturas en general sin restricciones
         public List<modeloSaldosFacturas> ConsultaFacturasSaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2)
         {
@@ -60,8 +61,9 @@ namespace CapaDatos.Sql.SqlNC
             }
             catch (Exception e)
             {
-                List<modeloSaldosFacturas> lista = new List<modeloSaldosFacturas>();
-                return lista;
+
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, "SaldosFacturas.cs", "ConsultaFacturasSaldos", e.ToString(), DateTime.Today, Ccf_usuario);
+                return null;
             }
 
 
@@ -102,8 +104,9 @@ namespace CapaDatos.Sql.SqlNC
             }
             catch (Exception e)
             {
-                modeloFacturasElecSaldos item = new modeloFacturasElecSaldos();
-                return item;
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "SaldosFacturas.cs", "ConsultaFacEleSaldos", e.ToString(), DateTime.Today, "consulta");
+                return null;
             }
 
 
@@ -144,8 +147,9 @@ namespace CapaDatos.Sql.SqlNC
             }
             catch (Exception e)
             {
-                modeloFacturasElecSaldos item = new modeloFacturasElecSaldos();
-                return item;
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "SaldosFacturas.cs", "ConsultaDocumEletronicos", e.ToString(), DateTime.Today, "consulta");
+                return null;
             }
 
 

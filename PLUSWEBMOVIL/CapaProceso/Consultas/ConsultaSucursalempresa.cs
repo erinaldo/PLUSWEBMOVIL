@@ -13,10 +13,21 @@ namespace CapaProceso.Consultas
         //Insertar sucursal empresa
         SucursalEmpresa guardarSucursal = new SucursalEmpresa();
         modeloSucuralempresa Modelosucursal = new modeloSucuralempresa();
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo = "ConsultaSucursalempresa.cs";
         public string InsertarSucursalEmpresa(modeloSucuralempresa ModelosucEmpresa)
         {
-            string respuesta = guardarSucursal.InsertarSucursalEmpresa(ModelosucEmpresa);
-            return respuesta;
+            try
+            {
+                string respuesta = guardarSucursal.InsertarSucursalEmpresa(ModelosucEmpresa);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(ModelosucEmpresa.cod_emp, metodo, "InsertarSucursalEmpresa", e.ToString(), DateTime.Today, ModelosucEmpresa.usuario_mod);
+                return "No se pudo completar la acción." + "InsertarSucursalEmpresa." + " Por favor notificar al administrador.";
+            }
         }
 
         //Actualizar sucursal empresa 
@@ -24,16 +35,34 @@ namespace CapaProceso.Consultas
         modeloSucuralempresa ModelosucursalUPDATE = new modeloSucuralempresa();
         public string ActualizarSucursalEmpresa(modeloSucuralempresa ModelosucEmpresa)
         {
-            string respuesta = updateSucursal.ActualizarSucursalEmpresa(ModelosucEmpresa);
-            return respuesta;
+            try
+            {
+                string respuesta = updateSucursal.ActualizarSucursalEmpresa(ModelosucEmpresa);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(ModelosucEmpresa.cod_emp, metodo, "ActualizarSucursalEmpresa", e.ToString(), DateTime.Today, ModelosucEmpresa.usuario_mod);
+                return "No se pudo completar la acción." + "ActualizarSucursalEmpresa." + " Por favor notificar al administrador.";
+            }
         }
         //Eliminarr sucursal empresa 
         SucursalEmpresa deleteSucursal = new SucursalEmpresa();
         modeloSucuralempresa ModelosucursalDelete = new modeloSucuralempresa();
         public string EliminarSucursalEmpresa(modeloSucuralempresa ModelosucEmpresa)
         {
-            string respuesta = deleteSucursal.EliminarSucursalEmpresa(ModelosucEmpresa);
-            return respuesta;
+            try
+            {
+                string respuesta = deleteSucursal.EliminarSucursalEmpresa(ModelosucEmpresa);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(ModelosucEmpresa.cod_emp, metodo, "EliminarSucursalEmpresa", e.ToString(), DateTime.Today, ModelosucEmpresa.usuario_mod);
+                return "No se pudo completar la acción." + "EliminarSucursalEmpresa." + " Por favor notificar al administrador.";
+            }
         }
 
 

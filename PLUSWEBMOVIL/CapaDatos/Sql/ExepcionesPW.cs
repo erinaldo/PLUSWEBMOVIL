@@ -44,5 +44,39 @@ namespace CapaDatos.Sql
             }
 
         }
+        //Clase para guardar
+        public string ClaseInsertarExcepcion(string cod_emp, string proceso, string metodo, string error, DateTime fecha_hora, string usuario_mod)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    string insert = "INSERT INTO  wmc_excepcion (cod_emp,proceso,metodo,error,fecha_hora, usuario_mod) VALUES (@cod_emp,@proceso,@metodo,@error,@fecha_hora, @usuario_mod)";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value =cod_emp;
+                    conmand.Parameters.Add("@proceso", SqlDbType.VarChar).Value = proceso;
+                    conmand.Parameters.Add("@metodo", SqlDbType.VarChar).Value = metodo;
+                    conmand.Parameters.Add("@error", SqlDbType.VarChar).Value = error;
+                    conmand.Parameters.Add("@fecha_hora", SqlDbType.VarChar).Value = fecha_hora;
+                    conmand.Parameters.Add("@usuario_mod", SqlDbType.VarChar).Value =usuario_mod;
+
+                    int dr = conmand.ExecuteNonQuery();
+                    return "Excepcion guardada correctamente";
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                return e.ToString();
+            }
+
+        }
+
+
+
+
+
     }
 }

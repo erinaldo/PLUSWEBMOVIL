@@ -17,20 +17,38 @@ namespace CapaProceso.Consultas
 
         RespuestaNC consultaRespuesta = new RespuestaNC();
         JsonRespuestaNC modelorespuestaQR = new JsonRespuestaNC();
-
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
         public List<JsonRespuestaNC> ConsultaRespuestaQr(string nro_trans)
         {
-            List<JsonRespuestaNC> lista = new List<JsonRespuestaNC>();
-            lista = consultaRespuesta.ConsultaRespuestaQR(nro_trans);
-            
-            return lista;
+            try
+            {
+                List<JsonRespuestaNC> lista = new List<JsonRespuestaNC>();
+                lista = consultaRespuesta.ConsultaRespuestaQR(nro_trans);
+
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "ConsultawmtrespuestaNC.cs", "ConsultaRespuestaQR", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
         //Conusulta respuesta x linea
         public List<JsonRespuestaNC> RespuestaLineaQr(string nro_trans, string linea)
         {
-            List<JsonRespuestaNC> lista = new List<JsonRespuestaNC>();
-            lista = consultaRespuesta.RespuestaLineaQR(nro_trans, linea);            
-            return lista;
+            try
+            {
+                List<JsonRespuestaNC> lista = new List<JsonRespuestaNC>();
+                lista = consultaRespuesta.RespuestaLineaQR(nro_trans, linea);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans,"ConsultawmtrespuestaNC.cs", "RespuestaLineaQR", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
 
     }

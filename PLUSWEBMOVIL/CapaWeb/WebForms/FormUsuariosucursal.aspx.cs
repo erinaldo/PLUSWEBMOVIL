@@ -332,6 +332,7 @@ namespace CapaWeb.WebForms
                             ModelousuarioSucursal.cod_emp = ComPwm;
                             ModelousuarioSucursal.cod_sucursal = cbx_sucursal.SelectedValue;
                             ModelousuarioSucursal.usuario = cbx_usuarios.SelectedValue;
+                            ModelousuarioSucursal.usuario_mod = AmUsrLog;
                             error = consultaUsuarioSucursal.EliminarrUsuarioSucursal(ModelousuarioSucursal);
                             if (string.IsNullOrEmpty(error))
                             {

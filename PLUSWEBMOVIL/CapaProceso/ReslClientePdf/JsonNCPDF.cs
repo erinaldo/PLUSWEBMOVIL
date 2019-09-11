@@ -1,4 +1,5 @@
 ﻿using CapaDatos.Modelos;
+using CapaDatos.Sql;
 using CapaProceso.Consultas;
 using CapaProceso.Modelos;
 using CapaProceso.RestCliente;
@@ -35,64 +36,102 @@ namespace CapaProceso.ReslClientePdf
         public string Ven__cod_tipotit = "cliente";
         public string Ven__cod_tit = " ";
         public string impuesto_rest = "0";
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo = "JsonNCPDF.cs";
         public JsonPdfNCElectronica RespuestaJSONPdf(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string pdfbase64)
         {
-            JsonPdfNCElectronica jsonPdf = new JsonPdfNCElectronica();
-            EncabezadoNCR encabezado = new EncabezadoNCR();
-            DocumentoNCR documento = new DocumentoNCR();
-            /* Datos de encabezado de la factura */
-            encabezado = LlenarEnacabezadoPdfJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pdfbase64);
-            documento.encabezado = encabezado;
-            jsonPdf.documento = documento;
+            try
+            {
+                JsonPdfNCElectronica jsonPdf = new JsonPdfNCElectronica();
+                EncabezadoNCR encabezado = new EncabezadoNCR();
+                DocumentoNCR documento = new DocumentoNCR();
+                /* Datos de encabezado de la factura */
+                encabezado = LlenarEnacabezadoPdfJSON(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pdfbase64);
+                documento.encabezado = encabezado;
+                jsonPdf.documento = documento;
 
 
 
-            return jsonPdf;
+                return jsonPdf;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "RespuestaJSONPdf", e.ToString(), DateTime.Today, Ccf_usuario);
+                return null;
+            }
         }
 
         public EncabezadoNCR LlenarEnacabezadoPdfJSON(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string pdfbase64)
         {
-            EncabezadoNCR encabezado = new EncabezadoNCR();
+            try
+            {
+                EncabezadoNCR encabezado = new EncabezadoNCR();
 
-            conscabcera = null;
-            conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                conscabcera = null;
+                conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
-            Modeloempresa = null;
-            Modeloempresa = BuscarCabEmpresa(Ccf_usuario, Ccf_cod_emp);
+                Modeloempresa = null;
+                Modeloempresa = BuscarCabEmpresa(Ccf_usuario, Ccf_cod_emp);
 
-           
-           encabezado.emisor = Convert.ToInt32(Modeloempresa.nro_dgi2);
-            encabezado.idsuc = 1;
-            encabezado.numero = Convert.ToInt32(conscabcera.nro_docum);
-            encabezado.prefijo = Convert.ToString(conscabcera.serie_docum.Trim());
-            encabezado.contenidopdf = pdfbase64;
 
-            return encabezado;
+                encabezado.emisor = Convert.ToInt32(Modeloempresa.nro_dgi2);
+                encabezado.idsuc = 1;
+                encabezado.numero = Convert.ToInt32(conscabcera.nro_docum);
+                encabezado.prefijo = Convert.ToString(conscabcera.serie_docum.Trim());
+                encabezado.contenidopdf = pdfbase64;
+
+                return encabezado;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "LlenarEnacabezadoPdfJSON", e.ToString(), DateTime.Today, Ccf_usuario);
+                return null;
+            }
         }
         public modelowmtfacturascab buscarCabezeraFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
-
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-            int count = 0;
-            conscabcera = null;
-            foreach (modelowmtfacturascab item in listaConsCab)
+            try
             {
-                count++;
-                conscabcera = item;
 
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
+
+                }
+                return conscabcera;
             }
-            return conscabcera;
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "buscarCabezeraFactura", e.ToString(), DateTime.Today, Ccf_usuario);
+                return null;
+            }
         }
         public modelowmspcempresas BuscarCabEmpresa(string Ccf_usuario, string Ccf_cod_emp)
         {
-            ListaModeloempresa = consultaEmpresa.BuscartaEmpresa(Ccf_usuario, Ccf_cod_emp);
-            foreach (var item in ListaModeloempresa)
+            try
             {
-                Modeloempresa = item;
-                break;
-            }
+                ListaModeloempresa = consultaEmpresa.BuscartaEmpresa(Ccf_usuario, Ccf_cod_emp);
+                foreach (var item in ListaModeloempresa)
+                {
+                    Modeloempresa = item;
+                    break;
+                }
 
-            return Modeloempresa;
+                return Modeloempresa;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "BuscarCabEmpresa", e.ToString(), DateTime.Today, Ccf_usuario);
+                return null;
+            }
         }
 
 

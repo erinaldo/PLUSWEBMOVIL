@@ -12,6 +12,8 @@ namespace CapaDatos.Sql
     {
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo = "FacturaDetalle.cs";
         public string InsertarDetalle(ModeloDetalleFactura detalleFactura)
         {
             try
@@ -48,7 +50,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(detalleFactura.cod_emp, metodo, "InsertarDetalle", e.ToString(), DateTime.Today, detalleFactura.usuario_mod);
+                return "No se pudo completar la acción." + "InsertarDetalle." + " Por favor notificar al administrador.";
             }
 
         }
@@ -93,54 +96,81 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(detalleFactura.cod_emp, metodo, "InsertarDetalleNCFinanciera", e.ToString(), DateTime.Today, detalleFactura.usuario_mod);
+                return "No se pudo completar la acción." + "InsertarDetalleNCFinanciera." + " Por favor notificar al administrador.";
             }
-
         }
         public SqlDataReader ConsultaDetalleFactura(string nro_trans)
         {
-            cn = conexion.genearConexion();
-            string consulta = "SELECT * FROM wmt_facturas_det WHERE nro_trans =@nro_trans ORDER BY linea ASC";
-            SqlCommand conmand = new SqlCommand(consulta, cn);
+            try
+            {
+                cn = conexion.genearConexion();
+                string consulta = "SELECT * FROM wmt_facturas_det WHERE nro_trans =@nro_trans ORDER BY linea ASC";
+                SqlCommand conmand = new SqlCommand(consulta, cn);
 
-            conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
 
 
 
-            SqlDataReader dr = conmand.ExecuteReader();
+                SqlDataReader dr = conmand.ExecuteReader();
 
-            return dr;
+                return dr;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ConsultaDetalleFactura", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
         //Consulta detalle Factura para NC por devolucion 
         public SqlDataReader ConsultaDetalleFacNCDev(string nro_trans, string articulo)
         {
-            cn = conexion.genearConexion();
-            string consulta = "SELECT * FROM wmt_facturas_det WHERE nro_trans =@nro_trans AND  cod_articulo like @articulo or nro_trans =@nro_trans AND nom_articulo like @articulo";
-            SqlCommand conmand = new SqlCommand(consulta, cn);
+            try
+            {
+                cn = conexion.genearConexion();
+                string consulta = "SELECT * FROM wmt_facturas_det WHERE nro_trans =@nro_trans AND  cod_articulo like @articulo or nro_trans =@nro_trans AND nom_articulo like @articulo";
+                SqlCommand conmand = new SqlCommand(consulta, cn);
 
-            conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
-            conmand.Parameters.Add("articulo", SqlDbType.VarChar).Value = articulo;
+                conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                conmand.Parameters.Add("articulo", SqlDbType.VarChar).Value = articulo;
 
-            SqlDataReader dr = conmand.ExecuteReader();
+                SqlDataReader dr = conmand.ExecuteReader();
 
-            return dr;
+                return dr;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ConsultaDetalleFacNCDev", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
 
         //Consulta detalle global de todas las notas de credito disponibles y saber el dato exacto de las entregadas 
         public SqlDataReader ConsultaDetCantNCDev(string cod_emp, string nro_doca, string serie_doca, string cod_articulo)
         {
-            cn = conexion.genearConexion();
-            string consulta = "SELECT Sum(wmt_facturas_det.cantidad) AS cantidad,wmt_facturas_det.cod_articulo,wmt_facturas_det.serie_doca,wmt_facturas_det.nro_doca,wmt_facturas_det.cod_emp FROM wmt_facturas_det INNER JOIN wmt_facturas_cab ON wmt_facturas_cab.nro_trans = wmt_facturas_det.nro_trans WHERE wmt_facturas_det.cod_emp = @cod_emp AND wmt_facturas_det.nro_doca = @nro_doca AND wmt_facturas_det.serie_doca = @serie_doca AND wmt_facturas_det.cod_articulo = @cod_articulo AND wmt_facturas_cab.tipo IN ('NCVE' ,'NCV', 'NCME', 'NCM') AND wmt_facturas_cab.estado  IN('F' ,'C')  GROUP BY wmt_facturas_det.cod_emp,wmt_facturas_det.cod_doca,wmt_facturas_det.nro_doca,wmt_facturas_det.serie_doca,wmt_facturas_det.cod_articulo";
-            SqlCommand conmand = new SqlCommand(consulta, cn);
+            try
+            {
+                cn = conexion.genearConexion();
+                string consulta = "SELECT Sum(wmt_facturas_det.cantidad) AS cantidad,wmt_facturas_det.cod_articulo,wmt_facturas_det.serie_doca,wmt_facturas_det.nro_doca,wmt_facturas_det.cod_emp FROM wmt_facturas_det INNER JOIN wmt_facturas_cab ON wmt_facturas_cab.nro_trans = wmt_facturas_det.nro_trans WHERE wmt_facturas_det.cod_emp = @cod_emp AND wmt_facturas_det.nro_doca = @nro_doca AND wmt_facturas_det.serie_doca = @serie_doca AND wmt_facturas_det.cod_articulo = @cod_articulo AND wmt_facturas_cab.tipo IN ('NCVE' ,'NCV', 'NCME', 'NCM') AND wmt_facturas_cab.estado  IN('F' ,'C')  GROUP BY wmt_facturas_det.cod_emp,wmt_facturas_det.cod_doca,wmt_facturas_det.nro_doca,wmt_facturas_det.serie_doca,wmt_facturas_det.cod_articulo";
+                SqlCommand conmand = new SqlCommand(consulta, cn);
 
-            conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
-            conmand.Parameters.Add("nro_doca", SqlDbType.VarChar).Value = nro_doca;
-            conmand.Parameters.Add("serie_doca", SqlDbType.VarChar).Value = serie_doca;
-            conmand.Parameters.Add("cod_articulo", SqlDbType.VarChar).Value = cod_articulo;
+                conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                conmand.Parameters.Add("nro_doca", SqlDbType.VarChar).Value = nro_doca;
+                conmand.Parameters.Add("serie_doca", SqlDbType.VarChar).Value = serie_doca;
+                conmand.Parameters.Add("cod_articulo", SqlDbType.VarChar).Value = cod_articulo;
 
-            SqlDataReader dr = conmand.ExecuteReader();
+                SqlDataReader dr = conmand.ExecuteReader();
 
-            return dr;
+                return dr;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ConsultaDetCantNCDev", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
     }
 }

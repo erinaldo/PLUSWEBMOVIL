@@ -12,18 +12,28 @@ namespace CapaDatos.Sql
     {
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
-        
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo = "FPagosPos.cs";
         //Medios de pagos
-            public SqlDataReader consultaFormaPag()
+        public SqlDataReader consultaFormaPag()
         {
-            cn = conexion.genearConexion();
+            try
+            {
+                cn = conexion.genearConexion();
 
-            string consulta = "SELECT  * FROM wmm_fpagoPOS";
-            SqlCommand conmand = new SqlCommand(consulta, cn);
-            SqlDataReader dr = conmand.ExecuteReader();
-            
-            return dr;
-           
+                string consulta = "SELECT  * FROM wmm_fpagoPOS";
+                SqlCommand conmand = new SqlCommand(consulta, cn);
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                return dr;
+            }
+
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "consultaFormaPag", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
         /*Insertar pagos en wmt_facturas_pgs*/
 
@@ -56,7 +66,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(cabezeraFactura.cod_emp, metodo, "InsertarFacturaPagos", e.ToString(), DateTime.Today, "INS");
+                return "No se pudo completar la acción." + "InsertarFacturaPagos." + " Por favor notificar al administrador.";
             }
 
 
@@ -86,9 +97,9 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(cabezeraFactura.cod_emp, metodo, "InsertarTiposPagos", e.ToString(), DateTime.Today, "INS");
+                return "No se pudo completar la acción." + "InsertarTiposPagos." + " Por favor notificar al administrador.";
             }
-
 
 
         }
@@ -121,7 +132,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "EliminarDetallePagosLinea", e.ToString(), DateTime.Today, "DLT");
+                return "No se pudo completar la acción." + "EliminarDetallePagosLinea." + " Por favor notificar al administrador.";
             }
 
         }
@@ -149,7 +161,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "EliminarDetallePagosFactura", e.ToString(), DateTime.Today, "DLT");
+                return "No se pudo completar la acción." + "EliminarDetallePagosFactura." + " Por favor notificar al administrador.";
             }
 
         }
@@ -183,7 +196,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "EliminarTemporal", e.ToString(), DateTime.Today, "DLT");
+                return "No se pudo completar la acción." + "EliminarTemporal." + " Por favor notificar al administrador.";
             }
 
         }
@@ -192,44 +206,52 @@ namespace CapaDatos.Sql
         public List<modeloFacturasPagos> BuscarVueltoPgs( string nro_trans)
         {
 
-
-            using (cn = conexion.genearConexion())
+            try
             {
-                List<modeloFacturasPagos> lista = new List<modeloFacturasPagos>();
-
-                string consulta = ("select*from wmt_facturas_pgs where nro_trans = @nro_trans  ORDER BY linea DESC");
-                SqlCommand conmand = new SqlCommand(consulta, cn);
-               
-               
-                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
-
-
-                SqlDataReader dr = conmand.ExecuteReader();
-
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
+                    List<modeloFacturasPagos> lista = new List<modeloFacturasPagos>();
 
-                    modeloFacturasPagos item = new modeloFacturasPagos();
+                    string consulta = ("select*from wmt_facturas_pgs where nro_trans = @nro_trans  ORDER BY linea DESC");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                    item.nro_trans = Convert.ToString(dr["nro_trans"]);
-                    item.linea = Convert.ToInt16(dr["linea"]);
-                    item.cod_emp = Convert.ToString(dr["cod_emp"]);
-                    item.cod_fpago = Convert.ToString(dr["cod_fpago"]);
-                   
-                    item.cod_tit = Convert.ToString(dr["cod_tit"]);
-                    item.cod_docum = Convert.ToString(dr["cod_docum"]);
-                    item.nro_docum = Convert.ToString(dr["nro_docum"]);
-                    item.cod_cta = Convert.ToString(dr["cod_cta"]);
-                    item.recibido = Convert.ToDecimal(dr["recibido"]);
-                    item.valor = Convert.ToDecimal(dr["valor"]);
-                    item.diferencia = Convert.ToDecimal(dr["diferencia"]);
-                   
-                    
-                    lista.Add(item);
 
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloFacturasPagos item = new modeloFacturasPagos();
+
+                        item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                        item.linea = Convert.ToInt16(dr["linea"]);
+                        item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                        item.cod_fpago = Convert.ToString(dr["cod_fpago"]);
+
+                        item.cod_tit = Convert.ToString(dr["cod_tit"]);
+                        item.cod_docum = Convert.ToString(dr["cod_docum"]);
+                        item.nro_docum = Convert.ToString(dr["nro_docum"]);
+                        item.cod_cta = Convert.ToString(dr["cod_cta"]);
+                        item.recibido = Convert.ToDecimal(dr["recibido"]);
+                        item.valor = Convert.ToDecimal(dr["valor"]);
+                        item.diferencia = Convert.ToDecimal(dr["diferencia"]);
+
+
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
                 }
+            }
+            catch (Exception e)
+            {
 
-                return lista;
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "BuscarVueltoPgs", e.ToString(), DateTime.Today, "consulta");
+                return null;
             }
         }
 

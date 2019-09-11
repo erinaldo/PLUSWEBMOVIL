@@ -12,46 +12,55 @@ namespace CapaDatos.Sql
     {
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
         //Prueba depositos del dia lupa
         public List<modeloDepositosDia> ListaCierreCF(string fecha, Int64 secuencial, string codigo, string cod_emp)
         {
-
-            using (cn = conexion.genearConexion())
+            try
             {
-                List<modeloDepositosDia> lista = new List<modeloDepositosDia>();
-                string consulta = ("select * from wmt_cierre_resumencaja WHERE fecha_cie =@fecha_cie and secuencial = @secuencial and codigo= @codigo and cod_emp= @cod_emp");
-                SqlCommand conmand = new SqlCommand(consulta, cn);
-
-                conmand.Parameters.Add("fecha_cie", SqlDbType.VarChar).Value = fecha;
-                conmand.Parameters.Add("secuencial", SqlDbType.BigInt).Value = secuencial;
-                conmand.Parameters.Add("codigo", SqlDbType.VarChar).Value = codigo;
-                conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
-
-                SqlDataReader dr = conmand.ExecuteReader();
-
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
+                    List<modeloDepositosDia> lista = new List<modeloDepositosDia>();
+                    string consulta = ("select * from wmt_cierre_resumencaja WHERE fecha_cie =@fecha_cie and secuencial = @secuencial and codigo= @codigo and cod_emp= @cod_emp");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                    modeloDepositosDia item = new modeloDepositosDia();
-                    item.id = Convert.ToString(dr["id"]);
-                    item.secuencial = Convert.ToInt64(dr["secuencial"]);
-                    item.signo = Convert.ToString(dr["signo"]);
-                    item.codigo = Convert.ToString(dr["codigo"]);
-                    item.nombre = Convert.ToString(dr["nombre"]);
-                    item.valor = Convert.ToDecimal(dr["valor"]);
-                    item.valor1 = String.Format("{0:N2}", item.valor).ToString();
-                    item.fecha_cie = Convert.ToString(dr["fecha_cie"]);
-                    item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
-                    item.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
-                    item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
-                    item.nro_audit = Convert.ToString(dr["nro_audit"]);
-                    item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                    conmand.Parameters.Add("fecha_cie", SqlDbType.VarChar).Value = fecha;
+                    conmand.Parameters.Add("secuencial", SqlDbType.BigInt).Value = secuencial;
+                    conmand.Parameters.Add("codigo", SqlDbType.VarChar).Value = codigo;
+                    conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
 
-                    lista.Add(item);
+                    SqlDataReader dr = conmand.ExecuteReader();
 
+                    while (dr.Read())
+                    {
+
+                        modeloDepositosDia item = new modeloDepositosDia();
+                        item.id = Convert.ToString(dr["id"]);
+                        item.secuencial = Convert.ToInt64(dr["secuencial"]);
+                        item.signo = Convert.ToString(dr["signo"]);
+                        item.codigo = Convert.ToString(dr["codigo"]);
+                        item.nombre = Convert.ToString(dr["nombre"]);
+                        item.valor = Convert.ToDecimal(dr["valor"]);
+                        item.valor1 = String.Format("{0:N2}", item.valor).ToString();
+                        item.fecha_cie = Convert.ToString(dr["fecha_cie"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        item.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
+                        item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
+                        item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                        item.cod_emp = Convert.ToString(dr["cod_emp"]);
+
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
                 }
+            }
+            catch (Exception e)
+            {
 
-                return lista;
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "DepositoDiaCC.cs", "ListaArticulos", e.ToString(), DateTime.Today, "consulta");
+                return null;
             }
 
         }

@@ -14,70 +14,88 @@ namespace CapaDatos.Sql
     {
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
+
         public List<JsonRespuestaNC> ConsultaRespuestaQR(string nro_trans)
         {
-            using (cn = conexion.genearConexion())
+            try
             {
-                List<JsonRespuestaNC> lista = new List<JsonRespuestaNC>();
-                string consulta = "SELECT * FROM wmt_respuestaDS WHERE nro_trans =@nro_trans ORDER BY linea DESC";
-                SqlCommand conmand = new SqlCommand(consulta, cn);
-
-                conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
-
-                SqlDataReader dr = conmand.ExecuteReader();
-
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
-                    JsonRespuestaNC item = new JsonRespuestaNC();
-                    item.nro_trans = Convert.ToString(dr["nro_trans"]);
-                    item.linea = Convert.ToInt16(dr["linea"]);
-                    item.qrdata = Convert.ToString(dr["qrdata"]);
-                    item.xml = Convert.ToString(dr["xml"]);
-                    item.id = Convert.ToString(dr["id"]);
-                    item.cufe = Convert.ToString(dr["cufe"]);
-                    item.error = Convert.ToString(dr["error"]);
-                    item.json = Convert.ToString(dr["json"]);
-                    item.result = Convert.ToString(dr["result"]);
-                    lista.Add(item);
-                }
+                    List<JsonRespuestaNC> lista = new List<JsonRespuestaNC>();
+                    string consulta = "SELECT * FROM wmt_respuestaDS WHERE nro_trans =@nro_trans ORDER BY linea DESC";
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                return lista;
+                    conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        JsonRespuestaNC item = new JsonRespuestaNC();
+                        item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                        item.linea = Convert.ToInt16(dr["linea"]);
+                        item.qrdata = Convert.ToString(dr["qrdata"]);
+                        item.xml = Convert.ToString(dr["xml"]);
+                        item.id = Convert.ToString(dr["id"]);
+                        item.cufe = Convert.ToString(dr["cufe"]);
+                        item.error = Convert.ToString(dr["error"]);
+                        item.json = Convert.ToString(dr["json"]);
+                        item.result = Convert.ToString(dr["result"]);
+                        lista.Add(item);
+                    }
+
+                    return lista;
+                }
             }
-            
-            
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "RespuestaNC.cs", "ConsultaRespuestaQR", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
+
         }
         //Consultar por linea la respuesta
         public List<JsonRespuestaNC> RespuestaLineaQR(string nro_trans,  string linea)
         {
-            using (cn = conexion.genearConexion())
+            try
             {
-                List<JsonRespuestaNC> lista = new List<JsonRespuestaNC>();
-                string consulta = "SELECT * FROM wmt_respuestaDS WHERE nro_trans =@nro_trans AND linea = @linea";
-                SqlCommand conmand = new SqlCommand(consulta, cn);
-
-                conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
-                conmand.Parameters.Add("linea", SqlDbType.VarChar).Value = linea;
-
-                SqlDataReader dr = conmand.ExecuteReader();
-
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
-                    JsonRespuestaNC item = new JsonRespuestaNC();
-                    item.nro_trans = Convert.ToString(dr["nro_trans"]);
-                    item.linea = Convert.ToInt16(dr["linea"]);
-                    item.qrdata = Convert.ToString(dr["qrdata"]);
-                    item.xml = Convert.ToString(dr["xml"]);
-                    item.id = Convert.ToString(dr["id"]);
-                    item.cufe = Convert.ToString(dr["cufe"]);
-                    item.error = Convert.ToString(dr["error"]);
-                    item.json = Convert.ToString(dr["json"]);
-                    item.result = Convert.ToString(dr["result"]);
-                    lista.Add(item);
-                }
+                    List<JsonRespuestaNC> lista = new List<JsonRespuestaNC>();
+                    string consulta = "SELECT * FROM wmt_respuestaDS WHERE nro_trans =@nro_trans AND linea = @linea";
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                return lista;
-            }           
-           
+                    conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                    conmand.Parameters.Add("linea", SqlDbType.VarChar).Value = linea;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        JsonRespuestaNC item = new JsonRespuestaNC();
+                        item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                        item.linea = Convert.ToInt16(dr["linea"]);
+                        item.qrdata = Convert.ToString(dr["qrdata"]);
+                        item.xml = Convert.ToString(dr["xml"]);
+                        item.id = Convert.ToString(dr["id"]);
+                        item.cufe = Convert.ToString(dr["cufe"]);
+                        item.error = Convert.ToString(dr["error"]);
+                        item.json = Convert.ToString(dr["json"]);
+                        item.result = Convert.ToString(dr["result"]);
+                        lista.Add(item);
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "RespuestaNC.cs", "RespuestaLineaQR", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
 
         public string InsertarRespuestaNC(JsonRespuestaNC jsonRespuestaNC)
@@ -107,7 +125,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(jsonRespuestaNC.nro_trans, "RespuestaDC.cs", "InsertarRespuestaNC", e.ToString(), DateTime.Today, "INS");
+                return "No se pudo completar la acción." + "InsertarRespuestaNC." + " Por favor notificar al administrador.";
             }
 
         }

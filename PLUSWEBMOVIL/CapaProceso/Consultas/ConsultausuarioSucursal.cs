@@ -13,31 +13,61 @@ namespace CapaProceso.Consultas
     {
         
         UsuarioSucursal guardarSucursal = new UsuarioSucursal();
-        modeloUsuariosucursal ModeloUsuario = new modeloUsuariosucursal();
+     
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo ="ConsultausuarioSucursal";
 
         public string InsertarUsuarioSucursal(modeloUsuariosucursal ModeloUsuSucursal)
         {
-            string respuesta = guardarSucursal.InsertarUsuarioSucursal(ModeloUsuSucursal);
-            return respuesta;
+            try
+            {
+                string respuesta = guardarSucursal.InsertarUsuarioSucursal(ModeloUsuSucursal);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(ModeloUsuSucursal.cod_emp, metodo, "InsertarUsuarioSucursal", e.ToString(), DateTime.Today, ModeloUsuSucursal.usuario_mod);
+                return "No se pudo completar la acción." + "InsertarUsuarioSucursal." + " Por favor notificar al administrador.";
+            }
+
         }
 
         //Actualizar usuario
         UsuarioSucursal updateSucursal = new UsuarioSucursal();
-        modeloUsuariosucursal ModeloUsuarioActualizar = new modeloUsuariosucursal();
+       
 
         public string ActualizarUsuarioSucursal(modeloUsuariosucursal ActualizarUsuSucursal)
         {
-            string respuesta = updateSucursal.ActualizarUsuarioSucursal(ActualizarUsuSucursal);
-            return respuesta;
+            try
+            {
+                string respuesta = updateSucursal.ActualizarUsuarioSucursal(ActualizarUsuSucursal);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(ActualizarUsuSucursal.cod_emp, metodo, "ActualizarUsuarioSucursal", e.ToString(), DateTime.Today, ActualizarUsuSucursal.usuario_mod);
+                return "No se pudo completar la acción." + "ActualizarUsuarioSucursal." + " Por favor notificar al administrador.";
+            }
         }
         //Eliminar usuario
         UsuarioSucursal deleteSucursal = new UsuarioSucursal();
-        modeloUsuariosucursal ModeloUsuarioDelete = new modeloUsuariosucursal();
+        
 
         public string EliminarrUsuarioSucursal(modeloUsuariosucursal EliminarUsuSucursal)
         {
-            string respuesta = deleteSucursal.EliminarUsuarioSucursal(EliminarUsuSucursal);
-            return respuesta;
+            try
+            {
+                string respuesta = deleteSucursal.EliminarUsuarioSucursal(EliminarUsuSucursal);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(EliminarUsuSucursal.cod_emp, metodo, "EliminarUsuarioSucursal", e.ToString(), DateTime.Today, EliminarUsuSucursal.usuario_mod);
+                return "No se pudo completar la acción." + "EliminarUsuarioSucursal." + " Por favor notificar al administrador.";
+            }
         }
     }
 }

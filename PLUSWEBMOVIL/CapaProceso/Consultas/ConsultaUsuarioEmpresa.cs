@@ -15,12 +15,22 @@ namespace CapaProceso.Consultas
         
         UsuarioxEmpresa consulta = new UsuarioxEmpresa();
         modeloUsuarioxempresa ModeloUsuarioempresa = new modeloUsuarioxempresa();
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
         public List<modeloUsuarioxempresa> ConsultaUsuariosEmpresa(string Ccf_cod_emp)
         {
+            try
+            {
 
-            List<modeloUsuarioxempresa> lista = new List<modeloUsuarioxempresa>();
-            lista = consulta.ConsultaUsuarioEmpresa(Ccf_cod_emp);            
-            return lista;
+                List<modeloUsuarioxempresa> lista = new List<modeloUsuarioxempresa>();
+                lista = consulta.ConsultaUsuarioEmpresa(Ccf_cod_emp);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, "UsuarioxEmpresa.cs", "ConsultaUsuarioEmpresa", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
     }
 }

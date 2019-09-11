@@ -15,45 +15,65 @@ namespace CapaProceso.Consultas
   
         RespuestaDC guardar = new RespuestaDC();
         JsonRespuestaDE modeloRespuestaJson = new JsonRespuestaDE();
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
         public List<JsonRespuestaDE> ListaModelorespuestaDs = new List<JsonRespuestaDE>();
         public List<JsonRespuestaDE> ListaBuscarQr = null;
         public JsonRespuestaDE ModeloResQr = new JsonRespuestaDE();
         public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
+        string metodo = "GuardarrespuestaDS.cs";
         public string InsertarRespuestaJson(JsonRespuestaDE jsonRespuestaDE)
         {
-            //consultar datos en la tabla wmt_respuestaDS secuencial para insertar linea
-            ModeloResQr = null;
-            ModeloResQr = BuscarRespuestaDS(jsonRespuestaDE.nro_trans);
-            if (ModeloResQr == null)
+            try
             {
-                if (jsonRespuestaDE.linea <= 0)
+                //consultar datos en la tabla wmt_respuestaDS secuencial para insertar linea
+                ModeloResQr = null;
+                ModeloResQr = BuscarRespuestaDS(jsonRespuestaDE.nro_trans);
+                if (ModeloResQr == null)
                 {
-                    jsonRespuestaDE.linea = 1;
+                    if (jsonRespuestaDE.linea <= 0)
+                    {
+                        jsonRespuestaDE.linea = 1;
+                    }
+
                 }
+                else
+                {
+                    jsonRespuestaDE.linea = ModeloResQr.linea + 1;
 
+                }
+                string respuesta = guardar.InsertarRespuestaDS(jsonRespuestaDE);
+
+                return respuesta;
             }
-            else
+            catch (Exception e)
             {
-                jsonRespuestaDE.linea = ModeloResQr.linea + 1;
 
+                guardarExcepcion.ClaseInsertarExcepcion(jsonRespuestaDE.nro_trans, metodo, "InsertarRespuestaJson", e.ToString(), DateTime.Today, "consulta");
+                return null;
             }
-            string respuesta = guardar.InsertarRespuestaDS(jsonRespuestaDE);
-
-            return respuesta;
         }
 
 
         public JsonRespuestaDE BuscarRespuestaDS(string Ccf_nro_trans)
         {
-            ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(Ccf_nro_trans);
-
-            foreach (var item in ListaModelorespuestaDs)
+            try
             {
-                ModeloResQr = item;
-                break;
-            }
+                ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(Ccf_nro_trans);
 
-            return ModeloResQr;
+                foreach (var item in ListaModelorespuestaDs)
+                {
+                    ModeloResQr = item;
+                    break;
+                }
+
+                return ModeloResQr;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_nro_trans, metodo, "BuscarRespuestaDS", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
     }
 }

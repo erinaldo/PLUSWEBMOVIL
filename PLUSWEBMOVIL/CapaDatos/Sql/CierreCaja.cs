@@ -13,101 +13,131 @@ namespace CapaDatos.Sql
         
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo = "CierreCaja.cs";
         //Modelo cierre de caja tabla wmt_cierre_resumencaja
 
         //Buscar por fecha
         public Int64 BuscarCierreDiaSecuencial(string fecha_cie, string cod_emp)
         {
-
-            Int64 secuencial = 0;
-            
-            using (cn = conexion.genearConexion())
+            try
             {
-                string insert = "SELECT TOP 1  secuencial FROM wmt_cierre_resumencaja where fecha_cie = @fecha_cie AND cod_emp =@cod_emp ORDER BY wmt_cierre_resumencaja.secuencial DESC ";
-                SqlCommand conmand = new SqlCommand(insert, cn);
+                Int64 secuencial = 0;
 
-                conmand.Parameters.Add("@fecha_cie", SqlDbType.VarChar).Value = fecha_cie;
-                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                using (cn = conexion.genearConexion())
+                {
+                    string insert = "SELECT TOP 1  secuencial FROM wmt_cierre_resumencaja where fecha_cie = @fecha_cie AND cod_emp =@cod_emp ORDER BY wmt_cierre_resumencaja.secuencial DESC ";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
 
-                SqlDataReader dr = conmand.ExecuteReader();
+                    conmand.Parameters.Add("@fecha_cie", SqlDbType.VarChar).Value = fecha_cie;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
 
-                while (dr.Read())
-                {                    
-                    secuencial = Convert.ToInt64(dr["secuencial"]);
-                    
+                    SqlDataReader dr = conmand.ExecuteReader();
 
+                    while (dr.Read())
+                    {
+                        secuencial = Convert.ToInt64(dr["secuencial"]);
+
+
+                    }
+
+                    return secuencial + 1;
                 }
+            }
 
-                return secuencial + 1;
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion( cod_emp, metodo, "BuscarCierreDiaSecuencial", e.ToString(), DateTime.Today, "consulta");
+                return 0;
             }
         }
 
         //ultimo secuencial
         public Int64 UltimoCierreDiaSecuencial(string fecha_cie,string cod_emp)
         {
-
-            Int64 secuencial = 0;
-
-            using (cn = conexion.genearConexion())
+            try
             {
-                string insert = "SELECT TOP 1  secuencial FROM wmt_cierre_resumencaja where fecha_cie = @fecha_cie and cod_emp=@cod_emp ORDER BY dbo.wmt_cierre_resumencaja.secuencial DESC ";
-                SqlCommand conmand = new SqlCommand(insert, cn);
 
-                conmand.Parameters.Add("@fecha_cie", SqlDbType.VarChar).Value = fecha_cie;
-                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                Int64 secuencial = 0;
 
-                SqlDataReader dr = conmand.ExecuteReader();
-
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
-                    secuencial = Convert.ToInt64(dr["secuencial"]);
+                    string insert = "SELECT TOP 1  secuencial FROM wmt_cierre_resumencaja where fecha_cie = @fecha_cie and cod_emp=@cod_emp ORDER BY dbo.wmt_cierre_resumencaja.secuencial DESC ";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+
+                    conmand.Parameters.Add("@fecha_cie", SqlDbType.VarChar).Value = fecha_cie;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        secuencial = Convert.ToInt64(dr["secuencial"]);
 
 
+                    }
+
+                    return secuencial;
                 }
+            }
+            catch (Exception e)
+            {
 
-                return secuencial;
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "UltimoCierreDiaSecuencial", e.ToString(), DateTime.Today, "consulta");
+                return 0;
             }
         }
         //Resumen de ciere por fecha
         public List<modeloCierreCaja> ListaCierreCF(string fecha, Int64 secuencial, string codigo, string cod_emp)
         {
-
-            using (cn = conexion.genearConexion())
+            try
             {
-                List<modeloCierreCaja> lista = new List<modeloCierreCaja>();
-                string consulta = ("select * from wmt_cierre_resumencaja WHERE fecha_cie =@fecha_cie and secuencial = @secuencial and codigo= @codigo and cod_emp= @cod_emp");
-                SqlCommand conmand = new SqlCommand(consulta, cn);
-
-                conmand.Parameters.Add("fecha_cie", SqlDbType.VarChar).Value = fecha;
-                conmand.Parameters.Add("secuencial", SqlDbType.BigInt).Value = secuencial;
-                conmand.Parameters.Add("codigo", SqlDbType.VarChar).Value = codigo;
-                conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
-
-                SqlDataReader dr = conmand.ExecuteReader();
-
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
+                    List<modeloCierreCaja> lista = new List<modeloCierreCaja>();
+                    string consulta = ("select * from wmt_cierre_resumencaja WHERE fecha_cie =@fecha_cie and secuencial = @secuencial and codigo= @codigo and cod_emp= @cod_emp");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                    modeloCierreCaja item = new modeloCierreCaja();
-                    item.id = Convert.ToString(dr["id"]);
-                    item.secuencial = Convert.ToInt64(dr["secuencial"]);
-                    item.signo = Convert.ToString(dr["signo"]);
-                    item.codigo = Convert.ToString(dr["codigo"]);
-                    item.nombre = Convert.ToString(dr["nombre"]);
-                    item.valor = Convert.ToDecimal(dr["valor"]);
-                    item.valor1 = String.Format("{0:N2}", item.valor).ToString();
-                    item.fecha_cie = Convert.ToString(dr["fecha_cie"]);
-                    item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
-                    item.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
-                    item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
-                    item.nro_audit = Convert.ToString(dr["nro_audit"]);
-                    item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                    conmand.Parameters.Add("fecha_cie", SqlDbType.VarChar).Value = fecha;
+                    conmand.Parameters.Add("secuencial", SqlDbType.BigInt).Value = secuencial;
+                    conmand.Parameters.Add("codigo", SqlDbType.VarChar).Value = codigo;
+                    conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
 
-                    lista.Add(item);
+                    SqlDataReader dr = conmand.ExecuteReader();
 
+                    while (dr.Read())
+                    {
+
+                        modeloCierreCaja item = new modeloCierreCaja();
+                        item.id = Convert.ToString(dr["id"]);
+                        item.secuencial = Convert.ToInt64(dr["secuencial"]);
+                        item.signo = Convert.ToString(dr["signo"]);
+                        item.codigo = Convert.ToString(dr["codigo"]);
+                        item.nombre = Convert.ToString(dr["nombre"]);
+                        item.valor = Convert.ToDecimal(dr["valor"]);
+                        item.valor1 = String.Format("{0:N2}", item.valor).ToString();
+                        item.fecha_cie = Convert.ToString(dr["fecha_cie"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        item.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
+                        item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
+                        item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                        item.cod_emp = Convert.ToString(dr["cod_emp"]);
+
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
                 }
+            }
 
-                return lista;
+
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp,metodo, "ListaCierreCF", e.ToString(), DateTime.Today,"consulta");
+                return null;
             }
 
         }
@@ -139,7 +169,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(Cierrecaja.cod_emp, metodo, "InsertarCierreCaja", e.ToString(), DateTime.Today, Cierrecaja.usuario_mod);
+                return "No se pudo completar la acción." + "InsertarCierreCaja." + " Por favor notificar al administrador.";
             }
 
         }
@@ -168,7 +199,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(Cierrecaja.cod_emp, metodo, "ActualizarCierreCaja", e.ToString(), DateTime.Today, Cierrecaja.usuario_mod);
+                return "No se pudo completar la acción." + "ActualizarCierreCaja." + " Por favor notificar al administrador.";
             }
 
         }
@@ -193,7 +225,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(Cierrecaja.cod_emp, metodo, "EliminarCierreCaja", e.ToString(), DateTime.Today, Cierrecaja.usuario_mod);
+                return "No se pudo completar la acción." + "EliminarCierreCaja." + " Por favor notificar al administrador.";
             }
 
         }

@@ -14,6 +14,7 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
         modeloActualizarDatosTitular modeloActualizarTitular = new modeloActualizarDatosTitular();
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
 
         public string ActualizarDatTitular(modeloActualizarDatosTitular ActualizarDatos)
         {
@@ -38,8 +39,9 @@ namespace CapaDatos.Sql
             }
             catch (Exception e)
             {
-
-                return e.ToString();
+                
+                guardarExcepcion.ClaseInsertarExcepcion(ActualizarDatos.empresa, "ActualizarDatosTitular.cs", "ActualizarDatTitular", e.ToString(), DateTime.Today, ActualizarDatos.usuario);
+                return "No se pudo completar la acción." + "ActualizarDatTitular." + " Por favor notificar al administrador."; 
             }
 
         }

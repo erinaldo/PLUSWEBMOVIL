@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Data;
 using CapaDatos.Modelos.ModeloHost;
 using CapaProceso.Consultas.ConsultaHost;
+using CapaDatos.Sql;
 
 namespace CapaProceso.Consultas
 {
@@ -21,21 +22,30 @@ namespace CapaProceso.Consultas
         public ConsultaHostmail Consultahost = new ConsultaHostmail();
         public modeloHostmail ModeloHost = new modeloHostmail();
         public List<modeloHostmail> ListaModeloHost = null;
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
 
         public modeloHostmail buscarDatosHostEmpresa(string cod_emp)
         {
-
-
-            ListaModeloHost = Consultahost.BuscarHostmail(cod_emp);
-            int count = 0;
-            ModeloHost = null;
-            foreach (modeloHostmail item in ListaModeloHost)
+            try
             {
-                count++;
-                ModeloHost = item;
 
+                ListaModeloHost = Consultahost.BuscarHostmail(cod_emp);
+                int count = 0;
+                ModeloHost = null;
+                foreach (modeloHostmail item in ListaModeloHost)
+                {
+                    count++;
+                    ModeloHost = item;
+
+                }
+                return ModeloHost;
             }
-            return ModeloHost;
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "EnviarCorreo.cs", "buscarDatosHostEmpresa", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
 
         public bool enviarcorreo(string asunto, string mensaje, string correo , List<string> adjunto, string cod_emp)
@@ -91,6 +101,8 @@ namespace CapaProceso.Consultas
             }
             catch (Exception e)
             {
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "EnviarCorreo.cs", " enviarcorreo", e.ToString(), DateTime.Today, "consulta");
+                
                 return false;
             }
 

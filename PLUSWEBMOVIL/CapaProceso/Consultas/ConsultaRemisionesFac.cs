@@ -12,19 +12,39 @@ namespace CapaProceso.Consultas
    public  class ConsultaRemisionesFac
     {
         RemisionesFactura consultaRemisiones = new RemisionesFactura();
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
         public List<modeloRemisionesFactura> BuscarRemisiones(string cod_cliente, string estado, string tipo)
         {
-            List<modeloRemisionesFactura> lista = new List<modeloRemisionesFactura>();
-            lista = consultaRemisiones.ListaRemisionesFactura(cod_cliente, estado, tipo);            
-            return lista;
+            try
+            {
+                List<modeloRemisionesFactura> lista = new List<modeloRemisionesFactura>();
+                lista = consultaRemisiones.ListaRemisionesFactura(cod_cliente, estado, tipo);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", "ConsultaRemisionesFac.cs", "BuscarRemisiones", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
 
         public List<modeloRemisionesFactura> BuscarRemisionUnica(string nro_trans)
         {
-            List<modeloRemisionesFactura> lista = new List<modeloRemisionesFactura>();
-            lista = consultaRemisiones.RemisionesFacturaUnico(nro_trans);
-            
-            return lista;
+            try
+            {
+                List<modeloRemisionesFactura> lista = new List<modeloRemisionesFactura>();
+                lista = consultaRemisiones.RemisionesFacturaUnico(nro_trans);
+
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "ConsultaRemisionesFac.cs", "BuscarRemisionUnica", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
+
         }
     }
 }

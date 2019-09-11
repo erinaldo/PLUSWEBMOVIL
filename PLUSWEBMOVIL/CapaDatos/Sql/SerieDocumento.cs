@@ -12,37 +12,46 @@ namespace CapaDatos.Sql
     {
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
         public List<modelowmspcresfact> ListaBuscaSerieDocumento(string ResF_usuario, string ResF_cod_emp, string ResF_estado, string ResF_serie, string ResF_tipo)
         {
 
-
-            using (cn = conexion.genearConexion())
+            try
             {
-                List<modelowmspcresfact> lista = new List<modelowmspcresfact>();
-                string consulta = ("wmspc_resfact");
-                SqlCommand conmand = new SqlCommand(consulta, cn);
-
-                conmand.CommandType = CommandType.StoredProcedure;
-
-                conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = ResF_usuario;
-                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = ResF_cod_emp;
-                conmand.Parameters.Add("@estado", SqlDbType.VarChar).Value = ResF_estado;
-                conmand.Parameters.Add("@serie", SqlDbType.VarChar).Value = ResF_serie;
-                conmand.Parameters.Add("@tipo", SqlDbType.VarChar).Value = ResF_tipo;
-
-                SqlDataReader dr = conmand.ExecuteReader();
-
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
+                    List<modelowmspcresfact> lista = new List<modelowmspcresfact>();
+                    string consulta = ("wmspc_resfact");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                    modelowmspcresfact item = new modelowmspcresfact(Convert.ToString(dr["cod_atrib1"]), Convert.ToString(dr["serie_docum"]), Convert.ToString(dr["nro_docum"]), Convert.ToString(dr["nro_docum_ref"]), Convert.ToString(dr["activo"]), Convert.ToString(dr["numerador"]), Convert.ToDateTime(dr["fec_valor"]), Convert.ToDateTime(dr["fec_venc"]), Convert.ToString(dr["tipo"]));
-                    lista.Add(item);
+                    conmand.CommandType = CommandType.StoredProcedure;
 
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = ResF_usuario;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = ResF_cod_emp;
+                    conmand.Parameters.Add("@estado", SqlDbType.VarChar).Value = ResF_estado;
+                    conmand.Parameters.Add("@serie", SqlDbType.VarChar).Value = ResF_serie;
+                    conmand.Parameters.Add("@tipo", SqlDbType.VarChar).Value = ResF_tipo;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modelowmspcresfact item = new modelowmspcresfact(Convert.ToString(dr["cod_atrib1"]), Convert.ToString(dr["serie_docum"]), Convert.ToString(dr["nro_docum"]), Convert.ToString(dr["nro_docum_ref"]), Convert.ToString(dr["activo"]), Convert.ToString(dr["numerador"]), Convert.ToDateTime(dr["fec_valor"]), Convert.ToDateTime(dr["fec_venc"]), Convert.ToString(dr["tipo"]));
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
                 }
+            }
+            catch (Exception e)
+            {
 
-                return lista;
-            }          
-            
+                guardarExcepcion.ClaseInsertarExcepcion(ResF_cod_emp, "SerieDocumento.cs", "ListaBuscaSerieDocumento", e.ToString(), DateTime.Today, ResF_usuario);
+                return null;
+            }
+
 
         }
     }

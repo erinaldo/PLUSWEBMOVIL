@@ -13,8 +13,9 @@ namespace CapaDatos.Sql
     {
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
-        
-      public string ConfirmarInsertarFactura(modeloinsertarconfirmar confirmarfactura)
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
+
+        public string ConfirmarInsertarFactura(modeloinsertarconfirmar confirmarfactura)
         {
             try
             {
@@ -37,7 +38,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion(confirmarfactura.cod_emp, "ConfirmarFactura.cs", "ConfirmarInsertarFactura", e.ToString(), DateTime.Today, confirmarfactura.usuario_mod);
+                return "No se pudo completar la acción." + "ConfirmarInsertarFactura." + " Por favor notificar al administrador.";
             }
 
 

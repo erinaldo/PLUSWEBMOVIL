@@ -12,21 +12,40 @@ namespace CapaProceso.Consultas
    public  class ConsultaProformasFac
     {
         ConsultaProformas consultaProformas = new ConsultaProformas();
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
 
 
         //Consultar unica cabecera
         public List<modelowmtproformascab> BuscarProformasCab(string nro_trans)
         {
-            List<modelowmtproformascab> lista = new List<modelowmtproformascab>();
-            lista = consultaProformas.ConsultaProformasFactura(nro_trans);            
-            return lista;
+            try
+            {
+                List<modelowmtproformascab> lista = new List<modelowmtproformascab>();
+                lista = consultaProformas.ConsultaProformasFactura(nro_trans);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "ConsultaProformasFac.cs", "BuscarProformasCab", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
         public List<modelowmtproformascab> BuscarProformas(string cod_cliente, string estado, string tipo)
         {
-            List<modelowmtproformascab> lista = new List<modelowmtproformascab>();
-            lista = consultaProformas.ListaProformasFactura( cod_cliente, estado, tipo);
-           
-            return lista;
+            try
+            {
+                List<modelowmtproformascab> lista = new List<modelowmtproformascab>();
+                lista = consultaProformas.ListaProformasFactura(cod_cliente, estado, tipo);
+
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", "ConsultaProformasFac.cs", "BuscarProformas", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
         }
     }
 }

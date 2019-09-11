@@ -12,114 +12,140 @@ namespace CapaDatos.Sql
     {
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
+        ExepcionesPW guardarExcepcion = new ExepcionesPW();
 
-     //Monedas por empresa dependiendo de las q tenga registradas
+        //Monedas por empresa dependiendo de las q tenga registradas
         public List<modelowmspcmonedas> ListaBuscaCMonedas(string MonB__usuario, string MonB__cod_emp, string MonB__moneda)
         {
-
-            using (cn = conexion.genearConexion())
+            try
             {
-                List<modelowmspcmonedas> lista = new List<modelowmspcmonedas>();
-                string consulta = ("wmspc_monedas");
-                SqlCommand conmand = new SqlCommand(consulta, cn);
-
-                conmand.CommandType = CommandType.StoredProcedure;
-                conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = MonB__usuario;
-                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = MonB__cod_emp;
-                conmand.Parameters.Add("@moneda", SqlDbType.VarChar).Value = MonB__moneda;
-
-                SqlDataReader dr = conmand.ExecuteReader();
-
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
+                    List<modelowmspcmonedas> lista = new List<modelowmspcmonedas>();
+                    string consulta = ("wmspc_monedas");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                    modelowmspcmonedas item = new modelowmspcmonedas();
-                    item.descripcion = Convert.ToString(dr["cod_moneda"]) + " - " + Convert.ToString(dr["simbolo_moneda"]);
-                    item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
-                    item.nom_moneda = Convert.ToString(dr["nom_moneda"]);
-                    item.simbolo_moneda = Convert.ToString(dr["simbolo_moneda"]);
-                    item.redondeo = Convert.ToString(dr["redondeo"]);
-                    item.redondeo_pu = Convert.ToString(dr["redondeo_pu"]);
+                    conmand.CommandType = CommandType.StoredProcedure;
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = MonB__usuario;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = MonB__cod_emp;
+                    conmand.Parameters.Add("@moneda", SqlDbType.VarChar).Value = MonB__moneda;
 
-                    lista.Add(item);
+                    SqlDataReader dr = conmand.ExecuteReader();
 
+                    while (dr.Read())
+                    {
+
+                        modelowmspcmonedas item = new modelowmspcmonedas();
+                        item.descripcion = Convert.ToString(dr["cod_moneda"]) + " - " + Convert.ToString(dr["simbolo_moneda"]);
+                        item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
+                        item.nom_moneda = Convert.ToString(dr["nom_moneda"]);
+                        item.simbolo_moneda = Convert.ToString(dr["simbolo_moneda"]);
+                        item.redondeo = Convert.ToString(dr["redondeo"]);
+                        item.redondeo_pu = Convert.ToString(dr["redondeo_pu"]);
+
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
                 }
-
-                return lista;
             }
-            
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(MonB__cod_emp, "CMonedas.cs", "ListaBuscaCMonedas", e.ToString(), DateTime.Today, MonB__usuario);
+                return null;
+            }
+
         }
 
         //Denominaciones de monedas maestro de  Denominacion wmm_denominacionMB por ID
         public List<modeloDenominacionesMoneda> ListaDenominacionUDP(string id)
         {
-
-            using (cn = conexion.genearConexion())
+            try
             {
-                List<modeloDenominacionesMoneda> lista = new List<modeloDenominacionesMoneda>();
-                string consulta = ("SELECT  * FROM wmm_denominacionMB WHERE id= @id ");
-                SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                conmand.Parameters.Add("@id", SqlDbType.VarChar).Value = id;
-
-                SqlDataReader dr = conmand.ExecuteReader();
-
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
+                    List<modeloDenominacionesMoneda> lista = new List<modeloDenominacionesMoneda>();
+                    string consulta = ("SELECT  * FROM wmm_denominacionMB WHERE id= @id ");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                    modeloDenominacionesMoneda item = new modeloDenominacionesMoneda();
-                    item.observaciones = Convert.ToString(dr["nombre"]) + " DE " + Convert.ToString(dr["valor"]);
-                    item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
-                    item.nombre = Convert.ToString(dr["nombre"]);
-                    item.valor = Convert.ToDecimal(dr["valor"]);
-                    item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
-                    item.fecha_mod = Convert.ToString(dr["fecha_mod"]);
-                    item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
-                    item.nro_audit = Convert.ToString(dr["nro_audit"]);
-                    lista.Add(item);
+                    conmand.Parameters.Add("@id", SqlDbType.VarChar).Value = id;
 
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloDenominacionesMoneda item = new modeloDenominacionesMoneda();
+                        item.observaciones = Convert.ToString(dr["nombre"]) + " DE " + Convert.ToString(dr["valor"]);
+                        item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
+                        item.nombre = Convert.ToString(dr["nombre"]);
+                        item.valor = Convert.ToDecimal(dr["valor"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        item.fecha_mod = Convert.ToString(dr["fecha_mod"]);
+                        item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
+                        item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
                 }
+            }
+            catch (Exception e)
+            {
 
-                return lista;
+                guardarExcepcion.ClaseInsertarExcepcion("0", "CMonedas.cs", "ListaDenominacionUDP", e.ToString(), DateTime.Today, "consulta");
+                return null;
             }
 
         }
         //Denominaciones de monedas maestro de  Denominacion wmm_denominacionMB por cod_moneda
         public List<modeloDenominacionesMoneda> ListaDenominacionEmpresa(string cod_moneda)
         {
-
-            using (cn = conexion.genearConexion())
+            try
             {
-                List<modeloDenominacionesMoneda> lista = new List<modeloDenominacionesMoneda>();
-                string consulta = ("SELECT  * FROM wmm_denominacionMB WHERE cod_moneda= @cod_moneda ");
-                SqlCommand conmand = new SqlCommand(consulta, cn);
-
-                conmand.Parameters.Add("cod_moneda", SqlDbType.VarChar).Value = cod_moneda;
-
-                SqlDataReader dr = conmand.ExecuteReader();
-
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
+                    List<modeloDenominacionesMoneda> lista = new List<modeloDenominacionesMoneda>();
+                    string consulta = ("SELECT  * FROM wmm_denominacionMB WHERE cod_moneda= @cod_moneda ");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                    modeloDenominacionesMoneda item = new modeloDenominacionesMoneda();
-                    item.id = Convert.ToString(dr["id"]);
-                   
-                    item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
-                    item.nombre = Convert.ToString(dr["nombre"]);
-                    item.valor = Convert.ToDecimal(dr["valor"]);
-                    string valor1 = String.Format("{0:N0}", item.valor).ToString();
-                    item.observaciones = Convert.ToString(dr["nombre"]) + " DE " + valor1;
-                    item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
-                    item.fecha_mod = Convert.ToString(dr["fecha_mod"]);
-                    item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
-                    item.nro_audit = Convert.ToString(dr["nro_audit"]);
-                    item.cantidad = 0;
-                    item.total = 0;
-                    lista.Add(item);
+                    conmand.Parameters.Add("cod_moneda", SqlDbType.VarChar).Value = cod_moneda;
 
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloDenominacionesMoneda item = new modeloDenominacionesMoneda();
+                        item.id = Convert.ToString(dr["id"]);
+
+                        item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
+                        item.nombre = Convert.ToString(dr["nombre"]);
+                        item.valor = Convert.ToDecimal(dr["valor"]);
+                        string valor1 = String.Format("{0:N0}", item.valor).ToString();
+                        item.observaciones = Convert.ToString(dr["nombre"]) + " DE " + valor1;
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        item.fecha_mod = Convert.ToString(dr["fecha_mod"]);
+                        item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
+                        item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                        item.cantidad = 0;
+                        item.total = 0;
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
                 }
+            }
+            catch (Exception e)
+            {
 
-                return lista;
+                guardarExcepcion.ClaseInsertarExcepcion("0", "CMonedas.cs", "ListaDenominacionEmpresa", e.ToString(), DateTime.Today, "consulta");
+                return null;
             }
 
         }
@@ -127,35 +153,44 @@ namespace CapaDatos.Sql
         //Denominaciones de monedas maestro de  Denominacion wmm_denominacionMB
         public List<modeloDenominacionesMoneda> ListaDenominacionMoneda()
         {
-
-            using (cn = conexion.genearConexion())
+            try
             {
-                List<modeloDenominacionesMoneda> lista = new List<modeloDenominacionesMoneda>();
-                string consulta = ("SELECT  * FROM wmm_denominacionMB ");
-                SqlCommand conmand = new SqlCommand(consulta, cn);
 
-              
-
-                SqlDataReader dr = conmand.ExecuteReader();
-
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
+                    List<modeloDenominacionesMoneda> lista = new List<modeloDenominacionesMoneda>();
+                    string consulta = ("SELECT  * FROM wmm_denominacionMB ");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                    modeloDenominacionesMoneda item = new modeloDenominacionesMoneda();
-                    item.id = Convert.ToString(dr["id"]);
-                    item.observaciones = Convert.ToString(dr["nombre"]) + "  " + Convert.ToString(dr["valor"]);
-                    item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
-                    item.nombre = Convert.ToString(dr["nombre"]);
-                    item.valor = Convert.ToDecimal(dr["valor"]);
-                    item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
-                    item.fecha_mod = Convert.ToString(dr["fecha_mod"]);
-                    item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
-                    item.nro_audit = Convert.ToString(dr["nro_audit"]);
-                    lista.Add(item);
 
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloDenominacionesMoneda item = new modeloDenominacionesMoneda();
+                        item.id = Convert.ToString(dr["id"]);
+                        item.observaciones = Convert.ToString(dr["nombre"]) + "  " + Convert.ToString(dr["valor"]);
+                        item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
+                        item.nombre = Convert.ToString(dr["nombre"]);
+                        item.valor = Convert.ToDecimal(dr["valor"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        item.fecha_mod = Convert.ToString(dr["fecha_mod"]);
+                        item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
+                        item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
                 }
+            }
+            catch (Exception e)
+            {
 
-                return lista;
+                guardarExcepcion.ClaseInsertarExcepcion("0", "CMonedas.cs", "ListaDenominacionMoneda", e.ToString(), DateTime.Today, "consulta");
+                return null;
             }
 
         }
@@ -163,31 +198,40 @@ namespace CapaDatos.Sql
         //Buscar si ya existe la  Denominacion wmm_denominacionMB
         public List<modeloDenominacionesMoneda> UnicoDenominacion(string cod_moneda, string nombre, string valor)
         {
-            using (cn = conexion.genearConexion())
+            try
             {
-                List<modeloDenominacionesMoneda> lista = new List<modeloDenominacionesMoneda>();
-                string consulta = "SELECT  * FROM wmm_denominacionMB WHERE cod_moneda = @cod_moneda  and  nombre =@nombre and valor =@valor ";
-                SqlCommand conmand = new SqlCommand(consulta, cn);
-
-                conmand.Parameters.Add("cod_moneda", SqlDbType.VarChar).Value = cod_moneda;
-                conmand.Parameters.Add("nombre", SqlDbType.VarChar).Value = nombre;
-                conmand.Parameters.Add("valor", SqlDbType.VarChar).Value = valor;
-
-                SqlDataReader dr = conmand.ExecuteReader();
-                while (dr.Read())
+                using (cn = conexion.genearConexion())
                 {
-                    modeloDenominacionesMoneda item = new modeloDenominacionesMoneda();
-                    item.observaciones = Convert.ToString(dr["nombre"]) + "  " + Convert.ToString(dr["valor"]);
-                    item.cod_moneda = Convert.ToString(dr["cod_moneda"]).Trim();
-                    item.nombre = Convert.ToString(dr["nombre"]).Trim();
-                    item.valor = Convert.ToDecimal(dr["valor"]);
-                    item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
-                    item.fecha_mod = Convert.ToString(dr["fecha_mod"]);
-                    item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
-                    item.nro_audit = Convert.ToString(dr["nro_audit"]);
-                    lista.Add(item);
+                    List<modeloDenominacionesMoneda> lista = new List<modeloDenominacionesMoneda>();
+                    string consulta = "SELECT  * FROM wmm_denominacionMB WHERE cod_moneda = @cod_moneda  and  nombre =@nombre and valor =@valor ";
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("cod_moneda", SqlDbType.VarChar).Value = cod_moneda;
+                    conmand.Parameters.Add("nombre", SqlDbType.VarChar).Value = nombre;
+                    conmand.Parameters.Add("valor", SqlDbType.VarChar).Value = valor;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        modeloDenominacionesMoneda item = new modeloDenominacionesMoneda();
+                        item.observaciones = Convert.ToString(dr["nombre"]) + "  " + Convert.ToString(dr["valor"]);
+                        item.cod_moneda = Convert.ToString(dr["cod_moneda"]).Trim();
+                        item.nombre = Convert.ToString(dr["nombre"]).Trim();
+                        item.valor = Convert.ToDecimal(dr["valor"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        item.fecha_mod = Convert.ToString(dr["fecha_mod"]);
+                        item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
+                        item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                        lista.Add(item);
+                    }
+                    return lista;
                 }
-                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", "CMonedas.cs", "UnicoDenominacion", e.ToString(), DateTime.Today, "consulta");
+                return null;
             }
 
         }
@@ -215,11 +259,12 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion("0", "CMonedas.cs", "InsertarDenominacion", e.ToString(), DateTime.Today, Denominacion.usuario_mod);
+                return "No se pudo completar la acción." + "InsertarDenominacion." + " Por favor notificar al administrador.";
             }
 
         }
-
+        string metodo = "CMonedas.cs";
         //actualizar Denominacion wmm_denominacionMB
         public string ActualizarDenominacion(modeloDenominacionesMoneda Denominacion)
         {
@@ -244,7 +289,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "ActualizarDenominacion", e.ToString(), DateTime.Today, Denominacion.usuario_mod);
+                return "No se pudo completar la acción." + "ActualizarDenominacion." + " Por favor notificar al administrador.";
             }
 
         }
@@ -267,7 +313,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                return e.ToString();
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "EliminarDenominacion", e.ToString(), DateTime.Today, Denominacion.usuario_mod);
+                return "No se pudo completar la acción." + "EliminarDenominacion." + " Por favor notificar al administrador.";
             }
 
         }
