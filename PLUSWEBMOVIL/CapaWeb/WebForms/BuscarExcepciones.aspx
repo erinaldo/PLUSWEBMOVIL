@@ -102,7 +102,7 @@
                                         onrowcommand="GriTipoUsuario_RowCommand"
                                         AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
                                         OnItemCommand="Grid_ItemCommand" AllowSorting="True" ShowFooter="True" 
-                                        OnPageIndexChanged="Grid_PageIndexChanged" PageSize="30" CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1">
+                                        OnPageIndexChanged="Grid_PageIndexChanged" PageSize="20" CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1">
 
 
                                         <Columns>

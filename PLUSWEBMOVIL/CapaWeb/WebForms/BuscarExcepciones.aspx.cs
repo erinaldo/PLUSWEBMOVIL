@@ -154,7 +154,7 @@ namespace CapaWeb.WebForms
                 // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
                 Grid.CurrentPageIndex = 0;
                 Grid.CurrentPageIndex = e.NewPageIndex;
-               // CargarGrilla();
+                CargarGrilla();
             }
             catch (Exception ex)
             {
@@ -173,7 +173,7 @@ namespace CapaWeb.WebForms
                 DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
 
                 
-                        listaExcepciones = consultaExcepcion.ListaExcepcionPC(ComPwm, cbx_usuario.SelectedValue.Trim(), txtDocumento.Text.Trim(), Fechainicio, Fechafin, AmUsrLog);
+                        listaExcepciones = consultaExcepcion.ListaExcepcionPFecha(ComPwm,Fechainicio, Fechafin, AmUsrLog);
                         Grid.DataSource = listaExcepciones;
                         Grid.DataBind();
                         Grid.Height = 100;
