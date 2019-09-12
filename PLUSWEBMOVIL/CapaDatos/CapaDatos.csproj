@@ -68,6 +68,7 @@
     <Compile Include="Modelos\modeloSucuralempresa.cs" />
     <Compile Include="Modelos\ModeloTipoPagoTem.cs" />
     <Compile Include="Modelos\modeloTotalPgsFacturas.cs" />
+    <Compile Include="Modelos\modeloUsuarioSistema.cs" />
     <Compile Include="Modelos\modeloUsuariosucursal.cs" />
     <Compile Include="Modelos\modelowmtproformascab.cs" />
     <Compile Include="Modelos\modelobancos.cs" />

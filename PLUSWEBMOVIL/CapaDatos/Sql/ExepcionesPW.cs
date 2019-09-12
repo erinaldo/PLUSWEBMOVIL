@@ -12,6 +12,7 @@ namespace CapaDatos.Sql
     {
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
+        
         public string InsertarExcepcion(modeloExepciones Exepciones)
         {
             try
@@ -74,9 +75,256 @@ namespace CapaDatos.Sql
 
         }
 
+        //Buscar por id de las excepciones
+        public List<modeloExepciones> ListaExcepcionPorID(string cod_emp, string id, string usuario_mod)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modeloExepciones> lista = new List<modeloExepciones>();
+                    string insert = "SELECT * FROM wmc_excepcion WHERE id=@id";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("@id", SqlDbType.VarChar).Value = id;
+                   
+                    conmand.Parameters.Add("@usuario_mod", SqlDbType.VarChar).Value = usuario_mod;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloExepciones item = new modeloExepciones();
+                        item.id = Convert.ToString(dr["id"]);
+                        item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                        item.proceso = Convert.ToString(dr["proceso"]);
+                        item.metodo = Convert.ToString(dr["metodo"]);
+                        item.error = Convert.ToString(dr["error"]);
+                        DateTime fecha_formato = Convert.ToDateTime(dr["fecha_hora"]);
+                        item.fecha_for = fecha_formato.ToString("yyyy-MM-dd");
+                        item.fecha_hora = Convert.ToDateTime(dr["fecha_hora"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
 
 
 
+                return null;
+            }
+        }
+        //Busca por usuario, proceso y fecha
+        public List<modeloExepciones> ListaExcepcionPC(string cod_emp, string usuario,  string proceso, DateTime fecha_ini, DateTime fecha_fin, string usuario_mod)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modeloExepciones> lista = new List<modeloExepciones>();
+                    string insert = "SELECT * FROM wmc_excepcion WHERE wmc_excepcion.fecha_hora BETWEEN @fecha_ini AND @fecha_fin AND proceso = @proceso AND usuario_mod=@usuario";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
 
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("@proceso", SqlDbType.VarChar).Value = proceso;
+                    //conmand.Parameters.Add("@metodo", SqlDbType.VarChar).Value = metodo;
+
+                    conmand.Parameters.Add("@fecha_ini", SqlDbType.VarChar).Value = fecha_ini;
+                    conmand.Parameters.Add("@fecha_fin", SqlDbType.VarChar).Value = fecha_fin;
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+                    conmand.Parameters.Add("@usuario_mod", SqlDbType.VarChar).Value = usuario_mod;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloExepciones item = new modeloExepciones();
+                        item.id = Convert.ToString(dr["id"]);
+                        item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                        item.proceso = Convert.ToString(dr["proceso"]);
+                        item.metodo = Convert.ToString(dr["metodo"]);
+                        item.error = Convert.ToString(dr["error"]);
+                        DateTime fecha_formato = Convert.ToDateTime(dr["fecha_hora"]);
+                        item.fecha_for = fecha_formato.ToString("yyyy-MM-dd");
+                        item.fecha_hora = Convert.ToDateTime(dr["fecha_hora"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+
+                
+                return null;
+            }
+        }
+
+
+        //Buscar solo por fechas todas las excepciones
+
+        public List<modeloExepciones> ListaExcepcionPFecha(string cod_emp,  DateTime fecha_ini, DateTime fecha_fin, string usuario_mod)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modeloExepciones> lista = new List<modeloExepciones>();
+                    string insert = "SELECT * FROM wmc_excepcion WHERE wmc_excepcion.fecha_hora BETWEEN @fecha_ini AND @fecha_fin ";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    //conmand.Parameters.Add("@proceso", SqlDbType.VarChar).Value = proceso;
+                   // conmand.Parameters.Add("@metodo", SqlDbType.VarChar).Value = metodo;
+
+                    conmand.Parameters.Add("@fecha_ini", SqlDbType.VarChar).Value = fecha_ini;
+                    conmand.Parameters.Add("@fecha_fin", SqlDbType.VarChar).Value = fecha_fin;
+                    //conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+                    conmand.Parameters.Add("@usuario_mod", SqlDbType.VarChar).Value = usuario_mod;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloExepciones item = new modeloExepciones();
+                        item.id = Convert.ToString(dr["id"]);
+                        item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                        item.proceso = Convert.ToString(dr["proceso"]);
+                        item.metodo = Convert.ToString(dr["metodo"]);
+                        item.error = Convert.ToString(dr["error"]);
+                        DateTime fecha_formato = Convert.ToDateTime(dr["fecha_hora"]);
+                        item.fecha_for = fecha_formato.ToString("yyyy-MM-dd");
+                        item.fecha_hora = Convert.ToDateTime(dr["fecha_hora"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+
+
+                return null;
+            }
+        }
+
+        //Busca pro proceso y fechas
+        public List<modeloExepciones> ListaExcepcionProcesoFe(string cod_emp, string proceso, DateTime fecha_ini, DateTime fecha_fin, string usuario_mod)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modeloExepciones> lista = new List<modeloExepciones>();
+                    string insert = "SELECT * FROM wmc_excepcion WHERE wmc_excepcion.fecha_hora BETWEEN @fecha_ini AND @fecha_fin AND proceso=@proceso";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("@proceso", SqlDbType.VarChar).Value = proceso;
+                    // conmand.Parameters.Add("@metodo", SqlDbType.VarChar).Value = metodo;
+
+                    conmand.Parameters.Add("@fecha_ini", SqlDbType.VarChar).Value = fecha_ini;
+                    conmand.Parameters.Add("@fecha_fin", SqlDbType.VarChar).Value = fecha_fin;
+                    //conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+                    conmand.Parameters.Add("@usuario_mod", SqlDbType.VarChar).Value = usuario_mod;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloExepciones item = new modeloExepciones();
+                        item.id = Convert.ToString(dr["id"]);
+                        item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                        item.proceso = Convert.ToString(dr["proceso"]);
+                        item.metodo = Convert.ToString(dr["metodo"]);
+                        item.error = Convert.ToString(dr["error"]);
+                        DateTime fecha_formato = Convert.ToDateTime(dr["fecha_hora"]);
+                        item.fecha_for = fecha_formato.ToString("yyyy-MM-dd");
+                        item.fecha_hora = Convert.ToDateTime(dr["fecha_hora"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+
+
+                return null;
+            }
+        }
+
+        //Busca por usuario y fechas
+        public List<modeloExepciones> ListaExcepcionUsuarioFe(string cod_emp, string usuario, DateTime fecha_ini, DateTime fecha_fin, string usuario_mod)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modeloExepciones> lista = new List<modeloExepciones>();
+                    string insert = "SELECT * FROM wmc_excepcion WHERE wmc_excepcion.fecha_hora BETWEEN @fecha_ini AND @fecha_fin AND usuario_mod=@usuario";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    //conmand.Parameters.Add("@proceso", SqlDbType.VarChar).Value = proceso;
+                    //conmand.Parameters.Add("@metodo", SqlDbType.VarChar).Value = metodo;
+
+                    conmand.Parameters.Add("@fecha_ini", SqlDbType.VarChar).Value = fecha_ini;
+                    conmand.Parameters.Add("@fecha_fin", SqlDbType.VarChar).Value = fecha_fin;
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+                    conmand.Parameters.Add("@usuario_mod", SqlDbType.VarChar).Value = usuario_mod;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloExepciones item = new modeloExepciones();
+                        item.id = Convert.ToString(dr["id"]);
+                        item.cod_emp = Convert.ToString(dr["cod_emp"]);
+                        item.proceso = Convert.ToString(dr["proceso"]);
+                        item.metodo = Convert.ToString(dr["metodo"]);
+                        item.error = Convert.ToString(dr["error"]);
+                        DateTime fecha_formato = Convert.ToDateTime(dr["fecha_hora"]);
+                        item.fecha_for = fecha_formato.ToString("yyyy-MM-dd");
+                        item.fecha_hora = Convert.ToDateTime(dr["fecha_hora"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+
+
+                return null;
+            }
+        }
     }
 }

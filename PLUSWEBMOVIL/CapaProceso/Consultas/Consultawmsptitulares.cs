@@ -16,6 +16,22 @@ namespace CapaProceso.Consultas
         modelowmspctitulares modelotitulares = new modelowmspctitulares();
         UsuariosSistema usuarioDatos = new UsuariosSistema();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        //usuarios del sistema
+        public List<modeloUsuarioSistema> ConsultaUsuarios(string usuario_mod, string cod_emp)
+        {
+            try
+            {
+                List<modeloUsuarioSistema> lista = new List<modeloUsuarioSistema>();
+                lista = usuarioDatos.ListaUsuariosSistema(usuario_mod, cod_emp);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "Consultawmsptitulares.cs", "ConsultaUsuarios", e.ToString(), DateTime.Today, usuario_mod);
+                return null;
+            }
+        }
         public List<modelowmspctitulares> ConsultaTitulares(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi)
         {
             try

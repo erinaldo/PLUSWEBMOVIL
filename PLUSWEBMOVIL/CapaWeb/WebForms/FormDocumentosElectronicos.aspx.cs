@@ -201,53 +201,73 @@ namespace CapaWeb.WebForms
             CargarGrilla();
         }
 
-      
+
         private void CargarGrilla()
         {
-            DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
-            DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
-            string Ccf_cliente = txtCliente.Text;
-            string Ccf_tipo2 = cbx_tipo_doc.SelectedValue;
-            string Ccf_serie_docum = txtSerie.Text;
-            string Ccf_nro_docum = txtDocumento.Text;
-            string Ccf_estado = "F";
-            string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);
-            string Ccf_mesi = string.Format("{0:00}", Fechainicio.Month);
-            string Ccf_anioi = Fechainicio.Year.ToString();
-            string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
-            string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
-            string Ccf_aniof = Fechafin.Year.ToString();
+            try
+            {
+                lbl_error.Text = "";
+                DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
+                DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
+                string Ccf_cliente = txtCliente.Text;
+                string Ccf_tipo2 = cbx_tipo_doc.SelectedValue;
+                string Ccf_serie_docum = txtSerie.Text;
+                string Ccf_nro_docum = txtDocumento.Text;
+                string Ccf_estado = "F";
+                string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);
+                string Ccf_mesi = string.Format("{0:00}", Fechainicio.Month);
+                string Ccf_anioi = Fechainicio.Year.ToString();
+                string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
+                string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
+                string Ccf_aniof = Fechafin.Year.ToString();
 
 
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-            Grid.DataSource = listaConsCab;
-            Grid.DataBind();
-            Grid.Height = 100;
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                Grid.DataSource = listaConsCab;
+                Grid.DataBind();
+                Grid.Height = 100;
+            }
+
+            catch (Exception ex)
+            {
+                GuardarExcepciones("CargarGrilla", ex.ToString());
+
+            }
+
 
 
         }
 
         protected void Buscar_Click(object sender, EventArgs e)
         {
-            DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
-            DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
-            string Ccf_estado = "F";
-            string Ccf_tipo2 = cbx_tipo_doc.SelectedValue;
-            string Ccf_cliente = txtCliente.Text;
-            string Ccf_serie_docum = txtSerie.Text;
-            string Ccf_nro_docum = txtDocumento.Text;
-            string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);
-            string Ccf_mesi = string.Format("{0:00}", Fechainicio.Month);
-            string Ccf_anioi = Fechainicio.Year.ToString();
-            string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
-            string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
-            string Ccf_aniof = Fechafin.Year.ToString();
+            try
+            {
+                lbl_error.Text = "";
+                DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
+                DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
+                string Ccf_estado = "F";
+                string Ccf_tipo2 = cbx_tipo_doc.SelectedValue;
+                string Ccf_cliente = txtCliente.Text;
+                string Ccf_serie_docum = txtSerie.Text;
+                string Ccf_nro_docum = txtDocumento.Text;
+                string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);
+                string Ccf_mesi = string.Format("{0:00}", Fechainicio.Month);
+                string Ccf_anioi = Fechainicio.Year.ToString();
+                string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
+                string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
+                string Ccf_aniof = Fechafin.Year.ToString();
 
 
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-            Grid.DataSource = listaConsCab;
-            Grid.DataBind();
-            Grid.Height = 100;
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                Grid.DataSource = listaConsCab;
+                Grid.DataBind();
+                Grid.Height = 100;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("Buscar_Click", ex.ToString());
+
+            }
         }
 
 
