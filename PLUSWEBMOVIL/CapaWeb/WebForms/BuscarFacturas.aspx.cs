@@ -312,6 +312,7 @@ namespace CapaWeb.WebForms
                 DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
                 DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
                 string Ccf_cliente = txtCliente.Text;
+                Ccf_tipo2 = cbx_tipo_factura.SelectedValue.Trim();
                 string Ccf_serie_docum = txtSerie.Text;
                 string Ccf_nro_docum = txtDocumento.Text;
                 string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);
@@ -342,6 +343,7 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
             DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
             DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
+                Ccf_tipo2 = cbx_tipo_factura.SelectedValue.Trim();
             string Ccf_estado = estados.SelectedValue;
             string Ccf_cliente = txtCliente.Text;
             string Ccf_serie_docum = txtSerie.Text;
