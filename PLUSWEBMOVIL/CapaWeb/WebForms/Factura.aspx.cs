@@ -79,6 +79,7 @@ namespace CapaWeb.WebForms
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
         List<modelowmtfacturascab> listaConsCab = null;
         modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+        modelowmtfacturascab conscabceraTipo = new modelowmtfacturascab();
         modelocabecerafactura cabecerafactura = new modelocabecerafactura();
 
         Consultawmtfacturasdet ConsultaDeta = new Consultawmtfacturasdet();
@@ -511,7 +512,8 @@ namespace CapaWeb.WebForms
                 serie_docum.DataTextField = "serie_docum";
                 serie_docum.DataValueField = "serie_docum";
                 serie_docum.DataBind();
-
+                //Aqui se va a traer que tipo de facturacion es
+                //Ccf_tipo2 = "VTA";
                 //lista ccostos
                 listaCostos = ConsultaCCostos.ConsultaCCostos(AmUsrLog, ComPwm, CC__cod_dpto);
                 cod_costos.DataSource = listaCostos;
@@ -1430,32 +1432,40 @@ namespace CapaWeb.WebForms
                                 confirmarinsertar.nro_audit = conscabcera.nro_audit;
 
                                 respuestaConfirmacionFAC = ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
-                                if (respuestaConfirmacionFAC == "")
+                                //cOSNULTA BUSCAR TIPO DE FACTURA
+                                conscabceraTipo = null;
+                                conscabceraTipo = buscarTipoFac(conscabcera.nro_trans.Trim());
+                                if (conscabceraTipo.tipo_nce.Trim() == "VTAE")
                                 {
-                                    ConsumoRest consumoRest = new ConsumoRest();
-                                    string respuesta = "";
-                                    respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTAE", conscabcera.nro_trans);
-                                    if (respuesta == "")
+                                    if (respuestaConfirmacionFAC == "")
                                     {
-                                        mensaje.Text = "Su factura fue procesada exitosamente";
-                                        Confirmar.Enabled = false;
-                                        GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
-                                        Response.Redirect("BuscarFacturas.aspx");
+                                        ConsumoRest consumoRest = new ConsumoRest();
+                                        string respuesta = "";
+                                        respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTAE", conscabcera.nro_trans);
+                                        if (respuesta == "")
+                                        {
+                                            mensaje.Text = "Su factura fue procesada exitosamente";
+                                            Confirmar.Enabled = false;
+                                            GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
+                                            Response.Redirect("BuscarFacturas.aspx");
 
+                                        }
+                                        else
+                                        {
+                                            GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
+                                            mensaje.Text = respuesta;
+                                            Response.Redirect("BuscarFacturas.aspx");
+
+                                        }
                                     }
                                     else
                                     {
-                                        GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
-                                        mensaje.Text = respuesta;
-                                        Response.Redirect("BuscarFacturas.aspx");
-
+                                        lbl_trx.Visible = true;
+                                        lbl_trx.Text = respuestaConfirmacionFAC;
                                     }
                                 }
-                                else
-                                {
-                                    lbl_trx.Visible = true;
-                                    lbl_trx.Text = respuestaConfirmacionFAC;
-                                }
+                                else { Response.Redirect("BuscarFacturas.aspx"); }
+                                
 
                             }
                         }
@@ -1470,7 +1480,31 @@ namespace CapaWeb.WebForms
 
         }
 
-         public void RecuperarCokie()
+        public modelowmtfacturascab buscarTipoFac(string nro_trans)
+        {
+            try
+            {
+                lbl_error.Text = "";
+
+                listaConsCab = ConsultaCabe.ConsultaTipoFactura(nro_trans);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
+
+                }
+                return conscabcera;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("buscarTipoFac", ex.ToString());
+                return null;
+            }
+        }
+
+        public void RecuperarCokie()
          {
             try
             {

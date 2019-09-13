@@ -128,7 +128,7 @@
                                 </td>
                                 <td class="textos" colspan="2">
 
-                                    <asp:TextBox required="required" ID="nombreCliente" class="textos" Width="325" MaxLength="50" runat="server" ReadOnly="true"></asp:TextBox>
+                                    <asp:TextBox required="required" ID="nombreCliente" class="textos" Width="355" MaxLength="50" runat="server" ReadOnly="true"></asp:TextBox>
                                 </td>
                                  <td align="right" nowrap="nowrap" class="busqueda">
                                     <div align="left">Teléfono:</div>

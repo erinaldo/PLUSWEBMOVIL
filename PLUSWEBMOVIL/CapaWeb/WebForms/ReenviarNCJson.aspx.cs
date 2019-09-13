@@ -140,12 +140,11 @@ namespace CapaWeb.WebForms
 
                 //Consulta nro_trans factura 
                 listaConsCab = ConsultaCabe.ConsultaNCTransPadre(lbl_nro_trans.Text);
-                int count = 0;
+                
                 conscabcera = null;
                 foreach (modelowmtfacturascab item in listaConsCab)
                 {
-                    count++;
-                    conscabcera = item;
+                     conscabcera = item;
 
                 }
                 lbl_nro_factura.Text = conscabcera.nro_trans_padre;

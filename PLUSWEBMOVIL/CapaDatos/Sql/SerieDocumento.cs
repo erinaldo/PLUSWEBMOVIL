@@ -37,7 +37,17 @@ namespace CapaDatos.Sql
                     while (dr.Read())
                     {
 
-                        modelowmspcresfact item = new modelowmspcresfact(Convert.ToString(dr["cod_atrib1"]), Convert.ToString(dr["serie_docum"]), Convert.ToString(dr["nro_docum"]), Convert.ToString(dr["nro_docum_ref"]), Convert.ToString(dr["activo"]), Convert.ToString(dr["numerador"]), Convert.ToDateTime(dr["fec_valor"]), Convert.ToDateTime(dr["fec_venc"]), Convert.ToString(dr["tipo"]));
+                        modelowmspcresfact item = new modelowmspcresfact();
+                        item.cod_atrib1 = Convert.ToString(dr["cod_atrib1"]);
+                        item.serie_docum = Convert.ToString(dr["serie_docum"]);
+                        item.nro_docum = Convert.ToString(dr["nro_docum"]);
+                        item.nro_docum_ref = Convert.ToString(dr["nro_docum_ref"]);
+                        item.activo = Convert.ToString(dr["activo"]);
+                        item.numerador = Convert.ToString(dr["numerador"]);
+                        item.fec_valor = Convert.ToDateTime(dr["fec_valor"]);
+                        item.fec_venc = Convert.ToDateTime(dr["fec_venc"]);
+                        item.tipo = Convert.ToString(dr["tipo"]);
+                       // item.tipo_fac =Convert.ToString(dr["tipo_fac"]);
                         lista.Add(item);
 
                     }

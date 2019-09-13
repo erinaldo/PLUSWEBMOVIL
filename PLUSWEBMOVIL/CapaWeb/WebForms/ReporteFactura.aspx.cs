@@ -14,6 +14,7 @@ using CapaProceso.Consultas;
 using CapaProceso.Modelos;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using CapaDatos.Modelos;
+using CapaProceso.ReslClientePdf;
 
 namespace CapaWeb.WebForms
 {
@@ -42,7 +43,7 @@ namespace CapaWeb.WebForms
         modelocabecerafactura cabecerafactura = new modelocabecerafactura();
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
-
+        CabezeraFactura GuardarCabezera = new CabezeraFactura();
         List<modelowmtfacturascab> listaConsCab = null;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -60,21 +61,45 @@ namespace CapaWeb.WebForms
                 //Buscar que tipo de factura es pose / vtae
                 conscabcera = null;
                 conscabcera = buscarTipoFac(Ccf_nro_trans);
-                if (conscabcera.tipo_nce.Trim() == "VTAE")
+                if (conscabcera.tipo_nce.Trim() == "VTA")
                 {
-                    Ccf_tipo2 = "VTAE";
+                    if(conscabcera.estado.Trim() =="C")
+                    {
+                        GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
+                       
+                        PdfFacturaVTA pdf = new PdfFacturaVTA();
+                        string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                        Response.ContentType = "application/pdf";
+                        Response.WriteFile(pathPdf);
+                        Response.End();
+                    }
+                    else
+                    {
+                        PdfFacturaVTA pdf = new PdfFacturaVTA();
+                        string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                        Response.ContentType = "application/pdf";
+                        Response.WriteFile(pathPdf);
+                        Response.End();
+                    }
+                  
                 }
+                else {
+                    
+                        if (conscabcera.tipo_nce.Trim() == "VTAE")
+                    { 
+                            Ccf_tipo2 = "VTAE";
+                    }
                 else
                 {
-                    Ccf_tipo2 = "POSE";
+                        Ccf_tipo2 = "POSE";
+                    }
+                    PdfFacturaElectronica pdf = new PdfFacturaElectronica();
+                    string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    Response.ContentType = "application/pdf";
+                    Response.WriteFile(pathPdf);
+                    Response.End();
                 }
-                PdfFacturaElectronica pdf = new PdfFacturaElectronica();
-                string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-
-
-                Response.ContentType = "application/pdf";
-                Response.WriteFile(pathPdf);
-                Response.End();
+               
             }
             catch (Exception ex)
             {
