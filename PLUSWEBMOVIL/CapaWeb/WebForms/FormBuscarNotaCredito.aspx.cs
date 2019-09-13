@@ -352,13 +352,11 @@ namespace CapaWeb.WebForms
                                     /*Consultar que tipo de NC es para poder direccionar al adecuando*/
 
                                     listaConsCab = ConsultaCabe.ConsultaNCTransPadre(Id.ToString());
-                                    int count1 = 0;
+                                    
                                     conscabcera = null;
                                     foreach (modelowmtfacturascab item in listaConsCab)
                                     {
-                                        count1++;
                                         conscabcera = item;
-
                                     }
 
                                     qs.Add("TRN", "UDP");
@@ -379,7 +377,7 @@ namespace CapaWeb.WebForms
                                     }
                                     break;
                                 default:
-                                    this.Page.Response.Write("<script language='JavaScript'>window.alert('SU NOTA DE CRÉDITO ESTA " + estadoM + "')+ error;</script>");
+                                    this.Page.Response.Write("<script language='JavaScript'>window.alert('SU NOTA DE CRÉDITO ESTA " + estadoM + ", NO SE PUEDE EDITAR.')+ error;</script>");
                                     break;
                             }
 
@@ -444,11 +442,11 @@ namespace CapaWeb.WebForms
                             {
                                 case "CONTABILIZADO":
 
-                                    this.Page.Response.Write("<script language='JavaScript'>window.alert('LA  NOTA DE CRÉDITO ESTA EN ESTADO " + estadoM + " ')+ error;</script>");
+                                    this.Page.Response.Write("<script language='JavaScript'>window.alert('LA  NOTA DE CRÉDITO ESTÁ EN ESTADO " + estadoM + ", NO SE PUEDE ELIMINAR.')+ error;</script>");
                                     break;
                                 case "FINALIZADO":
 
-                                    this.Page.Response.Write("<script language='JavaScript'>window.alert('LA  NOTA DE CRÉDITO EN ESTADO " + estadoM + " ')+ error;</script>");
+                                    this.Page.Response.Write("<script language='JavaScript'>window.alert('LA  NOTA DE CRÉDITO ESTÁ EN ESTADO " + estadoM + ", NO SE PUEDE ELIMINAR.')+ error;</script>");
                                     break;
                                 default:
 
