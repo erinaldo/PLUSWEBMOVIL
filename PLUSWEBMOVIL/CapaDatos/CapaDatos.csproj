@@ -144,6 +144,7 @@
     <Compile Include="Sql\UsuariosSistema.cs" />
     <Compile Include="Sql\UsuarioSucursal.cs" />
     <Compile Include="Sql\UsuarioxEmpresa.cs" />
+    <Compile Include="Sql\ValidarParametrizacionFactura.cs" />
     <Compile Include="Sql\Vendedores.cs" />
   </ItemGroup>
   <ItemGroup>
