@@ -47,7 +47,7 @@ namespace CapaDatos.Sql
                         item.fec_valor = Convert.ToDateTime(dr["fec_valor"]);
                         item.fec_venc = Convert.ToDateTime(dr["fec_venc"]);
                         item.tipo = Convert.ToString(dr["tipo"]);
-                       // item.tipo_fac =Convert.ToString(dr["tipo_fac"]);
+                        item.tipo_fac =Convert.ToString(dr["factura_elec"]);
                         lista.Add(item);
 
                     }

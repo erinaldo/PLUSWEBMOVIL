@@ -15,6 +15,40 @@ namespace CapaProceso.Consultas
         modeloCierreCaja modeloCCaja = new modeloCierreCaja();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         string metodo = "ConsultaCierecaja";
+        public List<modeloPagoProveedores> TotalPagoProveedores(string usuario, string cod_emp, string dia, string mes, string anio, string tipo1, string tipo2)
+        {
+            try
+            {
+                List<modeloPagoProveedores> lista = new List<modeloPagoProveedores>();
+                lista = ccaja.TotalPagoProveedores(usuario, cod_emp, dia, mes, anio, tipo1, tipo2);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "TotalPagoProveedores", e.ToString(), DateTime.Today, usuario);
+                return null;
+            }
+        }
+
+        //Consulta lista de cierre caja por fecha en wmt_cierre_resumencaja
+        public List<modeloPagoProveedores> ListaPagoProveedores(string usuario, string cod_emp, string dia, string mes, string anio, string tipo1, string tipo2)
+        {
+            try
+            {
+                List<modeloPagoProveedores> lista = new List<modeloPagoProveedores>();
+                lista = ccaja.ListaPagoProveedores(usuario,  cod_emp,  dia,  mes, anio,tipo1,  tipo2);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaPagoProveedores", e.ToString(), DateTime.Today, usuario);
+                return null;
+            }
+        }
+
+
 
         //Consulta cierre caja por fecha en wmt_cierre_resumencaja
         public Int64 BuscarCCajaFechaSecuencial(string fecha , string cod_emp)

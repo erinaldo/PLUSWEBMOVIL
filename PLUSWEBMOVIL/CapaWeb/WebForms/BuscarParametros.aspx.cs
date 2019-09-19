@@ -9,7 +9,7 @@ using System.IO;
 
 namespace CapaWeb.WebForms
 {
-    public partial class FormListaDemoninaciones : System.Web.UI.Page
+    public partial class BuscarParametros : System.Web.UI.Page
     {
         public modeloSucuralempresa ModelosucursalEmpresa = new modeloSucuralempresa();
         public List<modeloSucuralempresa> ListaModeloSucursalEmpresa = new List<modeloSucuralempresa>();
@@ -28,6 +28,10 @@ namespace CapaWeb.WebForms
 
         ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
         modelonumerador nrotrans = new modelonumerador();
+
+        ConsultaParametrosPWM consultaParametros = new ConsultaParametrosPWM();
+        modeloParametrosPWM modeloParametro = new modeloParametrosPWM();
+        List<modeloParametrosPWM> ListaParametros = null; 
 
         public string ComPwm;
         public string AmUsrLog;
@@ -58,22 +62,21 @@ namespace CapaWeb.WebForms
                 GuardarExcepciones("Page_Load", ex.ToString());
             }
 
-
         }
 
         public void GuardarExcepciones(string metodo, string error)
         {
-            
+
             ModeloExcepcion.cod_emp = ComPwm;
-            ModeloExcepcion.proceso = "BuscarDenominaciones.aspx";
+            ModeloExcepcion.proceso = "BuscarParametros.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Today;
             ModeloExcepcion.usuario_mod = AmUsrLog;
-          
+
             consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
             //mandar mensaje de error a label
-            lbl_error.Text = "No se pudo completar la acción." + metodo + " Por favor notificar al administrador.";
+            lbl_error.Text = "No se pudo completar la acción."+metodo+ "Por favor notificar al administrador.";
 
         }
         private void CargarGrilla()
@@ -81,9 +84,9 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-                listaMonedas = ConsultaCMonedas.ConsultaDenominacionesMonedas();
-                // ListaModeloSucursalEmpresa = ConsultaSucEmpresa.ConsultaSucursalEmpresa(ComPwm);
-                Grid.DataSource = listaMonedas;
+                ListaParametros = consultaParametros.ListaParametrosPWM(ComPwm, AmUsrLog);
+               
+                Grid.DataSource = ListaParametros;
                 Grid.DataBind();
                 Grid.Height = 100;
             }
@@ -95,14 +98,14 @@ namespace CapaWeb.WebForms
         }
         protected void Grid_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
         {
-            
+
             try
             {
                 lbl_error.Text = "";
                 // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
                 Grid.CurrentPageIndex = 0;
                 Grid.CurrentPageIndex = e.NewPageIndex;
-              
+
             }
             catch (Exception ex)
             {
@@ -126,15 +129,16 @@ namespace CapaWeb.WebForms
                 {
 
                     case "Editar": //ejecuta el codigo si el usuario ingresa el numero 1
-                        try { 
-                        Id = Convert.ToString(((Label)e.Item.Cells[1].FindControl("id")).Text);
+                        try
+                        {
+                            Id = Convert.ToString(((Label)e.Item.Cells[1].FindControl("cod_emp")).Text);
 
-                        //2 voy a agregando los valores que deseo
-                        qs.Add("TRN", "UDP");
-                        qs.Add("Id", Id.ToString());
+                            //2 voy a agregando los valores que deseo
+                            qs.Add("TRN", "UDP");
+                            qs.Add("Id", Id.ToString());
 
-                        Response.Redirect("FormDenominaciones.aspx" + Encryption.EncryptQueryString(qs).ToString());
-                        break;//termina la ejecucion del programa despues de ejecutar el codigo                   
+                            Response.Redirect("FormParametros.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                            break;//termina la ejecucion del programa despues de ejecutar el codigo                   
                         }
                         catch (Exception ex)
                         {
@@ -151,7 +155,7 @@ namespace CapaWeb.WebForms
                             qs.Add("TRN", "DLT");
                             qs.Add("Id", Id.ToString());
 
-                            Response.Redirect("FormDenominaciones.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                            Response.Redirect("FormParametros.aspx" + Encryption.EncryptQueryString(qs).ToString());
                             break;
                         }
                         catch (Exception ex)
@@ -171,35 +175,35 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-            if (Request.Cookies["ComPwm"] != null)
-            {
-                ComPwm = Request.Cookies["ComPwm"].Value;
-            }
-            else
-            {
-                Response.Redirect("../Inicio.asp");
-            }
-
-
-            if (Request.Cookies["AmUsrLog"] != null)
-            {
-                AmUsrLog = Request.Cookies["AmUsrLog"].Value;
-
-            }
-            if (Request.Cookies["ProcAud"] != null)
-            {
-                cod_proceso = Request.Cookies["ProcAud"].Value;
-            }
-            else
-            {
-                cod_proceso = Convert.ToString(Request.QueryString["cod_proceso"]);
-                if (cod_proceso != null)
+                if (Request.Cookies["ComPwm"] != null)
                 {
-                    //Crear cookie de cod_proceso
-                    Response.Cookies["ProcAud"].Value = cod_proceso;
+                    ComPwm = Request.Cookies["ComPwm"].Value;
                 }
-                proceso = "BuscarDenominaciones.aspx";
-            }
+                else
+                {
+                    Response.Redirect("../Inicio.asp");
+                }
+
+
+                if (Request.Cookies["AmUsrLog"] != null)
+                {
+                    AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+
+                }
+                if (Request.Cookies["ProcAud"] != null)
+                {
+                    cod_proceso = Request.Cookies["ProcAud"].Value;
+                }
+                else
+                {
+                    cod_proceso = Convert.ToString(Request.QueryString["cod_proceso"]);
+                    if (cod_proceso != null)
+                    {
+                        //Crear cookie de cod_proceso
+                        Response.Cookies["ProcAud"].Value = cod_proceso;
+                    }
+                    proceso = "BuscarDenominaciones.aspx";
+                }
 
             }
             catch (Exception ex)
@@ -210,14 +214,14 @@ namespace CapaWeb.WebForms
 
         public QueryString ulrDesencriptada()
         {
-          
+
             //1- guardo el Querystring encriptado que viene desde el request en mi objeto
             QueryString qs = new QueryString(Request.QueryString);
 
             ////2- Descencripto y de esta manera obtengo un array Clave/Valor normal
             qs = Encryption.DecryptQueryString(qs);
             return qs;
-           
+
         }
 
         protected void NuevaDenominacion_Click(object sender, EventArgs e)
@@ -231,7 +235,7 @@ namespace CapaWeb.WebForms
                 //2 voy a agregando los valores que deseo
                 qs.Add("TRN", "INS");
                 qs.Add("Id", "");
-                Response.Redirect("FormDenominaciones.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                Response.Redirect("FormParametros.aspx" + Encryption.EncryptQueryString(qs).ToString());
             }
 
             catch (Exception ex)
@@ -239,5 +243,5 @@ namespace CapaWeb.WebForms
                 GuardarExcepciones("NuevaDenominacion_Click", ex.ToString());
             }
         }
-}
+    }
 }

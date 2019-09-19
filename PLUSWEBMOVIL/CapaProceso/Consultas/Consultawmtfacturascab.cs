@@ -19,6 +19,8 @@ namespace CapaProceso.Consultas
         modelowmtfacturascab modelocons = new modelowmtfacturascab();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         string metodo = "Consultawmtfacturascab.cs";
+
+      
         //NC SOLO TRANS_PADRE
         public List<modelowmtfacturascab> ConsultaNCTransPadre(string nro_trans)
         {

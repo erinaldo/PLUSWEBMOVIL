@@ -109,11 +109,12 @@ namespace CapaWeb.WebForms
                             BuscarPagosPrevios();
                             Agregar_MedioPago.Visible = false;
                         }
-
-
-
                     }
-                    cargarListaDesplegables();
+                    if(Session["Ccf_tipo2_Pagos"] != null)
+                    {
+                        Session["Ccf_tipo2_Pagos"] = Session["Ccf_tipo2"];
+                    }
+                        cargarListaDesplegables();
                 }
             }
             catch (Exception ex)
@@ -172,7 +173,7 @@ namespace CapaWeb.WebForms
                 //Busca el nro de auditoria para poder insertar el detalle factura
                 //consulta nro_auditoria de la cabecera
                 string Ccf_nro_trans = txt_nro_trans.Text;
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 int count = 0;
                 conscabcera = null;
                 foreach (modelowmtfacturascab item in listaConsCab)
@@ -761,6 +762,7 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
                 Session.Remove("valor_asignado1");
                 Session.Remove("Tipo");
+              
                 this.Page.Response.Write("<script language='JavaScript'>window.close('./MediosPagoPos.aspx', 'Medios Pago', 'top=100,width=800 ,height=600, left=400');</script>");
             }
 

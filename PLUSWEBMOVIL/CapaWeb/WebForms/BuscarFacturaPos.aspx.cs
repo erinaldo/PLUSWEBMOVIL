@@ -44,6 +44,7 @@ namespace CapaWeb.WebForms
         modelonumerador nrotrans = new modelonumerador();
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
+        modelowmtfacturascab conscabceraTipo = new modelowmtfacturascab();
         public string numerador = "trans";
 
         public string ComPwm;
@@ -200,7 +201,7 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
                 DateTime Fechainicio = DateTime.Today;
                 DateTime Fechafin = DateTime.Today;
-
+                Ccf_tipo2 = cbx_tipo_factura.SelectedValue.Trim();
                 string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);
                 string Ccf_mesi = string.Format("{0:00}", Fechainicio.Month);
                 string Ccf_anioi = Fechainicio.Year.ToString();
@@ -270,6 +271,7 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
                 DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
                 DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
+                Ccf_tipo2 = cbx_tipo_factura.SelectedValue.Trim();
                 string Ccf_cliente = txtCliente.Text;
                 string Ccf_serie_docum = txtSerie.Text;
                 string Ccf_nro_docum = txtDocumento.Text;
@@ -300,6 +302,7 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
                 DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
                 DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
+                Ccf_tipo2 = cbx_tipo_factura.SelectedValue.Trim();
                 string Ccf_estado = estados.SelectedValue;
                 string Ccf_cliente = txtCliente.Text;
                 string Ccf_serie_docum = txtSerie.Text;
@@ -324,7 +327,27 @@ namespace CapaWeb.WebForms
         }
 
 
+        public modelowmtfacturascab buscarTipoFac(string nro_trans)
+        {
+            try
+            {
+                lbl_error.Text = "";
 
+                listaConsCab = ConsultaCabe.ConsultaTipoFactura(nro_trans);
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                  conscabcera = item;
+
+                }
+                return conscabcera;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("buscarTipoFac", ex.ToString());
+                return null;
+            }
+        }
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
             try
@@ -375,17 +398,28 @@ namespace CapaWeb.WebForms
                             lbl_error.Text = "";
                             Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                             estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
-                            switch (estadoM)
+                            //cOSNULTA BUSCAR TIPO DE FACTURA
+                            conscabceraTipo = null;
+                            conscabceraTipo = buscarTipoFac(Id.ToString());
+                            if (conscabcera.tipo_nce.Trim() == "POS")
                             {
-                                case "FINALIZADO":
+                                qs.Add("Id", Id.ToString());
+                                Response.Write("<script>window.open('" + "ReporteFactura.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
+                            }
+                            else
+                            {
+                                switch (estadoM)
+                                {
+                                    case "FINALIZADO":
 
-                                    qs.Add("Id", Id.ToString());
-                                    Response.Write("<script>window.open('" + "ReporteFactura.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
-                                    break;
-                                default:
-                                    this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
-                                    break;
+                                        qs.Add("Id", Id.ToString());
+                                        Response.Write("<script>window.open('" + "ReporteFactura.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
+                                        break;
+                                    default:
+                                        this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
+                                        break;
 
+                                }
                             }
 
                             break;
@@ -467,12 +501,23 @@ namespace CapaWeb.WebForms
                         {
                             Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                             estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
+                            //cOSNULTA BUSCAR TIPO DE FACTURA
+                            conscabceraTipo = null;
+                            conscabceraTipo = buscarTipoFac(Id.ToString());
+                            if (conscabceraTipo.tipo_nce.Trim() == "POS")
+                            {
 
-                            qs.Add("TRN", "MTR");
-                            qs.Add("Id", Id.ToString());
-                            Response.Redirect("PortalFacturas.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA NO TIENE HABILITADA ESTA OPCION')+ error;</script>");
+                            }
+                            else
+                            {
 
-                            break;
+                                qs.Add("TRN", "MTR");
+                                qs.Add("Id", Id.ToString());
+                                Response.Redirect("PortalFacturas.aspx" + Encryption.EncryptQueryString(qs).ToString());
+
+                                break;
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -485,21 +530,31 @@ namespace CapaWeb.WebForms
                         {
                             Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                             estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
-
-                            switch (estadoM)
+                            //cOSNULTA BUSCAR TIPO DE FACTURA
+                            conscabceraTipo = null;
+                            conscabceraTipo = buscarTipoFac(Id.ToString());
+                            if (conscabceraTipo.tipo_nce.Trim() == "POS")
                             {
-                                case "CONTABILIZADO":
 
-                                    qs.Add("Id", Id.ToString());
-                                    Response.Redirect("ReenviarFacturaJson.aspx" + Encryption.EncryptQueryString(qs).ToString());
-                                    break;
-                                default:
-                                    this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
-                                    break;
-
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA NO TIENE HABILITADA ESTA OPCION')+ error;</script>");
                             }
+                            else
+                            {
+                                switch (estadoM)
+                                {
+                                    case "CONTABILIZADO":
 
-                            break;
+                                        qs.Add("Id", Id.ToString());
+                                        Response.Redirect("ReenviarFacturaJson.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                                        break;
+                                    default:
+                                        this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
+                                        break;
+
+                                }
+
+                                break;
+                            }
                         }
                         catch (Exception ex)
                         {

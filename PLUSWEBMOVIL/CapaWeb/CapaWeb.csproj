@@ -120,6 +120,8 @@
     <Content Include="WebForms\BuscarIngresoFacturasPgs.aspx" />
     <Content Include="WebForms\BuscarNotaDebito.aspx" />
     <Content Include="WebForms\BuscarNotasVenta.aspx" />
+    <Content Include="WebForms\BuscarParametros.aspx" />
+    <Content Include="WebForms\BuscarPProveedores.aspx" />
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
     <Content Include="WebForms\FormCierreCaja.aspx" />
     <Content Include="WebForms\FormDenominaciones.aspx" />
@@ -187,6 +189,7 @@
     <Content Include="WebForms\FormNotaCreditoFinanciera.aspx" />
     <Content Include="WebForms\FormNotaDebitoAnulacion.aspx" />
     <Content Include="WebForms\FormNotaDebitoF.aspx" />
+    <Content Include="WebForms\FormParametros.aspx" />
     <Content Include="WebForms\FormRespuestaJsonNC.aspx" />
     <Content Include="WebForms\FormRespuestaJson.aspx" />
     <Content Include="WebForms\FormRespuestaJsonND.aspx" />
@@ -273,6 +276,20 @@
     </Compile>
     <Compile Include="WebForms\BuscarNotasVenta.aspx.designer.cs">
       <DependentUpon>BuscarNotasVenta.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarParametros.aspx.cs">
+      <DependentUpon>BuscarParametros.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarParametros.aspx.designer.cs">
+      <DependentUpon>BuscarParametros.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarPProveedores.aspx.cs">
+      <DependentUpon>BuscarPProveedores.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarPProveedores.aspx.designer.cs">
+      <DependentUpon>BuscarPProveedores.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormBuscarNotaCredito.aspx.cs">
       <DependentUpon>FormBuscarNotaCredito.aspx</DependentUpon>
@@ -430,6 +447,13 @@
     </Compile>
     <Compile Include="WebForms\FormNotaDebitoF.aspx.designer.cs">
       <DependentUpon>FormNotaDebitoF.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormParametros.aspx.cs">
+      <DependentUpon>FormParametros.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormParametros.aspx.designer.cs">
+      <DependentUpon>FormParametros.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormRespuestaJsonNC.aspx.cs">
       <DependentUpon>FormRespuestaJsonNC.aspx</DependentUpon>

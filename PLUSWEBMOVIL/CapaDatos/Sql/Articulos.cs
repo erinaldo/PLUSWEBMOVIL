@@ -61,6 +61,8 @@ namespace CapaDatos.Sql
                         item.cod_tasa_impu = Convert.ToString(dr["cod_tasa_impu"]);
                         decimal fomImpu = Convert.ToDecimal(dr["porc_impuesto"]);
                         item.porc_impuesto = String.Format("{0:N2}", fomImpu).ToString();
+                        decimal por_aui_str = Convert.ToDecimal(dr["porc_aiu"]);
+                        item.porc_aiu = String.Format("{0:N2}", por_aui_str).ToString();
                         item.nom_impuesto = Convert.ToString(dr["nom_impuesto"]);
                         item.precio = Convert.ToString(dr["precio"]);
 

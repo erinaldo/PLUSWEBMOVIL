@@ -26,6 +26,7 @@ namespace CapaDatos.Modelos
         public string cod_tipo_impu { get; set; }
         public string cod_tasa_impu { get; set; }
         public string porc_impuesto { get; set; }
+        public string porc_aiu { get; set; }
         public string nom_impuesto { get; set; }
         public string precio { get; set; }
         public string valor_impu { get; set; }

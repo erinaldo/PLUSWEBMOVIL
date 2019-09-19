@@ -15,6 +15,21 @@ namespace CapaProceso.Consultas
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         string metodo = "DetalleFactura.cs";
 
+        public string EliminarDetalleFactura(string nro_trans, string linea, string cod_emp, string usuario)
+        { 
+            try
+            {
+                string respuesta = detalleFacturas.EliminarDetalle( nro_trans,  linea,  cod_emp, usuario);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "EliminarDetalleFactura", e.ToString(), DateTime.Today, usuario);
+                return "No se pudo completar la acción." + "EliminarDetalleFactura." + " Por favor notificar al administrador.";
+            }
+
+        }
         public string InsertarDetalleFactura(ModeloDetalleFactura detalleFactura)
         {
             try

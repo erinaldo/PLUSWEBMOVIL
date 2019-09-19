@@ -106,6 +106,7 @@
     <Compile Include="Consultas\ConsultaMediosPago.cs" />
     <Compile Include="Consultas\ConsultaNumerador.cs" />
     <Compile Include="Consultas\Consultaparamcomercial.cs" />
+    <Compile Include="Consultas\ConsultaParametrosPWM.cs" />
     <Compile Include="Consultas\ConsultaProformaIns.cs" />
     <Compile Include="Consultas\ConsultaProformasFac.cs" />
     <Compile Include="Consultas\ConsultaRemisionesFac.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Consultas\ConsultaSucursalempresa.cs" />
     <Compile Include="Consultas\ConsultaUsuarioEmpresa.cs" />
     <Compile Include="Consultas\ConsultausuarioSucursal.cs" />
+    <Compile Include="Consultas\ConsultaValidarParametrosFactura.cs" />
     <Compile Include="Consultas\Consultavendedores.cs" />
     <Compile Include="Consultas\Consultawmspccostos.cs" />
     <Compile Include="Consultas\ConsultawmspcfacturasWMimpuRest.cs" />

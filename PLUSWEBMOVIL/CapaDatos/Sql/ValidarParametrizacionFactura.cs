@@ -17,11 +17,46 @@ namespace CapaDatos.Sql
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         string metodo ="ValidarParametrizacionFactura.cs";
         string stringConexionERP = "";// Aqui va la consulta de la table de alfredo desia que va ir el string
+
+        //Consulta wmm_parametros conexion_erp
+        public string ConsultaConexionERP(string cod_emp, string usuario)
+        {
+            try
+            {
+                
+                using (cn = conexion.genearConexion())
+                {
+                    string consulta = ("SELECT conexion_erp FROM wmm_parametros where cod_emp =@cod_emp");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        stringConexionERP = Convert.ToString(dr["conexion_erp"]);
+                    }
+                    return stringConexionERP;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ConsultaConexionERP", e.ToString(), DateTime.Today, usuario);
+                return "No se pudo completar la acción." + "ConsultaConexionERP." + " Por favor notificar al administrador.";
+            }
+        }
+
+
+
         //Consulta ERP , periodo contable tabla(CmPrC)
         public string ValidarPeriodoContable(string cod_emp, string usuario, string fecha)
         {
             try
             {
+                stringConexionERP = ConsultaConexionERP(cod_emp, usuario);
                 string nombre_periodo = "";
                 using (cn = conexion.genearConexionERP(stringConexionERP))
                 {
@@ -45,6 +80,82 @@ namespace CapaDatos.Sql
 
                 guardarExcepcion.ClaseInsertarExcepcion(cod_emp,metodo, "ValidarPeriodoContable", e.ToString(), DateTime.Today, usuario);
                 return "No se pudo completar la acción." + "ValidarPeriodoContable." + " Por favor notificar al administrador.";
+            }
+        }
+
+        //Consulta codigo pais, cuidad, cod_moenda empresa ERP TABLA(AmCom)
+        
+         public Boolean ValidarMonCiudEmpresaERP(string cod_emp, string usuario)
+        {
+            try
+            {
+                Boolean repuesta = false;
+                stringConexionERP = ConsultaConexionERP(cod_emp, usuario);
+
+                using (cn = conexion.genearConexionERP(stringConexionERP))
+                {
+                    
+                    string consulta = ("SELECT TOP 1 AmComMonB, AmComCiuM FROM AmCom");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {                       
+                        if (Convert.ToString(dr["AmComCiuM"]) != null && Convert.ToString(dr["AmComMonB"]) != null)
+                        {
+                            repuesta = true;
+                        }                       
+
+                    }
+
+                    return repuesta;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ValidarMonCiudEmpresaERP", e.ToString(), DateTime.Today, usuario);
+                return false;
+            }
+        }
+
+        //Consulta BUSCAR RESOLUCION DE Factura
+        public Boolean ValidarResolucionERP(string cod_emp, string usuario, string estado , string serie, string fecha)
+        {
+            try
+            {
+                Boolean repuesta = false;
+                stringConexionERP = ConsultaConexionERP(cod_emp, usuario);
+
+                using (cn = conexion.genearConexionERP(stringConexionERP))
+                {
+
+                    string consulta = ("SELECT * FROM AdSer WHERE AdSer.AmComCod=@cod_emp AND AdSer.AdSerEst=@estado AND AdSer.AcSerCod=@serie AND @fecha BETWEEN AdSer.AdSerFHR AND AdSer.AdSerFCd");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("@estado", SqlDbType.VarChar).Value = estado;
+                    conmand.Parameters.Add("@serie", SqlDbType.VarChar).Value = serie;
+                    conmand.Parameters.Add("@fecha", SqlDbType.VarChar).Value = fecha;
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        if (Convert.ToString(dr["AdSerEst"]) != null && Convert.ToString(dr["AcSerCod"]) != null)
+                        {
+                            repuesta = true;
+                        }
+
+                    }
+
+                    return repuesta;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ValidarResolucionERP", e.ToString(), DateTime.Today, usuario);
+                return false;
             }
         }
     }

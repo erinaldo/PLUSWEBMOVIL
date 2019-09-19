@@ -10,7 +10,7 @@ using System.IO;
 
 namespace CapaWeb.WebForms
 {
-    public partial class FormDenominaciones : System.Web.UI.Page
+    public partial class FormParametros : System.Web.UI.Page
     {
         public modeloSucuralempresa ModelosucursalEmpresa = new modeloSucuralempresa();
         public List<modeloSucuralempresa> ListaModeloSucursalEmpresa = new List<modeloSucuralempresa>();
@@ -33,13 +33,16 @@ namespace CapaWeb.WebForms
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
 
+        ConsultaParametrosPWM consultaParametros = new ConsultaParametrosPWM();
+        modeloParametrosPWM modeloParametro = new modeloParametrosPWM();
+        List<modeloParametrosPWM> ListaParametros = null;
+
         public string MonB__moneda = "0";
         public string ComPwm;
         public string AmUsrLog;
         public string cod_sucursal = null;
-        public string cod_proceso = "AEMPSUC";
-        public string numerador = "auditoria";
-        public string numerador1 = "trans";
+        public string cod_proceso = "";
+
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -65,8 +68,7 @@ namespace CapaWeb.WebForms
                         case "INS":
                             try
                             {
-                                cargarListaDesplegables();
-
+                               
                                 break;
                             }
                             catch (Exception ex)
@@ -78,13 +80,10 @@ namespace CapaWeb.WebForms
                         case "UDP":
                             try
                             {
-                                Int64 id = Int64.Parse(qs["Id"].ToString());
-                            //Session["valor_asignado"] = id.ToString();
+                                
+                                LlenarFormulario();
 
-                            cargarListaDesplegables();
-                            LlenarFormulario(id.ToString());
-
-                            break;
+                                break;
                             }
                             catch (Exception ex)
                             {
@@ -92,26 +91,13 @@ namespace CapaWeb.WebForms
                             }
                             break;
 
-                        case "VER":
-                            try { 
-                            Int64 ide = Int64.Parse(qs["Id"].ToString());
-                            cargarListaDesplegables();
-                            LlenarFormulario(ide.ToString());
-                            BloquearFormulario();
-                            break;
-                            }
-                            catch (Exception ex)
-                            {
-                                GuardarExcepciones("Page_Load, VER", ex.ToString());
-                            }
-                            break;
+                       
                         case "DLT":
                             try
                             {
-                                Int64 ides = Int64.Parse(qs["Id"].ToString());
-                                cargarListaDesplegables();
-                                LlenarFormulario(ides.ToString());
-                                BloquearFormulario();
+                               
+                                LlenarFormulario();
+                               // BloquearFormulario();
                                 mensaje.Text = "Confirme datos para la eliminación";
                                 break;
                             }
@@ -129,44 +115,36 @@ namespace CapaWeb.WebForms
                 GuardarExcepciones("Page_Load", ex.ToString());
             }
         }
-
-        public void GuardarExcepciones(string metodo,string error)
+        public void GuardarExcepciones(string metodo, string error)
         {
-          
+
             ModeloExcepcion.cod_emp = ComPwm;
-            ModeloExcepcion.proceso = "FormDenominaciones.aspx";
+            ModeloExcepcion.proceso = "FormParametros.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Today;
             ModeloExcepcion.usuario_mod = AmUsrLog;
-           
+
             consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
             //mandar mensaje de error a label
             lbl_error.Text = "No se pudo completar la acción."+ metodo+ " Por favor notificar al administrador.";
 
         }
-        public void BloquearFormulario()
-        {
-            cbx_cod_moneda.Enabled = false;
-            cbx_nombrere.Enabled = false;
-            txt_valor.Enabled = false;
-        }
-        public void LlenarFormulario(string  id)
+     
+        public void LlenarFormulario()
         {
             try
             {
 
                 lbl_error.Text = "";
-                listaDenominacion = ConsultaCMonedas.ConsultaDenominacionesUDP(id);
-            foreach (var item in listaDenominacion)
-            {
-                ModeloDenominacion = item;
-               
-                break;
-            }
-            cbx_cod_moneda.SelectedValue = ModeloDenominacion.cod_moneda.Trim();
-            cbx_nombrere.SelectedValue = ModeloDenominacion.nombre.Trim();
-            txt_valor.Text = ModeloDenominacion.valor.ToString();
+                ListaParametros = consultaParametros.ListaParametrosPWM(ComPwm, AmUsrLog);
+                foreach (var item in ListaParametros)
+                {
+                    modeloParametro = item;
+
+                    break;
+                }
+                  txt_conexion_erp.Text = modeloParametro.conexion_erp;
             }
             catch (Exception ex)
             {
@@ -174,25 +152,7 @@ namespace CapaWeb.WebForms
             }
 
         }
-        public void cargarListaDesplegables()
-        {
-            try
-            {
-                lbl_error.Text = "";
-
-                //lissta moneedaa
-                listaMonedas = ConsultaCMonedas.ConsultaCMonedas(AmUsrLog, ComPwm, MonB__moneda);
-                cbx_cod_moneda.DataSource = listaMonedas;
-                cbx_cod_moneda.DataTextField = "descripcion";
-                cbx_cod_moneda.DataValueField = "cod_moneda";
-                cbx_cod_moneda.DataBind();
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("cargarListaDesplegables", ex.ToString());
-            }
-
-        }
+      
         public QueryString ulrDesencriptada()
         {
             //1- guardo el Querystring encriptado que viene desde el request en mi objeto
@@ -256,25 +216,19 @@ namespace CapaWeb.WebForms
                 switch (qs["TRN"].Substring(0, 3)) //ultilizo la variable para la opcion
                 {
                     case "INS":
-                        try {
+                        try
+                        {
                             //verificar si es unico
-                            listaDenominacion = ConsultaCMonedas.ConsultaUnicoDenominacion(cbx_cod_moneda.SelectedValue.Trim(), cbx_nombrere.SelectedValue.Trim(), txt_valor.Text.Trim());
-                            if (listaDenominacion.Count > 0)
+                            ListaParametros = consultaParametros.ListaParametrosPWM(ComPwm, AmUsrLog);
+                            if (ListaParametros.Count > 0)
                             {
-                                this.Page.Response.Write("<script language='JavaScript'>window.alert('Denominación ya existe')+ error;</script>");
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('Parámetro ya existe')+ error;</script>");
                             }
 
                             else
                             {
 
-                                DateTime hoy = DateTime.Today;
-                                ModeloDenominacion.cod_moneda = cbx_cod_moneda.SelectedValue;
-                                ModeloDenominacion.nombre = cbx_nombrere.SelectedValue;
-                                ModeloDenominacion.valor = Convert.ToDecimal(txt_valor.Text);
-                                ModeloDenominacion.usuario_mod = AmUsrLog;
-                                ModeloDenominacion.fecha_mod = hoy.ToString();
-
-                                error = ConsultaCMonedas.InsertarDenominacion(ModeloDenominacion);
+                               error = consultaParametros.InsertarParametro(ComPwm, AmUsrLog, txt_conexion_erp.Text);
 
                                 if (string.IsNullOrEmpty(error))
                                 {
@@ -284,7 +238,7 @@ namespace CapaWeb.WebForms
                                 {
 
                                     this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
-                                    Response.Redirect("BuscarDenominaciones.aspx");
+                                    Response.Redirect("BuscarParametros.aspx");
                                 }
                             }
                             break;
@@ -297,37 +251,27 @@ namespace CapaWeb.WebForms
 
                     case "UDP":
                         try
-                        { 
-                        string ide = (qs["Id"].ToString());
-                        string usuario = ide.ToString();
-                        DateTime hoy1 = DateTime.Today;
-                        ModeloDenominacion.id = usuario;
-                        ModeloDenominacion.cod_moneda = cbx_cod_moneda.SelectedValue;
-                        ModeloDenominacion.nombre = cbx_nombrere.SelectedValue;
-                        ModeloDenominacion.valor = Convert.ToDecimal(txt_valor.Text);
-                        ModeloDenominacion.usuario_mod = AmUsrLog;
-                        ModeloDenominacion.fecha_mod = hoy1.ToString();
-
-                        error = ConsultaCMonedas.ActualizarDenominacion(ModeloDenominacion);
-
-                        if (string.IsNullOrEmpty(error))
                         {
+                            error = consultaParametros.ActualizarParametro(ComPwm, AmUsrLog, txt_conexion_erp.Text);
 
+                            if (string.IsNullOrEmpty(error))
+                            {
+
+                            }
+                            else
+                            {
+
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
+                                Response.Redirect("BuscarParametros.aspx");
+                            }
+                            break;
                         }
-                        else
-                        {
 
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "')+ error;</script>");
-                            Response.Redirect("BuscarDenominaciones.aspx");
+                        catch (Exception ex)
+                        {
+                            GuardarExcepciones("btn_guardar_Click, UDP", ex.ToString());
                         }
                         break;
-                }
-            
-            catch (Exception ex)
-            {
-                GuardarExcepciones("btn_guardar_Click, UDP", ex.ToString());
-            }
-            break;
                     case "DLT":
                         try
                         {
@@ -343,7 +287,7 @@ namespace CapaWeb.WebForms
                             else
                             {
                                 this.Page.Response.Write("<script language='JavaScript'>window.alert('" + error + "');</script>");
-                                Response.Redirect("BuscarDenominaciones.aspx");
+                                Response.Redirect("BuscarParametros.aspx.aspx");
                             }
 
                             break;
@@ -368,7 +312,7 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-                Response.Redirect("BuscarDenominaciones.aspx");
+                Response.Redirect("BuscarParametros.aspx");
             }
             catch (Exception ex)
             {

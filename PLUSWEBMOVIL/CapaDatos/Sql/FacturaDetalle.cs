@@ -14,6 +14,30 @@ namespace CapaDatos.Sql
         public SqlConnection cn = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         string metodo = "FacturaDetalle.cs";
+
+        public string EliminarDetalle(string nro_trans, string linea, string cod_emp, string usuario)
+        {
+            try
+            {
+                cn = conexion.genearConexion();
+
+                string insert = " DELETE FROM wmt_facturas_det WHERE nro_trans =@nro_trans, linea=@linea";
+                SqlCommand conmand = new SqlCommand(insert, cn);
+                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                conmand.Parameters.Add("@linea", SqlDbType.VarChar).Value = linea;
+              
+                int dr = conmand.ExecuteNonQuery();
+                cn.Close();
+                return "Factura eliminada correctamente";
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "EliminarDetalle", e.ToString(), DateTime.Today, usuario);
+                return "No se pudo completar la acción." + "InsertarDetalle." + " Por favor notificar al administrador.";
+            }
+
+        }
         public string InsertarDetalle(ModeloDetalleFactura detalleFactura)
         {
             try

@@ -94,8 +94,14 @@
                               <asp:DropDownList ID="estados" class="textos" runat="server"></asp:DropDownList>
                           </td>
                         </tr>
-                        <tr valign="top">
-                          
+                          <tr valign="top">
+                            <td width="20%" class="busqueda">Tipo:</td>
+                          <td>
+                              <asp:DropDownList ID="cbx_tipo_factura" class="textos" runat="server" Height="16px" Width="204px">
+                                  <asp:ListItem Value="POSE">FACTURA ELECTRÓNICA</asp:ListItem>
+                                  <asp:ListItem Value="POS">FACTURA NORMAL</asp:ListItem>
+                              </asp:DropDownList>
+                          </td>
                             
                             <td> </td>
                             <td aling="rigth"><asp:Button ID="Buscar" runat="server" OnClick="Buscar_Click" class="botones" Text="Buscar" /></td>

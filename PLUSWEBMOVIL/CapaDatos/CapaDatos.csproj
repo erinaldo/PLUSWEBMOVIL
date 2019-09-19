@@ -57,7 +57,9 @@
     <Compile Include="Modelos\modeloIngresoFacturas.cs" />
     <Compile Include="Modelos\modeloinsertarconfirmar.cs" />
     <Compile Include="Modelos\modeloMediosPago.cs" />
+    <Compile Include="Modelos\modeloPagoProveedores.cs" />
     <Compile Include="Modelos\modeloPagosEfectivoFacturas.cs" />
+    <Compile Include="Modelos\modeloParametrosPWM.cs" />
     <Compile Include="Modelos\modeloRemisionesFactura.cs" />
     <Compile Include="Modelos\modeloRolesFacturacion.cs" />
     <Compile Include="Modelos\modeloRolModificarPrecio.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="Modelos\modeloTotalPgsFacturas.cs" />
     <Compile Include="Modelos\modeloUsuarioSistema.cs" />
     <Compile Include="Modelos\modeloUsuariosucursal.cs" />
+    <Compile Include="Modelos\modeloValidarFactura.cs" />
     <Compile Include="Modelos\modelowmtproformascab.cs" />
     <Compile Include="Modelos\modelobancos.cs" />
     <Compile Include="Modelos\modeloDetalleProforma.cs" />
@@ -134,6 +137,7 @@
     <Compile Include="Sql\ModificarPrecioFactura.cs" />
     <Compile Include="Sql\Numeradores.cs" />
     <Compile Include="Sql\ParametroComercial.cs" />
+    <Compile Include="Sql\ParametrosPW.cs" />
     <Compile Include="Sql\RemisionesFactura.cs" />
     <Compile Include="Sql\RespuestaDC.cs" />
     <Compile Include="Sql\RolesUserFacturacion.cs" />

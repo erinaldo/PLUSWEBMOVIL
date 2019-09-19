@@ -16,6 +16,22 @@ namespace CapaProceso.Consultas
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         string metodo = "CabezeaFactura.cs";
 
+        public string ActualizaDetalleFactura(ModeloDetalleFactura detalleFactura)
+        {
+            try
+            {
+                string respuesta = factura.ActualizarDetalleFactura(detalleFactura);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(detalleFactura.cod_emp, metodo, "ActualizaDetalleFactura", e.ToString(), DateTime.Today, detalleFactura.usuario_mod);
+                return "No se pudo completar la acción." + "ActualizaDetalleFactura." + " Por favor notificar al administrador.";
+            }
+
+        }
+
         //Insertar cabecera NC Financiera
         public string InsertarCabezeraNotaCredito(modelocabecerafactura cabezeraFactura)
         {

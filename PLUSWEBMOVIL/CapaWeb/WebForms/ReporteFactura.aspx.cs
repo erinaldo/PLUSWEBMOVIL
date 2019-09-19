@@ -61,7 +61,7 @@ namespace CapaWeb.WebForms
                 //Buscar que tipo de factura es pose / vtae
                 conscabcera = null;
                 conscabcera = buscarTipoFac(Ccf_nro_trans);
-                if (conscabcera.tipo_nce.Trim() == "VTA")
+                if (conscabcera.tipo_nce.Trim() == "VTA" || conscabcera.tipo_nce.Trim() == "POS")
                 {
                     if(conscabcera.estado.Trim() =="C")
                     {

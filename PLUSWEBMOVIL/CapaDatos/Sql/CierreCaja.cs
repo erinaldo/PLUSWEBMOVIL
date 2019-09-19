@@ -16,6 +16,123 @@ namespace CapaDatos.Sql
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         string metodo = "CierreCaja.cs";
         //Modelo cierre de caja tabla wmt_cierre_resumencaja
+        public List<modeloPagoProveedores> ListaPagoProveedores(string usuario, string cod_emp, string dia, string mes, string anio, string tipo1, string tipo2)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modeloPagoProveedores> lista = new List<modeloPagoProveedores>();
+                    string consulta = ("wmspc_cierrecaja");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+                    conmand.CommandType = CommandType.StoredProcedure;
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+                    conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("@dia", SqlDbType.VarChar).Value = dia;
+                    conmand.Parameters.Add("@mes", SqlDbType.VarChar).Value = mes;
+                    conmand.Parameters.Add("@anio", SqlDbType.VarChar).Value = anio;
+                    conmand.Parameters.Add("@tipo1", SqlDbType.VarChar).Value = tipo1;
+                    conmand.Parameters.Add("@tipo2", SqlDbType.VarChar).Value = tipo2;
+
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloPagoProveedores item = new modeloPagoProveedores();
+                          item.cod_docum = Convert.ToString(dr["cod_docum"]);
+                           item.serie_docum = Convert.ToString(dr["serie_docum"]);
+                           item.nro_docum = Convert.ToString(dr["nro_docum"]);
+                           item.cod_tit = Convert.ToString(dr["cod_tit"]);
+                           item.nom_tit = Convert.ToString(dr["nom_tit"]);
+                           item.observaciones = Convert.ToString(dr["observaciones"]);
+                        item.documento = item.serie_docum +'-'+ item.nro_docum;
+
+                        decimal formPrecio = Convert.ToDecimal(dr["total"]);
+                        item.total_st = String.Format("{0:N2}", formPrecio).ToString();
+                        item.total = Convert.ToString(dr["total"]);
+                           item.fec_doc = Convert.ToString(dr["fec_doc"]);
+                        DateTime fec_venc_str = Convert.ToDateTime(dr["fec_doc"]);
+                        item.fec_st= fec_venc_str.ToString("yyyy-MM-dd");
+                        item.estado= Convert.ToString(dr["estado"]);
+                       // item.valor = Convert.ToDecimal(dr["valor"]);
+
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
+                }
+            }
+
+
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaPagoProveedores", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
+
+        }
+
+        //Resumen ListaPagoProveedores devuel solo valor
+        public List<modeloPagoProveedores> TotalPagoProveedores(string usuario, string cod_emp, string dia, string mes, string anio, string tipo1, string tipo2)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modeloPagoProveedores> lista = new List<modeloPagoProveedores>();
+                    string consulta = ("wmspc_cierrecaja");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+                    conmand.CommandType = CommandType.StoredProcedure;
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+                    conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("@dia", SqlDbType.VarChar).Value = dia;
+                    conmand.Parameters.Add("@mes", SqlDbType.VarChar).Value = mes;
+                    conmand.Parameters.Add("@anio", SqlDbType.VarChar).Value = anio;
+                    conmand.Parameters.Add("@tipo1", SqlDbType.VarChar).Value = tipo1;
+                    conmand.Parameters.Add("@tipo2", SqlDbType.VarChar).Value = tipo2;
+                    
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloPagoProveedores item = new modeloPagoProveedores();
+                        /*  item.cod_docum = Convert.ToString(dr["cod_docum"]);
+                           item.serie_docum = Convert.ToString(dr["serie_docum"]);
+                           item.nro_docum = Convert.ToString(dr["nro_docum"]);
+                           item.cod_tit = Convert.ToString(dr["od_tit"]);
+                           item.nom_tit = Convert.ToString(dr["nom_tit"]);
+                           item.observaciones = Convert.ToString(dr["observaciones"]);
+                         
+                           item.total = Convert.ToString(dr["total"]);
+                           item.fec_doc = Convert.ToString(dr["fec_doc"]);
+                           item.estado= Convert.ToString(dr["estado"]);*/
+                        item.valor = Convert.ToDecimal(dr["valor"]);
+
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
+                }
+            }
+
+
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, " TotalPagoProveedores", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
+
+        }
+
+
 
         //Buscar por fecha
         public Int64 BuscarCierreDiaSecuencial(string fecha_cie, string cod_emp)

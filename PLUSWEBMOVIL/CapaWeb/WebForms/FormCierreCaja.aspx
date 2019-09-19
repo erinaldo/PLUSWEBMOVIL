@@ -266,7 +266,7 @@
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
-                                                                    <asp:ImageButton ID="btn_pefectivo_facturas" src="../Tema/imagenes/search.png" runat="server" />
+                                                                    <asp:ImageButton ID="btn_pefectivo_facturas" src="../Tema/imagenes/search.png" onclick="btn_pefectivo_facturas_Click" runat="server" />
                                                                 </div>
                                                             </td>
                                                         </tr>

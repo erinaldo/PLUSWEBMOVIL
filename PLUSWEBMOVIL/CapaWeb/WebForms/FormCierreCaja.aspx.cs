@@ -23,6 +23,8 @@ namespace CapaWeb.WebForms
         ConsultaEfectivoCaja ConsultaECaja = new ConsultaEfectivoCaja();
         modeloTotalPgsFacturas modeloTPFacturas = new modeloTotalPgsFacturas();
         List<modeloTotalPgsFacturas> listaTPFacturas = null;
+        List<modeloPagoProveedores> ListaPProveedores = null;
+        modeloPagoProveedores modeloPProveedor = new modeloPagoProveedores();
 
         ConsultaCierecaja ConsultaCCaja = new ConsultaCierecaja();
         modeloCierreCaja modeloCCcaja = new modeloCierreCaja();
@@ -157,6 +159,28 @@ namespace CapaWeb.WebForms
                     txt_ingreso_nventas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), inv);
 
                 }
+                //TOTAL PAGO EN EFECTIVO DE FACTURAS
+                DateTime Fechainicio = Convert.ToDateTime(fecha);
+                string dia = string.Format("{0:00}", Fechainicio.Day);
+                string mes = string.Format("{0:00}", Fechainicio.Month);
+                string anio = Fechainicio.Year.ToString();
+                ListaPProveedores = null;
+                ListaPProveedores = ConsultaCCaja.TotalPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "PP", "R" );
+               
+                modeloPProveedor = null;
+                foreach (modeloPagoProveedores item in ListaPProveedores)
+                {
+                    
+                    modeloPProveedor = item;
+
+                }
+                
+                    decimal pago = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloPProveedor.valor));
+
+                    txt_pefectivo_facturas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), pago);
+
+                
+
             }
             catch (Exception ex)
             {
@@ -895,6 +919,21 @@ namespace CapaWeb.WebForms
             catch (Exception ex)
             {
                 GuardarExcepciones("btn_confirmar_Click", ex.ToString());
+
+            }
+        }
+
+        protected void btn_pefectivo_facturas_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            try
+            {
+                lbl_error.Text = "";
+                Session["Fecha"] = lbl_fecha.Text;
+                this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarPProveedores.aspx', 'Pago Proveedores', 'top=100,width=800 ,height=400, left=400');</script>");
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("btn_pefectivo_facturas_Click", ex.ToString());
 
             }
         }
