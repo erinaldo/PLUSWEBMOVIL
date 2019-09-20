@@ -330,7 +330,7 @@
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">
-                                                                    <asp:ImageButton ID="btn_pefectivo_facturas" src="../Tema/imagenes/search.png" runat="server" />
+                                                                    <asp:ImageButton ID="btn_pefectivo_facturas" OnClick="btn_pefectivo_facturas_Click" src="../Tema/imagenes/search.png" runat="server" />
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -361,9 +361,7 @@
                                                                 <asp:TextBox ID="txt_depositos" CssClass="sinBorde" ReadOnly="true" Value="0" runat="server"></asp:TextBox>
                                                             </td>
                                                             <td>
-                                                                <div class="noimp">
-                                                                    <asp:ImageButton ID="btn_depositos" src="../Tema/imagenes/search.png" runat="server" />
-                                                                </div>
+                                                                
                                                             </td>
                                                         </tr>
                                                         <tr>

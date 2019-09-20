@@ -262,7 +262,7 @@
                                                             </td>
 
                                                             <td class="auto-style3">
-                                                                <asp:TextBox ID="txt_pefectivo_facturas" CssClass="sinBorde" required="required" runat="server" AutoPostBack="True" Style="text-align: right" value="0" OnTextChanged="txt_pefectivo_facturas_TextChanged"></asp:TextBox>
+                                                                <asp:TextBox ID="txt_pefectivo_facturas" CssClass="sinBorde" ReadOnly="true" required="required" runat="server" AutoPostBack="True" Style="text-align: right" value="0" OnTextChanged="txt_pefectivo_facturas_TextChanged"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div class="noimp">

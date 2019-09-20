@@ -506,5 +506,22 @@ namespace CapaWeb.WebForms
             }
 
         }
+
+        protected void btn_pefectivo_facturas_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            try
+            {
+                lbl_error.Text = "";
+                Session["Fecha"] = lbl_fecha.Text;
+                this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarPProveedores.aspx', 'Pago Proveedores', 'top=100,width=800 ,height=400, left=400');</script>");
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("btn_pefectivo_facturas_Click", ex.ToString());
+
+            }
+
+
+        }
     }
 }

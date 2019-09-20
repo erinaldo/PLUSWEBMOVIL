@@ -292,15 +292,6 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox txt_depositos;
         
         /// <summary>
-        /// Control btn_depositos.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btn_depositos;
-        
-        /// <summary>
         /// Control lbl_7.
         /// </summary>
         /// <remarks>
