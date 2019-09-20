@@ -158,5 +158,45 @@ namespace CapaDatos.Sql
                 return false;
             }
         }
+
+        //Validar nro_docum , rango fecha (AdSer)
+
+        public Boolean ValidarNroDocumERP(string cod_emp, string usuario, string serie_docum , string nro_docum)
+        {
+            try
+            {
+                Boolean repuesta = false;
+                stringConexionERP = ConsultaConexionERP(cod_emp, usuario);
+
+                using (cn = conexion.genearConexionERP(stringConexionERP))
+                {
+
+                    string consulta = ("SELECT AdSerDcI,AdSerDcF FROM AdSer WHERE AmComCod= @cod_emp AND AcSerCod=@serie_docum AND @nro_docum  BETWEEN AdSerDcI AND AdSerDcF");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("@serie_docum", SqlDbType.VarChar).Value = serie_docum;
+                    conmand.Parameters.Add("@@nro_docum", SqlDbType.VarChar).Value = nro_docum;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        if (Convert.ToString(dr["AdSerDcI"]) != null && Convert.ToString(dr["AdSerDcF"]) != null)
+                        {
+                            repuesta = true;
+                        }
+
+                    }
+
+                    return repuesta;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ValidarNroDocumERP", e.ToString(), DateTime.Today, usuario);
+                return false;
+            }
+        }
     }
 }

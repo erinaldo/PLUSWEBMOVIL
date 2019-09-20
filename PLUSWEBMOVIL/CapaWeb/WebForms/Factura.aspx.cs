@@ -1136,6 +1136,50 @@ namespace CapaWeb.WebForms
             }
         }
 
+        public void ValidarParametrosFactura()
+        {
+            try
+            {
+                lbl_error.Text = "";
+                string perido_contable = "";
+            perido_contable = consultaValidarFactura.ConsultaValidarPeriodoContable(ComPwm, AmUsrLog, fecha.Text);
+            if (perido_contable == "")
+            {
+                lbl_trx.Text = "El Periodo Contable correspondiente a la fecha del documento se encuentra cerrado o no existe. Por favor registrar Periodo Contable y actualizar la página";
+                lbl_trx.Visible = true;
+                AgregarProducto.Enabled = false;
+            }
+            else
+            {
+                Boolean empresa = false;
+                empresa = consultaValidarFactura.ConsultaValidarMonCiudEmpresaERP(ComPwm, AmUsrLog);
+                if (empresa == false)
+                {
+                    lbl_trx.Text = " No existe moneda o ciudad de la empresa registrado para la factura. Por favor registrar información y actualizar la página";
+                    lbl_trx.Visible = true;
+                    AgregarProducto.Enabled = false;
+                }
+                else
+                {
+                    Boolean resolucion = false;
+                    resolucion = consultaValidarFactura.ConsultaValidarResolucionERP(ComPwm, AmUsrLog, "V", serie_docum.SelectedValue.Trim(), fecha.Text);
+                    if (resolucion == false)
+                    {
+                        lbl_trx.Text = " No existe resolución de factura. Por favor registrar información y actualizar la página";
+                        lbl_trx.Visible = true;
+                        AgregarProducto.Enabled = false;
+                    }
+
+                }
+            }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("ValidarParametrosFactura", ex.ToString());
+
+            }
+
+        }
          protected void AgregarProducto_Click(object sender, EventArgs e)
          {
             try
@@ -1143,46 +1187,15 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
                 //Buscar datos de parametrizacion
                 //Buscar Datos de parametrizacion------periodo contable
-                string perido_contable = "";
-                perido_contable = consultaValidarFactura.ConsultaValidarPeriodoContable(ComPwm, AmUsrLog, fecha.Text);
-                if (perido_contable == "")
-                {
-                    lbl_trx.Text = " No existe Periodo Contable registrado para la fecha de la factura. Por favor registrar Periodo Contable y actualizar la página";
-                    lbl_trx.Visible = true;
-                    AgregarProducto.Enabled = false;
-                }
-                else
-                {
-                    Boolean empresa = false;
-                    empresa = consultaValidarFactura.ConsultaValidarMonCiudEmpresaERP(ComPwm, AmUsrLog);
-                    if (empresa == false)
-                    {
-                        lbl_trx.Text = " No existe moneda o ciudad de la empresa registrado para la factura. Por favor registrar información y actualizar la página";
-                        lbl_trx.Visible = true;
-                        AgregarProducto.Enabled = false;
-                    }
-                    else
-                    {
-                        Boolean resolucion = false;
-                        resolucion = consultaValidarFactura.ConsultaValidarResolucionERP(ComPwm, AmUsrLog, "V", serie_docum.SelectedValue.Trim(), fecha.Text);
-                        if (resolucion == false)
-                        {
-                            lbl_trx.Text = " No existe resolución de factura. Por favor registrar información y actualizar la página";
-                            lbl_trx.Visible = true;
-                            AgregarProducto.Enabled = false;
-                        }
-                        else
-                        {
-                            //Agrega el producto a la grilla gv_Producto  
-                            InsertarDetalle();
+             ValidarParametrosFactura();
+                //Agrega el producto a la grilla gv_Producto  
+                InsertarDetalle();
                             //Boton Salvar
                            GuardarDetalle();
                             //CArgar datos detalle
                             TraeDetalleFactura();
-                        }
-
-                    }
-                }
+                    
+                
                     
                 
             }
@@ -1293,6 +1306,7 @@ namespace CapaWeb.WebForms
                             }
                             else
                             {
+                                //ValidarParametrosFactura();
                                 string respuestaConfirmacionFAC = "";
                                 //Boton Coonfirmar hace lo mismo que el salvar solo aumenta la insercion a la tabla wmt_facturas_ins
                                 conscabcera = null;

@@ -379,7 +379,7 @@ namespace CapaWeb.WebForms
                                     Response.Redirect("FormFacturaPostElec.aspx" + Encryption.EncryptQueryString(qs).ToString());
                                     break;
                                 default:
-                                    this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
+                                    this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTÁ " + estadoM + ", NO SE PUEDE EDITAR')+ error;</script>");
                                     break;
 
                             }
@@ -416,7 +416,7 @@ namespace CapaWeb.WebForms
                                         Response.Write("<script>window.open('" + "ReporteFactura.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
                                         break;
                                     default:
-                                        this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
+                                        this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTÁ " + estadoM + ", NO SE PUEDE IMPRIMIR')+ error;</script>");
                                         break;
 
                                 }

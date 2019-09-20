@@ -65,5 +65,22 @@ namespace CapaProceso.Consultas
                 return false;
             }
         }
+
+        //COd ciudad y cod_mneda erp
+        public Boolean ConsultaValidarNroDocumERP(string cod_emp, string usuario, string serie_docum, string nro_docum)
+        {
+            try
+            {
+                Boolean lista = false;
+                lista = factura.ValidarNroDocumERP(cod_emp, usuario, serie_docum, nro_docum);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ConsultaValidarNroDocumERP", e.ToString(), DateTime.Today, usuario);
+                return false;
+            }
+        }
     }
 }

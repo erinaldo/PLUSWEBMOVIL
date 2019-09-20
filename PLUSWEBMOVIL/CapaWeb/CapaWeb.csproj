@@ -129,7 +129,6 @@
     <Content Include="WebForms\FormDocumentosElectronicos.aspx" />
     <Content Include="WebForms\FormExcepciones.aspx" />
     <Content Include="WebForms\FormFacturaPostElec.aspx" />
-    <Content Include="WebForms\FormFacturaVTA.aspx" />
     <Content Include="WebForms\FormHostMail.aspx" />
     <Content Include="WebForms\BuscarDenominaciones.aspx" />
     <Content Include="WebForms\FormListaHostMail.aspx" />
@@ -339,13 +338,6 @@
     </Compile>
     <Compile Include="WebForms\FormFacturaPostElec.aspx.designer.cs">
       <DependentUpon>FormFacturaPostElec.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WebForms\FormFacturaVTA.aspx.cs">
-      <DependentUpon>FormFacturaVTA.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebForms\FormFacturaVTA.aspx.designer.cs">
-      <DependentUpon>FormFacturaVTA.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormHostMail.aspx.cs">
       <DependentUpon>FormHostMail.aspx</DependentUpon>
