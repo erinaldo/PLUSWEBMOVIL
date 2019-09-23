@@ -710,11 +710,9 @@ namespace CapaWeb.WebForms
                             itemSuma.porc_iva = Convert.ToDecimal(iva.Text);
                             itemSuma.porc_descto =  Convert.ToDecimal(porcdescto.Text);
 
-                             
-                            }
- 
                                 break;
-                            }
+                        }
+                    }
                         
 
                         if (!existe)

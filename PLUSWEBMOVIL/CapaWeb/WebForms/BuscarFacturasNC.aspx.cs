@@ -48,6 +48,7 @@ namespace CapaWeb.WebForms
         modelonumerador nrotrans = new modelonumerador();
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
+        modelowmtfacturascab conscabceraTipo = new modelowmtfacturascab();
         public string numerador = "trans";
 
         public string ComPwm;
@@ -131,7 +132,29 @@ namespace CapaWeb.WebForms
 
         }
 
+        public modelowmtfacturascab buscarTipoFac(string nro_trans)
+        {
+            try
+            {
+                lbl_error.Text = "";
 
+                listaConsCab = ConsultaCabe.ConsultaTipoFactura(nro_trans);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
+
+                }
+                return conscabcera;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("buscarTipoFac", ex.ToString());
+                return null;
+            }
+        }
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
             try
@@ -152,6 +175,10 @@ namespace CapaWeb.WebForms
                         {
                             Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                             //Consultamos la opcion seleccionada
+                            //cOSNULTA BUSCAR TIPO DE FACTURA
+                            conscabceraTipo = null;
+                            conscabceraTipo = buscarTipoFac(Id.ToString());
+                            Ccf_tipo2 = conscabceraTipo.tipo_nce.Trim();
                             //Consulta de cabeecra
                             listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Id.ToString(), Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
 

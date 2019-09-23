@@ -96,6 +96,8 @@ namespace CapaWeb.WebForms
         public ConsultaActualizarTitular ConsultaDatosTitular = new ConsultaActualizarTitular();
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
+
+        modelowmtfacturascab conscabceraTipo = new modelowmtfacturascab();
         public string ComPwm;
         public string AmUsrLog;
         public string valor_asignado = null;
@@ -880,10 +882,22 @@ namespace CapaWeb.WebForms
 
                 //LIsta Resolucion facturas
                 listaRes = ConsultaResolucion.ConsultaResolusiones(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo);
+                resolucion = null;
+                foreach (modelowmspcresfact item in listaRes)
+                {
+                    resolucion = item;
+
+                }
                 serie_docum.DataSource = listaRes;
                 serie_docum.DataTextField = "serie_docum";
                 serie_docum.DataValueField = "serie_docum";
                 serie_docum.DataBind();
+                //Aqui se va a traer que tipo de facturacion es
+                if (resolucion.tipo_fac == "S")
+                {
+                    Session["Ccf_tipo2"] = "NCVE";
+                }
+                else { Session["Ccf_tipo2"] = "NCV"; }
 
                 //lista ccostos
                 listaCostos = ConsultaCCostos.ConsultaCCostos(AmUsrLog, ComPwm, CC__cod_dpto);
@@ -920,6 +934,30 @@ namespace CapaWeb.WebForms
 
             }
         }
+
+        public modelowmtfacturascab buscarTipoFac(string nro_trans)
+        {
+            try
+            {
+                lbl_error.Text = "";
+
+                listaConsCab = ConsultaCabe.ConsultaTipoFactura(nro_trans);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
+
+                }
+                return conscabcera;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("buscarTipoFac", ex.ToString());
+                return null;
+            }
+        }
         protected void LlenarFactura()
         {
             try
@@ -928,15 +966,13 @@ namespace CapaWeb.WebForms
                 //llenar formulario para la actualizacion de datos
 
                 string Ccf_nro_trans = Session["valor_asignado"].ToString();
-
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-                int count = 0;
+                conscabceraTipo = buscarTipoFac(Ccf_nro_trans);
+                Session["Ccf_tipo2"] = conscabceraTipo.tipo_nce.Trim();
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 conscabcera = null;
                 foreach (modelowmtfacturascab item in listaConsCab)
                 {
-                    count++;
                     conscabcera = item;
-
                 }
 
                 auditoria = conscabcera.nro_audit;
@@ -1411,7 +1447,7 @@ namespace CapaWeb.WebForms
                 cabecerafactura.nro_audit = "0"; // por defecto va cero s disapra triger
                 cabecerafactura.ocompra = ocompra.Text;
                 cabecerafactura.cod_moneda = cmbCod_moneda.SelectedValue;
-                cabecerafactura.tipo = Ccf_tipo2;// "NCVE";
+                cabecerafactura.tipo = Session["Ccf_tipo2"].ToString();// "NCVE";
                 cabecerafactura.porc_descto = Convert.ToDecimal("0.00");
                 cabecerafactura.descuento = Convert.ToDecimal("0.00");
                 cabecerafactura.diar = "0";
@@ -1451,7 +1487,7 @@ namespace CapaWeb.WebForms
                 //Busca el nro de auditoria para poder insertar el detalle factura
                 //consulta nro_auditoria de la cabecera
                 string Ccf_nro_trans = valor_asignado;
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 int count = 0;
                 conscabcera = null;
                 foreach (modelowmtfacturascab item in listaConsCab)
@@ -1569,9 +1605,16 @@ namespace CapaWeb.WebForms
                     cliente = item;
                     break;
                 }
-
-
-                ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C");
+                //vERIFICAR TIPO NCVE O NCV
+                string tipo = Session["Ccf_tipo2"].ToString();
+                if (tipo == "NCVE")
+                {
+                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C");
+                }
+                else
+                {
+                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C");
+                }
                 ModeloSaldoFactura = null;
                 foreach (modeloSaldosFacturas item in ListaSaldoFacturas)
                 {
@@ -1673,8 +1716,14 @@ namespace CapaWeb.WebForms
                                 confirmarinsertar.usuario_mod = AmUsrLog;
                                 confirmarinsertar.fecha_mod = DateTime.Now;
                                 confirmarinsertar.nro_audit = conscabcera.nro_audit;
-
                                 respuestaConfirmacionNC = ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
+                                // respuestaConfirmacionNC = ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
+                                //cOSNULTA BUSCAR TIPO DE FACTURA
+                                conscabceraTipo = null;
+                                conscabceraTipo = buscarTipoFac(conscabcera.nro_trans.Trim());
+                                if (conscabceraTipo.tipo_nce.Trim() == "NCVE")
+                                {
+                                   
                                 if (respuestaConfirmacionNC == "")
                                 {
 
@@ -1699,14 +1748,21 @@ namespace CapaWeb.WebForms
 
                                     }
                                 }
+                                
                                 else
                                 {
                                     lbl_trx.Visible = true;
                                     lbl_trx.Text = respuestaConfirmacionNC;
                                 }
                             }
+                            
+                                else {
+                                    Session.Remove("listaFacturas");
+                                    Response.Redirect("FormBuscarNotaCredito.aspx");
+                                }
 
                         }
+                    }
                     }
                 }
             }

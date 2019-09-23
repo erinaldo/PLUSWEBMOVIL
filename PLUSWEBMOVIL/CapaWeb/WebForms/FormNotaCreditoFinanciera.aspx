@@ -476,7 +476,7 @@
                                            <asp:TemplateColumn HeaderText="Base IVA">
                                                 <ItemTemplate>
                                                     <span style="float: right;">
-                                                        <asp:Label ID="baseIva" runat="server" class="textos" Text='<%#Eval("subtotal", "{0:N}") %>'></asp:Label>
+                                                        <asp:Label ID="baseIva" runat="server" class="textos" Text='<%#Eval("base_iva", "{0:N}") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>

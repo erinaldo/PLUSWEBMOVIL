@@ -323,7 +323,29 @@ namespace CapaWeb.WebForms
             }
         }
 
+        public modelowmtfacturascab buscarTipoFac(string nro_trans)
+        {
+            try
+            {
+                lbl_error.Text = "";
 
+                listaConsCab = ConsultaCabe.ConsultaTipoFactura(nro_trans);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
+
+                }
+                return conscabcera;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("buscarTipoFac", ex.ToString());
+                return null;
+            }
+        }
 
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
@@ -410,7 +432,23 @@ namespace CapaWeb.WebForms
                         {
                             Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                             estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
-                            switch (estadoM)
+
+                            //cOSNULTA BUSCAR TIPO DE FACTURA
+                            listaConsCab = ConsultaCabe.ConsultaNCTransPadre(Id.ToString());
+                            conscabcera = null;
+                            foreach (modelowmtfacturascab item in listaConsCab)
+                            {
+                                conscabcera = item;
+                            }
+
+                            if (conscabcera.tipo_nce.Trim() == "NCV" || conscabcera.tipo_nce.Trim() == "NCM" )
+                            {
+                                qs.Add("Id", Id.ToString());
+                                Response.Write("<script>window.open('" + "ReporteNotaCredito.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
+                            }
+                            else
+                            {
+                                switch (estadoM)
                             {
                                 case "FINALIZADO":
 
@@ -424,6 +462,7 @@ namespace CapaWeb.WebForms
                             }
 
                             break;
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -506,14 +545,30 @@ namespace CapaWeb.WebForms
                     case "Mostrar":
                         try
                         {
+                            
+
                             Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                             estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
+                            //cOSNULTA BUSCAR TIPO DE FACTURA
+                            listaConsCab = ConsultaCabe.ConsultaNCTransPadre(Id.ToString());
+                            conscabcera = null;
+                            foreach (modelowmtfacturascab item in listaConsCab)
+                            {
+                                conscabcera = item;
+                            }
+                            if (conscabcera.tipo_nce.Trim() == "NCV" || conscabcera.tipo_nce.Trim() == "NCM")
+                            {
 
-                            qs.Add("TRN", "MTR");
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('SU NOTA CREDITO NO TIENE HABILITADA ESTA OPCION')+ error;</script>");
+                            }
+                            else
+                            {
+                                qs.Add("TRN", "MTR");
                             qs.Add("Id", Id.ToString());
                             Response.Redirect("ListaRespuestaNCDS.aspx" + Encryption.EncryptQueryString(qs).ToString());
 
                             break;
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -526,8 +581,21 @@ namespace CapaWeb.WebForms
                         {
                             Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                             estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
+                            //cOSNULTA BUSCAR TIPO DE FACTURA
+                            listaConsCab = ConsultaCabe.ConsultaNCTransPadre(Id.ToString());
+                            conscabcera = null;
+                            foreach (modelowmtfacturascab item in listaConsCab)
+                            {
+                                conscabcera = item;
+                            }
+                            if (conscabcera.tipo_nce.Trim() == "NCV" || conscabcera.tipo_nce.Trim() == "NCM")
+                            {
 
-                            switch (estadoM)
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('SU NOTA CREDITO NO TIENE HABILITADA ESTA OPCION')+ error;</script>");
+                            }
+                            else
+                            {
+                                switch (estadoM)
                             {
                                 case "CONTABILIZADO":
 
@@ -539,7 +607,7 @@ namespace CapaWeb.WebForms
                                     break;
 
                             }
-
+                            }
                             break;
                         }
                         catch (Exception ex)

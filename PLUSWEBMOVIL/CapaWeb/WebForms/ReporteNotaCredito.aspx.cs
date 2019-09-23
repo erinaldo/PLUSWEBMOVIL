@@ -14,6 +14,7 @@ using CapaProceso.Consultas;
 using CapaProceso.Modelos;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using CapaDatos.Modelos;
+using CapaProceso.ReslClientePdf;
 
 namespace CapaWeb.WebForms
 {
@@ -42,6 +43,8 @@ namespace CapaWeb.WebForms
 
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
+        List<modelowmtfacturascab> listaConsCab = null;
+        CabezeraFactura GuardarCabezera = new CabezeraFactura();
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -53,19 +56,75 @@ namespace CapaWeb.WebForms
                 QueryString qs = ulrDesencriptada();
                 Int64 id = Int64.Parse(qs["Id"].ToString());
                 Ccf_nro_trans = id.ToString();
+                //cOSNULTA BUSCAR TIPO DE FACTURA
+                //Buscar que tipo de factura es pose / vtae
+                conscabcera = null;
+                conscabcera = buscarTipoFac(Ccf_nro_trans);
+                if (conscabcera.tipo_nce.Trim() == "NCV" || conscabcera.tipo_nce.Trim() == "NCM")
+                {
+                    if (conscabcera.estado.Trim() == "C")
+                    {
+                        GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
 
-                PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
-                string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                        PdfNotaCredito pdf = new PdfNotaCredito();
+                        string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                        Response.ContentType = "application/pdf";
+                        Response.WriteFile(pathPdf);
+                        Response.End();
+                    }
+                    else
+                    {
+                        PdfNotaCredito pdf = new PdfNotaCredito();
+                        string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                        Response.ContentType = "application/pdf";
+                        Response.WriteFile(pathPdf);
+                        Response.End();
+                    }
+                    
+                    
+                }
+                else
+                {
+                    PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
+                    string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
 
-                Response.ContentType = "application/pdf";
-                Response.WriteFile(pathPdf);
-                Response.End();
+                    Response.ContentType = "application/pdf";
+                    Response.WriteFile(pathPdf);
+                    Response.End();
+                }
+               
+               
             }
             catch (Exception ex)
             {
                 GuardarExcepciones("Page_Load", ex.ToString());
 
+            }
+        }
+
+        public modelowmtfacturascab buscarTipoFac(string nro_trans)
+        {
+            try
+            {
+
+
+
+                listaConsCab = ConsultaCabe.ConsultaTipoFactura(nro_trans);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
+
+                }
+                return conscabcera;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("buscarTipoFac", ex.ToString());
+                return null;
             }
         }
         public void GuardarExcepciones(string metodo, string error)
