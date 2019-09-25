@@ -194,6 +194,7 @@
     <Content Include="WebForms\FormRespuestaJsonND.aspx" />
     <Content Include="WebForms\FormSucursalempresa.aspx" />
     <Content Include="WebForms\FormUsuariosucursal.aspx" />
+    <Content Include="WebForms\Index.html" />
     <Content Include="WebForms\ListaRespuestaNCDS.aspx" />
     <Content Include="WebForms\ListaRespuestaNDDS.aspx" />
     <Content Include="WebForms\MediosPagoPos.aspx" />
