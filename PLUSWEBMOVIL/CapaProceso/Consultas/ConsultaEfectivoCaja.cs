@@ -24,20 +24,20 @@ namespace CapaProceso.Consultas
         }
 
         //ultimo secuencial wmt_efectivocaja
-        public Int64 UltimoEfectivoSecuencial(string fecha, string cod_emp)
+        public Int64 UltimoEfectivoSecuencial(string fecha, string cod_emp, string nro_caja)
         {
 
-            return efectivocaja.UltimoEfectivoCajaSecuencial(fecha, cod_emp);
+            return efectivocaja.UltimoEfectivoCajaSecuencial(fecha, cod_emp, nro_caja);
         }
 
         //lista ultimo efectivo caja
         //Consulta total pagos efectivo pos, y pose
-        public List<modeloEfectivoCaja> ListaCCajaFecha(string fecha, Int64 secuencial, string cod_emp)
+        public List<modeloEfectivoCaja> ListaCCajaFecha(string fecha, Int64 secuencial, string cod_emp, string nro_caja)
         {
             try
             {
                 List<modeloEfectivoCaja> lista = new List<modeloEfectivoCaja>();
-                lista = efectivocaja.BuscarEfectivoCF(fecha, secuencial, cod_emp);
+                lista = efectivocaja.BuscarEfectivoCF(fecha, secuencial, cod_emp, nro_caja);
                 return lista;
             }
             catch (Exception e)
@@ -49,12 +49,12 @@ namespace CapaProceso.Consultas
         }
 
         //lista de secuenciales para cbx_secuencial
-        public List<modeloEfectivoCaja> ListaSecuencialFecha(string fecha,  string cod_emp)
+        public List<modeloEfectivoCaja> ListaSecuencialFecha(string fecha,  string cod_emp,string nro_caja)
         {
             try
             {
                 List<modeloEfectivoCaja> lista = new List<modeloEfectivoCaja>();
-                lista = efectivocaja.ListaEfectivoFecha(fecha, cod_emp);
+                lista = efectivocaja.ListaEfectivoFecha(fecha, cod_emp, nro_caja);
                 return lista;
             }
             catch (Exception e)

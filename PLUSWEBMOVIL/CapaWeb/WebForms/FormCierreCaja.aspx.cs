@@ -56,6 +56,8 @@ namespace CapaWeb.WebForms
         modelonumerador nrotrans = new modelonumerador();
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
+        modeloCajasCierre modeloCajasUsuario = new modeloCajasCierre();
+        List<modeloCajasCierre> listaCajasUsuario = null;
 
         public string ComPwm;
         public string AmUsrLog;
@@ -113,57 +115,49 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
+                listaCajasUsuario = ConsultaCCaja.ConsultaCajasCierre(AmUsrLog, ComPwm, "", "");
+                cbx_caja_usuario.DataSource = listaCajasUsuario;
+                cbx_caja_usuario.DataTextField = "nomtcta_banco";
+                cbx_caja_usuario.DataValueField = "nrocta_banco";
+                cbx_caja_usuario.DataBind();
 
-
-                //tOTAL FACTURAS DEL DIA
-                listaTPFacturas = ConsultaECaja.ConsultaCCajaFecha(fecha);
-                int count = 0;
-                modeloTPFacturas = null;
-                foreach (modeloTotalPgsFacturas item in listaTPFacturas)
-                {
-                    count++;
-                    modeloTPFacturas = item;
-
-                }
-                if (modeloTPFacturas.total == "")
-                {
-                    txt_ingreso_facturas.Text = "0.00";
-                }
-                else
-                {
-                    decimal ipfac = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloTPFacturas.total));
-                    txt_ingreso_facturas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), ipfac);
-
-                }
-
-
-                //TOTAL NOTAS DE VENTA DEL DIA
-                listaTPFacturas = null;
-                listaTPFacturas = ConsultaECaja.ConsultaTotalNVTA(fecha);
-                int count1 = 0;
-                modeloTPFacturas = null;
-                foreach (modeloTotalPgsFacturas item in listaTPFacturas)
-                {
-                    count1++;
-                    modeloTPFacturas = item;
-
-                }
-                if (modeloTPFacturas.total == "")
-                {
-                    txt_ingreso_nventas.Text = "0.00";
-                }
-                else
-                {
-                    decimal inv = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloTPFacturas.total));
-
-                    txt_ingreso_nventas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), inv);
-
-                }
-                //TOTAL PAGO EN EFECTIVO DE FACTURAS
                 DateTime Fechainicio = Convert.ToDateTime(fecha);
                 string dia = string.Format("{0:00}", Fechainicio.Day);
                 string mes = string.Format("{0:00}", Fechainicio.Month);
                 string anio = Fechainicio.Year.ToString();
+
+                //tOTAL FACTURAS DEL DIA, INGRESO POR FACTURAS, FV
+                ListaPProveedores = null;
+                ListaPProveedores = ConsultaCCaja.TotalPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "FV", "R");
+
+                modeloPProveedor = null;
+                foreach (modeloPagoProveedores item in ListaPProveedores)
+                {
+
+                    modeloPProveedor = item;
+
+                }
+                decimal ipfac = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloPProveedor.valor));
+                txt_ingreso_facturas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), ipfac);
+
+
+                //TOTAL NOTAS DE VENTA DEL DIA, NV
+                ListaPProveedores = null;
+                ListaPProveedores = ConsultaCCaja.TotalPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "NV", "R");
+
+                modeloPProveedor = null;
+                foreach (modeloPagoProveedores item in ListaPProveedores)
+                {
+
+                    modeloPProveedor = item;
+
+                }
+
+                decimal inv = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloPProveedor.valor));
+
+                txt_ingreso_nventas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), inv);
+                //TOTAL PAGO EN EFECTIVO DE FACTURAS
+
                 ListaPProveedores = null;
                 ListaPProveedores = ConsultaCCaja.TotalPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "PP", "R" );
                
@@ -400,6 +394,7 @@ namespace CapaWeb.WebForms
                 guardarCCcaja.fecha_mod = DateTime.Today;
                 guardarCCcaja.cod_emp = ComPwm;
                 guardarCCcaja.nro_trans = valor_asignado;
+                guardarCCcaja.nro_caja = cbx_caja_usuario.SelectedValue;
                 ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
                 //Guardar linea x linea ingresos facturas
                 guardarCCcaja.signo = "+";
@@ -412,6 +407,7 @@ namespace CapaWeb.WebForms
                 guardarCCcaja.fecha_mod = DateTime.Today;
                 guardarCCcaja.cod_emp = ComPwm;
                 guardarCCcaja.nro_trans = valor_asignado;
+                guardarCCcaja.nro_caja = cbx_caja_usuario.SelectedValue;
                 ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
                 //Guardar linea x linea ingresos NOTAS VENTA
                 guardarCCcaja.signo = "+";
@@ -424,6 +420,7 @@ namespace CapaWeb.WebForms
                 guardarCCcaja.fecha_mod = DateTime.Today;
                 guardarCCcaja.cod_emp = ComPwm;
                 guardarCCcaja.nro_trans = valor_asignado;
+                guardarCCcaja.nro_caja = cbx_caja_usuario.SelectedValue;
                 ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
                 //Guardar linea x linea PAGOS EN FECTIVO FACTURAS
                 guardarCCcaja.signo = "-";
@@ -436,6 +433,7 @@ namespace CapaWeb.WebForms
                 guardarCCcaja.fecha_mod = DateTime.Today;
                 guardarCCcaja.cod_emp = ComPwm;
                 guardarCCcaja.nro_trans = valor_asignado;
+                guardarCCcaja.nro_caja = cbx_caja_usuario.SelectedValue;
                 ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
                 //Guardar linea x linea PAGOS EN FECTIVO OTROS
                 guardarCCcaja.signo = "-";
@@ -448,6 +446,7 @@ namespace CapaWeb.WebForms
                 guardarCCcaja.fecha_mod = DateTime.Today;
                 guardarCCcaja.cod_emp = ComPwm;
                 guardarCCcaja.nro_trans = valor_asignado;
+                guardarCCcaja.nro_caja = cbx_caja_usuario.SelectedValue;
                 ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
                 //Guardar linea x linea DEPOSITOS DEL DIA
                 guardarCCcaja.signo = "-";
@@ -475,6 +474,7 @@ namespace CapaWeb.WebForms
                 guardarCCcaja.fecha_mod = DateTime.Today;
                 guardarCCcaja.cod_emp = ComPwm;
                 guardarCCcaja.nro_trans = valor_asignado;
+                guardarCCcaja.nro_caja = cbx_caja_usuario.SelectedValue;
                 ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
 
                 DecimalesMoneda = null;
@@ -506,6 +506,7 @@ namespace CapaWeb.WebForms
                     guardarEfectivoC.secuencial = secuencialEfectivoC;
                     guardarEfectivoC.cod_emp = ComPwm;
                     guardarEfectivoC.nro_trans = valor_asignado;
+                    guardarEfectivoC.nro_caja = cbx_caja_usuario.SelectedValue;
                     ConsultaEfectivoC.InsertarECaja(guardarEfectivoC);
 
                 }
@@ -898,6 +899,7 @@ namespace CapaWeb.WebForms
 
                 CalcularTotal();
                 InsertarTotales();
+                cbx_caja_usuario.Enabled = false;
                 Lbl_Usuario.Text = UsuarioDatos.BuscarNombreUsuario(AmUsrLog.Trim());
                 txt_valor_id.Enabled = false;
                 txt_ingreso_facturas.Enabled = false;

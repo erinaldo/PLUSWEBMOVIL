@@ -76,6 +76,24 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox fechainicio;
         
         /// <summary>
+        /// Control lbl_caja.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_caja;
+        
+        /// <summary>
+        /// Control cbx_caja_usuario.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cbx_caja_usuario;
+        
+        /// <summary>
         /// Control lbl_busqueda.
         /// </summary>
         /// <remarks>
@@ -119,6 +137,15 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label4;
+        
+        /// <summary>
+        /// Control lbl_caja_usuario.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_caja_usuario;
         
         /// <summary>
         /// Control lbl_fecha.

@@ -42,15 +42,15 @@
                                          OnPageIndexChanging="gvProducto_PageIndexChanging" AllowPaging="True" PageSize="30" OnLoad="gvProducto_DataBound" OnSelectedIndexChanged="gvProducto_SelectedIndexChanged" ShowFooter="True" >
                                         <RowStyle BackColor="#EFF3FB" />
                                             <Columns>
-                                                <asp:BoundField  DataField="nro_docum" ItemStyle-CssClass="textos"  >
+                                                <asp:BoundField  DataField="nro_docum" ItemStyle-CssClass="textos" HeaderText="TRX" >
                                                    
                                                     </asp:BoundField>
-                                                <asp:BoundField  DataField="cod_docum"  ItemStyle-CssClass="textos"  >
+                                                <asp:BoundField  DataField="cod_docum"  ItemStyle-CssClass="textos" HeaderText="CODIGO" >
                                                     </asp:BoundField>
-                                                <asp:BoundField  DataField="serie_docum"  ItemStyle-CssClass="textos"  >
+                                                <asp:BoundField  DataField="serie_docum"  ItemStyle-CssClass="textos" HeaderText="SERIE" >
                                                     </asp:BoundField>
                                                 
-                                                <asp:BoundField  DataField="cod_tit" ItemStyle-CssClass="textos" >
+                                                <asp:BoundField  DataField="cod_tit" ItemStyle-CssClass="textos" HeaderText="COD_CLIENTE">
                                                     </asp:BoundField>
                                                 <asp:BoundField  DataField="nom_tit" ItemStyle-CssClass="textos" HeaderText="CLIENTE"  >
 <ItemStyle CssClass="textos"></ItemStyle>

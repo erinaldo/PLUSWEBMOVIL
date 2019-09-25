@@ -45,10 +45,10 @@
                                                 <asp:BoundField  DataField="nro_trans"  ItemStyle-CssClass="textos" HeaderText="TRX" >
 <ItemStyle CssClass="textos"></ItemStyle>
                                                 </asp:BoundField>
-                                                <asp:BoundField  DataField="razon_social" ItemStyle-CssClass="textos" HeaderText="CLIENTE"  >
+                                                <asp:BoundField  DataField="nom_tit" ItemStyle-CssClass="textos" HeaderText="CLIENTE"  >
 <ItemStyle CssClass="textos"></ItemStyle>
                                                 </asp:BoundField>
-                                                <asp:BoundField  DataField="fec_doc" ItemStyle-CssClass="textos" HeaderText="FECHA"   >
+                                                <asp:BoundField  DataField="fec_st" ItemStyle-CssClass="textos" HeaderText="FECHA"   >
 <ItemStyle CssClass="textos"></ItemStyle>
                                                 </asp:BoundField>
                                                 <asp:BoundField  DataField="documento" ItemStyle-CssClass="textos" HeaderText="DOCUMENTO"   >
@@ -62,11 +62,7 @@
 
 <ItemStyle CssClass="textos"></ItemStyle>
                                                 </asp:BoundField>
-                                                <asp:BoundField  DataField="efectivo" ItemStyle-CssClass="textos"  HeaderText="EFECTIVO" DataFormatString="{0:N}">
-                                                 <FooterStyle ForeColor="Black" CssClass="textos" />
 
-<ItemStyle CssClass="textos"></ItemStyle>
-                                                </asp:BoundField>
                                                  <asp:ButtonField ButtonType="Image"  ControlStyle-CssClass="botones" CommandName="Select" ShowHeader="True"   ImageUrl="~/Tema/imagenes/search.png" >
                                                 <ControlStyle CssClass="botones"></ControlStyle>
                                                 </asp:ButtonField>

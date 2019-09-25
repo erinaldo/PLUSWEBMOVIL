@@ -121,7 +121,11 @@
                                 <td>
                                     <asp:TextBox ID="fechainicio" type="date" Width="202" AutoPostBack="True" runat="server" OnTextChanged="fechainicio_TextChanged"></asp:TextBox>
                                 </td>
-
+                                 <td>
+                                    <asp:Label ID="lbl_caja" CssClass="busqueda" runat="server" Text="Caja"></asp:Label></td>
+                                <td>
+                                    <asp:DropDownList ID="cbx_caja_usuario" CssClass="textos" runat="server"></asp:DropDownList>
+                                </td>
                                 <td>
                                     <asp:Label ID="lbl_busqueda" CssClass="busqueda" runat="server" Text="Lista"></asp:Label></td>
                                 <td>
@@ -230,6 +234,11 @@
                                                             <td>
                                                                 <asp:Label ID="Label4" runat="server" CssClass="Titulo" Text="Cierre Caja"></asp:Label>
                                                             </td>
+                                                              <td>
+
+                                                                <asp:Label ID="lbl_caja_usuario" runat="server" class="Subtitulo1" Text="Label"></asp:Label>
+
+                                                            </td>
                                                             <td style="width: 33px">
                                                                 <div class="Subtitulo1">DIA:</div>
                                                             </td>
@@ -245,7 +254,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="4">
+                                                            <td colspan="5">
                                                                 <hr />
                                                             </td>
                                                         </tr>

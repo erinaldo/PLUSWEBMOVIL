@@ -74,7 +74,7 @@ namespace CapaWeb.WebForms
 
         ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
         modelonumerador nrotrans = new modelonumerador();
-        
+
         CabezeraFactura GuardarCabezera = new CabezeraFactura();
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
         List<modelowmtfacturascab> listaConsCab = null;
@@ -88,7 +88,7 @@ namespace CapaWeb.WebForms
         List<ModeloDetalleFactura> ModeloDetalleFactura = new List<ModeloDetalleFactura>();
         ModeloDetalleFactura detallefactura = new ModeloDetalleFactura();
         DetalleFactura GuardarDetalles = new DetalleFactura();
-       
+
         modeloinsertarconfirmar confirmarinsertar = new modeloinsertarconfirmar();
         Consultaconfirmarfactura ConfirmarFactura = new Consultaconfirmarfactura();
         List<modeloinsertarconfirmar> modeloinsertarconfirmar = new List<modeloinsertarconfirmar>();
@@ -112,9 +112,9 @@ namespace CapaWeb.WebForms
         modeloExepciones ModeloExcepcion = new modeloExepciones();
 
         ConsultaValidarParametrosFactura consultaValidarFactura = new ConsultaValidarParametrosFactura();
-        
 
-        
+
+
         public string ComPwm;
         public string AmUsrLog;
         public string valor_asignado = null;
@@ -295,14 +295,14 @@ namespace CapaWeb.WebForms
         }
         public void GuardarExcepciones(string metodo, string error)
         {
-           
+
             ModeloExcepcion.cod_emp = ComPwm;
             ModeloExcepcion.proceso = "Facturas.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Today;
             ModeloExcepcion.usuario_mod = AmUsrLog;
-          
+
             consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
             //mandar mensaje de error a label
             lbl_error.Text = "No se pudo completar la acción" + metodo + "." + " Por favor notificar al administrador.";
@@ -369,7 +369,7 @@ namespace CapaWeb.WebForms
             porcdescto.Enabled = false;
             iva.Enabled = false;
         }
-        public modelowmspctctrxCotizacion BuscarCotizacion(string Ccf_usuario, string Ccf_cod_emp, string dia, string mes, string anio, string  moneda)
+        public modelowmspctctrxCotizacion BuscarCotizacion(string Ccf_usuario, string Ccf_cod_emp, string dia, string mes, string anio, string moneda)
         {
             try
             {
@@ -404,11 +404,11 @@ namespace CapaWeb.WebForms
                 Session["Ccf_tipo2"] = conscabceraTipo.tipo_nce.Trim();
 
                 listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-              
+
                 conscabcera = null;
                 foreach (modelowmtfacturascab item in listaConsCab)
                 {
-                      conscabcera = item;
+                    conscabcera = item;
 
                 }
 
@@ -428,14 +428,14 @@ namespace CapaWeb.WebForms
                 cmbCod_moneda.SelectedValue = conscabcera.cod_moneda.Trim();
                 cod_vendedor.SelectedValue = conscabcera.cod_vendedor;
                 //Consultamos cuantos descimales se van a usar redondeo
-                DecimalesMoneda = null;
-                DecimalesMoneda = BuscarDecimales();
-                //Formato totales
-
-                txtSumaSubTo.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.subtotal);
-                txtSumaTotal.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.total);
-                txtSumaIva.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.iva);
-                txtSumaDesc.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.descuento);
+                decimal SubTotal = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.subtotal);
+                txtSumaSubTo.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), SubTotal);
+                decimal Total = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.total);
+                txtSumaTotal.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Total);
+                decimal SumIva = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.iva);
+                txtSumaIva.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), SumIva);
+                decimal SumDesc = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.descuento);
+                txtSumaDesc.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), SumDesc);
 
                 Session["sumaSubtotal"] = Convert.ToString(conscabcera.subtotal);
                 Session["sumaDescuento"] = Convert.ToString(conscabcera.descuento);
@@ -467,10 +467,14 @@ namespace CapaWeb.WebForms
                         iva15 += item.valor_iva;
                     }
                 }
-                txtBaseIva19.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, baseiva19);
-                txtBase15.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, baseiva15);
-                txtIva19.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, iva19);
-                txtIva15.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, iva15);
+                decimal BaseIva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), baseiva19);
+                txtBaseIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), BaseIva19);
+                decimal Base15 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), baseiva15);
+                txtBase15.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Base15);
+                decimal Iva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), iva19);
+                txtIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Iva19);
+                decimal Iva15 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), iva15);
+                txtIva15.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Iva15);
 
                 //Llenar variables de seccion de bae e ivas
 
@@ -485,7 +489,7 @@ namespace CapaWeb.WebForms
             catch (Exception ex)
             {
                 GuardarExcepciones("LlenarFactura", ex.ToString());
-                
+
             }
 
         }
@@ -528,7 +532,7 @@ namespace CapaWeb.WebForms
                 serie_docum.DataValueField = "serie_docum";
                 serie_docum.DataBind();
                 //Aqui se va a traer que tipo de facturacion es
-                if(resolucion.tipo_fac =="S")
+                if (resolucion.tipo_fac == "S")
                 {
                     Session["Ccf_tipo2"] = "VTAE";
                 }
@@ -566,7 +570,7 @@ namespace CapaWeb.WebForms
             catch (Exception ex)
             {
                 GuardarExcepciones("cargarListaDesplegables", ex.ToString());
-                
+
             }
         }
 
@@ -598,68 +602,88 @@ namespace CapaWeb.WebForms
 
             }
         }
-       
+
         public void TraeDetalleFactura()
         {
-           
-            listaConsCab = null;
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), valor_asignado, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-
-            conscabcera = null;
-            foreach (modelowmtfacturascab item in listaConsCab)
+            try
             {
-                conscabcera = item;
+                lbl_error.Text = "";
+
+                listaConsCab = null;
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), valor_asignado, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    conscabcera = item;
+
+                }
+
+                decimal SubTotal = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.subtotal);
+                txtSumaSubTo.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), SubTotal);
+                decimal Total = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.total);
+                txtSumaTotal.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Total);
+                decimal SumIva = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.iva);
+                txtSumaIva.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), SumIva);
+                decimal SumDesc = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.descuento);
+                txtSumaDesc.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), SumDesc);
+
+                Session["sumaSubtotal"] = Convert.ToString(conscabcera.subtotal);
+                Session["sumaDescuento"] = Convert.ToString(conscabcera.descuento);
+                Session["sumaIva"] = Convert.ToString(conscabcera.iva);
+                Session["sumaTotal"] = Convert.ToString(conscabcera.total);
+                //Despues de guardar
+                listaConsDetalle = null;
+                listaConsDetalle = ConsultaDeta.ConsultaDetalleFacura(valor_asignado);
+
+
+                //Consulta de bases e ivas
+                decimal baseiva19 = 0;
+                decimal iva19 = 0;
+                decimal baseiva15 = 0;
+                decimal iva15 = 0;
+                foreach (ModeloDetalleFactura item in listaConsDetalle)
+                {
+                    if (item.porc_iva == 19)
+                    {
+                        baseiva19 += item.base_iva;
+                        iva19 += item.valor_iva;
+                    }
+                    if (item.porc_iva == 5)
+                    {
+                        baseiva15 += item.base_iva;
+                        iva15 += item.valor_iva;
+                    }
+                }
+                decimal BaseIva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), baseiva19);
+                txtBaseIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), BaseIva19);
+                decimal Base15 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), baseiva15);
+                txtBase15.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Base15);
+                decimal Iva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), iva19);
+                txtIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Iva19);
+                decimal Iva15 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), iva15);
+                txtIva15.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Iva15);
+
+                //Llenar variables de seccion de bae e ivas
+
+                Session["sumaBase19"] = baseiva19;
+                Session["sumaBase15"] = baseiva15;
+                Session["sumaIva19"] = iva19;
+                Session["sumaIva15"] = iva15;
+                gv_Producto.DataSource = listaConsDetalle;
+                gv_Producto.DataBind();
+                gv_Producto.Height = 100;
+
+                
+            }
+              
+            catch (Exception ex)
+            {
+                GuardarExcepciones("TraeDetalleFactura", ex.ToString());
 
             }
 
-            txtSumaSubTo.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), conscabcera.subtotal);
-            txtSumaTotal.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), conscabcera.total);
-            txtSumaIva.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), conscabcera.iva);
-            txtSumaDesc.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), conscabcera.descuento);
-
-            Session["sumaSubtotal"] = Convert.ToString(conscabcera.subtotal);
-            Session["sumaDescuento"] = Convert.ToString(conscabcera.descuento);
-            Session["sumaIva"] = Convert.ToString(conscabcera.iva);
-            Session["sumaTotal"] = Convert.ToString(conscabcera.total);
-            //Despues de guardar
-            listaConsDetalle = null;
-            listaConsDetalle = ConsultaDeta.ConsultaDetalleFacura(valor_asignado);
-           
-
-            //Consulta de bases e ivas
-            decimal baseiva19 = 0;
-            decimal iva19 = 0;
-            decimal baseiva15 = 0;
-            decimal iva15 = 0;
-            foreach (ModeloDetalleFactura item in listaConsDetalle)
-            {
-                if (item.porc_iva == 19)
-                {
-                    baseiva19 += item.base_iva;
-                    iva19 += item.valor_iva;
-                }
-                if (item.porc_iva == 5)
-                {
-                    baseiva15 += item.base_iva;
-                    iva15 += item.valor_iva;
-                }
-            }
-            txtBaseIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), baseiva19);
-            txtBase15.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), baseiva15);
-            txtIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), iva19);
-            txtIva15.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), iva15);
-
-            //Llenar variables de seccion de bae e ivas
-
-            Session["sumaBase19"] = baseiva19;
-            Session["sumaBase15"] = baseiva15;
-            Session["sumaIva19"] = iva19;
-            Session["sumaIva15"] = iva15;
-            gv_Producto.DataSource = listaConsDetalle;
-            gv_Producto.DataBind();
-            gv_Producto.Height = 100;
-
-        }
+}
         public void InsertarDetalle()
         {
             try

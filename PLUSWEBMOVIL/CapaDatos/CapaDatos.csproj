@@ -42,6 +42,7 @@
     <Compile Include="Modelos\JsonRespuestaDE.cs" />
     <Compile Include="Modelos\modeloActualizarDatosTitular.cs" />
     <Compile Include="Modelos\modelocabecerafactura.cs" />
+    <Compile Include="Modelos\modeloCajasCierre.cs" />
     <Compile Include="Modelos\modeloCierreCaja.cs" />
     <Compile Include="Modelos\modeloCodProcesoFactura.cs" />
     <Compile Include="Modelos\modeloDenominacionesMoneda.cs" />

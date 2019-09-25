@@ -70,7 +70,8 @@ namespace CapaWeb.WebForms
                 }
                 if (!IsPostBack)
                 {
-
+                    DecimalesMoneda = null;
+                    DecimalesMoneda = BuscarDecimales();
                     if (Session["Fecha"] != null)
                     {
                         Session["Fecha1"] = Session["Fecha"];
@@ -131,17 +132,17 @@ namespace CapaWeb.WebForms
                 if (ListaPProveedores.Count > 0)
                 {
 
-                    DecimalesMoneda = null;
-                    DecimalesMoneda = BuscarDecimales();
+                   
                     decimal TotalFactura = 0;
-                    decimal TotalEfectivo = 0;
+                    decimal TotalRedondeado = 0;
                     foreach (GridViewRow item in gvProducto.Rows)
                     {
-                        TotalFactura += Convert.ToDecimal(item.Cells[7].Text);
-                       // TotalEfectivo += Convert.ToDecimal(item.Cells[5].Text);
+                        TotalRedondeado = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(item.Cells[7].Text));
+                        TotalFactura += TotalRedondeado;
+                      
                     }
                     gvProducto.FooterRow.Cells[6].Text = "TOTALES:";
-                    gvProducto.FooterRow.Cells[7].Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, TotalFactura);
+                    gvProducto.FooterRow.Cells[7].Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), TotalFactura);
                     //gvProducto.FooterRow.Cells[5].Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, TotalEfectivo);
                 }
             }

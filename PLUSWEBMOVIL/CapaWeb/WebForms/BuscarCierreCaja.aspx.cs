@@ -43,6 +43,9 @@ namespace CapaWeb.WebForms
         modelonumerador nrotrans = new modelonumerador();
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
+
+        modeloCajasCierre modeloCajasUsuario = new modeloCajasCierre();
+        List<modeloCajasCierre> listaCajasUsuario = null;
         public string numerador = "trans";
         public string ComPwm;
         public string AmUsrLog;
@@ -75,6 +78,11 @@ namespace CapaWeb.WebForms
                     lbl_busqueda.Visible = false;
                     Btn_Refrescar.Visible = false;
                     Lbl_Usuario.Text = UsuarioDatos.BuscarNombreUsuario(AmUsrLog.Trim());
+                    listaCajasUsuario = ConsultaCCaja.ConsultaCajasCierre(AmUsrLog, ComPwm, "", "");
+                    cbx_caja_usuario.DataSource = listaCajasUsuario;
+                    cbx_caja_usuario.DataTextField = "nomtcta_banco";
+                    cbx_caja_usuario.DataValueField = "nrocta_banco";
+                    cbx_caja_usuario.DataBind();
                 }
             }
             catch (Exception ex)
@@ -302,7 +310,7 @@ namespace CapaWeb.WebForms
                 //Int64 secuEfe = ConsultaEfectivoC.UltimoEfectivoSecuencial(fechainicio.Text);
                 Int64 secuEfe = Convert.ToInt64(cbx_lista_cierres.SelectedValue);
 
-                listaEfectivoC = ConsultaEfectivoC.ListaCCajaFecha(fechainicio.Text, secuEfe, ComPwm);
+                listaEfectivoC = ConsultaEfectivoC.ListaCCajaFecha(fechainicio.Text, secuEfe, ComPwm, cbx_caja_usuario.SelectedValue);
                 Grid.DataSource = listaEfectivoC;
                 Grid.DataBind();
                 Grid.Height = 100;
@@ -317,7 +325,7 @@ namespace CapaWeb.WebForms
                 ///campo uno
                 Int64 secCierre = Convert.ToInt64(cbx_lista_cierres.SelectedValue);
                 string codigo = "VIDA";
-                listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, codigo, ComPwm);
+                listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, codigo, ComPwm, cbx_caja_usuario.SelectedValue.Trim());
                 modeloCCcaja = null;
                 foreach (modeloCierreCaja item in listaCCaja)
                 {
@@ -328,7 +336,7 @@ namespace CapaWeb.WebForms
                 txt_valor_id.ReadOnly = true;
                 SaldoCaja = modeloCCcaja.valor;
                 //campo dos
-                listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "INFA", ComPwm);
+                listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "INFA", ComPwm, cbx_caja_usuario.SelectedValue.Trim());
                 modeloCCcaja = null;
                 foreach (modeloCierreCaja item in listaCCaja)
                 {
@@ -339,7 +347,7 @@ namespace CapaWeb.WebForms
                 txt_ingreso_facturas.ReadOnly = true;
                 SaldoCaja += modeloCCcaja.valor;
                 //campo tres
-                listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "INVT", ComPwm);
+                listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "INVT", ComPwm, cbx_caja_usuario.SelectedValue.Trim());
                 modeloCCcaja = null;
                 foreach (modeloCierreCaja item in listaCCaja)
                 {
@@ -350,7 +358,7 @@ namespace CapaWeb.WebForms
                 txt_ingreso_nventas.ReadOnly = true;
                 SaldoCaja += modeloCCcaja.valor;
                 //campo cuatro
-                listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "PEFA", ComPwm);
+                listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "PEFA", ComPwm, cbx_caja_usuario.SelectedValue.Trim());
                 modeloCCcaja = null;
                 foreach (modeloCierreCaja item in listaCCaja)
                 {
@@ -361,7 +369,7 @@ namespace CapaWeb.WebForms
                 txt_pefectivo_facturas.ReadOnly = true;
                 SaldoN = modeloCCcaja.valor;
                 //campoCINCO
-                listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "PEOT", ComPwm);
+                listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "PEOT", ComPwm, cbx_caja_usuario.SelectedValue.Trim());
                 modeloCCcaja = null;
                 foreach (modeloCierreCaja item in listaCCaja)
                 {
@@ -372,7 +380,7 @@ namespace CapaWeb.WebForms
                 txt_pefectivo_otros.ReadOnly = true;
                 SaldoN += modeloCCcaja.valor;
                 //CAMPO SEIS           
-                listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "DEPD", ComPwm);
+                listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "DEPD", ComPwm, cbx_caja_usuario.SelectedValue.Trim());
                 modeloCCcaja = null;
                 foreach (modeloCierreCaja item in listaCCaja)
                 {
@@ -383,7 +391,7 @@ namespace CapaWeb.WebForms
                 txt_depositos.ReadOnly = true;
                 SaldoN += modeloCCcaja.valor;
                 //CAMPO SIETE
-                listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "EFPC", ComPwm);
+                listaCCaja = ConsultaCCaja.ConsultaCCajaFecha(fechainicio.Text, secCierre, "EFPC", ComPwm, cbx_caja_usuario.SelectedValue.Trim());
                 modeloCCcaja = null;
                 foreach (modeloCierreCaja item in listaCCaja)
                 {
@@ -409,6 +417,15 @@ namespace CapaWeb.WebForms
                 Buscar.Visible = false;
                 lbl_busqueda.Visible = false;
                 Btn_Refrescar.Visible = true;
+
+                listaCajasUsuario = null;
+                listaCajasUsuario = ConsultaCCaja.ConsultadatosCaja(AmUsrLog, ComPwm, "", "", cbx_caja_usuario.SelectedValue.Trim());
+                modeloCajasUsuario = null;
+                foreach (modeloCajasCierre item in listaCajasUsuario)
+                {
+                    modeloCajasUsuario = item;
+                }
+                lbl_caja_usuario.Text = modeloCajasUsuario.nomtcta_banco;
             }
             catch (Exception ex)
             {
@@ -424,7 +441,7 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
 
                 //cARGAR SECUENCAIL
-                Int64 secuEfe = ConsultaEfectivoC.UltimoEfectivoSecuencial(fechainicio.Text, ComPwm);
+                Int64 secuEfe = ConsultaEfectivoC.UltimoEfectivoSecuencial(fechainicio.Text, ComPwm, cbx_caja_usuario.SelectedValue.Trim());
                 if (secuEfe == 0)
                 {
                     Buscar.Visible = false;
@@ -439,7 +456,7 @@ namespace CapaWeb.WebForms
                     lbl_busqueda.Visible = true;
                     //Cargar datos segun cbx
                     //Cargamos el combo de lista de cierres de caja del dia
-                    listaEfectivoC = ConsultaEfectivoC.ListaSecuencialFecha(fechainicio.Text, ComPwm);
+                    listaEfectivoC = ConsultaEfectivoC.ListaSecuencialFecha(fechainicio.Text, ComPwm, cbx_caja_usuario.SelectedValue.Trim());
                     cbx_lista_cierres.DataSource = listaEfectivoC;
                     cbx_lista_cierres.DataTextField = "cbx_secuencias";
                     cbx_lista_cierres.DataValueField = "secuencial";

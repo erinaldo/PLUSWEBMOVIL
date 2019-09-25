@@ -146,13 +146,19 @@
                             </style>
                             <table style="width: 100%;">
 
-                                <tr rowspan="4">
+                                <tr rowspan="5">
+                                  
                                     <td>
                                         <asp:Label ID="lblAyuda" runat="server" CssClass="Titulo" Text="Cierre Caja"></asp:Label>
                                     </td>
+                                       <td>
+                                          <asp:DropDownList ID="cbx_caja_usuario" class="Subtitulo1" runat="server"></asp:DropDownList>
+                                    </td>
+                                  
                                     <td style="width: 33px">
                                         <div class="Subtitulo1">DIA:</div>
                                     </td>
+                                     
                                     <td>
 
                                         <asp:Label ID="lbl_fecha" runat="server" class="Subtitulo1" Text="Label"></asp:Label>
@@ -164,29 +170,30 @@
 
                                     </td>
                                 </tr>
-                                <tr rowspan="4">
-                                    <td colspan="4">
+                                
+                                     <tr rowspan="5">
+                                    <td colspan="5">
 
                                         <asp:Label ID="lbl_error" runat="server" class="textos_error"></asp:Label>
 
                                     </td>
                                 </tr>
 
-                                <tr rowspan="4">
-                                    <td colspan="4">
+                                <tr rowspan="5">
+                                    <td colspan="5">
 
                                         <asp:Label ID="lbl_mensaje" runat="server" ForeColor="Red"></asp:Label>
 
                                     </td>
                                 </tr>
-                                <tr rowspan="4">
-                                    <td colspan="4">
+                                <tr rowspan="5">
+                                    <td colspan="5">
 
                                         <hr />
                                     </td>
                                 </tr>
-                                <tr rowspan="4">
-                                    <td colspan="4">
+                                <tr rowspan="5">
+                                    <td colspan="5">
                                         <table style="width: 100%;">
                                             <tr>
                                                 <td>

@@ -7,6 +7,7 @@ namespace CapaDatos.Modelos
 {
    public  class modeloPagoProveedores
     {
+        public string nro_trans { get; set; }
         public string cod_docum { get; set; }
         public string nro_docum { get; set; }
         public string serie_docum { get; set; }
