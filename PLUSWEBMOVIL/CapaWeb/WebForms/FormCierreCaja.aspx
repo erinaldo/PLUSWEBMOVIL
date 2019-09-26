@@ -479,7 +479,7 @@
                          &nbsp;&nbsp;&nbsp;
                                     <input type="button" class="botones"  onclick="printDiv('areaImprimir')" value="Imprimir" aria-hidden="True" />
                         &nbsp;&nbsp;&nbsp;
-                        <asp:Button ID="btn_cancelar" CssClass="botones" runat="server" Text="Cancelar" OnClick="btn_cancelar_Click" />
+                        <asp:Button ID="btn_cancelar" CssClass="botones" runat="server" Text="Salir" OnClick="btn_cancelar_Click" />
                     </td>
                 </tr>
             </table>

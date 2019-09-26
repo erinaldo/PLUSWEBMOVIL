@@ -56,7 +56,7 @@
 
 <ItemStyle CssClass="textos"></ItemStyle>
                                                 </asp:BoundField>
-                                                <asp:BoundField  DataField="total" ItemStyle-CssClass="textos"  HeaderText="TOTAL" DataFormatString="{0:N}" >
+                                                <asp:BoundField  DataField="total_st" ItemStyle-CssClass="textos"  HeaderText="TOTAL" DataFormatString="{0:N}" >
                                                 <ControlStyle CssClass="textos" />
                                                 <FooterStyle ForeColor="Black" CssClass="textos" />
 
