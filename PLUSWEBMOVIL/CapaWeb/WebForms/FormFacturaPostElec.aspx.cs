@@ -1359,7 +1359,11 @@ namespace CapaWeb.WebForms
                 {
                     modeloDiferencia = item;
                 }
-                if (modeloDiferencia.total != modeloDiferencia.pagado)
+
+                decimal Total_cons= ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloDiferencia.total));
+                decimal Pago = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloDiferencia.total));
+
+                if (Total_cons != Pago)
                 {
                     this.Page.Response.Write("<script language='JavaScript'>window.alert('Pago no existente, verifique que los pagos sean correctos ')+ error;</script>");
 

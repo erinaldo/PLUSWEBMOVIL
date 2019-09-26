@@ -464,6 +464,7 @@ namespace CapaWeb.WebForms
                             //cOSNULTA BUSCAR TIPO DE FACTURA
                             conscabceraTipo = null;
                             conscabceraTipo = buscarTipoFac(Id.ToString());
+                            Ccf_tipo2 = conscabceraTipo.tipo_nce.Trim();
                             switch (estadoIM)
                             {
                                 case "CONTABILIZADO":

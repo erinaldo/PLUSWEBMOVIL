@@ -436,7 +436,11 @@ namespace CapaWeb.WebForms
                             Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
 
                             estadoIM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
-
+                            //cOSNULTA BUSCAR TIPO DE FACTURA
+                            conscabceraTipo = null;
+                            conscabceraTipo = buscarTipoFac(Id.ToString());
+                            Ccf_tipo2 =conscabceraTipo.tipo_nce.Trim();
+                          
                             switch (estadoIM)
                             {
                                 case "CONTABILIZADO":
