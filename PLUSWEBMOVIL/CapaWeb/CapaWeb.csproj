@@ -122,6 +122,7 @@
     <Content Include="WebForms\BuscarNotasVenta.aspx" />
     <Content Include="WebForms\BuscarParametros.aspx" />
     <Content Include="WebForms\BuscarPProveedores.aspx" />
+    <Content Include="WebForms\DetalleCierreCaja.aspx" />
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
     <Content Include="WebForms\FormCierreCaja.aspx" />
     <Content Include="WebForms\FormDenominaciones.aspx" />
@@ -202,6 +203,7 @@
     <Content Include="WebForms\ReenviarFacturaJson.aspx" />
     <Content Include="WebForms\ReenviarNCJson.aspx" />
     <Content Include="WebForms\ReenviarNotaDebitoJson.aspx" />
+    <Content Include="WebForms\ReporteCierreCaja.aspx" />
     <Content Include="WebForms\ReporteNCAnuFac.aspx" />
     <Content Include="WebForms\ReporteFactura.aspx" />
     <Content Include="WebForms\VerDetalleFacturas.aspx" />
@@ -290,6 +292,13 @@
     </Compile>
     <Compile Include="WebForms\BuscarPProveedores.aspx.designer.cs">
       <DependentUpon>BuscarPProveedores.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\DetalleCierreCaja.aspx.cs">
+      <DependentUpon>DetalleCierreCaja.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\DetalleCierreCaja.aspx.designer.cs">
+      <DependentUpon>DetalleCierreCaja.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormBuscarNotaCredito.aspx.cs">
       <DependentUpon>FormBuscarNotaCredito.aspx</DependentUpon>
@@ -503,6 +512,13 @@
     </Compile>
     <Compile Include="WebForms\ReenviarNotaDebitoJson.aspx.designer.cs">
       <DependentUpon>ReenviarNotaDebitoJson.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\ReporteCierreCaja.aspx.cs">
+      <DependentUpon>ReporteCierreCaja.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\ReporteCierreCaja.aspx.designer.cs">
+      <DependentUpon>ReporteCierreCaja.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\ReporteNCAnuFac.aspx.cs">
       <DependentUpon>ReporteNCAnuFac.aspx</DependentUpon>

@@ -88,21 +88,20 @@ namespace CapaDatos.Sql
         }
 
         //Buscar lista de Efectivo Caja
-        public List<modeloEfectivoCaja> BuscarEfectivoCF(string fecha_efe, Int64 secuencial, string cod_emp, string nro_caja)
+        public List<modeloEfectivoCaja> BuscarEfectivoCF(string nro_trans, Int64 secuencial, string cod_emp, string usuario)
         {
             try {
                 using (cn = conexion.genearConexion())
                 {
                     List<modeloEfectivoCaja> lista = new List<modeloEfectivoCaja>();
-                    string consulta = (" SELECT wmt_efectivoCaja.id,wmt_efectivoCaja.denominacionMId,wmt_efectivoCaja.valor,wmt_efectivoCaja.cantidad,wmt_efectivoCaja.total,wmt_efectivoCaja.fecha_efe,wmt_efectivoCaja.usuario_mod,wmt_efectivoCaja.cod_pro_aud,wmt_efectivoCaja.secuencial,wmm_denominacionMB.nombre,wmt_efectivoCaja.fecha_mod,wmt_efectivoCaja.nro_audit, wmt_efectivoCaja.cod_emp, wmt_efectivoCaja.nro_caja FROM wmt_efectivoCaja INNER JOIN wmm_denominacionMB ON wmt_efectivoCaja.denominacionMId = wmm_denominacionMB.id WHERE wmt_efectivoCaja.secuencial =@secuencial AND wmt_efectivoCaja.fecha_efe =@fecha_efe AND wmt_efectivoCaja.cod_emp =@cod_emp AND nro_caja=@nro_caja");
+                    string consulta = (" SELECT wmt_efectivoCaja.id,wmt_efectivoCaja.denominacionMId,wmt_efectivoCaja.valor,wmt_efectivoCaja.cantidad,wmt_efectivoCaja.total,wmt_efectivoCaja.fecha_efe,wmt_efectivoCaja.usuario_mod,wmt_efectivoCaja.cod_pro_aud,wmt_efectivoCaja.secuencial,wmm_denominacionMB.nombre,wmt_efectivoCaja.fecha_mod,wmt_efectivoCaja.nro_audit, wmt_efectivoCaja.cod_emp, wmt_efectivoCaja.nro_caja FROM wmt_efectivoCaja INNER JOIN wmm_denominacionMB ON wmt_efectivoCaja.denominacionMId = wmm_denominacionMB.id WHERE wmt_efectivoCaja.secuencial =@secuencial AND wmt_efectivoCaja.nro_trans=@nro_trans AND wmt_efectivoCaja.cod_emp =@cod_emp");
 
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                    conmand.Parameters.Add("fecha_efe", SqlDbType.VarChar).Value = fecha_efe;
+                    conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value =nro_trans;
                     conmand.Parameters.Add("secuencial", SqlDbType.BigInt).Value = secuencial;
                     conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
-                    conmand.Parameters.Add("@nro_caja", SqlDbType.VarChar).Value = nro_caja;
-
+                    
                     SqlDataReader dr = conmand.ExecuteReader();
 
                     while (dr.Read())
@@ -138,6 +137,105 @@ namespace CapaDatos.Sql
                 guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "BuscarEfectivoCF", e.ToString(), DateTime.Today, "consulta");
                 return null;
             }
+        }
+
+        //ListaEfectivoFechaGeneral, wmt_efectivoCaja, busqueda x fecha y caja especifica
+        public List<modeloEfectivoCaja> ListaEfectivoFechaCaja(string cod_emp, string fecha_inicio, string fecha_fin, string usuario, string nro_caja)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modeloEfectivoCaja> lista = new List<modeloEfectivoCaja>();
+                    string consulta = ("SELECT  DISTINCT(secuencial), nro_trans, fecha_efe, nro_caja, usuario_mod FROM wmt_efectivoCaja WHERE cod_emp= @cod_emp AND nro_caja=@nro_caja  AND fecha_efe  BETWEEN @fecha_inicio  AND @fecha_fin ORDER BY wmt_efectivoCaja.secuencial DESC");
+
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("fecha_inicio", SqlDbType.VarChar).Value = fecha_inicio;
+                    conmand.Parameters.Add("fecha_fin", SqlDbType.VarChar).Value = fecha_fin;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("@nro_caja", SqlDbType.VarChar).Value = nro_caja;
+
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloEfectivoCaja item = new modeloEfectivoCaja();
+                        item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                        DateTime fec_doc_str = Convert.ToDateTime(dr["fecha_efe"]);
+                        item.fecha_st = fec_doc_str.ToString("yyyy-MM-dd");
+                        item.fecha_efe = Convert.ToString(dr["fecha_efe"]);
+                        item.nro_caja = Convert.ToString(dr["nro_caja"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        item.secuencial = Convert.ToInt64(dr["secuencial"]);
+                        item.cbx_secuencias = "Cierre N° " + item.secuencial;
+
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaEfectivoFechaCaja", e.ToString(), DateTime.Today, usuario);
+                return null;
+            }
+
+        }
+
+
+        //ListaEfectivoFechaGeneral, wmt_efectivoCaja
+        public List<modeloEfectivoCaja> ListaEfectivoFechaGeneral(string cod_emp, string fecha_inicio, string fecha_fin, string usuario)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modeloEfectivoCaja> lista = new List<modeloEfectivoCaja>();
+                    string consulta = ("SELECT  DISTINCT(secuencial), nro_trans, fecha_efe, nro_caja, usuario_mod FROM wmt_efectivoCaja WHERE cod_emp= @cod_emp AND fecha_efe  BETWEEN @fecha_inicio  AND @fecha_fin ORDER BY wmt_efectivoCaja.secuencial DESC");
+
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("fecha_inicio", SqlDbType.VarChar).Value = fecha_inicio;
+                    conmand.Parameters.Add("fecha_fin", SqlDbType.VarChar).Value = fecha_fin;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                   // conmand.Parameters.Add("@nro_caja", SqlDbType.VarChar).Value = nro_caja;
+
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloEfectivoCaja item = new modeloEfectivoCaja();
+                        item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                        DateTime fec_doc_str = Convert.ToDateTime(dr["fecha_efe"]);
+                        item.fecha_st = fec_doc_str.ToString("yyyy-MM-dd");
+                        item.fecha_efe = Convert.ToString(dr["fecha_efe"]);
+                        item.nro_caja = Convert.ToString(dr["nro_caja"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        item.secuencial = Convert.ToInt64(dr["secuencial"]);
+                        item.cbx_secuencias = "Cierre N° " + item.secuencial;
+
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaEfectivoFechaGeneral", e.ToString(), DateTime.Today, usuario);
+                return null;
+            }
+
         }
 
         //Lista de cierres por fecha especifica

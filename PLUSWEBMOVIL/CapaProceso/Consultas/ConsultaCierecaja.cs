@@ -119,18 +119,18 @@ namespace CapaProceso.Consultas
         }
 
         //Consulta lista de cierre caja por fecha en wmt_cierre_resumencaja
-        public List<modeloCierreCaja> ConsultaCCajaFecha(string fecha, Int64 secuencial, string codigo, string cod_emp, string nro_caja)
+        public List<modeloCierreCaja> ConsultaCCajaFecha(string nro_trans, Int64 secuencial, string codigo, string cod_emp, string usuario)
         {
             try
             {
                 List<modeloCierreCaja> lista = new List<modeloCierreCaja>();
-                lista = ccaja.ListaCierreCF(fecha, secuencial, codigo, cod_emp, nro_caja);
+                lista = ccaja.ListaCierreCF(nro_trans, secuencial, codigo, cod_emp, usuario);
                 return lista;
             }
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaRemisionDetalle", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaRemisionDetalle", e.ToString(), DateTime.Today, usuario);
                 return null;
             }
         }

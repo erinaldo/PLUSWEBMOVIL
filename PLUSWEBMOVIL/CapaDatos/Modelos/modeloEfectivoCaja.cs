@@ -27,6 +27,7 @@ namespace CapaDatos.Modelos
         public string cod_proc_aud { get; set; }
         public string nro_trans { get; set; }
         public string nro_caja { get; set; }
+        public string fecha_st { get; set; }
 
     }
 }

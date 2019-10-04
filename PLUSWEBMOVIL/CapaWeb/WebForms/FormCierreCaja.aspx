@@ -2,7 +2,17 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
+       
+        function printDiv(areaImprimir) {
+            var contenido = document.getElementById(areaImprimir).innerHTML;
+            var contenidoOriginal = document.body.innerHTML;
 
+            document.body.innerHTML = contenido;
+
+            window.print();
+
+            document.body.innerHTML = contenidoOriginal;
+        }   
 
         function validarCampos() {
             var valor_inicioD = document.getElementById("<%= txt_valor_id.ClientID %>").value;
@@ -61,15 +71,15 @@
     </script>
 
     <form id="form1" class="forms-sample" runat="server" method="post">
-
-
+       
         <div style="align-items: center">
             <table style="width: 100%;">
                 <tr>
                     <td>
                         <table width="100%" border="0" cellspacing="0">
                             <tr>
-                                <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="BuscarCierreCaja.aspx">Cierre Caja</a>---&gt;Nuevo</td>
+                                <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="BuscarCierreCaja.aspx">Cierre Caja</a>---&gt;Nuevo
+                                </td>
                             </tr>
                         </table>
                     </td>
@@ -477,7 +487,7 @@
                         &nbsp;&nbsp;&nbsp;
                         <asp:Button ID="btn_confirmar" CssClass="botones" OnClick="btn_confirmar_Click" OnClientClick="return confirm('¿Desea guardar el cierre de caja?');" runat="server" Text="Finalizar" />
                          &nbsp;&nbsp;&nbsp;
-                                    <input type="button" class="botones"  onclick="printDiv('areaImprimir')" value="Imprimir" aria-hidden="True" />
+                                    
                         &nbsp;&nbsp;&nbsp;
                         <asp:Button ID="btn_cancelar" CssClass="botones" runat="server" Text="Salir" OnClick="btn_cancelar_Click" />
                     </td>
@@ -488,16 +498,5 @@
 
         </div>
     </form>
-    <script>
-        function printDiv(nombreDiv) {
-            var contenido = document.getElementById(nombreDiv).innerHTML;
-            var contenidoOriginal = document.body.innerHTML;
-
-            document.body.innerHTML = contenido;
-
-            window.print();
-
-            document.body.innerHTML = contenidoOriginal;
-        }
-    </script>
+    
 </asp:Content>

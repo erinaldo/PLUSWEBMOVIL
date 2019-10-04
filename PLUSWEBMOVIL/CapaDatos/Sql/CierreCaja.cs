@@ -160,6 +160,7 @@ namespace CapaDatos.Sql
                         item.nrocta_banco = Convert.ToString(dr["nrocta_banco"]);
                         item.cod_cta = Convert.ToString(dr["cod_cta"]);
                         item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
+                        item.observacion = item.nomtcta_banco + '-'+ ' '+ item.nrocta_banco;
 
                         lista.Add(item);
                     }
@@ -426,21 +427,21 @@ namespace CapaDatos.Sql
             }
         }
         //Resumen de ciere por fecha
-        public List<modeloCierreCaja> ListaCierreCF(string fecha, Int64 secuencial, string codigo, string cod_emp, string nro_caja)
+        public List<modeloCierreCaja> ListaCierreCF(string nro_trans, Int64 secuencial, string codigo, string cod_emp, string usuario)
         {
             try
             {
                 using (cn = conexion.genearConexion())
                 {
                     List<modeloCierreCaja> lista = new List<modeloCierreCaja>();
-                    string consulta = ("select * from wmt_cierre_resumencaja WHERE fecha_cie =@fecha_cie and secuencial = @secuencial and codigo= @codigo and nro_caja= @nro_caja and cod_emp= @cod_emp");
+                    string consulta = ("select * from wmt_cierre_resumencaja WHERE nro_trans=@nro_trans  and secuencial =@secuencial and codigo= @codigo and cod_emp=@cod_emp");
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                    conmand.Parameters.Add("fecha_cie", SqlDbType.VarChar).Value = fecha;
+                    conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
                     conmand.Parameters.Add("secuencial", SqlDbType.BigInt).Value = secuencial;
                     conmand.Parameters.Add("codigo", SqlDbType.VarChar).Value = codigo;
                     conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
-                    conmand.Parameters.Add("nro_caja", SqlDbType.VarChar).Value = nro_caja;
+                    conmand.Parameters.Add("usuario", SqlDbType.VarChar).Value = usuario;
 
                     SqlDataReader dr = conmand.ExecuteReader();
 
@@ -474,7 +475,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp,metodo, "ListaCierreCF", e.ToString(), DateTime.Today,"consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp,metodo, "ListaCierreCF", e.ToString(), DateTime.Today,usuario);
                 return null;
             }
 

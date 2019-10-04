@@ -1,236 +1,22 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="BuscarCierreCaja.aspx.cs" Inherits="CapaWeb.WebForms.BuscarCierreCaja" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DetalleCierreCaja.aspx.cs" Inherits="CapaWeb.WebForms.DetalleCierreCaja" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <script type="text/javascript">
-
-
-        function validarCampos() {
-            var valor_inicioD = document.getElementById("<%= txt_valor_id.ClientID %>").value;
-            var ingreso_facturas = document.getElementById("<%= txt_ingreso_facturas.ClientID %>").value;
-            var ingreso_nventas = document.getElementById("<%= txt_ingreso_nventas.ClientID %>").value;
-            var pefectivo_facturas = document.getElementById("<%= txt_pefectivo_facturas.ClientID %>").value;
-            var pefectivo_otros = document.getElementById("<%=txt_pefectivo_otros.ClientID %>").value;
-            var depositos = document.getElementById("<%= txt_depositos.ClientID %>").value;
-
-
-            var respuesta;
-            if (valor_inicioD == null || valor_inicioD == "" || valor_inicioD < 0) {
-                alert("Ingrese el valor");
-                respuesta = false;
-            } else {
-                respuesta = true;
-            }
-
-            if (ingreso_facturas == null || ingreso_facturas == "" || ingreso_facturas < 0) {
-                alert("Ingrese el valor");
-                respuesta = false;
-            } else {
-                respuesta = true;
-            }
-
-            if (ingreso_nventas < 0 || ingreso_nventas == "" || ingreso_nventas == null) {
-                alert("Ingrese el valor");
-                respuesta = false;
-            } else {
-                respuesta = true;
-            }
-            if (pefectivo_facturas == null || pefectivo_facturas == "" || pefectivo_facturas < 0) {
-                alert("Ingrese el valor");
-                respuesta = false;
-            } else {
-                respuesta = true;
-            }
-            if (pefectivo_otros == null || pefectivo_otros == "" || pefectivo_otros < 0) {
-                alert("Ingrese el valor");
-                respuesta = false;
-            } else {
-                respuesta = true;
-            }
-            if (depositos == null || depositos == "" || depositos < 0) {
-                alert("Ingrese el valor");
-                respuesta = false;
-            } else {
-                respuesta = true;
-            }
-
-            return respuesta
-        }
-
-
-
-    </script>
-    <form id="form1" name="form1" class="forms-sample" runat="server" method="post">
-        <div style="align-items: left">
-            <table>
-                <tr>
-                    <td valign="top">
-                        <table width="100%" border="0" cellspacing="0">
-                            <tr>
-                                <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;Cierre Caja</td>
-                            </tr>
-                        </table>
-                    </td>
-
-                </tr>
-                <tr>
+<!DOCTYPE html>
+<link href="../Tema/css/Style.css" rel="stylesheet" />
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+      <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="white">   
+               <tr>
                     <td>
-
-                        <asp:Label ID="lblAyuda" runat="server" CssClass="Titulo" Text="Cierre de Caja Diario"></asp:Label>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p class="Subtitulo2">
-                            Para realizar&nbsp; nuevo Cierre de Caja 
-                                <asp:Button ID="NuevoCierre" OnClick="NuevoCierre_Click" class="botones" runat="server" Text="AQUI" />
-                        </p>
-                    </td>
-                </tr>
-
-
-                <tr>
-                    <td>
-                        <asp:Label ID="txtAcceso" runat="server" Visible="false" CssClass="Titulo" Text="El Usuario registrado no tiene permiso para ejecutar estos procesos"></asp:Label>
-
-                    </td>
-                </tr>
-                  <tr>
-                    <td>
-                        <asp:Label ID="lbl_error" runat="server"  CssClass="textos_error" Text=""></asp:Label>
+                        <asp:Label ID="lbl_error" runat="server"  class="textos_error" Text=""></asp:Label>
                         
                         </td>
                     </tr>
-                <tr>
-                    <td>
-                        <p class="Subtitulo1">Busque el registro deseado por:</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-
-                        <table align="center">
-
-
-
-
-                            <tr valign="top">
-                                <td>
-                                    <asp:Label CssClass="busqueda" ID="Label5" runat="server" Text="Fecha inicio:"></asp:Label></td>
-
-                                <td>
-                                    <asp:TextBox ID="fechainicio" type="date" Width="202" runat="server"></asp:TextBox>
-                                </td>
-                                  <td>
-                                    <asp:Label CssClass="busqueda" ID="Label6" runat="server" Text="Fecha fin:"></asp:Label></td>
-
-                                <td>
-                                    <asp:TextBox ID="fechafin" type="date" Width="202" runat="server"></asp:TextBox>
-                                </td>
-                                </tr>
-                            <tr valign="top">
-                                 <td>
-                                    <asp:Label ID="lbl_caja" CssClass="busqueda" runat="server" Text="Caja"></asp:Label></td>
-                                <td>
-                                    <asp:DropDownList ID="cbx_caja_usuario" CssClass="textos" runat="server" Height="16px" Width="206px"></asp:DropDownList>
-                                </td>
-                              <td>
-
-                              </td>
-                                <td aling="rigth">
-                                    <asp:Button ID="Buscar" runat="server" OnClick="Buscar_Click" class="botones" Text="Buscar" /></td>
-
-                            </tr>
-
-
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-
-                        <hr />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-
-                        <div class="Subtitulo1">Listado de Cierres de Caja</div>
-                    </td>
-                </tr>
-                      <tr>
-                    <td>
-                        <table border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#0E748A">
-                            <tr>
-                                <td>
-                                                                  
-                                    <asp:DataGrid ID="Grid1" runat="server" onrowcreated="GriTipoUsuario_RowCreated"
-                                        onrowcommand="GriTipoUsuario_RowCommand"
-                                        AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
-                                        OnItemCommand="Grid_ItemCommand" AllowSorting="True" ShowFooter="True"
-                                        OnPageIndexChanged="Grid_PageIndexChanged" PageSize="9" CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1">
-
-
-                                        <Columns>
-
-
-                                            <asp:TemplateColumn HeaderText="TRX" >
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="nro_trans" class="textos" runat="server" Text='<%#Eval("nro_trans") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-
-                                            <asp:TemplateColumn HeaderText="CIERRE N">
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="secuencial" runat="server" class="textos" Text='<%#Eval("secuencial") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-                                              <asp:TemplateColumn HeaderText="CAJA">
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        <asp:Label ID="nro_caja" runat="server" class="textos" Text='<%#Eval("nro_caja") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-
-                                            <asp:TemplateColumn HeaderText="FECHA">
-                                                <ItemTemplate>
-                                                    <span style="float: left;">
-                                                        
-                                                        <asp:Label ID="fecha_st" Type="date" class="textos" runat="server" Text='<%#Eval("fecha_st") %>'></asp:Label>
-                                                    </span>
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-
-                                            <asp:TemplateColumn>
-                                                <ItemTemplate>
-                                                    <asp:ImageButton ID="imgVisualizar" runat="server" CausesValidation="false" CommandName="Ver"
-                                                        ImageUrl="~/Tema/imagenes/search.png" ToolTip="Visualizar" Width="16" />
-                                                </ItemTemplate>
-                                            </asp:TemplateColumn>
-                                            
-
-                                        </Columns>
-
-
-                                        <FooterStyle BackColor="White" ForeColor="#00000f" />
-                                        <HeaderStyle BackColor="#DD6D29" CssClass="busqueda" Font-Bold="True" ForeColor="White" />
-                                        <ItemStyle ForeColor="#00000f" />
-                                        <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" Mode="NumericPages" />
-                                        <SelectedItemStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
-
-
-                                    </asp:DataGrid>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
+    <tr>
                     <td>
                         <div id="areaImprimir" style="align-items: center">
                             <style type="text/css">
@@ -590,27 +376,18 @@
                             </table>
                     </td>
                 </tr>
-            </table>
-
-        </div>
-        </td>
-                </tr>
-                <tr>
-                    <td>&nbsp;&nbsp;&nbsp;
+            <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;
                                     <input type="button" id="imp" runat="server" class="botones" onclick="printDiv('areaImprimir')" value="Imprimir" />
 
-                        &nbsp;&nbsp;&nbsp;
-                         <asp:Button ID="Btn_Refrescar" runat="server" class="botones" Text="Limpiar" OnClientClick="location.reload(true);" OnClick="Btn_Refrescar_Click1" />
-
+                       
                     </td>
                 </tr>
-
-
-        </table>
-                    </div>
-                                
+          </table>
     </form>
-    <script>
+</body>
+</html>  
+ <script>
         function printDiv(nombreDiv) {
             var contenido = document.getElementById(nombreDiv).innerHTML;
             var contenidoOriginal = document.body.innerHTML;
@@ -622,4 +399,4 @@
             document.body.innerHTML = contenidoOriginal;
         }
     </script>
-</asp:Content>
+

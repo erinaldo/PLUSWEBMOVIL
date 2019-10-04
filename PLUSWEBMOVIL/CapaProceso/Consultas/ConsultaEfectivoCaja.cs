@@ -29,21 +29,53 @@ namespace CapaProceso.Consultas
 
             return efectivocaja.UltimoEfectivoCajaSecuencial(fecha, cod_emp, nro_caja);
         }
-
-        //lista ultimo efectivo caja
-        //Consulta total pagos efectivo pos, y pose
-        public List<modeloEfectivoCaja> ListaCCajaFecha(string fecha, Int64 secuencial, string cod_emp, string nro_caja)
+        //LISTA EFECTIVO CAJA GENERAL POR FECHA GRID
+        public List<modeloEfectivoCaja> ListaEfectivoFechaGeneral(string cod_emp, string fecha_inicio, string fecha_fin, string usuario)
         {
             try
             {
                 List<modeloEfectivoCaja> lista = new List<modeloEfectivoCaja>();
-                lista = efectivocaja.BuscarEfectivoCF(fecha, secuencial, cod_emp, nro_caja);
+                lista = efectivocaja.ListaEfectivoFechaGeneral(cod_emp, fecha_inicio,fecha_fin,usuario);
                 return lista;
             }
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaCCajaFecha", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaEfectivoFechaGeneral", e.ToString(), DateTime.Today, usuario);
+                return null;
+            }
+        }
+
+        //LISTA EFECTIVO CAJA GENERAL POR FECHA GRId y caja
+        public List<modeloEfectivoCaja> ListaEfectivoFechaCaja(string cod_emp, string fecha_inicio, string fecha_fin, string usuario, string nro_caja)
+        {
+            try
+            {
+                List<modeloEfectivoCaja> lista = new List<modeloEfectivoCaja>();
+                lista = efectivocaja.ListaEfectivoFechaCaja(cod_emp, fecha_inicio, fecha_fin, usuario, nro_caja);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaEfectivoFechaCaja", e.ToString(), DateTime.Today,usuario);
+                return null;
+            }
+        }
+        //lista ultimo efectivo caja
+        //Consulta total pagos efectivo pos, y pose
+        public List<modeloEfectivoCaja> ListaCCajaFecha(string nro_trans, Int64 secuencial, string cod_emp, string usuario)
+        {
+            try
+            {
+                List<modeloEfectivoCaja> lista = new List<modeloEfectivoCaja>();
+                lista = efectivocaja.BuscarEfectivoCF(nro_trans, secuencial, cod_emp, usuario);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaCCajaFecha", e.ToString(), DateTime.Today, usuario);
                 return null;
             }
         }

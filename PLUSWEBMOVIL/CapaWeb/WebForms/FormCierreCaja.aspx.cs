@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
 using CapaDatos.Modelos;
 using System.Globalization;
+using System.Web.UI;
 
 namespace CapaWeb.WebForms
 {
@@ -65,6 +66,7 @@ namespace CapaWeb.WebForms
         public string cod_proceso;
         public string numerador = "trans";
         public string valor_asignado = null;
+        Int64 secuencialCierreResumenCaja = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -378,7 +380,7 @@ namespace CapaWeb.WebForms
                     //Guardar N° transaccion 
                     Session["valor_asignado"] = valor_asignado;
                 }
-                Int64 secuencialCierreResumenCaja = ConsultaCCaja.BuscarCCajaFechaSecuencial(lbl_fecha.Text, ComPwm.Trim());
+                secuencialCierreResumenCaja = ConsultaCCaja.BuscarCCajaFechaSecuencial(lbl_fecha.Text, ComPwm.Trim());
                 //Recuperar si ya existe cierre del dia
 
                 //wmt_cierre_resumenaja
@@ -901,6 +903,9 @@ namespace CapaWeb.WebForms
                 InsertarTotales();
                 cbx_caja_usuario.Enabled = false;
                 Lbl_Usuario.Text = UsuarioDatos.BuscarNombreUsuario(AmUsrLog.Trim());
+
+                
+               
                 txt_valor_id.Enabled = false;
                 txt_ingreso_facturas.Enabled = false;
 
@@ -915,7 +920,15 @@ namespace CapaWeb.WebForms
                 Grid.Enabled = false;
                 txt_saldo_caja.Enabled = false;
                 txt_valor_caja.Enabled = false;
-                
+                Session["Nro_trans"] = valor_asignado;
+                Session["Secuencial"] = secuencialCierreResumenCaja;
+                Session["Caja"] = cbx_caja_usuario.SelectedValue.Trim();
+                Session["fecha_c"] = lbl_fecha.Text;
+               // Response.Redirect("ReporteCierreCaja.aspx");
+                this.Page.Response.Write("<script language='JavaScript'>window.open('./ReporteCierreCaja.aspx', 'Cierre Caja', 'top=100,width=800 ,height=600, left=400');</script>");
+                // ClientScript.RegisterStartupScript(this.GetType(), "AreaImprimir", "printDiv('areaImprimir');", true);
+                // ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "AreaImprimir", "printDiv('AreaImprimir');", true);
+
 
             }
             catch (Exception ex)

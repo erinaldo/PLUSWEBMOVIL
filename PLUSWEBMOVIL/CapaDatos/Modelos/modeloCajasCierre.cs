@@ -15,5 +15,6 @@ namespace CapaDatos.Modelos
         public string cod_cta { get; set; }
         public string cod_moneda { get; set; }
         public string tipo_cuenta { get; set; }
+        public string observacion { get; set; }
     }
 }

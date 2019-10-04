@@ -95,7 +95,7 @@
                                             </asp:TemplateColumn>
 
                                                                                   
-                                            <asp:ButtonColumn ButtonType="PushButton" ItemStyle-CssClass="botones" CommandName="Select" Text="Seleccionar"></asp:ButtonColumn>
+                                            <asp:ButtonColumn ButtonType="PushButton"  ItemStyle-CssClass="botones" CommandName="Select" Text="Seleccionar"></asp:ButtonColumn>
                                         </Columns>
 
 
