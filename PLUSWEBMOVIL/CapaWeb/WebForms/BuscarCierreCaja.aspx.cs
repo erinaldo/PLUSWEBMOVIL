@@ -38,6 +38,8 @@ namespace CapaWeb.WebForms
         modelowmspcempresas modeloEmpresa = new modelowmspcempresas();
 
         Consultawmsptitulares UsuarioDatos = new Consultawmsptitulares();
+       
+        List<modeloUsuarioSistema> listaUsuarios = null;
 
         ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
         modelonumerador nrotrans = new modelonumerador();
@@ -103,6 +105,15 @@ namespace CapaWeb.WebForms
                 cbx_caja_usuario.DataBind();
                 cbx_caja_usuario.Items.Insert(0, new ListItem("TODAS", "0"));
                 cbx_caja_usuario.SelectedIndex = 0;
+                //LISTA DE USUARIOS DEL SISTEMA
+
+                listaUsuarios = UsuarioDatos.ConsultaUsuarios(AmUsrLog, ComPwm);
+                cbx_usuario.DataSource = listaUsuarios;
+                cbx_usuario.DataTextField = "usuario";
+                cbx_usuario.DataValueField = "usuario";
+                cbx_usuario.DataBind();
+                cbx_usuario.Items.Insert(0, new ListItem("TODOS", "0"));
+                cbx_usuario.SelectedIndex = 0;
             }
             catch (Exception ex)
             {
@@ -144,16 +155,23 @@ namespace CapaWeb.WebForms
         {
             try { 
             lbl_error.Text = "";
-            //Buscar fecha
-            if (cbx_caja_usuario.SelectedValue == "0")
-            {
-                listaEfectivoC = ConsultaEfectivoC.ListaEfectivoFechaGeneral(ComPwm, fechainicio.Text, fechafin.Text, AmUsrLog);
-            }
-            else
-            {
-                listaEfectivoC = ConsultaEfectivoC.ListaEfectivoFechaCaja(ComPwm, fechainicio.Text, fechafin.Text, AmUsrLog, cbx_caja_usuario.SelectedValue.Trim());
-            }
-            Grid1.DataSource = listaEfectivoC;
+                if (cbx_caja_usuario.SelectedValue == "0" && cbx_usuario.SelectedValue == "0")//Busca todas las cajas y usuarios por empresa
+                {
+                    listaEfectivoC = ConsultaEfectivoC.ListaEfectivoFechaGeneral(ComPwm, fechainicio.Text, fechafin.Text, AmUsrLog);
+                }
+                if (cbx_caja_usuario.SelectedValue != "0" && cbx_usuario.SelectedValue == "0")//Buscar por caja especifica y todos los usuarios por empresa
+                {
+                    listaEfectivoC = ConsultaEfectivoC.ListaEfectivoFechaCaja(ComPwm, fechainicio.Text, fechafin.Text, AmUsrLog, cbx_caja_usuario.SelectedValue.Trim());
+                }
+                if (cbx_caja_usuario.SelectedValue == "0" && cbx_usuario.SelectedValue != "0")//Buscar por usuario especifica y todas las cajas por empresa
+                {
+                    listaEfectivoC = ConsultaEfectivoC.ListaEfectivoFechaCajaUsuario(ComPwm, fechainicio.Text, fechafin.Text, AmUsrLog, cbx_usuario.SelectedValue.Trim());
+                }
+                if (cbx_caja_usuario.SelectedValue != "0" && cbx_usuario.SelectedValue != "0")//Buscar por usuario y cajas especifica  por empresa
+                {
+                    listaEfectivoC = ConsultaEfectivoC.ListaEfectivoFechaCajaUsuarioEspec(ComPwm, fechainicio.Text, fechafin.Text, AmUsrLog, cbx_usuario.SelectedValue.Trim(), cbx_caja_usuario.SelectedValue.Trim());
+                }
+                Grid1.DataSource = listaEfectivoC;
             Grid1.DataBind();
             Grid1.Height = 100;
             }
@@ -217,6 +235,7 @@ namespace CapaWeb.WebForms
                 string secuencial;
                 string caja;
                 string fecha_c;
+                string usuario;
 
                 switch (e.CommandName) //ultilizo la variable para la opcion
                 {
@@ -227,16 +246,18 @@ namespace CapaWeb.WebForms
                             Id = Convert.ToString(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                             secuencial = Convert.ToString(((Label)e.Item.Cells[2].FindControl("secuencial")).Text);
                             caja = Convert.ToString(((Label)e.Item.Cells[3].FindControl("nro_caja")).Text);
-                            fecha_c = Convert.ToString(((Label)e.Item.Cells[4].FindControl("fecha_st")).Text);
+                            usuario = Convert.ToString(((Label)e.Item.Cells[4].FindControl("usuario_mod")).Text);
+                            fecha_c = Convert.ToString(((Label)e.Item.Cells[5].FindControl("fecha_st")).Text);
                             //2 voy a agregando los valores que deseo
-                            /* qs.Add("TRN", "VER");
-                             qs.Add("Id", Id.ToString());*/
+                            qs.Add("TRN", "VER");
+                             qs.Add("Id", Id.ToString());
                             Session["Nro_trans"] = Id;
                             Session["Secuencial"] = secuencial;
                             Session["Caja"] = caja;
                             Session["fecha_c"] = fecha_c;
-                            //this.Page.Response.Write("<script language='JavaScript'>window.open('./DetalleCierreCaja.aspx', 'Detalle Cierre Caja', 'top=100,width=800 ,height=400, left=400');</script>");
-                            this.Page.Response.Write("<script language='JavaScript'>window.open('./ReporteCierreCaja.aspx', 'Cierre Caja', 'top=100,width=800 ,height=600, left=400');</script>");
+                            Session["usuario"] = usuario;
+
+                            Response.Write("<script>window.open('" + "ReporteCierreC.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
                             break;//termina la ejecucion del programa despues de ejecutar el codigo
                         }
                         catch (Exception ex)
@@ -254,8 +275,8 @@ namespace CapaWeb.WebForms
 
                             qs.Add("TRN", "DLT");
                             qs.Add("Id", Id.ToString());
-
-                            Response.Redirect("FormDenominaciones.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                            Response.Write("<script>window.open('"+"FormDenominaciones.aspx" + Encryption.EncryptQueryString(qs).ToString()+"')</script>");
+                            //Response.Redirect("FormDenominaciones.aspx" + Encryption.EncryptQueryString(qs).ToString());
                             break;
                         }
                         catch (Exception ex)
@@ -485,13 +506,21 @@ namespace CapaWeb.WebForms
             {
                 lbl_error.Text = "";
                 //Buscar fecha
-                if (cbx_caja_usuario.SelectedValue == "0")
+                if (cbx_caja_usuario.SelectedValue == "0" && cbx_usuario.SelectedValue == "0")//Busca todas las cajas y usuarios por empresa
                 {
                     listaEfectivoC = ConsultaEfectivoC.ListaEfectivoFechaGeneral(ComPwm, fechainicio.Text, fechafin.Text, AmUsrLog);
                 }
-                else
+                if (cbx_caja_usuario.SelectedValue != "0" && cbx_usuario.SelectedValue == "0")//Buscar por caja especifica y todos los usuarios por empresa
                 {
                     listaEfectivoC = ConsultaEfectivoC.ListaEfectivoFechaCaja(ComPwm, fechainicio.Text, fechafin.Text, AmUsrLog, cbx_caja_usuario.SelectedValue.Trim());
+                }
+                if (cbx_caja_usuario.SelectedValue == "0" && cbx_usuario.SelectedValue != "0")//Buscar por usuario especifica y todas las cajas por empresa
+                {
+                    listaEfectivoC = ConsultaEfectivoC.ListaEfectivoFechaCajaUsuario(ComPwm, fechainicio.Text, fechafin.Text, AmUsrLog, cbx_usuario.SelectedValue.Trim());
+                }
+                if (cbx_caja_usuario.SelectedValue != "0" && cbx_usuario.SelectedValue != "0")//Buscar por usuario y cajas especifica  por empresa
+                {
+                    listaEfectivoC = ConsultaEfectivoC.ListaEfectivoFechaCajaUsuarioEspec(ComPwm, fechainicio.Text, fechafin.Text, AmUsrLog, cbx_usuario.SelectedValue.Trim(), cbx_caja_usuario.SelectedValue.Trim());
                 }
                 Grid1.DataSource = listaEfectivoC;
                 Grid1.DataBind();

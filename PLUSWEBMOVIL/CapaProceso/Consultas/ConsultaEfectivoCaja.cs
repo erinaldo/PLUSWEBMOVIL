@@ -46,6 +46,41 @@ namespace CapaProceso.Consultas
             }
         }
 
+        //LISTA EFECTIVO CAJA GENERAL POR FECHA GRId por usuario, cajas especifico 
+        public List<modeloEfectivoCaja> ListaEfectivoFechaCajaUsuarioEspec(string cod_emp, string fecha_inicio, string fecha_fin, string usuario, string usuario_caja, string nro_caja)
+        {
+            try
+            {
+                List<modeloEfectivoCaja> lista = new List<modeloEfectivoCaja>();
+                lista = efectivocaja.ListaEfectivoFechaCajaUsuarioEspec(cod_emp, fecha_inicio, fecha_fin, usuario, usuario_caja, nro_caja);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaEfectivoFechaCajaUsuarioEspec", e.ToString(), DateTime.Today, usuario);
+                return null;
+            }
+        }
+
+
+        //LISTA EFECTIVO CAJA GENERAL POR FECHA GRId por usuario especifico y todas las cajas
+        public List<modeloEfectivoCaja> ListaEfectivoFechaCajaUsuario(string cod_emp, string fecha_inicio, string fecha_fin, string usuario, string usuario_caja)
+        {
+            try
+            {
+                List<modeloEfectivoCaja> lista = new List<modeloEfectivoCaja>();
+                lista = efectivocaja.ListaEfectivoFechaCajaUsuario(cod_emp, fecha_inicio, fecha_fin, usuario, usuario_caja);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaEfectivoFechaCajaUsuario", e.ToString(), DateTime.Today, usuario);
+                return null;
+            }
+        }
+
         //LISTA EFECTIVO CAJA GENERAL POR FECHA GRId y caja
         public List<modeloEfectivoCaja> ListaEfectivoFechaCaja(string cod_emp, string fecha_inicio, string fecha_fin, string usuario, string nro_caja)
         {

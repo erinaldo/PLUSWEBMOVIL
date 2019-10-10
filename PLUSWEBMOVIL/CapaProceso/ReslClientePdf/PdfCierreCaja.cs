@@ -288,7 +288,7 @@ namespace CapaProceso.ReslClientePdf
 
                 string pathtmpfac = Modelowmspclogo.pathtmpfac;  //Traemos el path, la ruta 
                 string qrPath = pathtmpfac + Ccf_cod_emp.Trim() + nro_trans.Trim() + "qrcode.png";
-                string bpathPdfGenrado = pathtmpfac + Ccf_cod_emp.Trim() + nro_trans.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + "factura.pdf";
+                string bpathPdfGenrado = pathtmpfac + Ccf_cod_emp.Trim() + nro_trans.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + "CierreCaja.pdf";
 
 
 
@@ -449,47 +449,71 @@ namespace CapaProceso.ReslClientePdf
                 PdfPTable tabladetaEmpresa = new PdfPTable(3);
                 tabladetaEmpresa.WidthPercentage = 100;
                 tabladetaEmpresa.SpacingAfter = 10;
+               
                 cell = new PdfPCell();
 
                 //tabla secundaria RESUMEN CAJA
                 PdfPTable tabladetaEmpresa1 = new PdfPTable(1);
                 tabladetaEmpresa1.WidthPercentage = 200;
                 tabladetaEmpresa1.SpacingAfter = 10;
+              
                 cell = new PdfPCell();
 
                          
                   cell = new PdfPCell(new Phrase("+ VALOR EN CAJA INICIO DEL DIA", fontText2));
-                  cell.Border = 0;
-                  cell.HorizontalAlignment = 0;
+                 // cell.Border = 0;
+                cell.BorderWidthBottom = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
+                cell.HorizontalAlignment = 0;
                   tabladetaEmpresa1.AddCell(cell);
 
                   cell = new PdfPCell(new Phrase("+ INGRESOS POR FACTURAS" , fontText2));
-                  cell.Border = 0;
-                  cell.HorizontalAlignment = 0;
+                cell.BorderWidthBottom = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
+                cell.HorizontalAlignment = 0;
                   tabladetaEmpresa1.AddCell(cell);
 
                 cell = new PdfPCell(new Phrase("+ INGRESOS POR NOTAS DE VENTA", fontText2));
-                cell.Border = 0;
+                cell.BorderWidthBottom = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa1.AddCell(cell);
 
                 cell = new PdfPCell(new Phrase("- PAGOS EN EFECTIVO DE FACTURA", fontText2));
-                cell.Border = 0;
+                cell.BorderWidthBottom = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa1.AddCell(cell);
 
                 cell = new PdfPCell(new Phrase("- PAGOS EN EFECTIVO OTROS", fontText2));
-                cell.Border = 0;
+                cell.BorderWidthBottom = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa1.AddCell(cell);
 
                 cell = new PdfPCell(new Phrase("- DEPOSITOS DEL DIA", fontText2));
-                cell.Border = 0;
+                cell.BorderWidthBottom = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa1.AddCell(cell);
 
                 cell = new PdfPCell(new Phrase("+ EFECTIVO PARA CAJA", fontText2));
-                cell.Border = 0;
+                cell.BorderWidthBottom = 0;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa1.AddCell(cell);
 
@@ -501,45 +525,67 @@ namespace CapaProceso.ReslClientePdf
                 PdfPTable tabladetaEmpresa2 = new PdfPTable(1);
                 tabladetaEmpresa2.WidthPercentage = 20;
                 tabladetaEmpresa2.SpacingAfter = 10;
+                
                 cell = new PdfPCell();
                
                 cell = new PdfPCell(new Phrase(txt_valor_id, fontText2));
-                cell.Border = 0;
-              
+                cell.BorderWidthBottom = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
+
                 cell.HorizontalAlignment = 2;
                 tabladetaEmpresa2.AddCell(cell);
 
                 cell = new PdfPCell(new Phrase(txt_ingreso_facturas, fontText2));
-                cell.Border = 0;
+                cell.BorderWidthBottom = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
                 cell.HorizontalAlignment = 2;
                 
                 tabladetaEmpresa2.AddCell(cell);
 
                 cell = new PdfPCell(new Phrase(txt_ingreso_nventas, fontText2));
-                cell.Border = 0;
+                cell.BorderWidthBottom = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
                 cell.HorizontalAlignment = 2;
                 
                 tabladetaEmpresa2.AddCell(cell);
 
                 cell = new PdfPCell(new Phrase(txt_pefectivo_facturas, fontText2));
-                cell.Border = 0;
+                cell.BorderWidthBottom = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
                 cell.HorizontalAlignment = 2;
              
                 tabladetaEmpresa2.AddCell(cell);
 
                 cell = new PdfPCell(new Phrase(txt_pefectivo_otros, fontText2));
-                cell.Border = 0;
+                cell.BorderWidthBottom = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
                 cell.HorizontalAlignment = 2;
                 
                 tabladetaEmpresa2.AddCell(cell);
 
                 cell = new PdfPCell(new Phrase(txt_depositos, fontText2));
-                cell.Border = 0;
+                cell.BorderWidthBottom = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
                 cell.HorizontalAlignment = 2;
                 tabladetaEmpresa2.AddCell(cell);
 
                 cell = new PdfPCell(new Phrase(txt_efectivo_caja, fontText2));
-                cell.Border = 0;
+                cell.BorderWidthBottom = 0;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
                 cell.HorizontalAlignment = 2;
                
                 tabladetaEmpresa2.AddCell(cell);

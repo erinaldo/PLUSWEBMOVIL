@@ -488,7 +488,7 @@ namespace CapaDatos.Sql
             {
                 using (cn = conexion.genearConexion())
                 {
-                    string insert = "INSERT INTO  wmt_cierre_resumencaja (signo, codigo,nombre, valor, usuario_mod, fecha_mod,fecha_cie, secuencial, cod_emp, nro_trans, nro_caja) VALUES (@signo, @codigo,@nombre, @valor, @usuario_mod, @fecha_mod,@fecha_cie, @secuencial, @cod_emp,@nro_trans, @nro_caja)";
+                    string insert = "INSERT INTO  wmt_cierre_resumencaja (signo, codigo,nombre, valor, usuario_mod, fecha_mod,fecha_cie, secuencial, cod_emp, nro_trans, nro_caja, cod_proc_aud) VALUES (@signo, @codigo,@nombre, @valor, @usuario_mod, @fecha_mod,@fecha_cie, @secuencial, @cod_emp,@nro_trans, @nro_caja, @cod_proc_aud)";
                     SqlCommand conmand = new SqlCommand(insert, cn);
                     conmand.Parameters.Add("@signo", SqlDbType.VarChar).Value = Cierrecaja.signo;
                     conmand.Parameters.Add("@codigo", SqlDbType.VarChar).Value = Cierrecaja.codigo;
@@ -501,6 +501,7 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = Cierrecaja.cod_emp;
                     conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = Cierrecaja.nro_trans;
                     conmand.Parameters.Add("@nro_caja", SqlDbType.VarChar).Value = Cierrecaja.nro_caja;
+                    conmand.Parameters.Add("@cod_proc_aud", SqlDbType.VarChar).Value = Cierrecaja.cod_proc_aud;
                     int dr = conmand.ExecuteNonQuery();
                     return "Cierre Caja guardada correctamente";
                 }

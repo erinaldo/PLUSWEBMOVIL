@@ -139,6 +139,107 @@ namespace CapaDatos.Sql
             }
         }
 
+        //ListaEfectivoFechaGeneral, wmt_efectivoCaja, busqueda x fecha , usuario y las cajas especifica 
+        public List<modeloEfectivoCaja> ListaEfectivoFechaCajaUsuarioEspec(string cod_emp, string fecha_inicio, string fecha_fin, string usuario, string usuario_caja, string nro_caja)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modeloEfectivoCaja> lista = new List<modeloEfectivoCaja>();
+                    string consulta = ("SELECT  DISTINCT(secuencial), nro_trans, fecha_efe, nro_caja, usuario_mod FROM wmt_efectivoCaja WHERE cod_emp= @cod_emp AND nro_caja=@nro_caja AND usuario_mod=@usuario_caja  AND fecha_efe  BETWEEN @fecha_inicio  AND @fecha_fin ORDER BY wmt_efectivoCaja.secuencial DESC");
+
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("fecha_inicio", SqlDbType.VarChar).Value = fecha_inicio;
+                    conmand.Parameters.Add("fecha_fin", SqlDbType.VarChar).Value = fecha_fin;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("@nro_caja", SqlDbType.VarChar).Value = nro_caja;
+                    conmand.Parameters.Add("@usuario_caja", SqlDbType.VarChar).Value = usuario_caja;
+
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloEfectivoCaja item = new modeloEfectivoCaja();
+                        item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                        DateTime fec_doc_str = Convert.ToDateTime(dr["fecha_efe"]);
+                        item.fecha_st = fec_doc_str.ToString("yyyy-MM-dd");
+                        item.fecha_efe = Convert.ToString(dr["fecha_efe"]);
+                        item.nro_caja = Convert.ToString(dr["nro_caja"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        item.secuencial = Convert.ToInt64(dr["secuencial"]);
+                        item.cbx_secuencias = "Cierre N° " + item.secuencial;
+
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, " ListaEfectivoFechaCajaUsuarioEspec", e.ToString(), DateTime.Today, usuario);
+                return null;
+            }
+
+        }
+
+        //ListaEfectivoFechaGeneral, wmt_efectivoCaja, busqueda x fecha y usuario especifica y todas las cajas
+        public List<modeloEfectivoCaja> ListaEfectivoFechaCajaUsuario(string cod_emp, string fecha_inicio, string fecha_fin, string usuario,  string usuario_caja)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modeloEfectivoCaja> lista = new List<modeloEfectivoCaja>();
+                    string consulta = ("SELECT  DISTINCT(secuencial), nro_trans, fecha_efe, nro_caja, usuario_mod FROM wmt_efectivoCaja WHERE cod_emp= @cod_emp AND usuario_mod=@usuario_caja  AND fecha_efe  BETWEEN @fecha_inicio  AND @fecha_fin ORDER BY wmt_efectivoCaja.secuencial DESC");
+
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("fecha_inicio", SqlDbType.VarChar).Value = fecha_inicio;
+                    conmand.Parameters.Add("fecha_fin", SqlDbType.VarChar).Value = fecha_fin;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    //conmand.Parameters.Add("@nro_caja", SqlDbType.VarChar).Value = nro_caja;
+                    conmand.Parameters.Add("@usuario_caja", SqlDbType.VarChar).Value = usuario_caja;
+
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloEfectivoCaja item = new modeloEfectivoCaja();
+                        item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                        DateTime fec_doc_str = Convert.ToDateTime(dr["fecha_efe"]);
+                        item.fecha_st = fec_doc_str.ToString("yyyy-MM-dd");
+                        item.fecha_efe = Convert.ToString(dr["fecha_efe"]);
+                        item.nro_caja = Convert.ToString(dr["nro_caja"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        item.secuencial = Convert.ToInt64(dr["secuencial"]);
+                        item.cbx_secuencias = "Cierre N° " + item.secuencial;
+
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaEfectivoFechaCajaUsuario", e.ToString(), DateTime.Today, usuario);
+                return null;
+            }
+
+        }
+
+
         //ListaEfectivoFechaGeneral, wmt_efectivoCaja, busqueda x fecha y caja especifica
         public List<modeloEfectivoCaja> ListaEfectivoFechaCaja(string cod_emp, string fecha_inicio, string fecha_fin, string usuario, string nro_caja)
         {
@@ -286,7 +387,7 @@ namespace CapaDatos.Sql
             {
                 using (cn = conexion.genearConexion())
                 {
-                    string insert = "INSERT INTO  wmt_efectivoCaja (denominacionMId,  valor,cantidad,total, usuario_mod, fecha_mod,fecha_efe, secuencial, cod_emp, nro_trans,nro_caja ) VALUES (@denominacionMId,  @valor,@cantidad,@total, @usuario_mod, @fecha_mod,@fecha_efe, @secuencial, @cod_emp, @nro_trans, @nro_caja )";
+                    string insert = "INSERT INTO  wmt_efectivoCaja (denominacionMId,  valor,cantidad,total, usuario_mod, fecha_mod,fecha_efe, secuencial, cod_emp, nro_trans,nro_caja, cod_pro_aud ) VALUES (@denominacionMId,  @valor,@cantidad,@total, @usuario_mod, @fecha_mod,@fecha_efe, @secuencial, @cod_emp, @nro_trans, @nro_caja, @cod_proc_aud )";
                     SqlCommand conmand = new SqlCommand(insert, cn);
                     conmand.Parameters.Add("@denominacionMId", SqlDbType.Decimal).Value = Efectivocaja.denominacionMId;
                     conmand.Parameters.Add("@valor", SqlDbType.Decimal).Value = Efectivocaja.valor;
@@ -299,6 +400,7 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = Efectivocaja.cod_emp;
                     conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = Efectivocaja.nro_trans;
                     conmand.Parameters.Add("@nro_caja", SqlDbType.VarChar).Value = Efectivocaja.nro_caja;
+                    conmand.Parameters.Add("@cod_proc_aud", SqlDbType.VarChar).Value = Efectivocaja.cod_proc_aud;
                     int dr = conmand.ExecuteNonQuery();
                     return "Efectivo Caja guardada correctamente";
                 }

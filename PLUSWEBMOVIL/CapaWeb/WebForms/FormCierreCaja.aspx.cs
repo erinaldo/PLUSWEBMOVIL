@@ -397,6 +397,7 @@ namespace CapaWeb.WebForms
                 guardarCCcaja.cod_emp = ComPwm;
                 guardarCCcaja.nro_trans = valor_asignado;
                 guardarCCcaja.nro_caja = cbx_caja_usuario.SelectedValue;
+                guardarCCcaja.cod_proc_aud = "RCOMCIECJ";
                 ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
                 //Guardar linea x linea ingresos facturas
                 guardarCCcaja.signo = "+";
@@ -410,6 +411,7 @@ namespace CapaWeb.WebForms
                 guardarCCcaja.cod_emp = ComPwm;
                 guardarCCcaja.nro_trans = valor_asignado;
                 guardarCCcaja.nro_caja = cbx_caja_usuario.SelectedValue;
+                guardarCCcaja.cod_proc_aud = "RCOMCIECJ";
                 ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
                 //Guardar linea x linea ingresos NOTAS VENTA
                 guardarCCcaja.signo = "+";
@@ -423,6 +425,7 @@ namespace CapaWeb.WebForms
                 guardarCCcaja.cod_emp = ComPwm;
                 guardarCCcaja.nro_trans = valor_asignado;
                 guardarCCcaja.nro_caja = cbx_caja_usuario.SelectedValue;
+                guardarCCcaja.cod_proc_aud = "RCOMCIECJ";
                 ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
                 //Guardar linea x linea PAGOS EN FECTIVO FACTURAS
                 guardarCCcaja.signo = "-";
@@ -436,6 +439,7 @@ namespace CapaWeb.WebForms
                 guardarCCcaja.cod_emp = ComPwm;
                 guardarCCcaja.nro_trans = valor_asignado;
                 guardarCCcaja.nro_caja = cbx_caja_usuario.SelectedValue;
+                guardarCCcaja.cod_proc_aud = "RCOMCIECJ";
                 ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
                 //Guardar linea x linea PAGOS EN FECTIVO OTROS
                 guardarCCcaja.signo = "-";
@@ -449,6 +453,7 @@ namespace CapaWeb.WebForms
                 guardarCCcaja.cod_emp = ComPwm;
                 guardarCCcaja.nro_trans = valor_asignado;
                 guardarCCcaja.nro_caja = cbx_caja_usuario.SelectedValue;
+                guardarCCcaja.cod_proc_aud = "RCOMCIECJ";
                 ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
                 //Guardar linea x linea DEPOSITOS DEL DIA
                 guardarCCcaja.signo = "-";
@@ -461,6 +466,8 @@ namespace CapaWeb.WebForms
                 guardarCCcaja.fecha_mod = DateTime.Today;
                 guardarCCcaja.cod_emp = ComPwm;
                 guardarCCcaja.nro_trans = valor_asignado;
+                guardarCCcaja.nro_caja = cbx_caja_usuario.SelectedValue;
+                guardarCCcaja.cod_proc_aud = "RCOMCIECJ";
                 ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
 
                 DecimalesMoneda = null;
@@ -477,6 +484,7 @@ namespace CapaWeb.WebForms
                 guardarCCcaja.cod_emp = ComPwm;
                 guardarCCcaja.nro_trans = valor_asignado;
                 guardarCCcaja.nro_caja = cbx_caja_usuario.SelectedValue;
+                guardarCCcaja.cod_proc_aud = "RCOMCIECJ";
                 ConsultaCCaja.InsertarCierreCaja(guardarCCcaja);
 
                 DecimalesMoneda = null;
@@ -509,6 +517,7 @@ namespace CapaWeb.WebForms
                     guardarEfectivoC.cod_emp = ComPwm;
                     guardarEfectivoC.nro_trans = valor_asignado;
                     guardarEfectivoC.nro_caja = cbx_caja_usuario.SelectedValue;
+                    guardarEfectivoC.cod_proc_aud = "RCOMCIECJ";
                     ConsultaEfectivoC.InsertarECaja(guardarEfectivoC);
 
                 }
@@ -920,16 +929,17 @@ namespace CapaWeb.WebForms
                 Grid.Enabled = false;
                 txt_saldo_caja.Enabled = false;
                 txt_valor_caja.Enabled = false;
+                QueryString qs = new QueryString();
+                qs.Add("TRN", "VER");
+                qs.Add("Id", valor_asignado.ToString());
                 Session["Nro_trans"] = valor_asignado;
                 Session["Secuencial"] = secuencialCierreResumenCaja;
                 Session["Caja"] = cbx_caja_usuario.SelectedValue.Trim();
                 Session["fecha_c"] = lbl_fecha.Text;
-               // Response.Redirect("ReporteCierreCaja.aspx");
-                this.Page.Response.Write("<script language='JavaScript'>window.open('./ReporteCierreCaja.aspx', 'Cierre Caja', 'top=100,width=800 ,height=600, left=400');</script>");
-                // ClientScript.RegisterStartupScript(this.GetType(), "AreaImprimir", "printDiv('areaImprimir');", true);
-                // ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "AreaImprimir", "printDiv('AreaImprimir');", true);
+                Session["usuario"] = AmUsrLog;
 
-
+                Response.Write("<script>window.open('" + "ReporteCierreC.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
+             
             }
             catch (Exception ex)
             {

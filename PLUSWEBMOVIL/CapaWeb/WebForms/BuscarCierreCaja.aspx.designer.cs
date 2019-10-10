@@ -112,6 +112,24 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.DropDownList cbx_caja_usuario;
         
         /// <summary>
+        /// Control lbl_usu.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_usu;
+        
+        /// <summary>
+        /// Control cbx_usuario.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cbx_usuario;
+        
+        /// <summary>
         /// Control Buscar.
         /// </summary>
         /// <remarks>

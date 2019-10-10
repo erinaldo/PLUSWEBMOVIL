@@ -135,8 +135,11 @@
                                     <asp:DropDownList ID="cbx_caja_usuario" CssClass="textos" runat="server" Height="16px" Width="206px"></asp:DropDownList>
                                 </td>
                               <td>
-
+                                    <asp:Label ID="lbl_usu" CssClass="busqueda" runat="server" Text="Usuario"></asp:Label>
                               </td>
+                                 <td>
+                                    <asp:DropDownList ID="cbx_usuario" CssClass="textos" runat="server" Height="16px" Width="206px"></asp:DropDownList>
+                                </td>
                                 <td aling="rigth">
                                     <asp:Button ID="Buscar" runat="server" OnClick="Buscar_Click" class="botones" Text="Buscar" /></td>
 
@@ -193,6 +196,14 @@
                                                 <ItemTemplate>
                                                     <span style="float: left;">
                                                         <asp:Label ID="nro_caja" runat="server" class="textos" Text='<%#Eval("nro_caja") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+
+                                             <asp:TemplateColumn HeaderText="USUARIO">
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="usuario_mod" runat="server" class="textos" Text='<%#Eval("usuario_mod") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>

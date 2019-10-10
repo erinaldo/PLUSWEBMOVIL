@@ -203,6 +203,7 @@
     <Content Include="WebForms\ReenviarFacturaJson.aspx" />
     <Content Include="WebForms\ReenviarNCJson.aspx" />
     <Content Include="WebForms\ReenviarNotaDebitoJson.aspx" />
+    <Content Include="WebForms\ReporteCierreC.aspx" />
     <Content Include="WebForms\ReporteCierreCaja.aspx" />
     <Content Include="WebForms\ReporteNCAnuFac.aspx" />
     <Content Include="WebForms\ReporteFactura.aspx" />
@@ -512,6 +513,13 @@
     </Compile>
     <Compile Include="WebForms\ReenviarNotaDebitoJson.aspx.designer.cs">
       <DependentUpon>ReenviarNotaDebitoJson.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\ReporteCierreC.aspx.cs">
+      <DependentUpon>ReporteCierreC.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\ReporteCierreC.aspx.designer.cs">
+      <DependentUpon>ReporteCierreC.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\ReporteCierreCaja.aspx.cs">
       <DependentUpon>ReporteCierreCaja.aspx</DependentUpon>

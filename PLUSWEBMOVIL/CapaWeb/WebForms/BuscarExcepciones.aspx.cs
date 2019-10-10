@@ -117,8 +117,8 @@ namespace CapaWeb.WebForms
                 cbx_usuario.DataTextField = "usuario";
                 cbx_usuario.DataValueField = "usuario";
                 cbx_usuario.DataBind();
-                cbx_usuario.Items.Add("0");
-                cbx_usuario.SelectedIndex= 0;
+                cbx_usuario.Items.Insert(0, new ListItem("TODOS", "0"));
+                cbx_usuario.SelectedIndex = 0;
             }
             catch (Exception ex)
             {
