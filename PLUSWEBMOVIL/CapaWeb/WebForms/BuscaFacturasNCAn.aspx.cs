@@ -71,6 +71,7 @@ namespace CapaWeb.WebForms
         public string Ccf_diaf = "";
         public string Ccf_mesf = "";
         public string Ccf_aniof = "";
+        public string tipo_nc = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -84,14 +85,19 @@ namespace CapaWeb.WebForms
 
                     Session.Remove("listaFacturas");
                     Session.Remove("usuario");
+                    Session.Remove("TipoFactura");
 
                     if (Request.Cookies["ComPwm"] != null)
                     {
                         string ComPwm = Request.Cookies["ComPwm"].Value;
 
                     }
+                   if( Session["TipoFactura"] != null)
+                    {
+                        tipo_nc = Session["TipoFactura"].ToString();
+                    }
 
-                    if (Session["listaClienteFac"] != null)
+                        if (Session["listaClienteFac"] != null)
                     {
                         // recupera la variable de secion con el objeto persona 
 
@@ -318,8 +324,15 @@ namespace CapaWeb.WebForms
             {
                 lbl_error.Text = "";
 
-
-                ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C");
+                if (tipo_nc.Trim() == "NCVE")
+                {
+                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C");
+                }
+                else
+                {
+                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C");
+                }
+               
 
                 Session["listaConsCab"] = ListaSaldoFacturas;
                 Grid.DataSource = ListaSaldoFacturas;

@@ -88,6 +88,10 @@ namespace CapaWeb.WebForms
                         string ComPwm = Request.Cookies["ComPwm"].Value;
 
                     }
+                    if (Session["Tipo"] != null)
+                    {
+                        Session["tipo_nc"] = Session["Tipo"].ToString();
+                    }
 
                     if (Session["listaClienteFac"] != null)
                     {
@@ -278,9 +282,19 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
+                if (Session["tipo_nc"].ToString() == "NCM")
+                {
 
+                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C");
+                }
 
-                ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C");
+                else
+
+                {
+
+                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C");
+                }
+
 
                 Session["listaConsCab"] = ListaSaldoFacturas;
                 Grid.DataSource = ListaSaldoFacturas;

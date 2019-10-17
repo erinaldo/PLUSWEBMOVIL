@@ -1598,7 +1598,8 @@ namespace CapaWeb.WebForms
                     cliente = item;
                     break;
                 }
-                if(Session["Ccf_tipo2"].ToString() == "NCV")
+                string tipo_fac = Session["Ccf_tipo2"].ToString();
+                if (tipo_fac.Trim() == "NCV")
                 {
 
                     ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C");
@@ -1619,6 +1620,7 @@ namespace CapaWeb.WebForms
                     if (Session["listaFacturas"] == null)
                     {
                         Session["listaClienteFac"] = ListaSaldoFacturas;
+                        Session["Tipo"] = tipo_fac.Trim();
                         this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarFacturasNC.aspx', 'Buscar Facturas', 'top=100,width=800 ,height=400, left=400');</script>");
 
                     }

@@ -126,7 +126,6 @@
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
     <Content Include="WebForms\FormCierreCaja.aspx" />
     <Content Include="WebForms\FormDenominaciones.aspx" />
-    <Content Include="WebForms\FormDetalleImpuestos.aspx" />
     <Content Include="WebForms\FormDocumentosElectronicos.aspx" />
     <Content Include="WebForms\FormExcepciones.aspx" />
     <Content Include="WebForms\FormFacturaPostElec.aspx" />
@@ -321,13 +320,6 @@
     </Compile>
     <Compile Include="WebForms\FormDenominaciones.aspx.designer.cs">
       <DependentUpon>FormDenominaciones.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WebForms\FormDetalleImpuestos.aspx.cs">
-      <DependentUpon>FormDetalleImpuestos.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebForms\FormDetalleImpuestos.aspx.designer.cs">
-      <DependentUpon>FormDetalleImpuestos.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormDocumentosElectronicos.aspx.cs">
       <DependentUpon>FormDocumentosElectronicos.aspx</DependentUpon>

@@ -1687,6 +1687,7 @@ namespace CapaWeb.WebForms
                     if (Session["listaFacturas"] == null)
                     {
                         Session["listaClienteFac"] = ListaSaldoFacturas;
+                        Session["TipoFactura"] = tipo;
                         this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscaFacturasNCAn.aspx', 'Buscar Facturas', 'top=100,width=800 ,height=400, left=400');</script>");
 
                     }
