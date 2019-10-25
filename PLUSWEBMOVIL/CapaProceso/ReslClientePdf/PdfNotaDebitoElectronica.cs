@@ -226,16 +226,7 @@ namespace CapaProceso.ReslClientePdf
             tablaLogo.WidthPercentage = 100;
             // Creamos la imagen y le ajustamos el tamaño
             var pathLogo = "";
-            if (Modelowmspclogo.sitio_app.Contains("http"))
-            {
-
-                pathLogo = Modelowmspclogo.sitio_app + "/Logo/" + Modelowmspclogo.logo;
-
-            }
-            else
-            {
-                pathLogo = HttpContext.Current.Server.MapPath("~/Logo/" + Modelowmspclogo.logo);
-            }
+            pathLogo = HttpContext.Current.Server.MapPath("~/Logo/" + Modelowmspclogo.logo);
 
             iTextSharp.text.Image imagen1 = iTextSharp.text.Image.GetInstance(pathLogo);
             imagen1.BorderWidth = 0;
