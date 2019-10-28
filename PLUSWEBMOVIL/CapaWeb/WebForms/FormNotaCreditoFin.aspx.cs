@@ -466,7 +466,8 @@ namespace CapaWeb.WebForms
                     break;
 
                 }
-
+                Session["redondeo"] = DecimalesMoneda.redondeo;
+                Session["redondeo_pu"] = DecimalesMoneda.redondeo_pu;
                 return DecimalesMoneda;
             }
             catch (Exception ex)
