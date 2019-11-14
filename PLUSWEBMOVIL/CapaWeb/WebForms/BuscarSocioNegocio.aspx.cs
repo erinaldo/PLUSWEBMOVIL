@@ -7,6 +7,7 @@ using CapaWeb.Urlencriptacion;
 using CapaProceso.RestCliente;
 using CapaDatos.Modelos;
 using CapaDatos.Modelos.ModelosNC;
+using System.Web;
 
 namespace CapaWeb.WebForms
 {
@@ -20,6 +21,7 @@ namespace CapaWeb.WebForms
         public string ComPwm;
         public string AmUsrLog;
         public string cod_proceso;
+        public string UsuarioId;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -54,6 +56,16 @@ namespace CapaWeb.WebForms
                     Response.Redirect("../Inicio.asp");
                 }
 
+                HttpCookie AmScnCod = new HttpCookie("AmScnCod");
+                AmScnCod.Value = "9999994";
+                AmScnCod.Expires = DateTime.Now.AddDays(1d);
+                Response.Cookies.Add(AmScnCod);
+
+                HttpCookie AmComCod = new HttpCookie("AmComCod");
+                AmScnCod.Value = "01";
+                AmScnCod.Expires = DateTime.Now.AddDays(1d);
+                Response.Cookies.Add(AmScnCod);
+               
 
                 if (Request.Cookies["AmUsrLog"] != null)
                 {
