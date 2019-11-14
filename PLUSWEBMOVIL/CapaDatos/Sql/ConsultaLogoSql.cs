@@ -53,6 +53,7 @@ namespace CapaDatos.Sql
                         item.linkemidocuelec = Convert.ToString(dr["linkemidocuelec"]);
                         item.linkgenpdf = Convert.ToString(dr["linkgenpdf"]);
                         item.pathtmpfac = Convert.ToString(dr["pathtmpfac"]);
+                        item.sitio_erp = Convert.ToString(dr["sitio_erp"]);
 
                         lista.Add(item);
 

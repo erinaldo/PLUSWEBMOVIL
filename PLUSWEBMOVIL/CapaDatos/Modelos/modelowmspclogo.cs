@@ -24,6 +24,7 @@ namespace CapaDatos.Modelos
         public string linkemidocuelec{ get; set; }
         public string linkgenpdf { get; set; }
         public string pathtmpfac { get; set; }
-  
+        public string sitio_erp { get; set; }
+
     }
 }

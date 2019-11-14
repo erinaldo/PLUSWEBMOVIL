@@ -79,7 +79,7 @@ namespace CapaWeb.WebForms
 
         public void GuardarExcepciones(string metodo, string error)
         {
-          
+          //Guardar excepciones
             ModeloExcepcion.cod_emp = ComPwm;
             ModeloExcepcion.proceso = "DetalleImpuestos.aspx";
             ModeloExcepcion.metodo = metodo;
