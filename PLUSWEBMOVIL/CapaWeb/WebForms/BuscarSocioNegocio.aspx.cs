@@ -19,6 +19,7 @@ namespace CapaWeb.WebForms
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
         public string ComPwm;
+        public string socio;
         public string AmUsrLog;
         public string cod_proceso;
         public string UsuarioId;
@@ -55,17 +56,17 @@ namespace CapaWeb.WebForms
                 {
                     Response.Redirect("../Inicio.asp");
                 }
-
+                /*
                 HttpCookie AmScnCod = new HttpCookie("AmScnCod");
                 AmScnCod.Value = "9999994";
                 AmScnCod.Expires = DateTime.Now.AddDays(1d);
-                Response.Cookies.Add(AmScnCod);
+                Response.Cookies.Add(AmScnCod);*/
+                if (Request.Cookies["AmScNCod"] != null)
+                {
+                     socio = Request.Cookies["AmScNCod"].Value;
+                }
 
-                HttpCookie AmComCod = new HttpCookie("AmComCod");
-                AmScnCod.Value = "01";
-                AmScnCod.Expires = DateTime.Now.AddDays(1d);
-                Response.Cookies.Add(AmScnCod);
-               
+
 
                 if (Request.Cookies["AmUsrLog"] != null)
                 {
@@ -85,6 +86,12 @@ namespace CapaWeb.WebForms
                         Response.Cookies["ProcAud"].Value = cod_proceso;
                     }
                 }
+                //Codigo empresa
+                string empresa_codigo = ComPwm;
+                Response.Cookies["empresa_codigo"].Value = empresa_codigo;
+                //socio negocio
+               // string socio_codigo = "100";
+                Response.Cookies["socio_codigo"].Value = socio;
             }
             catch (Exception ex)
             {
