@@ -122,6 +122,7 @@
     <Content Include="WebForms\BuscarNotasVenta.aspx" />
     <Content Include="WebForms\BuscarParametros.aspx" />
     <Content Include="WebForms\BuscarPProveedores.aspx" />
+    <Content Include="WebForms\BuscarRecurso.aspx" />
     <Content Include="WebForms\BuscarSocioNegocio.aspx" />
     <Content Include="WebForms\DetalleCierreCaja.aspx" />
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
@@ -294,6 +295,13 @@
     </Compile>
     <Compile Include="WebForms\BuscarPProveedores.aspx.designer.cs">
       <DependentUpon>BuscarPProveedores.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarRecurso.aspx.cs">
+      <DependentUpon>BuscarRecurso.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarRecurso.aspx.designer.cs">
+      <DependentUpon>BuscarRecurso.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\BuscarSocioNegocio.aspx.cs">
       <DependentUpon>BuscarSocioNegocio.aspx</DependentUpon>

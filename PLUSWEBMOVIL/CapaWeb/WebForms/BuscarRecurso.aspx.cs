@@ -11,7 +11,7 @@ using System.Web;
 
 namespace CapaWeb.WebForms
 {
-    public partial class BuscarSocioNegocio : System.Web.UI.Page
+    public partial class BuscarRecurso : System.Web.UI.Page
     {
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
@@ -40,13 +40,13 @@ namespace CapaWeb.WebForms
             {
                 GuardarExcepciones("Page_Load", ex.ToString());
             }
-
         }
+
         public void RecuperarCokie()
         {
             try
             {
-               // lbl_error.Text = "";
+                // lbl_error.Text = "";
 
                 if (Request.Cookies["ComPwm"] != null)
                 {
@@ -56,14 +56,10 @@ namespace CapaWeb.WebForms
                 {
                     Response.Redirect("../Inicio.asp");
                 }
-                /*
-                HttpCookie AmScnCod = new HttpCookie("AmScnCod");
-                AmScnCod.Value = "9999994";
-                AmScnCod.Expires = DateTime.Now.AddDays(1d);
-                Response.Cookies.Add(AmScnCod);*/
+ 
                 if (Request.Cookies["AmScNCod"] != null)
                 {
-                     socio = Request.Cookies["AmScNCod"].Value;
+                    socio = Request.Cookies["AmScNCod"].Value;
                 }
 
 
@@ -90,7 +86,7 @@ namespace CapaWeb.WebForms
                 string empresa_codigo = ComPwm;
                 Response.Cookies["empresa_codigo"].Value = empresa_codigo;
                 //socio negocio
-               // string socio_codigo = "100";
+                // string socio_codigo = "100";
                 Response.Cookies["socio_codigo"].Value = socio;
                 Response.Cookies["usuario"].Value = AmUsrLog;
             }
@@ -105,7 +101,7 @@ namespace CapaWeb.WebForms
         {
 
             ModeloExcepcion.cod_emp = ComPwm;
-            ModeloExcepcion.proceso = "BuscarSocioNegocio.aspx";
+            ModeloExcepcion.proceso = "BuscarRecurso.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Today;
@@ -113,7 +109,7 @@ namespace CapaWeb.WebForms
 
             consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
             //mandar mensaje de error a label
-           // lbl_error.Text = "No se pudo completar la acción" + metodo + "." + " Por favor notificar al administrador.";
+            // lbl_error.Text = "No se pudo completar la acción" + metodo + "." + " Por favor notificar al administrador.";
 
         }
     }
