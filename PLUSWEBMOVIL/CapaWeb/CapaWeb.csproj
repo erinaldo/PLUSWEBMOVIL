@@ -123,7 +123,9 @@
     <Content Include="WebForms\BuscarParametros.aspx" />
     <Content Include="WebForms\BuscarPProveedores.aspx" />
     <Content Include="WebForms\BuscarRecurso.aspx" />
+    <Content Include="WebForms\BuscarResolucion.aspx" />
     <Content Include="WebForms\BuscarSocioNegocio.aspx" />
+    <Content Include="WebForms\BuscarVendedor.aspx" />
     <Content Include="WebForms\DetalleCierreCaja.aspx" />
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
     <Content Include="WebForms\FormCierreCaja.aspx" />
@@ -179,7 +181,9 @@
     <Content Include="Tema\imagenes\version.png" />
     <Content Include="Tema\imagenes\version_print.png" />
     <Content Include="Tema\imagenes\xls.png" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="WebForms\BuscarArticulo.aspx" />
     <Content Include="WebForms\BuscarCliente.aspx" />
     <Content Include="WebForms\BuscarFacturas.aspx" />
@@ -303,12 +307,26 @@
     <Compile Include="WebForms\BuscarRecurso.aspx.designer.cs">
       <DependentUpon>BuscarRecurso.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\BuscarResolucion.aspx.cs">
+      <DependentUpon>BuscarResolucion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarResolucion.aspx.designer.cs">
+      <DependentUpon>BuscarResolucion.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\BuscarSocioNegocio.aspx.cs">
       <DependentUpon>BuscarSocioNegocio.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\BuscarSocioNegocio.aspx.designer.cs">
       <DependentUpon>BuscarSocioNegocio.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarVendedor.aspx.cs">
+      <DependentUpon>BuscarVendedor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarVendedor.aspx.designer.cs">
+      <DependentUpon>BuscarVendedor.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\DetalleCierreCaja.aspx.cs">
       <DependentUpon>DetalleCierreCaja.aspx</DependentUpon>
