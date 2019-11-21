@@ -112,12 +112,14 @@
     <Content Include="Tema\css\StylePront.css" />
     <Content Include="WebForms\BuscaFacturasNCAn.aspx" />
     <Content Include="WebForms\BuscarArticuloNCDevolucion.aspx" />
+    <Content Include="WebForms\BuscarCentroCosto.aspx" />
     <Content Include="WebForms\BuscarCierreCaja.aspx" />
     <Content Include="WebForms\BuscarClaseArticulo.aspx" />
     <Content Include="WebForms\BuscarExcepciones.aspx" />
     <Content Include="WebForms\BuscarFacturaPos.aspx" />
     <Content Include="WebForms\BuscarFacturasNC.aspx" />
     <Content Include="WebForms\BuscarFacturasNCFin.aspx" />
+    <Content Include="WebForms\BuscarFormaPagoVentas.aspx" />
     <Content Include="WebForms\BuscarIngresoFacturasPgs.aspx" />
     <Content Include="WebForms\BuscarMoneda.aspx" />
     <Content Include="WebForms\BuscarNotaDebito.aspx" />
@@ -127,6 +129,7 @@
     <Content Include="WebForms\BuscarPProveedores.aspx" />
     <Content Include="WebForms\BuscarRecurso.aspx" />
     <Content Include="WebForms\BuscarResolucion.aspx" />
+    <Content Include="WebForms\BuscarSectorVenta.aspx" />
     <Content Include="WebForms\BuscarSocioNegocio.aspx" />
     <Content Include="WebForms\BuscarTipoArticulo.aspx" />
     <Content Include="WebForms\BuscarUnidadMedida.aspx" />
@@ -236,6 +239,13 @@
     <Compile Include="WebForms\BuscarArticuloNCDevolucion.aspx.designer.cs">
       <DependentUpon>BuscarArticuloNCDevolucion.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\BuscarCentroCosto.aspx.cs">
+      <DependentUpon>BuscarCentroCosto.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarCentroCosto.aspx.designer.cs">
+      <DependentUpon>BuscarCentroCosto.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\BuscarCierreCaja.aspx.cs">
       <DependentUpon>BuscarCierreCaja.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -277,6 +287,13 @@
     </Compile>
     <Compile Include="WebForms\BuscarFacturasNCFin.aspx.designer.cs">
       <DependentUpon>BuscarFacturasNCFin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarFormaPagoVentas.aspx.cs">
+      <DependentUpon>BuscarFormaPagoVentas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarFormaPagoVentas.aspx.designer.cs">
+      <DependentUpon>BuscarFormaPagoVentas.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\BuscarIngresoFacturasPgs.aspx.cs">
       <DependentUpon>BuscarIngresoFacturasPgs.aspx</DependentUpon>
@@ -340,6 +357,13 @@
     </Compile>
     <Compile Include="WebForms\BuscarResolucion.aspx.designer.cs">
       <DependentUpon>BuscarResolucion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarSectorVenta.aspx.cs">
+      <DependentUpon>BuscarSectorVenta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarSectorVenta.aspx.designer.cs">
+      <DependentUpon>BuscarSectorVenta.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\BuscarSocioNegocio.aspx.cs">
       <DependentUpon>BuscarSocioNegocio.aspx</DependentUpon>
