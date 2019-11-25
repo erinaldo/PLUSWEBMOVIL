@@ -87,6 +87,12 @@
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
                                             
+                                               <asp:TemplateColumn  HeaderText="DIAN">
+                                                <ItemTemplate>
+                                                    <asp:ImageButton ID="imgVer" runat="server" CausesValidation="false" CommandName="Ver"
+                                                        ImageUrl="~/Tema/imagenes/search.png" ToolTip="Ver DIAN" Width="16" />
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
 
                                           
                                         </Columns>

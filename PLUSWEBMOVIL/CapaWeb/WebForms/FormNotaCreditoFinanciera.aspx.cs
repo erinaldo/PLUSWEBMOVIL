@@ -174,7 +174,7 @@ namespace CapaWeb.WebForms
                     Session.Remove("sumaBase15");
                     Session.Remove("sumaIva19");
                     Session.Remove("sumaIva15");
-
+                    Session.Remove("primer_item");
 
                     QueryString qs = ulrDesencriptada();
 
@@ -1140,6 +1140,11 @@ namespace CapaWeb.WebForms
                         item.base_imp = Convert.ToDecimal(articulo.porc_aiu);
                         item.tasa_iva = articulo.cod_tasa_impu;
                         item.cod_concepret = articulo.cod_concepret;
+                        /*SE REALIZA SOLO PARA LA PRIMERA INSERCION DE UN CONCEPTO DE NC*/
+                        if(ModeloDetalleFactura.Count==0)
+                         { 
+                        Session["primer_item"] = item.cantidad * item.precio_unit;
+                        }
                         ModeloDetalleFactura.Add(item);
 
                     }
@@ -1154,7 +1159,7 @@ namespace CapaWeb.WebForms
                     txt_Desc.Text = "0";
                     txt_Cantidad.Text = "1";
                     item = null;
-
+                    
                 }
             }
             catch (Exception ex)
@@ -1520,6 +1525,12 @@ namespace CapaWeb.WebForms
 
                 /*Validar si el saldo de la factura */
                 decimal valorSaldo = Convert.ToDecimal(txt_saldo_factura.Text);
+                if(txtSumaTotal.Text =="")
+                {
+                    //cant* precio
+                    
+                    txtSumaTotal.Text = Session["primer_item"].ToString();
+                }
                 decimal valorTotal = Convert.ToDecimal(txtSumaTotal.Text);
                 if (valorTotal > valorSaldo)
                 {

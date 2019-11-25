@@ -83,6 +83,7 @@ namespace CapaDatos.Sql
                         item.error = Convert.ToString(dr["error"]);
                         item.json = Convert.ToString(dr["json"]);
                         item.result = Convert.ToString(dr["result"]);
+                        item.jsonrRespuesta = Convert.ToString(dr["jsonrRespuesta"]);
                         lista.Add(item);
                     }
 

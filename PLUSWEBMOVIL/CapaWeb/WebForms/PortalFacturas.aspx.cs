@@ -63,8 +63,25 @@ namespace CapaWeb.WebForms
 
                             break;
 
-                        case "UDP":
+                        case "VER":
+                            try
+                            {
+                                lbl_error.Text = "";
+                                Int64 ide = Int64.Parse(qs["Id"].ToString());
+                                string nro_trans = ide.ToString();
+                                Session["valor_asignado"] = ide.ToString();
+                                //CargarFormularioRespuestaDS(nro_trans);
+                                CargarGrilla(nro_trans);
+
+                                break;
+                            }
+                            catch (Exception ex)
+                            {
+                                GuardarExcepciones("Page_Load, VER", ex.ToString());
+
+                            }
                             break;
+                           
 
                         case "MTR":
                             try
@@ -187,6 +204,27 @@ namespace CapaWeb.WebForms
                         catch (Exception ex)
                         {
                             GuardarExcepciones("Grid_ItemCommand, Mostrar", ex.ToString());
+
+                        }
+                        break;
+
+                    case "Ver": //ejecuta el codigo si el usuario ingresa el numero 3
+                        try
+                        {
+                            lbl_error.Text = "";
+                            Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+                            linea = Convert.ToInt32(((Label)e.Item.Cells[2].FindControl("linea")).Text);
+                            qs.Add("TRN", "VER");
+                            qs.Add("Id", Id.ToString());
+                            qs.Add("linea", linea.ToString());
+
+                            Response.Redirect("FormRespuestaDIAN.aspx" + Encryption.EncryptQueryString(qs).ToString());
+
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            GuardarExcepciones("Grid_ItemCommand, Ver", ex.ToString());
 
                         }
                         break;

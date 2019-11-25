@@ -205,6 +205,7 @@
     <Content Include="WebForms\FormNotaDebitoAnulacion.aspx" />
     <Content Include="WebForms\FormNotaDebitoF.aspx" />
     <Content Include="WebForms\FormParametros.aspx" />
+    <Content Include="WebForms\FormRespuestaDIAN.aspx" />
     <Content Include="WebForms\FormRespuestaJsonNC.aspx" />
     <Content Include="WebForms\FormRespuestaJson.aspx" />
     <Content Include="WebForms\FormRespuestaJsonND.aspx" />
@@ -563,6 +564,13 @@
     </Compile>
     <Compile Include="WebForms\FormParametros.aspx.designer.cs">
       <DependentUpon>FormParametros.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormRespuestaDIAN.aspx.cs">
+      <DependentUpon>FormRespuestaDIAN.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormRespuestaDIAN.aspx.designer.cs">
+      <DependentUpon>FormRespuestaDIAN.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormRespuestaJsonNC.aspx.cs">
       <DependentUpon>FormRespuestaJsonNC.aspx</DependentUpon>
