@@ -72,6 +72,7 @@ namespace CapaDatos.Sql
                         item.control_uso2 = Convert.ToString(dr["control_uso2"]);
                         item.cod_sop = Convert.ToString(dr["cod_sop"]);
                         item.moncli = Convert.ToString(dr["moncli"]);
+                        item.regimen_tributacion = Convert.ToString(dr["regimen_tributacion"]);
 
                         lista.Add(item);
 

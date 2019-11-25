@@ -173,9 +173,22 @@ namespace CapaWeb.WebForms
 
                     Tipo_fac = "POSE";
                 }
-                ConsumoRest consumoRest = new ConsumoRest();
+
                 string respuesta = "";
-                respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", Tipo_fac, lbl_nro_trans.Text);
+
+                if (Modelowmspclogo.version_fe == "1")
+                {
+
+                    ConsumoRest consumoRest = new ConsumoRest();
+                    respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", Tipo_fac, lbl_nro_trans.Text);
+                }
+                else
+                {
+                    ConsumoRestFEV2 consumoRest = new ConsumoRestFEV2();                    
+                    respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", Tipo_fac, lbl_nro_trans.Text);
+                }
+               
+                
                 if (respuesta == "")
                 {
                     mensaje.Text = "Su factura fue enviada exitosamente";

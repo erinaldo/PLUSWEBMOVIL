@@ -16,5 +16,6 @@ namespace CapaDatos.Modelos
         public string nro_trans { get; set; }
         public int linea { get; set; }
         public string result { get; set; }
+        public string jsonrRespuesta { get; set; }
     }
 }

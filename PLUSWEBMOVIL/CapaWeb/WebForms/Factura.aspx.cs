@@ -1348,9 +1348,21 @@ namespace CapaWeb.WebForms
                                 {
                                     if (respuestaConfirmacionFAC == "")
                                     {
-                                        ConsumoRest consumoRest = new ConsumoRest();
+                                        //AVERIGUAR Q TIPO DE FACTURACION USA
                                         string respuesta = "";
-                                        respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTAE", conscabcera.nro_trans);
+                                        if (Modelowmspclogo.version_fe == "1")
+                                        {
+
+                                            ConsumoRest consumoRest = new ConsumoRest();
+                                            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTAE", conscabcera.nro_trans);
+                                        }
+                                        else
+                                        {
+                                            ConsumoRestFEV2 consumoRest = new ConsumoRestFEV2();
+                                            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "VTAE", conscabcera.nro_trans);
+                                        }
+                                        
+                                       
                                         if (respuesta == "")
                                         {
                                             mensaje.Text = "Su factura fue procesada exitosamente";
@@ -1366,6 +1378,7 @@ namespace CapaWeb.WebForms
                                             Response.Redirect("BuscarFacturas.aspx");
 
                                         }
+                                    
                                     }
                                     else
                                     {

@@ -70,7 +70,7 @@ namespace CapaDatos.Sql.SqlNC
         }
 
         //cONSULTA PARA FACTURAS ELECTRONICAS CON CUFE SE USA EN NC PARA SALDOS Y TOTALES
-        public modeloFacturasElecSaldos ConsultaFacEleSaldos( string cod_cliente, string cod_emp, string nro_trans)
+        public modeloFacturasElecSaldos ConsultaFacEleSaldos( string cod_cliente, string cod_emp, string serie, string nro_docum)
         {
             try
             {
@@ -80,12 +80,13 @@ namespace CapaDatos.Sql.SqlNC
                 {
                     
 
-                    string consulta = ("SELECT	TOP 1 F.nro_trans,	F.cod_emp,	F.serie_docum,	F.nro_docum,	D.cufe FROM 	wmt_facturas_cab AS F INNER JOIN wmt_respuestaDS AS D ON F.nro_trans = D.nro_trans WHERE D.cufe <> '' AND F.tipo IN( 'VTAE', 'POSE') AND F.cod_cliente = @cod_cliente AND F.cod_emp = @cod_emp AND F.estado IN ('F') AND F.nro_trans = @nro_trans GROUP BY 	F.nro_trans,	F.cod_emp,F.serie_docum,	F.nro_docum,	D.cufe");
+                    string consulta = ("SELECT	TOP 1 F.nro_trans,	F.cod_emp,	F.serie_docum,	F.nro_docum,	D.cufe FROM 	wmt_facturas_cab AS F INNER JOIN wmt_respuestaDS AS D ON F.nro_trans = D.nro_trans WHERE D.cufe <> '' AND F.tipo IN( 'VTAE', 'POSE') AND F.cod_cliente = @cod_cliente AND F.cod_emp = @cod_emp AND F.estado IN ('F') AND F.serie_docum = @serie AND F.nro_docum =@nro_docum GROUP BY 	F.nro_trans,	F.cod_emp,F.serie_docum,	F.nro_docum,	D.cufe");
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = cod_cliente;
                     conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
-                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                    conmand.Parameters.Add("@serie", SqlDbType.VarChar).Value = serie;
+                    conmand.Parameters.Add("@nro_docum", SqlDbType.VarChar).Value = nro_docum;
 
                     SqlDataReader dr = conmand.ExecuteReader();
 

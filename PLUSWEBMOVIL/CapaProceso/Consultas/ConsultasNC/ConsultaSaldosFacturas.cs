@@ -28,7 +28,7 @@ namespace CapaProceso.Consultas
 
                 foreach (var item in lista)
                 {
-                    modeloFacturasElecSaldos = BuscartaFacEleSaldos(Ccf_tipo1, Ccf_cod_emp, item.nro_trans);
+                    modeloFacturasElecSaldos = BuscartaFacEleSaldos(Ccf_tipo1, Ccf_cod_emp, item.serie_docum, item.nro_docum);
                     if (modeloFacturasElecSaldos.cufe == null)
                     {
                         listaAux.Add(item);
@@ -70,14 +70,16 @@ namespace CapaProceso.Consultas
             {
                 modeloFacturasElecSaldos modeloFacturasElecSaldos = new modeloFacturasElecSaldos();
                 List<modeloSaldosFacturas> lista = new List<modeloSaldosFacturas>();
+                List<modeloSaldosFacturas> listaNroTrans = new List<modeloSaldosFacturas>();
                 List<modeloSaldosFacturas> listaAux = new List<modeloSaldosFacturas>();
                 lista = consultaSaldoa.ConsultaFacturasSaldos(Ccf_usuario, Ccf_cod_emp, Ccf_tipo1, Ccf_tipo2);
-
+                
                 foreach (var item in lista)
                 {
-                    modeloFacturasElecSaldos = BuscartaFacEleSaldos(Ccf_tipo1, Ccf_cod_emp, item.nro_trans);
+                    modeloFacturasElecSaldos = BuscartaFacEleSaldos(Ccf_tipo1, Ccf_cod_emp, item.serie_docum, item.nro_docum);
                     if (modeloFacturasElecSaldos.cufe != null)
                     {
+                        item.nro_trans = modeloFacturasElecSaldos.nro_trans;
                         listaAux.Add(item);
                     }
 
@@ -94,12 +96,12 @@ namespace CapaProceso.Consultas
         }
 
         //sql saldos de FE nuevo 
-        public modeloFacturasElecSaldos BuscartaFacEleSaldos(string cod_cliente, string cod_emp, string nro_trans)
+        public modeloFacturasElecSaldos BuscartaFacEleSaldos(string cod_cliente, string cod_emp, string serie, string nro_docum)
         {
             try
             {
                 modeloFacturasElecSaldos item = new modeloFacturasElecSaldos();
-                item = consultaSaldoa.ConsultaFacEleSaldos(cod_cliente, cod_emp, nro_trans);
+                item = consultaSaldoa.ConsultaFacEleSaldos(cod_cliente, cod_emp, serie,nro_docum);
                 return item;
             }
             catch (Exception e)

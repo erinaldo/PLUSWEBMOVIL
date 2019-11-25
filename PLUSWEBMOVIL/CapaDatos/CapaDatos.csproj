@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Conexion\Conexion.cs" />
     <Compile Include="Modelos\JsonRespuestaDE.cs" />
+    <Compile Include="Modelos\JsonRespuestaDSFEV2.cs" />
     <Compile Include="Modelos\modeloActualizarDatosTitular.cs" />
     <Compile Include="Modelos\modelocabecerafactura.cs" />
     <Compile Include="Modelos\modeloCajasCierre.cs" />

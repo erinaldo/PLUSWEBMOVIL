@@ -23,7 +23,7 @@ namespace CapaProceso.Consultas
             try
             {
                 List<JsonRespuestaDE> lista = new List<JsonRespuestaDE>();
-                lista = consultaRespuesta.ConsultaRespuestaQR(nro_trans);
+                lista = consultaRespuesta.nsultaRespuestaQR(nro_trans);
 
                 return lista;
             }
@@ -51,5 +51,23 @@ namespace CapaProceso.Consultas
             }
         }
 
+        
+        //CONSULTAR TABLA RESPUESTADS
+        public List<JsonRespuestaDSFEV2> ConsultaResQrDS(string nro_trans)
+        {
+            try
+            {
+                List<JsonRespuestaDSFEV2> lista = new List<JsonRespuestaDSFEV2>();
+                lista = consultaRespuesta.ConsultaResQRDS(nro_trans);
+
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "ConsultawmtrespuestaDs.cs", "ConsultaResQrDS", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
+        }
     }
 }

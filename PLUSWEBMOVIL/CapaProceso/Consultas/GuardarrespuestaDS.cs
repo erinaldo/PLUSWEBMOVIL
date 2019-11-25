@@ -20,6 +20,11 @@ namespace CapaProceso.Consultas
         public List<JsonRespuestaDE> ListaBuscarQr = null;
         public JsonRespuestaDE ModeloResQr = new JsonRespuestaDE();
         public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
+
+        public List<DIAN> DIAN = new List<DIAN>();
+        public List<JsonRespuestaDSFEV2> ListaBuscarDIAN = null;
+        public DIAN ModeloResDIAN = new DIAN();
+
         string metodo = "GuardarrespuestaDS.cs";
         public string InsertarRespuestaJson(JsonRespuestaDE jsonRespuestaDE)
         {
@@ -72,6 +77,42 @@ namespace CapaProceso.Consultas
             {
 
                 guardarExcepcion.ClaseInsertarExcepcion(Ccf_nro_trans, metodo, "BuscarRespuestaDS", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
+        }
+
+       
+
+        //INSERTAR RESPUESTA DIAN-DA
+        public string InsertarRespuestaJsonDIANDS(JsonRespuestaDSFEV2 jsonRespuestaDE)
+        {
+            try
+            {
+                //consultar datos en la tabla wmt_respuestaDS secuencial para insertar linea
+                ModeloResQr = null;
+                ModeloResQr = BuscarRespuestaDS(jsonRespuestaDE.nro_trans);
+                if (ModeloResQr == null)
+                {
+                    if (jsonRespuestaDE.linea <= 0)
+                    {
+                        jsonRespuestaDE.linea = 1;
+                    }
+
+                }
+                else
+                {
+                    jsonRespuestaDE.linea = ModeloResQr.linea + 1;
+
+                }
+
+                string respuesta = guardar.InsertarRespuestaDS_DIANFEV2(jsonRespuestaDE);               
+               
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(jsonRespuestaDE.nro_trans, metodo, "InsertarRespuestaJsonDIANDS", e.ToString(), DateTime.Today, "consulta");
                 return null;
             }
         }

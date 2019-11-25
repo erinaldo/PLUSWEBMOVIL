@@ -43,6 +43,7 @@ namespace CapaDatos.Modelos
         public string control_uso2 { get; set; }
         public string cod_sop { get; set; }
         public string moncli { get; set; }
+        public string regimen_tributacion { get; set; }
 
     }
 }
