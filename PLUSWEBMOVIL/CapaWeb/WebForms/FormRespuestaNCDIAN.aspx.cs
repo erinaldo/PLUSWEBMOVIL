@@ -5,12 +5,10 @@ using CapaProceso.Modelos;
 using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
 using CapaDatos.Modelos;
-
 namespace CapaWeb.WebForms
 {
-    public partial class ListaRespuestaNCDS : System.Web.UI.Page
+    public partial class FormRespuestaNCDIAN : System.Web.UI.Page
     {
-
         modelocabecerafactura cabecerafactura = new modelocabecerafactura();
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
 
@@ -43,7 +41,6 @@ namespace CapaWeb.WebForms
             {
                 lbl_error.Text = "";
 
-
                 RecuperarCokie();
                 ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
                 foreach (var item in ListaModelowmspclogo)
@@ -67,19 +64,23 @@ namespace CapaWeb.WebForms
                         case "UDP":
                             break;
 
-                        case "MTR":
+                        case "VER":
                             try
                             {
                                 Int64 ide = Int64.Parse(qs["Id"].ToString());
+                                Int64 lin = Int64.Parse(qs["linea"].ToString());
+
                                 string nro_trans = ide.ToString();
-                                //CargarFormularioRespuestaDS(nro_trans);
-                                CargarGrilla(nro_trans);
+                                mensaje.Text = nro_trans;
+                                string linea = lin.ToString();
+                                CargarFormularioRespuestaDS(nro_trans, linea);
 
                                 break;
                             }
+
                             catch (Exception ex)
                             {
-                                GuardarExcepciones("Page_Load, MTR", ex.ToString());
+                                GuardarExcepciones("Page_Load", ex.ToString());
 
                             }
                             break;
@@ -93,151 +94,86 @@ namespace CapaWeb.WebForms
 
             }
         }
-
         public void GuardarExcepciones(string metodo, string error)
         {
             //obtener numero de transaccion
-       
+
             ModeloExcepcion.cod_emp = ComPwm;
-            ModeloExcepcion.proceso = "ListaRespuestaNCDS.aspx";
+            ModeloExcepcion.proceso = "FormRespuestaNCDIAN.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Today;
             ModeloExcepcion.usuario_mod = AmUsrLog;
-           
+
             consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
             //mandar mensaje de error a label
             lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
 
         }
-
-
-        private void CargarGrilla(string nro_trans)
+        public void RecuperarCokie()
         {
             try
             {
                 lbl_error.Text = "";
 
-
-                ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
-                Grid.DataSource = ListaModelorespuestaDs;
-                Grid.DataBind();
-                Grid.Height = 100;
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("CargarGrilla", ex.ToString());
-
-            }
-        }
-
-        protected void Grid_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
-        {
-            try
-            {
-                lbl_error.Text = "";
-
-                // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
-                Grid.CurrentPageIndex = 0;
-                Grid.CurrentPageIndex = e.NewPageIndex;
-                CargarGrilla(nro_trans);
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("Grid_PageIndexChanged", ex.ToString());
-
-            }
-        }
-
-        protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
-        {
-            try
-            {
-                lbl_error.Text = "";
-
-
-                //1 primero creo un objeto Clave/Valor de QueryString 
-                QueryString qs = new QueryString();
-                //Escoger opcion
-
-                int Id;
-                int linea;
-
-                switch (e.CommandName) //ultilizo la variable para la opcion
+                if (Request.Cookies["ComPwm"] != null)
                 {
+                    ComPwm = Request.Cookies["ComPwm"].Value;
+                }
+                else
+                {
+                    Response.Redirect("../Inicio.asp");
+                }
 
-                    case "Mostrar": //ejecuta el codigo si el usuario ingresa el numero 3
-                        try
-                        {
-                            Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
-                            linea = Convert.ToInt32(((Label)e.Item.Cells[2].FindControl("linea")).Text);
-                            qs.Add("TRN", "MTR");
-                            qs.Add("Id", Id.ToString());
-                            qs.Add("linea", linea.ToString());
 
-                            Response.Redirect("FormRespuestaJsonNC.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                if (Request.Cookies["AmUsrLog"] != null)
+                {
+                    AmUsrLog = Request.Cookies["AmUsrLog"].Value;
 
-                            break;
-                        }
-                        catch (Exception ex)
-                        {
-                            GuardarExcepciones("Grid_ItemCommand, Mostrar", ex.ToString());
-
-                        }
-                        break;
-
-                    case "Ver": //ejecuta el codigo si el usuario ingresa el numero 3
-                        try
-                        {
-                            Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
-                            linea = Convert.ToInt32(((Label)e.Item.Cells[2].FindControl("linea")).Text);
-                            qs.Add("TRN", "VER");
-                            qs.Add("Id", Id.ToString());
-                            qs.Add("linea", linea.ToString());
-
-                            Response.Redirect("FormRespuestaNCDIAN.aspx" + Encryption.EncryptQueryString(qs).ToString());
-
-                            break;
-                        }
-                        catch (Exception ex)
-                        {
-                            GuardarExcepciones("Grid_ItemCommand, VER", ex.ToString());
-
-                        }
-                        break;
                 }
             }
             catch (Exception ex)
             {
-                GuardarExcepciones("Grid_ItemCommand", ex.ToString());
+                GuardarExcepciones("RecuperarCokie", ex.ToString());
 
             }
         }
-        public void RecuperarCokie()
+
+        private void CargarFormularioRespuestaDS(string nro_trans, string linea)
         {
-            if (Request.Cookies["ComPwm"] != null)
+            try
             {
-                ComPwm = Request.Cookies["ComPwm"].Value;
+                lbl_error.Text = "";
+
+                ListaModelorespuestaDs = consultaRespuestaDS.RespuestaLineaQr(nro_trans, linea);
+                int count = 0;
+                foreach (var item in ListaModelorespuestaDs)
+                {
+                    ModeloResQr = item;
+                    count++;
+                    break;
+                }
+
+                txt_nro_trans.Text = ModeloResQr.nro_trans;
+
+                txt_id.Text = ModeloResQr.id;
+
+                txt_json.Text = ModeloResQr.jsonrRespuesta;
+
+                FormularioRes.Visible = true;
             }
-            else
+            catch (Exception ex)
             {
-                Response.Redirect("../Inicio.asp");
+                GuardarExcepciones("CargarFormularioRespuestaDS", ex.ToString());
+
             }
 
-
-            if (Request.Cookies["AmUsrLog"] != null)
-            {
-                AmUsrLog = Request.Cookies["AmUsrLog"].Value;
-
-            }
         }
-
         public QueryString ulrDesencriptada()
         {
             try
             {
                 lbl_error.Text = "";
-
                 //1- guardo el Querystring encriptado que viene desde el request en mi objeto
                 QueryString qs = new QueryString(Request.QueryString);
 
@@ -245,19 +181,25 @@ namespace CapaWeb.WebForms
                 qs = Encryption.DecryptQueryString(qs);
                 return qs;
             }
+
             catch (Exception ex)
             {
                 GuardarExcepciones("ulrDesencriptada", ex.ToString());
                 return null;
             }
         }
-
         protected void Cancelar_Click(object sender, EventArgs e)
         {
             try
             {
                 lbl_error.Text = "";
-                Response.Redirect("FormBuscarNotaCredito.aspx");
+
+                QueryString qs = new QueryString();
+
+                //2 voy a agregando los valores que deseo
+                qs.Add("TRN", "MTR");
+                qs.Add("Id", mensaje.Text);
+                Response.Redirect("ListaRespuestaNCDS.aspx" + Encryption.EncryptQueryString(qs).ToString());
             }
             catch (Exception ex)
             {
@@ -265,5 +207,7 @@ namespace CapaWeb.WebForms
 
             }
         }
+
+
     }
 }

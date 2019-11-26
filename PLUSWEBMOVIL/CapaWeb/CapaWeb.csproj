@@ -209,6 +209,7 @@
     <Content Include="WebForms\FormRespuestaJsonNC.aspx" />
     <Content Include="WebForms\FormRespuestaJson.aspx" />
     <Content Include="WebForms\FormRespuestaJsonND.aspx" />
+    <Content Include="WebForms\FormRespuestaNCDIAN.aspx" />
     <Content Include="WebForms\FormSucursalempresa.aspx" />
     <Content Include="WebForms\FormUsuariosucursal.aspx" />
     <Content Include="WebForms\Index.html" />
@@ -592,6 +593,13 @@
     </Compile>
     <Compile Include="WebForms\FormRespuestaJsonND.aspx.designer.cs">
       <DependentUpon>FormRespuestaJsonND.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormRespuestaNCDIAN.aspx.cs">
+      <DependentUpon>FormRespuestaNCDIAN.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormRespuestaNCDIAN.aspx.designer.cs">
+      <DependentUpon>FormRespuestaNCDIAN.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\ListaRespuestaNCDS.aspx.cs">
       <DependentUpon>ListaRespuestaNCDS.aspx</DependentUpon>

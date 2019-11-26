@@ -21,6 +21,7 @@ namespace CapaProceso.Consultas
         public JsonRespuestaNC ModeloResQr = new JsonRespuestaNC();
         public ConsultawmtrespuestaNC consultaRespuestaDS = new ConsultawmtrespuestaNC();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo = "GuardarrespuestaNCDS";
         public string InsertarRespuestaJson(JsonRespuestaNC jsonRespuestaNC)
         {
             try
@@ -72,6 +73,41 @@ namespace CapaProceso.Consultas
             {
 
                 guardarExcepcion.ClaseInsertarExcepcion(Ccf_nro_trans, "GuardarrespuestaNCDS.cs", "BuscarRespuestaD", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
+        }
+
+
+        //INSERTAR RESPUESTA DIAN-DA NOTA CREDITO
+        public string InsertarRespuestaJsonDIANDS(JsonRespuestaNCV2 jsonRespuestaDE)
+        {
+            try
+            {
+                //consultar datos en la tabla wmt_respuestaDS secuencial para insertar linea
+                ModeloResQr = null;
+                ModeloResQr = BuscarRespuestaDS(jsonRespuestaDE.nro_trans);
+                if (ModeloResQr == null)
+                {
+                    if (jsonRespuestaDE.linea <= 0)
+                    {
+                        jsonRespuestaDE.linea = 1;
+                    }
+
+                }
+                else
+                {
+                    jsonRespuestaDE.linea = ModeloResQr.linea + 1;
+
+                }
+
+                string respuesta = guardar.InsertarRespuestaDS_DIANNCV2(jsonRespuestaDE);
+
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(jsonRespuestaDE.nro_trans, metodo, "InsertarRespuestaJsonDIANDS", e.ToString(), DateTime.Today, "consulta");
                 return null;
             }
         }

@@ -14,24 +14,25 @@ using CapaProceso.Consultas;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using CapaProceso.ReslClientePdf;
 using CapaDatos.Modelos;
+using CapaDatos.Modelos.ModelosNC;
 
 namespace CapaProceso.RestCliente
 {
-    public class ConsumoRestFEV2
+    public class ConsumoRestNCFinV2
     {
  
         public ConsultaLogo consultaLogo = new ConsultaLogo(); 
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
-        public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
-        public GuardarrespuestaDS guardarResJson = new GuardarrespuestaDS();
-        public JsonFacturacionElectronicaV2 consultaResJson = new JsonFacturacionElectronicaV2();
-        public ProcesoRestFEV2 procesoRest = new ProcesoRestFEV2();
-        public JsonFacElecVer2PDF jsonFacturapdf = new JsonFacElecVer2PDF();
+        public ConsultawmtrespuestaNC consultaRespuestaDS = new ConsultawmtrespuestaNC();
+        public GuardarrespuestaNCDS guardarResJson = new GuardarrespuestaNCDS();
+        public JsonNCFinancieraElectronicaV2 consultaResJson = new JsonNCFinancieraElectronicaV2();
+        public ProcesoRestNCV2 procesoRest = new ProcesoRestNCV2();
+        public JsonNCPDFV2 jsonFacturapdf = new JsonNCPDFV2();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
-        string metodo = "ConsumoRestFEV2.cs";
+        string metodo = "ConsumoRestNCFin.cs";
 
-        public string EnviarFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
+        public string EnviarFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string nro_factura)
         {
             try
             {
@@ -55,16 +56,16 @@ namespace CapaProceso.RestCliente
                 //Consultar datos para enviar el json arma la consulta y la estructura de json factura
                 string jsonRes = "";
                 string jsonrRespuesta = "";
-                jsonRes = JsonConvert.SerializeObject(consultaResJson.LlenarJSONFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans), Formatting.Indented);
+                jsonRes = JsonConvert.SerializeObject(consultaResJson.LlenarJSONNC(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, nro_factura), Formatting.Indented);
 
-               JsonRespuestaDSFEV2 jsonRespuestaDE = new JsonRespuestaDSFEV2();
+                JsonRespuestaNCV2 jsonRespuestaDE = new JsonRespuestaNCV2();
                 //Envia el json armado para y obtiene la respuesta
+               
                 jsonRespuestaDE = procesoRest.EnviarJSONDS(linkemidocuelec, credentials, jsonRes);
                 jsonrRespuesta = JsonConvert.SerializeObject(jsonRespuestaDE);
                 jsonRespuestaDE.json = jsonRes;
                 jsonRespuestaDE.jsonrRespuesta = jsonrRespuesta;
                 jsonRespuestaDE.nro_trans = Ccf_nro_trans;
-
 
                 guardarResJson.InsertarRespuestaJsonDIANDS(jsonRespuestaDE);//Inserta la respuesta obtenida del servicio rest en la tabla
 
@@ -80,7 +81,7 @@ namespace CapaProceso.RestCliente
 
                     string linkgenpdf = Modelowmspclogo.linkgenpdf;//Obtengo link para enviara pdf
 
-                    PdfFacturaElectronica pdf = new PdfFacturaElectronica();
+                    PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
                     string pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);//Genero el pdf
 
                     byte[] pdfBytes = File.ReadAllBytes(pathPdf);
@@ -104,9 +105,9 @@ namespace CapaProceso.RestCliente
                     {
                         return "";
                     }
-                    //PRUEBA JSON jsonrRespuesta 
-                    
-                    jsonRespuestaDE.jsonrRespuesta = "";
+                    //PRUEBA JSON jsonrRespuesta
+                   
+                        jsonRespuestaDE.jsonrRespuesta = "";
                     
                     jsonRespuestaDE.json = jsonResPdf;
                     jsonRespuestaDE.nro_trans = Ccf_nro_trans;
@@ -122,13 +123,13 @@ namespace CapaProceso.RestCliente
                     return "Se produjo un error al enviar " + jsonRespuestaDE.error;
                 }
             }
-
             catch (Exception e)
             {
 
                 guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "EnviarFactura", e.ToString(), DateTime.Today, Ccf_usuario);
                 return null;
             }
+
 
         }
         public modelowmspclogo BuscarUsuarioLogo(string Ccf_cod_emp, string Ccf_usuario)
@@ -181,7 +182,7 @@ namespace CapaProceso.RestCliente
 
                 string linkgenpdf = Modelowmspclogo.linkgenpdf;//Obtengo link para enviara pdf
 
-                PdfFacturaElectronica pdf = new PdfFacturaElectronica();
+                PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
                 string pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);//Genero el pdf
 
                 byte[] pdfBytes = File.ReadAllBytes(pathPdf);
@@ -192,7 +193,7 @@ namespace CapaProceso.RestCliente
 
 
 
-                JsonRespuestaDSFEV2 jsonRespuestaDE = new JsonRespuestaDSFEV2();
+                JsonRespuestaNCV2 jsonRespuestaDE = new JsonRespuestaNCV2();
                 //Envia el json armado para y obtiene la respuesta
                 jsonRespuestaDE = procesoRest.EnviarJSONDS(linkgenpdf, credentials, jsonResPdf);
                 /*Volver a preguntar si error es igul a nulo*/
@@ -209,6 +210,7 @@ namespace CapaProceso.RestCliente
                
                     jsonRespuestaDE.jsonrRespuesta = "";
                 
+
                 jsonRespuestaDE.json = jsonResPdf;
                 jsonRespuestaDE.nro_trans = Ccf_nro_trans;
                 guardarResJson.InsertarRespuestaJsonDIANDS(jsonRespuestaDE);//Inserta la respuesta obtenida del servicio rest en la tabla

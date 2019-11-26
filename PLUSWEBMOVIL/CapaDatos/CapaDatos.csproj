@@ -65,6 +65,7 @@
     <Compile Include="Modelos\modeloRemisionesFactura.cs" />
     <Compile Include="Modelos\modeloRolesFacturacion.cs" />
     <Compile Include="Modelos\modeloRolModificarPrecio.cs" />
+    <Compile Include="Modelos\ModelosNC\JsonRespuestaNCV2.cs" />
     <Compile Include="Modelos\ModelosNC\JsonRespuestaNC.cs" />
     <Compile Include="Modelos\ModelosNC\modeloFacturasElecSaldos.cs" />
     <Compile Include="Modelos\ModelosNC\modeloSaldosFacturas.cs" />

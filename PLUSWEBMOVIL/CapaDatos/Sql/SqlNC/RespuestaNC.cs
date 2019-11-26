@@ -130,5 +130,41 @@ namespace CapaDatos.Sql
             }
 
         }
+
+
+
+        //INSERTAR RESPUESTA DS-DIAN FEV2 TABLA item
+        public string InsertarRespuestaDS_DIANNCV2(JsonRespuestaNCV2 item)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    string insert = "INSERT INTO  wmt_respuestaDS (nro_trans, linea, qrdata, xml, id, cufe, error,json, result, jsonrRespuesta) VALUES (@nro_trans, @linea, @qrdata, @xml, @id, @cufe, @error, @json, @result, @jsonrRespuesta)";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = item.nro_trans;
+                    conmand.Parameters.Add("@linea", SqlDbType.Int).Value = item.linea;
+                    conmand.Parameters.Add("@qrdata", SqlDbType.VarChar).Value = item.qrdata;
+                    conmand.Parameters.Add("@xml", SqlDbType.VarChar).Value = item.xml;
+                    conmand.Parameters.Add("@id", SqlDbType.VarChar).Value = item.id;
+                    conmand.Parameters.Add("@cufe", SqlDbType.VarChar).Value = item.cufe;
+                    conmand.Parameters.Add("@error", SqlDbType.VarChar).Value = item.error;
+                    conmand.Parameters.Add("@json", SqlDbType.VarChar).Value = item.json;
+                    conmand.Parameters.Add("@result", SqlDbType.VarChar).Value = item.result;
+                    conmand.Parameters.Add("@jsonrRespuesta", SqlDbType.VarChar).Value = item.jsonrRespuesta;
+
+                    int dr = conmand.ExecuteNonQuery();
+                    return "insercion correcta";
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(item.nro_trans, "RespuestaDC.cs", "InsertarRespuestaDS_DIANFEV2", e.ToString(), DateTime.Today, "INS");
+                return "No se pudo completar la acción." + "Insertar" + " Por favor notificar al administrador.";
+            }
+
+        }
     }
 }

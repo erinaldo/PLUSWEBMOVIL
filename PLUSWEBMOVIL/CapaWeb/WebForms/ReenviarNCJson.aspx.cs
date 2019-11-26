@@ -149,9 +149,22 @@ namespace CapaWeb.WebForms
                 }
                 lbl_nro_factura.Text = conscabcera.nro_trans_padre;
 
-                ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
+
+
+                //AVERIGUAR LA VERSION DE NC QUE USA
                 string respuesta = "";
-                respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", lbl_nro_trans.Text, conscabcera.nro_trans_padre);
+                if (Modelowmspclogo.version_fe == "1")
+                {
+                    ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
+                    respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", lbl_nro_trans.Text, conscabcera.nro_trans_padre);
+                }
+                else
+                {
+                    ConsumoRestNCFinV2 consumoRest = new ConsumoRestNCFinV2();
+                    respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", lbl_nro_trans.Text, conscabcera.nro_trans_padre);
+                }
+               
+               
                 if (respuesta == "")
                 {
                     mensaje.Text = "La Nota Crédito fue enviada exitosamente";
@@ -206,9 +219,22 @@ namespace CapaWeb.WebForms
                 }
                 lbl_nro_factura.Text = conscabcera.nro_trans_padre;
 
-                ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
+
+                //AVERIGUAR LA VERSION DE NC QUE USA
                 string respuesta = "";
-                respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", "NC", lbl_nro_trans.Text);
+                if (Modelowmspclogo.version_fe == "1")
+                {
+                    ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
+                    respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", "NC", lbl_nro_trans.Text);
+                }
+                else
+                {
+                    ConsumoRestNCFinV2 consumoRest = new ConsumoRestNCFinV2();
+                    respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", "NC", lbl_nro_trans.Text);
+                }
+
+             
+               
                 if (respuesta == "")
                 {
                     mensaje.Text = "La Nota Crédito fue enviada exitosamente";

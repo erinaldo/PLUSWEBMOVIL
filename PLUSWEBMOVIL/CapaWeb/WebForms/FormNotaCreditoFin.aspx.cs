@@ -1785,9 +1785,20 @@ namespace CapaWeb.WebForms
                                 if (respuestaConfirmacionNC == "")
                                 {
 
-                                    ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
-                                    string respuesta = "";
-                                    respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", conscabcera.nro_trans, txt_nro_trans_padre.Text);
+                                        //AVERIGUAR LA VERSION DE NC QUE USA
+                                        string respuesta = "";
+                                        if (Modelowmspclogo.version_fe == "1")
+                                        {
+                                            ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
+                                            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", conscabcera.nro_trans, txt_nro_trans_padre.Text);
+                                        }
+                                        else
+                                        {
+                                            ConsumoRestNCFinV2 consumoRest = new ConsumoRestNCFinV2();
+                                            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", conscabcera.nro_trans, txt_nro_trans_padre.Text);
+                                        }
+                                   
+       
                                     if (respuesta == "")
                                     {
                                         mensaje.Text = "Su nota de crédito fue procesada exitosamente";
