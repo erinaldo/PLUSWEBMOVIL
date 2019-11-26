@@ -119,6 +119,7 @@
     <Content Include="WebForms\BuscarFacturaPos.aspx" />
     <Content Include="WebForms\BuscarFacturasNC.aspx" />
     <Content Include="WebForms\BuscarFacturasNCFin.aspx" />
+    <Content Include="WebForms\BuscarFormaPago.aspx" />
     <Content Include="WebForms\BuscarFormaPagoVentas.aspx" />
     <Content Include="WebForms\BuscarIngresoFacturasPgs.aspx" />
     <Content Include="WebForms\BuscarMoneda.aspx" />
@@ -289,6 +290,13 @@
     </Compile>
     <Compile Include="WebForms\BuscarFacturasNCFin.aspx.designer.cs">
       <DependentUpon>BuscarFacturasNCFin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarFormaPago.aspx.cs">
+      <DependentUpon>BuscarFormaPago.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarFormaPago.aspx.designer.cs">
+      <DependentUpon>BuscarFormaPago.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\BuscarFormaPagoVentas.aspx.cs">
       <DependentUpon>BuscarFormaPagoVentas.aspx</DependentUpon>
