@@ -113,7 +113,7 @@ namespace CapaWeb.WebForms
         public string Vend__cod_tit = "0";
         public string FP__cod_fpago = "0";
         public string ArtB__articulo = "tubo";
-        public string ArtB__tipo = "0";
+        public string ArtB__tipo = "NCRED";
         public string ArtB__compras = "0";
         public string ArtB__ventas = "0";
         public string Ccf_tipo1 = "C";
