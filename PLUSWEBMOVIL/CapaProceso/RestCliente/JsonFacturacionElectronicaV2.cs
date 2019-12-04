@@ -148,7 +148,7 @@ namespace CapaProceso.RestCliente
                 encabezado.numero = Convert.ToInt32(conscabcera.nro_docum);
                 encabezado.ordencompra = Convert.ToString(conscabcera.ocompra);
                 // para prueba set
-                encabezado.prefijo = "FE";//encabezado.prefijo = Convert.ToString(conscabcera.serie_docum.Trim());
+                encabezado.prefijo = encabezado.prefijo = Convert.ToString(conscabcera.serie_docum.Trim());
                 encabezado.subtotal = Convert.ToInt32(conscabcera.subtotal);
                 encabezado.sucursal = Convert.ToInt16(conscabcera.cod_sucursal);
                 encabezado.terminospago = "30"; //por defecto 30
