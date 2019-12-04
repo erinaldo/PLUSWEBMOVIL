@@ -135,7 +135,7 @@ namespace CapaProceso.RestCliente
                 encabezado.idsuc = 1;
                 encabezado.idvendedor = Convert.ToInt32(conscabcera.cod_vendedor);
                 encabezado.iva = Convert.ToDecimal(conscabcera.iva);
-                encabezado.mediopago = "ZZZ";//POR DEFECTO ZZZ
+                encabezado.mediopago = "ZZZ";//POR DEFECTO ZZZ-------------
                 if (conscabcera.cod_fpago.Trim() =="00") //1 = contado, 2= credito
                  { encabezado.metodopago = 1; }
                 else
@@ -148,7 +148,7 @@ namespace CapaProceso.RestCliente
                 encabezado.numero = Convert.ToInt32(conscabcera.nro_docum);
                 encabezado.ordencompra = Convert.ToString(conscabcera.ocompra);
                 // para prueba set
-                encabezado.prefijo = encabezado.prefijo = Convert.ToString(conscabcera.serie_docum.Trim());
+                encabezado.prefijo = "FE";//encabezado.prefijo = Convert.ToString(conscabcera.serie_docum.Trim());
                 encabezado.subtotal = Convert.ToInt32(conscabcera.subtotal);
                 encabezado.sucursal = Convert.ToInt16(conscabcera.cod_sucursal);
                 encabezado.terminospago = "30"; //por defecto 30

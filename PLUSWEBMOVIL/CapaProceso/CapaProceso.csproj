@@ -139,6 +139,7 @@
     <Compile Include="Consultas\EnviarCorreo.cs" />
     <Compile Include="Consultas\Enviarcorreocliente.cs" />
     <Compile Include="Consultas\GuardarrespuestaDS.cs" />
+    <Compile Include="FacturaMasiva\CargaFacturaMasiva.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonPdfNCV2.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonPdfNCElectronica.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonPdfNDElectronica.cs" />

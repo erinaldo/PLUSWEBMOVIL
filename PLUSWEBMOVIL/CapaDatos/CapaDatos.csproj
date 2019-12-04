@@ -53,6 +53,7 @@
     <Compile Include="Modelos\modeloEfectivoCaja.cs" />
     <Compile Include="Modelos\modeloEfectivoPCaja.cs" />
     <Compile Include="Modelos\modeloExepciones.cs" />
+    <Compile Include="Modelos\modeloFacturaEMasiva.cs" />
     <Compile Include="Modelos\modeloFacturaPgs.cs" />
     <Compile Include="Modelos\modeloFacturasPagos.cs" />
     <Compile Include="Modelos\ModeloHost\modeloHostmail.cs" />

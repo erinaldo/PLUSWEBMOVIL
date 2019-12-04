@@ -136,6 +136,7 @@
     <Content Include="WebForms\BuscarUnidadMedida.aspx" />
     <Content Include="WebForms\BuscarVendedor.aspx" />
     <Content Include="WebForms\BuscarZona.aspx" />
+    <Content Include="WebForms\CargaMasivaFactura.aspx" />
     <Content Include="WebForms\DetalleCierreCaja.aspx" />
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
     <Content Include="WebForms\FormCierreCaja.aspx" />
@@ -409,6 +410,13 @@
     </Compile>
     <Compile Include="WebForms\BuscarZona.aspx.designer.cs">
       <DependentUpon>BuscarZona.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\CargaMasivaFactura.aspx.cs">
+      <DependentUpon>CargaMasivaFactura.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\CargaMasivaFactura.aspx.designer.cs">
+      <DependentUpon>CargaMasivaFactura.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\DetalleCierreCaja.aspx.cs">
       <DependentUpon>DetalleCierreCaja.aspx</DependentUpon>
