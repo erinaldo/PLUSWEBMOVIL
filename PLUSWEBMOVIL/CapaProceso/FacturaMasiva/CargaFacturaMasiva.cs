@@ -62,18 +62,22 @@ namespace CapaProceso.FacturaMasiva
         public string Ccf_diaf = null;
         public string Ccf_mesf = null;
         public string Ccf_aniof = null;
+        string stringConexionERP = "";// Aqui va la consulta de la table de parametros conexion_erp
+        ValidarParametrizacionFactura conexion_erp = new ValidarParametrizacionFactura();
+
 
         //Total de facturas a insertar 
         public List<modeloFacturaEMasiva> TotalFacturas(string ArtB__usuario, string ArtB__cod_emp)
         {
             try
             {
+                stringConexionERP = conexion_erp.ConsultaConexionERP(ArtB__cod_emp, ArtB__usuario);
 
-                using (cn = conexion.genearConexion())
+                using (cn = conexion.genearConexionERP(stringConexionERP))
                 {
                     List<modeloFacturaEMasiva> lista = new List<modeloFacturaEMasiva>();
 
-                    string consulta = "SELECT DISTINCT nro_docum from wmh_cargafacturas where estado='A' ";
+                    string consulta = "SELECT DISTINCT nro_docum from wmh_cargaMasiva where estado_fac='A' ";
                     SqlCommand conmand = new SqlCommand(consulta, cn);
                   
                    // conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = ArtB__usuario;
@@ -102,18 +106,50 @@ namespace CapaProceso.FacturaMasiva
                 return null;
             }
         }
+        //Actuaizar estado tabla 
+        public string ActualizarEstado(string ArtB__usuario, string ArtB__cod_emp, string nro_docum, string estado_fac)
+        {
+            try
+            {
 
+                stringConexionERP = conexion_erp.ConsultaConexionERP(ArtB__cod_emp, ArtB__usuario);
+
+                using (cn = conexion.genearConexionERP(stringConexionERP))
+                {
+                  
+
+                    string consulta = "UPDATE wmh_cargaMasiva SET estado_fac=@estado_fac WHERE nro_docum =@nro_docum ";
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@nro_docum", SqlDbType.VarChar).Value = nro_docum;
+                    conmand.Parameters.Add("@estado_fac", SqlDbType.VarChar).Value = estado_fac;
+                    int dr = conmand.ExecuteNonQuery();
+                    return "";
+
+
+                }
+                
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(ArtB__cod_emp, metodo, "ActualizarEstado", e.ToString(), DateTime.Today, ArtB__usuario);
+                return null;
+            }
+        }
         //Leer e insertar en pwm 
         public List<modeloFacturaEMasiva> ListaFacturas(string ArtB__usuario, string ArtB__cod_emp,string nro_docum)
         {
             try
             {
 
-                using (cn = conexion.genearConexion())
+                stringConexionERP = conexion_erp.ConsultaConexionERP(ArtB__cod_emp, ArtB__usuario);
+
+                using (cn = conexion.genearConexionERP(stringConexionERP))
                 {
                     List<modeloFacturaEMasiva> lista = new List<modeloFacturaEMasiva>();
 
-                    string consulta = "SELECT * from wmh_cargafacturas where estado ='A' and nro_docum =@nro_docum ";
+                    string consulta = "SELECT * from wmh_cargaMasiva where estado_fac ='A' and nro_docum =@nro_docum ";
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                      conmand.Parameters.Add("@nro_docum", SqlDbType.VarChar).Value = nro_docum;
@@ -130,31 +166,36 @@ namespace CapaProceso.FacturaMasiva
                         item.serie_docum = Convert.ToString(dr["serie_docum"]);
                         item.nro_docum = Convert.ToString(dr["nro_docum"]);
                         item.dni_cliente = Convert.ToString(dr["dni_cliente"]);
+                        item.socio_negocio = Convert.ToInt64(dr["socio_negocio"]);
                         item.razon_social = Convert.ToString(dr["razon_social"]);
                         item.direccion = Convert.ToString(dr["direccion"]);
                         item.ciudad = Convert.ToString(dr["ciudad"]);
                         item.telefono = Convert.ToString(dr["telefono"]);
                         item.correo = Convert.ToString(dr["correo"]);
                         item.terminos_pago = Convert.ToString(dr["terminos_pago"]);
+                        item.cod_termino= Convert.ToString(dr["cod_termino"]);
                         item.fecha_emision = Convert.ToDateTime(dr["fecha_emision"]);
                         item.fecha_vencimiento = Convert.ToDateTime(dr["fecha_vencimiento"]);
                         item.vendedor = Convert.ToString(dr["vendedor"]);
                         item.moneda = Convert.ToString(dr["moneda"]);
                         item.observaciones = Convert.ToString(dr["observaciones"]);
-                        item.linea = Convert.ToInt64(dr["linea"]);
+                        item.linea_pro = Convert.ToInt64(dr["linea_pro"]);
                         item.articulo = Convert.ToString(dr["articulo"]);
                         item.descripcion1 = Convert.ToString(dr["descripcion1"]);
                         item.descripcion2 = Convert.ToString(dr["descripcion2"]);
-                        item.cantidad = Convert.ToDecimal(dr["cantidad"]);
+                        item.cant_pro= Convert.ToDecimal(dr["cant_pro"]);
                         item.precio_unit = Convert.ToDecimal(dr["precio_unit"]);
                         item.porc_iva = Convert.ToDecimal(dr["porc_iva"]);
                         item.neto = Convert.ToDecimal(dr["neto"]);
                         item.iva = Convert.ToDecimal(dr["iva"]);
-                        item.total = Convert.ToDecimal(dr["total"]);
-                        item.estado = Convert.ToString(dr["estado"]);
+                        item.total_fac = Convert.ToDecimal(dr["total_fac"]);
+                        item.estado_fac = Convert.ToString(dr["estado_fac"]);
                         item.fecha_carga = Convert.ToDateTime(dr["fecha_carga"]);
                         item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
-
+                        item.cod_vendedor = Convert.ToString(dr["cod_vendedor"]);
+                        item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
+                        item.cod_ciudad = Convert.ToString(dr["cod_ciudad"]);
+                        item.cod_articulo = Convert.ToString(dr["cod_articulo"]);
 
                         lista.Add(item);
 
@@ -257,15 +298,15 @@ namespace CapaProceso.FacturaMasiva
                  //Envio de datos para actualizar email en RP  
                  ConsultaDatosTitular.ActualizarDatosTitulares(ModeloActualizarEmail);*/
                 DateTime Fecha = factura.fecha_emision;
-                cabecerafactura.cod_cliente = factura.dni_cliente;
+                cabecerafactura.cod_cliente = factura.socio_negocio.ToString();
                 cabecerafactura.dia = string.Format("{0:00}", Fecha.Day);
                 cabecerafactura.mes = string.Format("{0:00}", Fecha.Month);
                 cabecerafactura.anio = Fecha.Year.ToString();
                 cabecerafactura.fec_doc =Fecha.ToString();
                 cabecerafactura.serie_docum = "SET";
                 cabecerafactura.cod_ccostos = "900";
-                cabecerafactura.cod_vendedor = "1800369";
-                cabecerafactura.cod_fpago = "00";
+                cabecerafactura.cod_vendedor = factura.cod_vendedor;
+                cabecerafactura.cod_fpago = factura.cod_termino;
                 cabecerafactura.observaciones = factura.observaciones;
                 cabecerafactura.nro_trans = valor_asignado;
                 cabecerafactura.cod_emp = ComPwm;
@@ -342,7 +383,7 @@ namespace CapaProceso.FacturaMasiva
                             existe = true;
 
                             /* sumo los nuevos valores agregados al producto*/
-                            itemSuma.cantidad += Convert.ToDecimal(ModeloDetalle.cantidad);
+                            itemSuma.cantidad += Convert.ToDecimal(ModeloDetalle.cant_pro);
                             itemSuma.precio_unit = Convert.ToDecimal(ModeloDetalle.precio_unit);
                             itemSuma.porc_iva = Convert.ToDecimal(ModeloDetalle.porc_iva);
                             itemSuma.porc_descto = Convert.ToDecimal(0);
@@ -355,10 +396,10 @@ namespace CapaProceso.FacturaMasiva
                     if (!existe)
                     {
                         item.cod_articulo = ModeloDetalle.articulo;
-                        item.nom_articulo = ModeloDetalle.descripcion1;
-                        item.nom_articulo2 = ModeloDetalle.descripcion2;
+                        item.nom_articulo = articulo.nom_articulo; //Verificar cuando viene vacio no es permitido xpor ds
+                        item.nom_articulo2 = articulo.nom_articulo;
                         item.cod_ccostos = "900"; //Traer valor por defecto
-                        item.cantidad = Convert.ToDecimal(ModeloDetalle.cantidad);
+                        item.cantidad = Convert.ToDecimal(ModeloDetalle.cant_pro);
                         item.precio_unit = Convert.ToDecimal(ModeloDetalle.precio_unit);
                         item.porc_iva = Convert.ToDecimal(ModeloDetalle.porc_iva);
                         item.porc_descto = Convert.ToDecimal(0);
@@ -478,11 +519,15 @@ namespace CapaProceso.FacturaMasiva
             {
                 mensaje = "Su factura fue procesada exitosamente";
                 GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
+                //Cambiar a estado 'P'
+                ActualizarEstado(ComPwm, AmUsrLog, conscabcera.nro_trans, "P");
             }
             else
             {
                 GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
                 mensaje = respuesta;
+                //Cambiar a estado 'P'
+                ActualizarEstado(ComPwm, AmUsrLog, conscabcera.nro_trans, "P");
             }
 
         }

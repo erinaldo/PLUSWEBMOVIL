@@ -7,6 +7,8 @@ using CapaWeb.Urlencriptacion;
 using CapaProceso.RestCliente;
 using CapaDatos.Modelos;
 using CapaProceso.FacturaMasiva;
+using System.IO;
+
 
 namespace CapaWeb.WebForms
 {
@@ -147,6 +149,49 @@ namespace CapaWeb.WebForms
             //mandar mensaje de error a label
             // lbl_error.Text = "No se pudo completar la acción" + metodo + "." + " Por favor notificar al administrador.";
 
+        }
+
+        protected void btn_importar_Click(object sender, EventArgs e)
+        {
+            List<modeloFacturaEMasiva> listaFacturas = new List<modeloFacturaEMasiva>();
+            modeloFacturaEMasiva modeloFacturas1= new modeloFacturaEMasiva();
+            //Leer archivo excel
+         // if (FileUpload1.PostedFile.ContentType == "application/vnd.ms-excel" ||
+           //   FileUpload1.PostedFile.ContentType == "application/vnd.openxmlformats.officedocument.spreadsheetml.sheet")
+
+            {
+                try
+                {
+                    string pathtmpfac = Modelowmspclogo.pathtmpfac;  //Traemos el path, la ruta 
+                    string fileName = pathtmpfac + Path.GetFileName(FileUpload1.FileName);
+                    FileUpload1.PostedFile.SaveAs(fileName);
+                    string extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
+                  
+                    if (extension.ToLower() == ".xlsx")
+                    {
+                        string leerExcel = System.IO.File.ReadAllText(fileName);
+                       
+                        foreach (string row in leerExcel.Split('\n'))
+                        {
+                            if(!string.IsNullOrEmpty(row))
+                            {
+                                listaFacturas.Add(new modeloFacturaEMasiva
+                                {
+                                    nro_docum = Convert.ToString(row.Split(',')[0]),
+                                    tipo_docum = row.Split(',')[1],
+                                });
+                            }
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    GuardarExcepciones("buscarTipoFac", ex.ToString());
+                    
+                }
+
+            }
         }
     }
 }
