@@ -520,14 +520,14 @@ namespace CapaProceso.FacturaMasiva
                 mensaje = "Su factura fue procesada exitosamente";
                 GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
                 //Cambiar a estado 'P'
-                ActualizarEstado(ComPwm, AmUsrLog, conscabcera.nro_trans, "P");
+                ActualizarEstado(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
             }
             else
             {
                 GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
                 mensaje = respuesta;
                 //Cambiar a estado 'P'
-                ActualizarEstado(ComPwm, AmUsrLog, conscabcera.nro_trans, "P");
+                ActualizarEstado(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
             }
 
         }
