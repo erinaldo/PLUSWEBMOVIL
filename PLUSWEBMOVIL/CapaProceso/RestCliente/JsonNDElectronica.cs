@@ -137,7 +137,7 @@ namespace CapaProceso.RestCliente
             ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
             //Pruebas emisor 830106032
             //Produccion emisor =Convert.ToInt32(Modeloempresa.nro_dgi2);
-            encabezado.emisor = 830106032;
+            encabezado.emisor = Convert.ToInt32(Modeloempresa.nro_dgi2);
             encabezado.codmoneda = conscabceraNC.cod_moneda.Trim();
             encabezado.comentarios = conscabceraNC.observaciones;
             encabezado.factortrm = Convert.ToDecimal(ModeloCotizacion.tc_mov1c);

@@ -105,7 +105,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "LlenarJSONNC", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "LlenarJSONNC", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -182,7 +182,7 @@ namespace CapaProceso.RestCliente
                 encabezado.baseimpuesto = Convert.ToDecimal(conscabcera.monto_imponible); //base imponible
                 encabezado.codmoneda = conscabceraNC.cod_moneda.Trim();
                 encabezado.comentarios = conscabceraNC.observaciones;
-                encabezado.emisor = 830106032;
+                encabezado.emisor = Convert.ToInt32(Modeloempresa.nro_dgi2);
                 encabezado.factortrm = Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
                 encabezado.fecha = conscabceraNC.fec_doc.ToString("yyyy-MM-dd");
                 encabezado.fvence = conscabceraNC.fec_venc.ToString("yyyy-MM-dd");
@@ -223,7 +223,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "LlenarEnacabezadoNCJSON", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "LlenarEnacabezadoNCJSON", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -289,7 +289,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "LlenarDetalleNCJSON", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "LlenarDetalleNCJSON", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -317,7 +317,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "LlenarImpuestoNCJSON", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "LlenarImpuestoNCJSON", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -364,7 +364,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "LlenarSucursaNCJSON", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "LlenarSucursaNCJSON", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -401,7 +401,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "LlenarTerceroNCJSON", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "LlenarTerceroNCJSON", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -425,7 +425,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ven__cod_emp, metodo, " buscarCliente", e.ToString(), DateTime.Today, Ven__usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ven__cod_emp, metodo, " buscarCliente", e.ToString(), DateTime.Now, Ven__usuario);
                 return null;
             }
         }
@@ -449,7 +449,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "buscarDetalleFactura", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "buscarDetalleFactura", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }
@@ -472,7 +472,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "buscarCabezeraNC", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "buscarCabezeraNC", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -494,7 +494,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "buscarCabezeraFactura", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "buscarCabezeraFactura", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -518,7 +518,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_nro_trans, metodo, "buscarMotNC", e.ToString(), DateTime.Today,"consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_nro_trans, metodo, "buscarMotNC", e.ToString(), DateTime.Now,"consulta");
                 return null;
             }
         }
@@ -540,7 +540,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "BuscarUsuarioLogo", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "BuscarUsuarioLogo", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -564,7 +564,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "BuscarImpuestosREst", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "BuscarImpuestosREst", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -586,7 +586,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "BuscarCotizacion", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "BuscarCotizacion", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -607,7 +607,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_nro_trans, metodo, "BuscarRespuestaDS", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_nro_trans, metodo, "BuscarRespuestaDS", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }
@@ -627,7 +627,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "BuscarCabEmpresa", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "BuscarCabEmpresa", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -648,7 +648,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "BuscarUsuarioSucursal", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "BuscarUsuarioSucursal", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
