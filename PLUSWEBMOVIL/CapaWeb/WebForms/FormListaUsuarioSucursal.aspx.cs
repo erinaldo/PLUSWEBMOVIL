@@ -65,7 +65,7 @@ namespace CapaWeb
             ModeloExcepcion.proceso = "FormListaUsuarioSucursal.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
-            ModeloExcepcion.fecha_hora = DateTime.Today;
+            ModeloExcepcion.fecha_hora = DateTime.Now;
             ModeloExcepcion.usuario_mod = AmUsrLog;
         
             consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
