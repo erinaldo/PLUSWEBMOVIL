@@ -1249,8 +1249,8 @@ namespace CapaWeb.WebForms
                 perido_contable = consultaValidarFactura.ConsultaValidarPeriodoContable(ComPwm, AmUsrLog, fecha.Text);
                 if (perido_contable == "")
                 {
-                    lbl_trx.Text = "El Periodo Contable correspondiente a la fecha del documento se encuentra cerrado o no existe. Por favor registrar Periodo Contable y actualizar la página";
-                    lbl_trx.Visible = true;
+                    lbl_validacion.Text = "El Periodo Contable correspondiente a la fecha del documento se encuentra cerrado o no existe. Por favor registrar Periodo Contable y actualizar la página";
+                    lbl_validacion.Visible = true;
                     AgregarNC.Enabled = false;
                 }
                 else
@@ -1259,8 +1259,8 @@ namespace CapaWeb.WebForms
                     empresa = consultaValidarFactura.ConsultaValidarMonCiudEmpresaERP(ComPwm, AmUsrLog);
                     if (empresa == false)
                     {
-                        lbl_trx.Text = " No existe moneda o ciudad de la empresa registrado para la factura. Por favor registrar información y actualizar la página";
-                        lbl_trx.Visible = true;
+                        lbl_validacion.Text = " No existe moneda o ciudad de la empresa registrado para la factura. Por favor registrar información y actualizar la página";
+                        lbl_validacion.Visible = true;
                         AgregarNC.Enabled = false;
                     }
                     else
@@ -1269,8 +1269,8 @@ namespace CapaWeb.WebForms
                         resolucion = consultaValidarFactura.ConsultaValidarResolucionERP(ComPwm, AmUsrLog, "V", serie_docum.SelectedValue.Trim(), fecha.Text);
                         if (resolucion == false)
                         {
-                            lbl_trx.Text = " No existe resolución de factura. Por favor registrar información y actualizar la página";
-                            lbl_trx.Visible = true;
+                            lbl_validacion.Text = " No existe resolución de factura. Por favor registrar información y actualizar la página";
+                            lbl_validacion.Visible = true;
                             AgregarNC.Enabled = false;
                         }
 

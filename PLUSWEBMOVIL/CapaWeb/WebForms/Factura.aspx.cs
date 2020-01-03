@@ -723,23 +723,23 @@ namespace CapaWeb.WebForms
 
                         Boolean existe = false;
                     foreach (ModeloDetalleFactura itemSuma in ModeloDetalleFactura)
-                    {
-                        if (itemSuma.cod_articulo == articulo.cod_articulo)
-                        {
-                            existe = true;
-                      
-                           /* sumo los nuevos valores agregados al producto*/
-                            itemSuma.cantidad += Convert.ToDecimal(cantidad.Text);
-                            itemSuma.precio_unit = Convert.ToDecimal(precio.Text);
-                            itemSuma.porc_iva = Convert.ToDecimal(iva.Text);
-                            itemSuma.porc_descto =  Convert.ToDecimal(porcdescto.Text);
+                     {
+                         if (itemSuma.cod_articulo == articulo.cod_articulo)
+                         {
+                             existe = true;
 
-                                break;
-                        }
-                    }
-                        
+                            /* sumo los nuevos valores agregados al producto*/
+                     itemSuma.cantidad += Convert.ToDecimal(cantidad.Text);
+                     itemSuma.precio_unit = Convert.ToDecimal(precio.Text);
+                     itemSuma.porc_iva = Convert.ToDecimal(iva.Text);
+                     itemSuma.porc_descto =  Convert.ToDecimal(porcdescto.Text);
 
-                        if (!existe)
+                         break;
+                 }
+             }
+
+
+                    if (!existe)
                         {
                             item.cod_articulo = BuscarArticulo.Text;
                             item.nom_articulo = articulos.Text;
@@ -1167,8 +1167,8 @@ namespace CapaWeb.WebForms
             perido_contable = consultaValidarFactura.ConsultaValidarPeriodoContable(ComPwm, AmUsrLog, fecha.Text);
             if (perido_contable == "")
             {
-                lbl_trx.Text = "El Periodo Contable correspondiente a la fecha del documento se encuentra cerrado o no existe. Por favor registrar Periodo Contable y actualizar la página";
-                lbl_trx.Visible = true;
+                lbl_validacion.Text = "El Periodo Contable correspondiente a la fecha del documento se encuentra cerrado o no existe. Por favor registrar Periodo Contable y actualizar la página";
+                lbl_validacion.Visible = true;
                 AgregarProducto.Enabled = false;
             }
             else
@@ -1177,8 +1177,8 @@ namespace CapaWeb.WebForms
                 empresa = consultaValidarFactura.ConsultaValidarMonCiudEmpresaERP(ComPwm, AmUsrLog);
                 if (empresa == false)
                 {
-                    lbl_trx.Text = " No existe moneda o ciudad de la empresa registrado para la factura. Por favor registrar información y actualizar la página";
-                    lbl_trx.Visible = true;
+                    lbl_validacion.Text = " No existe moneda o ciudad de la empresa registrado para la factura. Por favor registrar información y actualizar la página";
+                    lbl_validacion.Visible = true;
                     AgregarProducto.Enabled = false;
                 }
                 else
@@ -1187,8 +1187,8 @@ namespace CapaWeb.WebForms
                     resolucion = consultaValidarFactura.ConsultaValidarResolucionERP(ComPwm, AmUsrLog, "V", serie_docum.SelectedValue.Trim(), fecha.Text);
                     if (resolucion == false)
                     {
-                        lbl_trx.Text = " No existe resolución de factura. Por favor registrar información y actualizar la página";
-                        lbl_trx.Visible = true;
+                        lbl_validacion.Text = " No existe resolución de factura. Por favor registrar información y actualizar la página";
+                        lbl_validacion.Visible = true;
                         AgregarProducto.Enabled = false;
                     }
 
@@ -1491,6 +1491,15 @@ namespace CapaWeb.WebForms
                                 porcdescto.Text = Convert.ToString(detalle.porc_descto);
                                 precio.Text = Convert.ToString(detalle.precio_unit);
                                 iva.Text = detalle.porc_iva.ToString();
+
+                                //Elimino fisicamente
+
+                                ModeloDetalleFactura.RemoveAt(e.Item.ItemIndex);
+                                Session["detalle"] = ModeloDetalleFactura;
+                                //Guardo el modelo 
+                                GuardarDetalle();
+                                //CArgar datos detalle
+                                TraeDetalleFactura();
 
                                 break;
                             }

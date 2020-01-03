@@ -337,6 +337,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label lbl_trx;
         
         /// <summary>
+        /// Control lbl_validacion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_validacion;
+        
+        /// <summary>
         /// Control lblCod.
         /// </summary>
         /// <remarks>

@@ -291,6 +291,9 @@
                         <asp:Label ID="lbl_trx" visible="false" class="Subtitulo2" runat="server" Text=""></asp:Label>
 
                         
+                        <asp:Label ID="lbl_validacion" visible="false" class="Subtitulo2" runat="server" Text=""></asp:Label>
+
+                        
                     </td>
                 </tr>
 
