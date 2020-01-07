@@ -38,6 +38,7 @@ namespace CapaDatos.Modelos
         public decimal neto { get; set; }
         public decimal iva { get; set; }
         public decimal total_fac { get; set; }
+        public decimal porc_desc { get; set; }
         public string estado_fac { get; set; }
         public DateTime fecha_carga { get; set; }
         public string usuario_mod { get; set; }

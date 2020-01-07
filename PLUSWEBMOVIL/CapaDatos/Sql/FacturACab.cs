@@ -133,7 +133,7 @@ namespace CapaDatos.Sql
                 using (cn = conexion.genearConexion())
                 {
                     List<modelowmtfacturascab> lista = new List<modelowmtfacturascab>();
-                    string consulta = ("select nro_trans, tipo, estado from wmt_facturas_cab where nro_trans = @nro_trans");
+                    string consulta = ("select nro_trans, tipo, estado,ocompra from wmt_facturas_cab where nro_trans = @nro_trans");
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
@@ -149,6 +149,7 @@ namespace CapaDatos.Sql
                         item.nro_trans = Convert.ToString(dr["nro_trans"]);
                         item.tipo_nce = Convert.ToString(dr["tipo"]);
                         item.estado = Convert.ToString(dr["estado"]);
+                        item.ocompra = Convert.ToString(dr["ocompra"]);
 
                         lista.Add(item);
 
