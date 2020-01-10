@@ -28,9 +28,10 @@ namespace CapaProceso.Consultas
 
                 foreach (var item in lista)
                 {
-                    modeloFacturasElecSaldos = BuscartaFacEleSaldos(Ccf_tipo1, Ccf_cod_emp, item.serie_docum, item.nro_docum);
+                    modeloFacturasElecSaldos = consultaSaldoa.ConsultaFacturasVTASaldos(item.cod_cliente, Ccf_cod_emp,  item.nro_docum);
                     if (modeloFacturasElecSaldos.cufe == null)
                     {
+                        item.nro_trans = modeloFacturasElecSaldos.nro_trans;
                         listaAux.Add(item);
                     }
 

@@ -26,6 +26,7 @@ namespace CapaDatos.Modelos
         public string pathtmpfac { get; set; }
         public string sitio_erp { get; set; }
         public string version_fe { get; set; }
+        public string cod_emp_erp { get; set; }
 
     }
 }

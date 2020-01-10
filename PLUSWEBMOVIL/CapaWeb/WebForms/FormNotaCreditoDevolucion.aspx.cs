@@ -1214,12 +1214,29 @@ namespace CapaWeb.WebForms
                     else
                     {
                         Boolean resolucion = false;
-                        resolucion = consultaValidarFactura.ConsultaValidarResolucionERP(ComPwm, AmUsrLog, "V", serie_docum.SelectedValue.Trim(), fecha.Text);
+                        resolucion = consultaValidarFactura.ConsultaValidarResolucionERP(ComPwm, AmUsrLog, "V", serie_docum.SelectedValue.Trim(), fecha.Text, Modelowmspclogo.cod_emp_erp.Trim());
                         if (resolucion == false)
                         {
                             lbl_validacion.Text = " No existe resolución de factura. Por favor registrar información y actualizar la página";
                             lbl_validacion.Visible = true;
                             AgregarNC.Enabled = false;
+                        }
+                        else
+                        {
+                            //Consultar si el vendedor tiene asignada una sucursal
+                            ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
+                            int count = 0;
+                            foreach (var item in ListaModeloUsuarioSucursal)
+                            {
+                                ModelousuarioSucursal = item;
+                                count++;
+                                break;
+                            }
+
+                            if (count == 0)
+                            {
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('Usuario no tiene asignada sucursal, por favor asignar para continuar con el proceso ')+ error;</script>");
+                            }
                         }
 
                     }

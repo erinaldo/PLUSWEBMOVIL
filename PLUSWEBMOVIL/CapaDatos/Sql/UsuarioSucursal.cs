@@ -66,7 +66,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(sucursalEmpresa.cod_emp, metodo, "ActualizarUsuarioSucursal", e.ToString(), DateTime.Today, sucursalEmpresa.usuario_mod);
+                guardarExcepcion.ClaseInsertarExcepcion(sucursalEmpresa.cod_emp, metodo, "ActualizarUsuarioSucursal", e.ToString(), DateTime.Now, sucursalEmpresa.usuario_mod);
                 return "No se pudo completar la acción." + "ActualizarUsuarioSucursal." + " Por favor notificar al administrador.";
             }
 
@@ -95,7 +95,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(usuariosucursal.cod_emp, metodo, "InsertarUsuarioSucursal", e.ToString(), DateTime.Today, usuariosucursal.usuario_mod);
+                guardarExcepcion.ClaseInsertarExcepcion(usuariosucursal.cod_emp, metodo, "InsertarUsuarioSucursal", e.ToString(), DateTime.Now, usuariosucursal.usuario_mod);
                 return "No se pudo completar la acción." + "InsertarUsuarioSucursal." + " Por favor notificar al administrador.";
             }
 
@@ -108,7 +108,7 @@ namespace CapaDatos.Sql
                 using (cn = conexion.genearConexion())
                 {
                     List<modeloUsuariosucursal> lista = new List<modeloUsuariosucursal>();
-                    string consulta = "SELECT wmm_userxsucur.cod_emp,wmm_userxsucur.cod_sucursal,wmm_userxsucur.usuario,wmm_userxsucur.usuario_mod,wmm_userxsucur.fecha_mod,wmm_userxsucur.nro_audit,wmm_userxsucur.cod_proc_aud,wmm_sucuremp.nom_sucursal FROM wmm_userxsucur ,wmm_sucuremp WHERE wmm_userxsucur.cod_emp = @cod_emp AND wmm_userxsucur.cod_sucursal = wmm_sucuremp.cod_sucursal ";
+                    string consulta = "SELECT wmm_userxsucur.cod_emp,wmm_userxsucur.cod_sucursal,wmm_userxsucur.usuario,wmm_userxsucur.usuario_mod,wmm_userxsucur.fecha_mod,wmm_userxsucur.nro_audit,wmm_userxsucur.cod_proc_aud,wmm_sucuremp.nom_sucursal FROM wmm_userxsucur ,wmm_sucuremp WHERE wmm_userxsucur.cod_emp = @cod_emp AND wmm_userxsucur.cod_emp = wmm_sucuremp.cod_emp ";
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
@@ -134,7 +134,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaUsuarioxSucursal", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaUsuarioxSucursal", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
 
@@ -175,7 +175,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ConsultaUsuarioxSucursal", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ConsultaUsuarioxSucursal", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
 
@@ -216,7 +216,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "UnicoUsuarioxSucursal", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "UnicoUsuarioxSucursal", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }

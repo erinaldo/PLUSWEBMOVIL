@@ -50,12 +50,12 @@ namespace CapaProceso.Consultas
         }
 
         //COd ciudad y cod_mneda erp
-        public Boolean ConsultaValidarResolucionERP(string cod_emp, string usuario, string estado, string serie, string fecha)
+        public Boolean ConsultaValidarResolucionERP(string cod_emp, string usuario, string estado, string serie, string fecha, string emp_erp)
         {
             try
             {
                 Boolean lista = false;
-                lista = factura.ValidarResolucionERP(cod_emp, usuario,  estado,  serie, fecha);
+                lista = factura.ValidarResolucionERP(cod_emp, usuario,  estado,  serie, fecha, emp_erp);
                 return lista;
             }
             catch (Exception e)

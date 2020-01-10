@@ -121,7 +121,7 @@ namespace CapaDatos.Sql
         }
 
         //Consulta BUSCAR RESOLUCION DE Factura
-        public Boolean ValidarResolucionERP(string cod_emp, string usuario, string estado , string serie, string fecha)
+        public Boolean ValidarResolucionERP(string cod_emp, string usuario, string estado , string serie, string fecha,string emp_erp)
         {
             try
             {
@@ -133,7 +133,7 @@ namespace CapaDatos.Sql
 
                     string consulta = ("SELECT * FROM AdSer WHERE AdSer.AmComCod=@cod_emp AND AdSer.AdSerEst=@estado AND AdSer.AcSerCod=@serie AND @fecha BETWEEN AdSer.AdSerFHR AND AdSer.AdSerFCd");
                     SqlCommand conmand = new SqlCommand(consulta, cn);
-                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = emp_erp;
                     conmand.Parameters.Add("@estado", SqlDbType.VarChar).Value = estado;
                     conmand.Parameters.Add("@serie", SqlDbType.VarChar).Value = serie;
                     conmand.Parameters.Add("@fecha", SqlDbType.VarChar).Value = fecha;

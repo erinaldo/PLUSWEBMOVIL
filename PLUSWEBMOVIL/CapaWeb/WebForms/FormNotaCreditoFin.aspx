@@ -86,7 +86,7 @@
                 </tr>
                 <tr>
                     <td valing="center">
-                        <p class="Subtitulo2" >Nota de Crédito por: Anulación de Factura Electrónica</p>
+                        <p class="Subtitulo2" >Nota de Crédito por: Anulación de Factura</p>
                     </td>
                 </tr>
                  <tr>

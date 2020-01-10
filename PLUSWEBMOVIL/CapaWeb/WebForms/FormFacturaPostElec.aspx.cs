@@ -1208,8 +1208,9 @@ namespace CapaWeb.WebForms
                         txt_Descripcion.Text = articulo.nom_articulo;
                         //Redondear el numero a precios_uni
 
-                        decimal precio_unitario = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(consdetalle.precio_unit));
-                        txt_Precio.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo_pu, precio_unitario);
+                        decimal precio_unitario = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, Convert.ToDecimal(articulo.precio));
+                       
+                        txt_Precio.Text = precio_unitario.ToString();
                         txt_Iva.Text = articulo.porc_impuesto;
                         txt_Desc.Text = "0";
                         Session.Remove("articulo");
@@ -1251,12 +1252,29 @@ namespace CapaWeb.WebForms
                     else
                     {
                         Boolean resolucion = false;
-                        resolucion = consultaValidarFactura.ConsultaValidarResolucionERP(ComPwm, AmUsrLog, "V", serie_docum.SelectedValue.Trim(), fecha.Text);
+                        resolucion = consultaValidarFactura.ConsultaValidarResolucionERP(ComPwm, AmUsrLog, "V", serie_docum.SelectedValue.Trim(), fecha.Text, Modelowmspclogo.cod_emp_erp.Trim());
                         if (resolucion == false)
                         {
                             lbl_validacion.Text = " No existe resolución de factura. Por favor registrar información y actualizar la página";
                             lbl_validacion.Visible = true;
                             AgregarNC.Enabled = false;
+                        }
+                        else
+                        {
+                            //Consultar si el vendedor tiene asignada una sucursal
+                            ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
+                            int count = 0;
+                            foreach (var item in ListaModeloUsuarioSucursal)
+                            {
+                                ModelousuarioSucursal = item;
+                                count++;
+                                break;
+                            }
+
+                            if (count == 0)
+                            {
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('Usuario no tiene asignada sucursal, por favor asignar para continuar con el proceso ')+ error;</script>");
+                            }
                         }
 
                     }
@@ -2002,6 +2020,7 @@ namespace CapaWeb.WebForms
 
             }
         }
-            
+
+      
     }
 }
