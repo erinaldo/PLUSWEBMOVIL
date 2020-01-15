@@ -136,7 +136,9 @@
     <Content Include="WebForms\BuscarUnidadMedida.aspx" />
     <Content Include="WebForms\BuscarVendedor.aspx" />
     <Content Include="WebForms\BuscarZona.aspx" />
+    <Content Include="WebForms\CargaMasivaCliente.aspx" />
     <Content Include="WebForms\CargaMasivaFactura.aspx" />
+    <Content Include="WebForms\CargaMasivaRecurso.aspx" />
     <Content Include="WebForms\DetalleCierreCaja.aspx" />
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
     <Content Include="WebForms\FormCierreCaja.aspx" />
@@ -411,12 +413,26 @@
     <Compile Include="WebForms\BuscarZona.aspx.designer.cs">
       <DependentUpon>BuscarZona.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\CargaMasivaCliente.aspx.cs">
+      <DependentUpon>CargaMasivaCliente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\CargaMasivaCliente.aspx.designer.cs">
+      <DependentUpon>CargaMasivaCliente.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\CargaMasivaFactura.aspx.cs">
       <DependentUpon>CargaMasivaFactura.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\CargaMasivaFactura.aspx.designer.cs">
       <DependentUpon>CargaMasivaFactura.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\CargaMasivaRecurso.aspx.cs">
+      <DependentUpon>CargaMasivaRecurso.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\CargaMasivaRecurso.aspx.designer.cs">
+      <DependentUpon>CargaMasivaRecurso.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\DetalleCierreCaja.aspx.cs">
       <DependentUpon>DetalleCierreCaja.aspx</DependentUpon>

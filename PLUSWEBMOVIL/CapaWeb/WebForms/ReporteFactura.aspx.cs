@@ -45,6 +45,9 @@ namespace CapaWeb.WebForms
         modeloExepciones ModeloExcepcion = new modeloExepciones();
         CabezeraFactura GuardarCabezera = new CabezeraFactura();
         List<modelowmtfacturascab> listaConsCab = null;
+        public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
+        public ConsultaLogo consultaLogo = new ConsultaLogo();
+        public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -53,6 +56,12 @@ namespace CapaWeb.WebForms
               
 
                 RecuperarCokie();
+                ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
+                foreach (var item in ListaModelowmspclogo)
+                {
+                    Modelowmspclogo = item;
+                    break;
+                }
 
                 QueryString qs = ulrDesencriptada();
                 Int64 id = Int64.Parse(qs["Id"].ToString());
@@ -63,42 +72,67 @@ namespace CapaWeb.WebForms
                 conscabcera = buscarTipoFac(Ccf_nro_trans);
                 if (conscabcera.tipo_nce.Trim() == "VTA" || conscabcera.tipo_nce.Trim() == "POS")
                 {
-                    if(conscabcera.estado.Trim() =="C")
+                    if (conscabcera.estado.Trim() == "C")
                     {
                         GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
-                       
-                        PdfFacturaVTA pdf = new PdfFacturaVTA();
-                        string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
-                        Response.ContentType = "application/pdf";
-                        Response.WriteFile(pathPdf);
-                        Response.End();
+                    }
+                   
+                    //Clase para pdf de cada empresa 
+                    switch (Modelowmspclogo.pdf_fe.Trim())
+                    {
+                        case "PDF_CATBAYONA":
+                            PdfFacturaVTA pdf1 = new PdfFacturaVTA();
+                            string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                            Response.ContentType = "application/pdf";
+                            Response.WriteFile(pathPdf1);
+                            Response.End();
+                            break;
+                        case "DEFECTO":
+                            PdfFacturaVTA pdf = new PdfFacturaVTA();
+                            string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                            Response.ContentType = "application/pdf";
+                            Response.WriteFile(pathPdf);
+                            Response.End();
+                            break;
+
+
+                    }
+                }
+                else {
+
+                    if (conscabcera.tipo_nce.Trim() == "VTAE")
+                    {
+                        Ccf_tipo2 = "VTAE";
                     }
                     else
                     {
-                        PdfFacturaVTA pdf = new PdfFacturaVTA();
-                        string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
-                        Response.ContentType = "application/pdf";
-                        Response.WriteFile(pathPdf);
-                        Response.End();
-                    }
-                  
-                }
-                else {
-                    
-                        if (conscabcera.tipo_nce.Trim() == "VTAE")
-                    { 
-                            Ccf_tipo2 = "VTAE";
-                    }
-                else
-                {
                         Ccf_tipo2 = "POSE";
                     }
-                    PdfFacturaElectronica pdf = new PdfFacturaElectronica();
-                    string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                    Response.ContentType = "application/pdf";
-                    Response.WriteFile(pathPdf);
-                    Response.End();
+
+                    //Clase para pdf de cada empresa 
+                    switch (Modelowmspclogo.pdf_fe.Trim())
+                    {
+                        case "PDF_CATBAYONA":
+                            PdfFacEleV2CatBayona pdf1 = new PdfFacEleV2CatBayona();
+                            string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                            Response.ContentType = "application/pdf";
+                            Response.WriteFile(pathPdf1);
+                            Response.End();
+                            break;
+                        case "DEFECTO":
+                            PdfFacturaElectronica pdf = new PdfFacturaElectronica();
+                            string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                            Response.ContentType = "application/pdf";
+                            Response.WriteFile(pathPdf);
+                            Response.End();
+                            break;
+
+
+                    }
+                     
+                    
                 }
+                    
                
             }
             catch (Exception ex)

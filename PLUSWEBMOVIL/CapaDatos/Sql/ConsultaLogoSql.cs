@@ -56,6 +56,8 @@ namespace CapaDatos.Sql
                         item.sitio_erp = Convert.ToString(dr["sitio_erp"]);
                         item.version_fe = Convert.ToString(dr["version_fe"]);
                         item.cod_emp_erp = Convert.ToString(dr["cod_emp_erp"]);
+                        item.pdf_fe = Convert.ToString(dr["pdf_fe"]);
+                        item.pdf_nc = Convert.ToString(dr["pdf_nc"]);
 
                         lista.Add(item);
 

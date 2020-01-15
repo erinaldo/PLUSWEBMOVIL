@@ -150,6 +150,7 @@
     <Compile Include="ReslClientePdf\JsonFacturaPDF.cs" />
     <Compile Include="ReslClientePdf\JsonNDPDF.cs" />
     <Compile Include="ReslClientePdf\PdfCierreCaja.cs" />
+    <Compile Include="ReslClientePdf\PdfFacEleV2CatBayona .cs" />
     <Compile Include="ReslClientePdf\PdfFacturaElectronicaV2.cs" />
     <Compile Include="ReslClientePdf\PdfFacturaVTA.cs" />
     <Compile Include="ReslClientePdf\PdfNotaCredito.cs" />

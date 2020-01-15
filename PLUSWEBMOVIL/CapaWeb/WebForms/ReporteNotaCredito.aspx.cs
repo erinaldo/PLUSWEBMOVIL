@@ -45,6 +45,10 @@ namespace CapaWeb.WebForms
         modeloExepciones ModeloExcepcion = new modeloExepciones();
         List<modelowmtfacturascab> listaConsCab = null;
         CabezeraFactura GuardarCabezera = new CabezeraFactura();
+
+        public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
+        public ConsultaLogo consultaLogo = new ConsultaLogo();
+        public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -52,6 +56,12 @@ namespace CapaWeb.WebForms
 
 
                 RecuperarCokie();
+                ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
+                foreach (var item in ListaModelowmspclogo)
+                {
+                    Modelowmspclogo = item;
+                    break;
+                }
 
                 QueryString qs = ulrDesencriptada();
                 Int64 id = Int64.Parse(qs["Id"].ToString());
@@ -65,33 +75,50 @@ namespace CapaWeb.WebForms
                     if (conscabcera.estado.Trim() == "C")
                     {
                         GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
-
-                        PdfNotaCredito pdf = new PdfNotaCredito();
-                        string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
-                        Response.ContentType = "application/pdf";
-                        Response.WriteFile(pathPdf);
-                        Response.End();
                     }
-                    else
+                      //Clase para pdf de cada empresa 
+                    switch (Modelowmspclogo.pdf_nc.Trim())
                     {
-                        PdfNotaCredito pdf = new PdfNotaCredito();
-                        string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
-                        Response.ContentType = "application/pdf";
-                        Response.WriteFile(pathPdf);
-                        Response.End();
+                        case "prueba":
+
+                            PdfNotaCredito pdf1 = new PdfNotaCredito();
+                            string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                            Response.ContentType = "application/pdf";
+                            Response.WriteFile(pathPdf1);
+                            Response.End();
+                            break;
+                        case "DEFECTO":
+                            PdfNotaCredito pdf = new PdfNotaCredito();
+                            string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                            Response.ContentType = "application/pdf";
+                            Response.WriteFile(pathPdf);
+                            Response.End();
+                            break;
                     }
-                    
-                    
-                }
+
+
+                    }
                 else
                 {
-                    PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
-                    string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    switch (Modelowmspclogo.pdf_nc.Trim())
+                    {
+                        case "prueba":
 
-
-                    Response.ContentType = "application/pdf";
-                    Response.WriteFile(pathPdf);
-                    Response.End();
+                            PdfNotaCreditoElectronica pdf1 = new PdfNotaCreditoElectronica();
+                            string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                            Response.ContentType = "application/pdf";
+                            Response.WriteFile(pathPdf1);
+                            Response.End();
+                            break;
+                        case "DEFECTO":
+                            PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
+                            string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                            Response.ContentType = "application/pdf";
+                            Response.WriteFile(pathPdf);
+                            Response.End();
+                            break;
+                    }
+                    
                 }
                
                
