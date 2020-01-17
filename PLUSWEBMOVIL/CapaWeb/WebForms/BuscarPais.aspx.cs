@@ -23,6 +23,7 @@ namespace CapaWeb.WebForms
         public string AmUsrLog;
         public string cod_proceso;
         public string sesion;
+        public string empresa_codigo;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -60,10 +61,7 @@ namespace CapaWeb.WebForms
                 {
                     socio = Request.Cookies["AmScNCod"].Value;
                 }
-                if (Request.Cookies["AmSesId"] != null)
-                {
-                    sesion = Request.Cookies["AmSesId"].Value;
-                }
+
 
 
                 if (Request.Cookies["AmUsrLog"] != null)
@@ -85,13 +83,18 @@ namespace CapaWeb.WebForms
                     }
                 }
                 //Codigo empresa
-                string empresa_codigo = ComPwm;
+
+
+                if (Request.Cookies["AmComCod"] != null)
+                {
+                    empresa_codigo = Request.Cookies["AmComcod"].Value;
+                }
+
                 Response.Cookies["empresa_codigo"].Value = empresa_codigo;
                 //socio negocio
                 // string socio_codigo = "100";
                 Response.Cookies["socio_codigo"].Value = socio;
                 Response.Cookies["usuario"].Value = AmUsrLog;
-                Response.Cookies["sesion"].Value = sesion;
             }
             catch (Exception ex)
             {

@@ -23,6 +23,7 @@ namespace CapaWeb.WebForms
         public string AmUsrLog;
         public string cod_proceso;
         public string UsuarioId;
+        public string empresa_codigo;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -46,7 +47,7 @@ namespace CapaWeb.WebForms
         {
             try
             {
-               // lbl_error.Text = "";
+                // lbl_error.Text = "";
 
                 if (Request.Cookies["ComPwm"] != null)
                 {
@@ -56,14 +57,10 @@ namespace CapaWeb.WebForms
                 {
                     Response.Redirect("../Inicio.asp");
                 }
-                /*
-                HttpCookie AmScnCod = new HttpCookie("AmScnCod");
-                AmScnCod.Value = "9999994";
-                AmScnCod.Expires = DateTime.Now.AddDays(1d);
-                Response.Cookies.Add(AmScnCod);*/
+
                 if (Request.Cookies["AmScNCod"] != null)
                 {
-                     socio = Request.Cookies["AmScNCod"].Value;
+                    socio = Request.Cookies["AmScNCod"].Value;
                 }
 
 
@@ -87,10 +84,16 @@ namespace CapaWeb.WebForms
                     }
                 }
                 //Codigo empresa
-                string empresa_codigo = ComPwm;
+
+
+                if (Request.Cookies["AmComCod"] != null)
+                {
+                    empresa_codigo = Request.Cookies["AmComcod"].Value;
+                }
+
                 Response.Cookies["empresa_codigo"].Value = empresa_codigo;
                 //socio negocio
-               // string socio_codigo = "100";
+                // string socio_codigo = "100";
                 Response.Cookies["socio_codigo"].Value = socio;
                 Response.Cookies["usuario"].Value = AmUsrLog;
             }

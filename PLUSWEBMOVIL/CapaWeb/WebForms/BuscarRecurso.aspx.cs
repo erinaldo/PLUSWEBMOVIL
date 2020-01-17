@@ -20,6 +20,7 @@ namespace CapaWeb.WebForms
         modeloExepciones ModeloExcepcion = new modeloExepciones();
         public string ComPwm;
         public string socio;
+        public string empresa_codigo;
         public string AmUsrLog;
         public string cod_proceso;
         public string UsuarioId;
@@ -83,7 +84,13 @@ namespace CapaWeb.WebForms
                     }
                 }
                 //Codigo empresa
-                string empresa_codigo = ComPwm;
+                
+
+                if (Request.Cookies["AmComCod"] != null)
+                {
+                    empresa_codigo = Request.Cookies["AmComcod"].Value;
+                }
+               
                 Response.Cookies["empresa_codigo"].Value = empresa_codigo;
                 //socio negocio
                 // string socio_codigo = "100";

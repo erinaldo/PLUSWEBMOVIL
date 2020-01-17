@@ -23,6 +23,7 @@ namespace CapaWeb.WebForms
         public string AmUsrLog;
         public string cod_proceso;
         public string UsuarioId;
+        public string empresa_codigo;
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -83,7 +84,13 @@ namespace CapaWeb.WebForms
                     }
                 }
                 //Codigo empresa
-                string empresa_codigo = ComPwm;
+
+
+                if (Request.Cookies["AmComCod"] != null)
+                {
+                    empresa_codigo = Request.Cookies["AmComcod"].Value;
+                }
+
                 Response.Cookies["empresa_codigo"].Value = empresa_codigo;
                 //socio negocio
                 // string socio_codigo = "100";
