@@ -752,21 +752,7 @@ namespace CapaWeb.WebForms
                     }
 
                     Boolean existe = false;
-                    foreach (ModeloDetalleFactura itemSuma in ModeloDetalleFactura)
-                    {
-                        if (itemSuma.cod_articulo == articulo.cod_articulo)
-                        {
-                            existe = true;
-                           
-                            /* sumo los numebos valores agregados al producto*/
-                            itemSuma.cantidad += Convert.ToDecimal(txt_Cantidad.Text);
-                            itemSuma.precio_unit = Convert.ToDecimal(txt_Precio.Text);
-                            itemSuma.porc_iva = Convert.ToDecimal(txt_Iva.Text);
-                            itemSuma.porc_descto =  Convert.ToDecimal(txt_Iva.Text);
-
-                            break;
-                        }
-                    }
+                   
 
                     if (!existe)
                     {
@@ -1615,77 +1601,10 @@ namespace CapaWeb.WebForms
                 }
                 else
                 {
-                    //traer el detalle de la proforma
-                    string nro_trans_pro = Convert.ToString(cbx_proformas.SelectedValue);
-                    ListaDetaProforma = ConsultaDetallePro.BuscarProformasDetalle(nro_trans_pro);
-                    //Cargar en la grilla 
-                    foreach (var proDet in ListaDetaProforma)
-                    {
-                        ModeloDetallePro = proDet;
-
-
-                        ModeloDetalleFactura item = new ModeloDetalleFactura();
-                        articulo = null;
-                        articulo = BuscarProducto(ModeloDetallePro.cod_articulo);
-
-
-                        if (Session["detalle"] == null)
-                        {
-                            ModeloDetalleFactura = new List<ModeloDetalleFactura>();
-                        }
-                        else
-                        {
-                            ModeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);
-                        }
-
-                        Boolean existe = false;
-                        foreach (ModeloDetalleFactura itemSuma in ModeloDetalleFactura)
-                        {
-                            if (itemSuma.cod_articulo == articulo.cod_articulo)
-                            {
-                                existe = true;
-
-                                /* sumo los nuevos valores agregados al producto*/
-                                itemSuma.cantidad += Convert.ToDecimal(ModeloDetallePro.cantidad);
-                                itemSuma.precio_unit = Convert.ToDecimal(ModeloDetallePro.precio_unit);
-                                itemSuma.porc_iva = Convert.ToDecimal(ModeloDetallePro.porc_iva);
-                                itemSuma.porc_descto = Convert.ToDecimal(ModeloDetallePro.porc_descto);
-
-                                break;
-                            }
-
-                        }
-
-                        if (!existe)
-                        {
-                            item.cod_articulo = ModeloDetallePro.cod_articulo;
-                            item.nom_articulo = ModeloDetallePro.nom_articulo;
-                            item.nom_articulo2 = ModeloDetallePro.nom_articulo2;
-                            item.cod_ccostos = cod_costos.SelectedValue;
-                            item.cantidad = ModeloDetallePro.cantidad;
-                            item.precio_unit = ModeloDetallePro.precio_unit;
-                            item.porc_iva = ModeloDetallePro.porc_iva;
-                            item.porc_descto = ModeloDetallePro.porc_descto;
-                            item.cod_cta_cos = articulo.cod_cta_cos;
-                            item.cod_cta_inve = articulo.cod_cta_inve;
-                            item.cod_cta_vtas = articulo.cod_cta_vtas;
-                            item.base_imp = Convert.ToDecimal(articulo.porc_aiu);
-                            item.tasa_iva = articulo.cod_tasa_impu;
-
-                            item.cod_concepret = articulo.cod_concepret;
-
-                            ModeloDetalleFactura.Add(item);
-                        }
-
-                        Session["detalle"] = ModeloDetalleFactura;
-                        item = null;
-
-                    }
-
-                    //LLAMAR EL METODO SALVAR
-                    GuardarDetalle();
-                    TraeDetalleFactura();
-                    ///Insertar en la tabla proforma ins luego de q escoja
+                    //Insertar primero la cabecera
+                    InsertarCabecera();
+                   
+                    //Insertar en la tabla proforma ins luego de q escoja
                     if (cbx_proformas != null)
                     {
 
@@ -1700,6 +1619,7 @@ namespace CapaWeb.WebForms
                         ModeloProformas.cod_proceso = "FV";
                         InsertarProIns.InsertarProformaIns(ModeloProformas);
                     }
+                    TraeDetalleFactura();
                     ListaProofrmas = ConsultaProformas.BuscarProformas(cliente.cod_tit, "A", "PF");
                     cbx_proformas.DataSource = ListaProofrmas;
                     cbx_proformas.DataTextField = "proformas";
@@ -1741,74 +1661,10 @@ namespace CapaWeb.WebForms
                 }
                 else
                 {
-                    string nro_trans_remi = Convert.ToString(cbx_remisiones.SelectedValue);
-                    //traer el detalle de la proforma
-                    ListaDetalleRemision = ConsultaDetalleRemision.BuscarRemisionDetalle(nro_trans_remi);
 
-                    foreach (var proDet in ListaDetalleRemision)
-                    {
-                        ModeloDetalleRemision = proDet;
-
-
-                        ModeloDetalleFactura item = new ModeloDetalleFactura();
-                        articulo = null;
-                        articulo = BuscarProducto(ModeloDetalleRemision.cod_articulo);
-
-
-                        if (Session["detalle"] == null)
-                        {
-                            ModeloDetalleFactura = new List<ModeloDetalleFactura>();
-                        }
-                        else
-                        {
-                            ModeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);
-                        }
-
-                        Boolean existe = false;
-                        foreach (ModeloDetalleFactura itemSuma in ModeloDetalleFactura)
-                        {
-                            if (itemSuma.cod_articulo == articulo.cod_articulo)
-                            {
-                                existe = true;
-                                /* sumo los nuevos valores agregados al producto*/
-                                itemSuma.cantidad += Convert.ToDecimal(ModeloDetalleRemision.cantidad);
-                                itemSuma.precio_unit = Convert.ToDecimal(ModeloDetalleRemision.precio_unit);
-                                itemSuma.porc_iva = Convert.ToDecimal(ModeloDetalleRemision.porc_iva);
-                                itemSuma.porc_descto = Convert.ToDecimal(ModeloDetalleRemision.porc_descto);
-
-                                break;
-                            }
-
-                        }
-
-                        if (!existe)
-                        {
-                            item.cod_articulo = ModeloDetalleRemision.cod_articulo;
-                            item.nom_articulo = ModeloDetalleRemision.nom_articulo;
-                            item.nom_articulo2 = ModeloDetalleRemision.nom_articulo2;
-                            item.cod_ccostos = cod_costos.SelectedValue;
-                            item.cantidad = ModeloDetalleRemision.cantidad;
-                            item.precio_unit = ModeloDetalleRemision.precio_unit;
-                            item.porc_iva = ModeloDetalleRemision.porc_iva;
-                            item.porc_descto = ModeloDetalleRemision.porc_descto;
-                            item.cod_cta_cos = articulo.cod_cta_cos;
-                            item.cod_cta_inve = articulo.cod_cta_inve;
-                            item.cod_cta_vtas = articulo.cod_cta_vtas;
-                            item.base_imp = Convert.ToDecimal(articulo.porc_aiu);
-                            item.tasa_iva = articulo.cod_tasa_impu;
-                            item.cod_concepret = articulo.cod_concepret;
-
-                            ModeloDetalleFactura.Add(item);
-                        }
-
-                        Session["detalle"] = ModeloDetalleFactura;
-
-                        item = null;
-
-                    }
-                    //LLAMAR AL METODO SALVAR
-                    GuardarDetalle();
-                    TraeDetalleFactura();
+                    //Insertar primero la cabecera
+                    InsertarCabecera();
+                    
                     ListaRemision = ConsultaRemisiones.BuscarRemisionUnica(cbx_remisiones.SelectedValue);
                     foreach (var item in ListaRemision)
                     {
@@ -1821,8 +1677,7 @@ namespace CapaWeb.WebForms
                     ModeloRemision.cod_proceso = "FV";
 
                     InsertarRemiIns.InsertarRemisionaIns(ModeloRemision);
-
-
+                    TraeDetalleFactura();
 
                     //Consulta remisiones
                     ListaRemision = ConsultaRemisiones.BuscarRemisiones(cliente.cod_tit, "A", "GR");
