@@ -83,10 +83,10 @@ namespace CapaDatos.Sql.SqlNC
                     string consulta = ("SELECT	TOP 1 F.nro_trans,	F.cod_emp,	F.serie_docum,	F.nro_docum,	D.cufe FROM 	wmt_facturas_cab AS F INNER JOIN wmt_respuestaDS AS D ON F.nro_trans = D.nro_trans WHERE D.cufe <> '' AND F.tipo IN( 'VTAE', 'POSE') AND F.cod_cliente = @cod_cliente AND F.cod_emp = @cod_emp AND F.estado IN ('F') AND F.serie_docum = @serie AND F.nro_docum =@nro_docum GROUP BY 	F.nro_trans,	F.cod_emp,F.serie_docum,	F.nro_docum,	D.cufe");
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                    conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = cod_cliente;
+                    conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = cod_cliente.Trim();
                     conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
                     conmand.Parameters.Add("@serie", SqlDbType.VarChar).Value = serie;
-                    conmand.Parameters.Add("@nro_docum", SqlDbType.VarChar).Value = nro_docum;
+                    conmand.Parameters.Add("@nro_docum", SqlDbType.VarChar).Value = nro_docum.Trim();
 
                     SqlDataReader dr = conmand.ExecuteReader();
 
@@ -107,7 +107,7 @@ namespace CapaDatos.Sql.SqlNC
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "SaldosFacturas.cs", "ConsultaFacEleSaldos", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "SaldosFacturas.cs", "ConsultaFacEleSaldos", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
 
@@ -125,7 +125,7 @@ namespace CapaDatos.Sql.SqlNC
                 {
 
 
-                    string consulta = ("SELECT * FROM wmt_facturas_cab WHERE estado IN ('C', 'F')  AND tipo IN ('VTA', 'POS')");
+                    string consulta = ("SELECT * FROM wmt_facturas_cab WHERE estado IN ('C', 'F')  AND tipo IN ('VTA', 'POS') AND nro_docum=@nro_trans and cod_emp = @cod_emp and cod_cliente= @cod_cliente");
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = cod_cliente;

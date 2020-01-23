@@ -314,6 +314,9 @@
                                 <td>
                                     <asp:Label ID="Producto" class="busqueda" runat="server" Text="Label">Descripción</asp:Label>
                                 </td>
+                                 <td>
+                                    <asp:Label ID="lbl_desc2" class="busqueda" runat="server" Text="Label">Descripción</asp:Label>
+                                </td>
                                 
                                 <td>
                                     <asp:Label ID="lblCantidad" runat="server" class="busqueda" Text="Label">Cantidad</asp:Label>
@@ -338,8 +341,12 @@
                                 <td>
                                     <asp:TextBox ID="articulos" CssClass="textos" runat="server" Rows="2" Size="40" ReadOnly="true"></asp:TextBox>
                                 </td>
+                                <td>
+                                    <asp:TextBox ID="articulo_2" CssClass="textos" Rows="2" Size="40" runat="server"></asp:TextBox>
+                                    </td>
                                 
                                 <td>
+                                    
                                     <asp:TextBox ID="cantidad" CssClass="textos"  min="1" step="0.01" type="number" value="1" Width="60px" runat="server"></asp:TextBox>
                                 </td>
                                 <td>
@@ -411,6 +418,13 @@
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
 
+                                                 <asp:TemplateColumn HeaderText="Descripción">
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="nom_articulo2" runat="server" class="textos" Text='<%#Eval("nom_articulo2") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
                                             <asp:TemplateColumn HeaderText="Cantidad">
                                                 <ItemTemplate>
                                                     <span style="float: right;">

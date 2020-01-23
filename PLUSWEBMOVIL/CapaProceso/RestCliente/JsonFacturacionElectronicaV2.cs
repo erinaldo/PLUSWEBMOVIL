@@ -195,7 +195,7 @@ namespace CapaProceso.RestCliente
                     else
                     { itemDetalle.ivausd = 0; }
 
-                    itemDetalle.nombreproducto = item.nom_articulo;
+                    itemDetalle.nombreproducto = item.nom_articulo.Trim()+ " "+item.nom_articulo2.Trim();
                     itemDetalle.operacion = "SA"; //Factura en venta
                     itemDetalle.porcdcto = Convert.ToInt32(item.porc_descto);
                     itemDetalle.porciva = Convert.ToInt32(item.porc_iva);
