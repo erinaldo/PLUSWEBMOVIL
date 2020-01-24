@@ -1070,6 +1070,11 @@ namespace CapaWeb.WebForms
                 decimal SumDesc = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.descuento);
                 txtSumaDesc.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), SumDesc);
 
+                decimal BaseIva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.monto_imponible);
+                txtBaseIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), BaseIva19);
+                decimal Iva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.iva);
+                txtIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Iva19);
+
                 Session["sumaSubtotal"] = Convert.ToString(conscabcera.subtotal);
                 Session["sumaDescuento"] = Convert.ToString(conscabcera.descuento);
                 Session["sumaIva"] = Convert.ToString(conscabcera.iva);
@@ -1083,7 +1088,7 @@ namespace CapaWeb.WebForms
                 Session["detalle"] = listaConsDetalle;
 
                 //Consulta de bases e ivas
-                decimal baseiva19 = 0;
+               /* decimal baseiva19 = 0;
                 decimal iva19 = 0;
                 decimal baseiva15 = 0;
                 decimal iva15 = 0;
@@ -1114,7 +1119,7 @@ namespace CapaWeb.WebForms
                 Session["sumaBase19"] = baseiva19;
                 Session["sumaBase15"] = baseiva15;
                 Session["sumaIva19"] = iva19;
-                Session["sumaIva15"] = iva15;
+                Session["sumaIva15"] = iva15;*/
                 gv_Producto.DataSource = listaConsDetalle;
                 gv_Producto.DataBind();
                 gv_Producto.Height = 100;

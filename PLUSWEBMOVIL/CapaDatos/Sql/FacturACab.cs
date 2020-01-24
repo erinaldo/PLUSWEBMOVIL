@@ -92,6 +92,33 @@ namespace CapaDatos.Sql
 
         }
 
+        public string ActualizarObsFactura(string nro_trans, string observaciones)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    string insert = "UPDATE wmt_facturas_cab SET  observaciones = @observaciones WHERE nro_trans = @nro_trans";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                    conmand.Parameters.Add("@observaciones", SqlDbType.VarChar).Value = observaciones;
+
+                    int dr = conmand.ExecuteNonQuery();
+
+                    return "Factura guardada correctamente";
+                }
+
+
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ActualizarObsFactura", e.ToString(), DateTime.Today, "UDP");
+                return "No se pudo completar la acción." + "ActualizarObsFactura." + " Por favor notificar al administrador.";
+            }
+
+        }
+
         public string EliminarCabDetFactura(string nro_trans)
         {
             try

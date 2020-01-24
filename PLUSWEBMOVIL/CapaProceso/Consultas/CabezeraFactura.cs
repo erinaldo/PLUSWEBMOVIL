@@ -78,7 +78,21 @@ namespace CapaProceso.Consultas
                 return "No se pudo completar la acción." + "ActualizarEstadoFactura." + " Por favor notificar al administrador.";
             }
         }
+        //Actualizar o guardar la observacion de la factura
+        public string ActualizarObserFactura(string nro_trans,string observacion)
+        {
+            try
+            {
+                string respuesta = factura.ActualizarObsFactura(nro_trans,observacion);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
 
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ActualizarObserFactur", e.ToString(), DateTime.Today, "UDP");
+                return "No se pudo completar la acción." + "ActualizarObserFactur." + " Por favor notificar al administrador.";
+            }
+        }
         public string EliminarCabDetFactura(string nro_trans)
         {
             try

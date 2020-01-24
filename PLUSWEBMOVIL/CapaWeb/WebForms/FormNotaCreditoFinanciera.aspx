@@ -577,7 +577,7 @@
                               </tr>
                             <tr>
                                 <td>
-                                    <asp:Label  CssClass="busqueda" ID="Label8" runat="server" Text="Base Iva 19%:"></asp:Label>
+                                    <asp:Label  CssClass="busqueda" ID="Label8" runat="server" Text="Base Iva:"></asp:Label>
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtBaseIva19" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
@@ -585,15 +585,15 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <asp:Label  CssClass="busqueda" ID="Label9" runat="server" Text="Base Iva 5%:"></asp:Label>
+                                    <asp:Label  CssClass="busqueda" ID="Label9" runat="server" Visible="false" Text="Base Iva 5%:"></asp:Label>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtBase15" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="txtBase15" CssClass="textos" ReadOnly="true" Visible="false" runat="server"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <asp:Label  CssClass="busqueda" ID="Label10" runat="server" Text="Iva 19%:"></asp:Label>
+                                    <asp:Label  CssClass="busqueda" ID="Label10" runat="server" Text="Iva:"></asp:Label>
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtIva19" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
@@ -601,10 +601,10 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <asp:Label  CssClass="busqueda" ID="Label11" runat="server" Text="Iva 5%:"></asp:Label>
+                                    <asp:Label  CssClass="busqueda" ID="Label11" runat="server" Visible="false" Text="Iva 5%:"></asp:Label>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtIva15" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="txtIva15" CssClass="textos" ReadOnly="true" Visible="false" runat="server"></asp:TextBox>
                                 </td>
                             </tr>
 
