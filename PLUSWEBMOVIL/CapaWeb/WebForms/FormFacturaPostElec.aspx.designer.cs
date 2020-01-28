@@ -571,6 +571,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox txtSumaTotal;
         
         /// <summary>
+        /// Control btn_Pagos.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_Pagos;
+        
+        /// <summary>
         /// Control btnGuardarDetalle.
         /// </summary>
         /// <remarks>
@@ -596,14 +605,5 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button Confirmar;
-        
-        /// <summary>
-        /// Control btn_Pagos.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_Pagos;
     }
 }

@@ -584,14 +584,23 @@
                 <tr>
                     <td>
                         <table>
+                            <tr  aling="center">
+                                
+                                    <td aling="center">
+
+
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                        <asp:Button ID="btn_Pagos"  Class="btnFactura1" runat="server" OnClick="btn_Pagos_Click" Text="Medios Pago" />
+                                   </td>
+                            </tr>
                                <tr>
                                 <td >
                                     <asp:Button ID="btnGuardarDetalle" Class="btnFactura1" visible="false" runat="server" OnClick="GuardarDetalle_Click"  Text="Salvar" />
-                                </td>
-                                <td >
+                      
                                     <asp:Button ID="Cancelar" Class="btnFactura1"  runat="server" onclick="Cancelar_Click" UseSubmitBehavior="False" Text="Cancelar" />
                                     <asp:Button ID="Confirmar"  Class="btnFactura1" runat="server"  OnClientClick="return confirm('¿Desea guardar la factura?');" OnClick="Confirmar_Click" Text="Confirmar" />
-                                     <asp:Button ID="btn_Pagos"  Class="btnFactura1" runat="server" OnClick="btn_Pagos_Click" Text="Medios Pago" />
+                                    
                                
                                   </td>
                     

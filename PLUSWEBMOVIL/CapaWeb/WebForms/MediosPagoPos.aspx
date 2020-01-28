@@ -54,9 +54,21 @@
           
            <tr>
                <td colspan="2">
-                   <asp:Label ID="Label4" class="Subtitulo1" runat="server" Text="Label">Seleccione la Forma de Pago que desea aplicar:</asp:Label>
-                   
+                   <asp:Label ID="Label4" class="Subtitulo1" runat="server" Text="Label">Seleccione la Forma de Pago que desea agregar:</asp:Label>
+
                </td>
+            
+
+           </tr>
+               <tr>
+               <td colspan="2">
+                  
+
+                   <br />
+                  
+
+               </td>
+            
 
            </tr>
             <tr>
@@ -224,7 +236,8 @@
                                 
                                 <td >
                                     <asp:Button ID="Cancelar" Class="botones"  runat="server" OnClick="Cancelar_Click"  UseSubmitBehavior="False" Text="Cancelar" />
-                                                                     
+                                       
+                                    <asp:Button ID="Button1" Class="botones"  runat="server" OnClick="Cancelar_Click"  UseSubmitBehavior="False" Text="Confirmar" />                              
                                
                                   </td>
                     

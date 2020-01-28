@@ -113,7 +113,7 @@ namespace CapaWeb.WebForms
                     switch (Modelowmspclogo.pdf_fe.Trim())
                     {
                         case "PDF_CATBAYONA":
-                            PdfFacEleV2CatBayona pdf1 = new PdfFacEleV2CatBayona();
+                            PdfFacEleV2Default pdf1 = new PdfFacEleV2Default();
                             string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                             Response.ContentType = "application/pdf";
                             Response.WriteFile(pathPdf1);

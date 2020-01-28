@@ -15,7 +15,8 @@ namespace CapaDatos.Modelos
         public string activo { get; set; }
         public string numerador { get; set; }
         public DateTime fec_valor { get; set; }
-
+        public string fec_emision { get; set; }
+        public string fec_caducidad { get; set; }
         public DateTime fec_venc { get; set; }
         public string tipo { get; set; }
         public string tipo_fac { get; set; }
