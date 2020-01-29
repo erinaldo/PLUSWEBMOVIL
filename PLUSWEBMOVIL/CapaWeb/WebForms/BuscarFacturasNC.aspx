@@ -24,7 +24,7 @@
                         <tr>
                     <td>
 
-                        <div class="Subtitulo1">Listado de Facturas</div>
+                        <div class="SubtitListado de Facturas</div>
                     </td>
                 </tr>
                  <tr>

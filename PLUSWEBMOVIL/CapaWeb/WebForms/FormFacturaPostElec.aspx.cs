@@ -1380,7 +1380,7 @@ namespace CapaWeb.WebForms
                 }
 
                 decimal Total_cons= ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloDiferencia.total));
-                decimal Pago = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloDiferencia.total));
+                decimal Pago = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloDiferencia.pagado));
 
                 if (Total_cons != Pago)
                 {

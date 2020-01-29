@@ -46,6 +46,10 @@ namespace CapaWeb.WebForms
         public modeloSaldosFacturas ModeloSaldoFactura = new modeloSaldosFacturas();
         public ConsultaSaldosFacturas consultaSaldoFactura = new ConsultaSaldosFacturas();
 
+        Consultawmspcresfact ConsultaResolucion = new Consultawmspcresfact();
+        modelowmspcresfact resolucion = new modelowmspcresfact();
+        List<modelowmspcresfact> listaRes = null;
+
         ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
         modelonumerador nrotrans = new modelonumerador();
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
@@ -72,6 +76,9 @@ namespace CapaWeb.WebForms
         public string Ccf_mesf = "";
         public string Ccf_aniof = "";
         public string tipo_nc = "";
+        public string ResF_estado = "v";
+        public string ResF_serie = "0";
+        public string ResF_tipo = "C";
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -85,7 +92,7 @@ namespace CapaWeb.WebForms
 
                     Session.Remove("listaFacturas");
                     Session.Remove("usuario");
-                    Session.Remove("TipoFactura");
+                    //Session.Remove("TipoFactura");
 
                     if (Request.Cookies["ComPwm"] != null)
                     {
@@ -323,6 +330,21 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
+                //LIsta Resolucion facturas
+                listaRes = ConsultaResolucion.ConsultaResolusiones(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo);
+                resolucion = null;
+                foreach (modelowmspcresfact item in listaRes)
+                {
+                    resolucion = item;
+
+                }
+         
+                //Aqui se va a traer que tipo de facturacion es
+                if (resolucion.tipo_fac == "S")
+                {
+                    tipo_nc = "NCVE";
+                }
+                else { tipo_nc = "NCV"; }
 
                 if (tipo_nc.Trim() == "NCVE")
                 {

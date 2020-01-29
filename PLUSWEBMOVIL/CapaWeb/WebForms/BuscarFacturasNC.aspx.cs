@@ -33,6 +33,10 @@ namespace CapaWeb.WebForms
 
         ConsumoRest consumoRest = new ConsumoRest();
 
+        Consultawmspcresfact ConsultaResolucion = new Consultawmspcresfact();
+        modelowmspcresfact resolucion = new modelowmspcresfact();
+        List<modelowmspcresfact> listaRes = null;
+
         Consultawmsptitulares ConsultaTitulares = new Consultawmsptitulares();
         public List<modelowmspctitulares> lista = null;
         modelowmspctitulares cliente = new modelowmspctitulares();
@@ -69,6 +73,9 @@ namespace CapaWeb.WebForms
         public string Ccf_mesf = "";
         public string Ccf_aniof = "";
         public string tipo_nc = "";
+        public string ResF_estado = "v";
+        public string ResF_serie = "0";
+        public string ResF_tipo = "C";
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -84,7 +91,7 @@ namespace CapaWeb.WebForms
 
                     Session.Remove("listaFacturas");
                     Session.Remove("usuario");
-                    Session.Remove("tipo_nc");
+                   // Session.Remove("tipo_nc");
 
                     if (Request.Cookies["ComPwm"] != null)
                     {

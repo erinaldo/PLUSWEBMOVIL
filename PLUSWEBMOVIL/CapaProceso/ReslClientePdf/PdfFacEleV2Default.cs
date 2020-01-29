@@ -227,6 +227,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 FileStream fs = new FileStream(bpathPdfGenrado, FileMode.Create);
                 Document document = new Document(PageSize.A4, 30, 30, 30, 30);
                 PdfWriter pw = PdfWriter.GetInstance(document, fs);
+                pw.PageEvent = new HeaderFooter();
 
 
 
@@ -299,14 +300,14 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 tablaLogo.AddCell(cell);
                 // Insertamos la imagen en el documento
                 // Creamos la imagen QR y le ajustamos el tamaño
-                iTextSharp.text.Image imagen = iTextSharp.text.Image.GetInstance(qr);
+                iTextSharp.text.Image imagen = iTextSharp.text.Image.GetInstance(pathLogo);
                 imagen.BorderWidth = 0;
                 imagen.Alignment = Element.ALIGN_RIGHT;
-                imagen.ScaleAbsolute(80f, 80f);
+                float percentages = 0.0f;
+                percentage = 150 / imagen1.Width;
+                imagen.ScalePercent(percentage * 100);
 
-
-
-                cell = new PdfPCell(imagen);
+                 cell = new PdfPCell(imagen);
                 cell.HorizontalAlignment = 2;
                 cell.Border = 0;
 
@@ -518,7 +519,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 1;
                 detacab.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("P.UNIT", fontText));
+                cell = new PdfPCell(new Paragraph("IVA", fontText));
                 cell.BorderWidthBottom = 1;
                 cell.BorderWidthLeft = 1;
                 cell.BorderWidthTop = 1;
@@ -526,13 +527,15 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 1;
                 detacab.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("% DCTO", fontText));
+                cell = new PdfPCell(new Paragraph("VALOR UNITARIO", fontText));
                 cell.BorderWidthBottom = 1;
                 cell.BorderWidthLeft = 1;
                 cell.BorderWidthTop = 1;
                 cell.BorderWidthRight = 1;
                 cell.HorizontalAlignment = 1;
                 detacab.AddCell(cell);
+
+               
 
                 cell = new PdfPCell(new Paragraph("NETO ", fontText));
                 cell.BorderWidthBottom = 1;
@@ -558,13 +561,15 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 //Cargar Detalle factura
                 PdfPTable detalle = new PdfPTable(7);//cantidad de columnas que va tener la tabla
                 detalle.WidthPercentage = 100f;
+                float[] alto = { 150f, 150f, 150f };
+                
                 // detalle.SpacingAfter = 10;
                 //detalle.DefaultCell.Border = 0;
                 detalle.DefaultCell.BorderWidthBottom = 0;
                 detalle.DefaultCell.BorderWidthLeft = 1;
                 detalle.DefaultCell.BorderWidthTop = 0;
                 detalle.DefaultCell.BorderWidthRight = 1;
-
+               
                 values = new float[7];
                 values[0] = 90;
 
@@ -597,8 +602,10 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
                     decimal total = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, item.total);
                     detalle.DefaultCell.HorizontalAlignment = 2; detalle.AddCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, total), fontText1));
-                }
 
+
+                }
+                detalle.DefaultCell.BorderWidthTop = 1;
                 document.Add(detalle);
 
 
@@ -628,17 +635,17 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 detainfotri2.WidthPercentage = 100;
                 cell = new PdfPCell();
 
-                cell = new PdfPCell(new Paragraph(Modelocomercial.letra_cambio1, fontText));
+                cell = new PdfPCell(new Paragraph(Modelocomercial.letra_cambio1, fontText2));
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
                 detainfotri2.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph(Modelocomercial.letra_cambio2, fontText));
+                cell = new PdfPCell(new Paragraph(Modelocomercial.letra_cambio2, fontText2));
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
                 detainfotri2.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph(Modelocomercial.letra_cambio3, fontText));
+                cell = new PdfPCell(new Paragraph(Modelocomercial.letra_cambio3, fontText2));
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
                 detainfotri2.AddCell(cell);
@@ -802,7 +809,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 iTextSharp.text.Image imagen2 = iTextSharp.text.Image.GetInstance(qr);
                 imagen2.Border = 0;
                 imagen2.Alignment = Element.ALIGN_RIGHT;
-                imagen2.ScaleAbsolute(80f, 80f);
+                imagen2.ScaleAbsolute(60f, 60f);
 
                 cell = new PdfPCell(imagen2);
                 cell.Border = 0;
@@ -832,6 +839,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
                 cell = new PdfPCell(detainfotri3);//this line made the difference
                 cell.Border = 0;
+                cell.HorizontalAlignment = 0;
                 cell.Colspan = 2;
                 infotri.AddCell(cell);
 
@@ -840,7 +848,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                
                 PdfPTable total20 = new PdfPTable(1);//cantidad de columnas que va tener la tabla
                 total20.WidthPercentage = 100;
-              //  total20.SpacingAfter = 10;
+               // total20.SpacingAfter = 10;
                 cell = new PdfPCell();
              
 
@@ -857,20 +865,21 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
                 total20.AddCell(cell);
                 total20.DefaultCell.Border = 0;
+         
                 document.Add(total20);
 
-                PdfPTable total21 = new PdfPTable(4);//cantidad de columnas que va tener la tabla
+                PdfPTable total21 = new PdfPTable(1);//cantidad de columnas que va tener la tabla
                 total21.WidthPercentage = 100;
-               // total21.SpacingAfter = 0;
+                total21.SpacingAfter = 10;
                 cell = new PdfPCell();
 
                 cell = new PdfPCell(new Paragraph(""));
                 cell.BorderWidthBottom = 0;
-                cell.BorderWidthLeft = 0;
+                cell.BorderWidthLeft = 1;
                 cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 0;
+                cell.BorderWidthRight = 1;
                 cell.HorizontalAlignment = 0;
-                cell.Colspan = 4;
+               // cell.Colspan = 4;
                 total21.AddCell(cell);
                 document.Add(total21);
 
@@ -999,6 +1008,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.Colspan = 2;
                 fin1.AddCell(cell);
 
+                //fin1.WriteSelectedRows(0, -1, document.LeftMargin, pw.PageSize.GetBottom(document.BottomMargin) - 5, pw.DirectContent);
                 document.Add(fin1);
 
                 //tabla pie de pagina principal
@@ -1035,6 +1045,33 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
                 guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "generarPdf", e.ToString(), DateTime.Today, Ccf_usuario);
                 return "No se pudo completar la acción." + "generarPdf." + " Por favor notificar al administrador.";
+            }
+        }
+
+    public  class HeaderFooter: PdfPageEventHelper
+        {
+            public override void OnEndPage(PdfWriter writer, Document document)
+            {
+                // base.OnEndPage(writer, document);
+                //Cabcera 
+                var path = HttpContext.Current.Server.MapPath("~/Tema/fonts/VerdanaVf.ttf");
+                BaseFont bf = BaseFont.CreateFont(path, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                iTextSharp.text.Font fontText = new iTextSharp.text.Font(bf, 9, iTextSharp.text.Font.NORMAL);
+                iTextSharp.text.Font fontText1 = new iTextSharp.text.Font(bf, 8, iTextSharp.text.Font.NORMAL);
+                iTextSharp.text.Font fontText2 = new iTextSharp.text.Font(bf, 6, iTextSharp.text.Font.NORMAL);
+
+                PdfPTable tbHeader = new PdfPTable(3);
+                tbHeader.TotalWidth = document.PageSize.Width - document.LeftMargin - document.RightMargin;
+                tbHeader.DefaultCell.Border = 0;
+                tbHeader.AddCell(new Paragraph());
+                tbHeader.AddCell(new Paragraph());
+                PdfPCell cell = new PdfPCell(new Paragraph("Página "+ writer.PageNumber, fontText2));
+                cell.HorizontalAlignment = Element.ALIGN_RIGHT;
+                cell.Border = 0;
+                tbHeader.AddCell(cell);
+                tbHeader.WriteSelectedRows(0, -1, document.LeftMargin, writer.PageSize.GetTop(document.TopMargin), writer.DirectContent);
+
+
             }
         }
 
