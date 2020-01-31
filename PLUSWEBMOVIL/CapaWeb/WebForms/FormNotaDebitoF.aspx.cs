@@ -1477,7 +1477,7 @@ namespace CapaWeb.WebForms
             }
 
 
-            ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C");
+            ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S");
             if (ListaSaldoFacturas.Count == 0)
             {
                 mensaje.Text = "El cliente no tiene notas de crédito disponibles";

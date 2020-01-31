@@ -17,14 +17,14 @@ namespace CapaProceso.Consultas
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
 
         //Saldos FACTURAS NORMALES VTA
-        public List<modeloSaldosFacturas> ConsultaFacturasVTASaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2)
+        public List<modeloSaldosFacturas> ConsultaFacturasVTASaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo)
         {
             try
             {
                 modeloFacturasElecSaldos modeloFacturasElecSaldos = new modeloFacturasElecSaldos();
                 List<modeloSaldosFacturas> lista = new List<modeloSaldosFacturas>();
                 List<modeloSaldosFacturas> listaAux = new List<modeloSaldosFacturas>();
-                lista = consultaSaldoa.ConsultaFacturasSaldos(Ccf_usuario, Ccf_cod_emp, Ccf_tipo1, Ccf_tipo2);
+                lista = consultaSaldoa.ConsultaFacturasSaldos(Ccf_usuario, Ccf_cod_emp, Ccf_tipo1, Ccf_tipo2, solo_saldo);
 
                 foreach (var item in lista)
                 {
@@ -65,7 +65,7 @@ namespace CapaProceso.Consultas
         }
 
         //Saldos sin restricciones
-        public List<modeloSaldosFacturas> BuscartaFacturaSaldos( string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2)
+        public List<modeloSaldosFacturas> BuscartaFacturaSaldos( string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace CapaProceso.Consultas
                 List<modeloSaldosFacturas> lista = new List<modeloSaldosFacturas>();
                 List<modeloSaldosFacturas> listaNroTrans = new List<modeloSaldosFacturas>();
                 List<modeloSaldosFacturas> listaAux = new List<modeloSaldosFacturas>();
-                lista = consultaSaldoa.ConsultaFacturasSaldos(Ccf_usuario, Ccf_cod_emp, Ccf_tipo1, Ccf_tipo2);
+                lista = consultaSaldoa.ConsultaFacturasSaldos(Ccf_usuario, Ccf_cod_emp, Ccf_tipo1, Ccf_tipo2, solo_saldo);
                 
                 foreach (var item in lista)
                 {

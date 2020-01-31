@@ -1318,7 +1318,7 @@ namespace CapaWeb.WebForms
             }
 
 
-            ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C");
+            ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C","S");
             ModeloSaldoFactura = null;
             foreach (modeloSaldosFacturas item in ListaSaldoFacturas)
             {

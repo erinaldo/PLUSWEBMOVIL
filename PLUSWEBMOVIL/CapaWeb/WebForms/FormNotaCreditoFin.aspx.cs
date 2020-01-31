@@ -1688,11 +1688,11 @@ namespace CapaWeb.WebForms
                 string tipo = Session["Ccf_tipo2"].ToString();
                 if (tipo == "NCVE")
                 {
-                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C");
+                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S");
                 }
                 else
                 {
-                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C");
+                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S");
                 }
                 ModeloSaldoFactura = null;
                 foreach (modeloSaldosFacturas item in ListaSaldoFacturas)

@@ -316,18 +316,18 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-
+                //nc por devolucion
                 if (Session["tipo_nc"].ToString() == "NCV")
                 {
 
-                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C");
+                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C","N");
                 }
 
                 else
 
                 {
 
-                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C");
+                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C","N");
                 }
                
 

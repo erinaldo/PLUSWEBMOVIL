@@ -143,7 +143,7 @@
                                 </td>
                                 <td>
                                     <label>
-                                        <asp:TextBox ID="txtcorreo"  type="email" required="required" title="correo@gmail.com" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" Width="202" class="textos" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtcorreo"  type="email" required="required" title="correo@gmail.com"  Width="202" class="textos" runat="server"></asp:TextBox>
 
                                     </label>
                                 </td>

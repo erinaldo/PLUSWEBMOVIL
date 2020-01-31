@@ -15,7 +15,7 @@ namespace CapaDatos.Sql.SqlNC
         public SqlConnection cn = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         //Saldos y totales de facturas en general sin restricciones
-        public List<modeloSaldosFacturas> ConsultaFacturasSaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2)
+        public List<modeloSaldosFacturas> ConsultaFacturasSaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo)
         {
             try
             {
@@ -29,7 +29,9 @@ namespace CapaDatos.Sql.SqlNC
                     conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = Ccf_cod_emp;
                     conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = Ccf_tipo1;
                     conmand.Parameters.Add("@tipo", SqlDbType.VarChar).Value = Ccf_tipo2;
-         
+                    conmand.Parameters.Add("@solo_saldo", SqlDbType.VarChar).Value = solo_saldo;
+                   
+
                     SqlDataReader dr = conmand.ExecuteReader();
 
                     while (dr.Read())

@@ -86,7 +86,7 @@
                                     <div align="left">Correo:</div>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txt_email_sucursal" type="email" title="email@hotmail.com"  pattern="^[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}*$" required="required"  class="textos" Width="200" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="txt_email_sucursal" type="email" title="email@hotmail.com"  required="required"  class="textos" Width="200" runat="server"></asp:TextBox>
 
                                 </td>
                             </tr>
