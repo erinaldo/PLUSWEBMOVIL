@@ -329,7 +329,7 @@ namespace CapaWeb.WebForms
                                     string pathXml = pathTemporal + nombreXml;
                                     File.WriteAllText(pathXml, StringXml);
 
-                                    if (conscabcera.tipo_nce != "")
+                                    if (conscabcera.tipo_nce =="NCVE" || conscabcera.tipo_nce == "NCME")
                                     {
                                         //Tipo NCE siempre trae lleno cuando es nc
                                         PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
@@ -339,6 +339,7 @@ namespace CapaWeb.WebForms
                                     }
                                     else
                                     {
+                                        Ccf_tipo2 = conscabcera.tipo_nce.Trim();
                                         PdfFacturaElectronica pdf = new PdfFacturaElectronica();
                                         pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Id.ToString());
                                     }

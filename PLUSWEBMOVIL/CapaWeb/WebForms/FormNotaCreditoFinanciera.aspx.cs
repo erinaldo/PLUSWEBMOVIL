@@ -1656,14 +1656,14 @@ namespace CapaWeb.WebForms
                 if (Session["Ccf_tipo2"].ToString() == "NCM")
                 {
 
-                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S");
+                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "N");
                 }
 
                 else
 
                 {
 
-                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S");
+                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "N");
                 }
 
                
@@ -1775,7 +1775,7 @@ namespace CapaWeb.WebForms
 
                             else
                             {
-                                /*Validar si el saldo de la factura */
+                                /*Validar si el saldo de la factura 
                                 decimal valorSaldo = Convert.ToDecimal(txt_saldo_factura.Text);
                                 decimal valorTotal = Convert.ToDecimal(txtSumaTotal.Text);
                                 if (valorTotal > valorSaldo)
@@ -1784,8 +1784,8 @@ namespace CapaWeb.WebForms
 
                                 }
                                 else
-                                {
-                                    string respuestaConfirmacionNC = "";
+                                {*/
+                                string respuestaConfirmacionNC = "";
                                     //Boton Coonfirmar hace lo mismo que el salvar solo aumenta la insercion a la tabla wmt_facturas_ins
                                     conscabcera = null;
                                     conscabcera = GuardarDetalle();
@@ -1854,7 +1854,7 @@ namespace CapaWeb.WebForms
                         }
 
 
-                    }
+                    //}
                 }
             }
             catch (Exception ex)

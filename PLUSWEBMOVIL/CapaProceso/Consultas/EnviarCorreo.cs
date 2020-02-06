@@ -43,7 +43,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "EnviarCorreo.cs", "buscarDatosHostEmpresa", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "EnviarCorreo.cs", "buscarDatosHostEmpresa", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }
@@ -56,19 +56,19 @@ namespace CapaProceso.Consultas
                 ModeloHost = null;
                 ModeloHost = buscarDatosHostEmpresa(cod_emp);
                 /*Datos desde la base de pw*/
-                string Usuario = ModeloHost.correo;
+               string Usuario = ModeloHost.correo;
                 string Contrasenia = ModeloHost.contrasenia;
                 string smtpHost = ModeloHost.smtp;
                 int puerto =ModeloHost.puerto;
                 bool ssl = false;
-                /*
-                 recuperar de base de tabla HostMail 
-                string Usuario = "prueba@cepes.ec";
-                 string Contrasenia = "Plus2019*";
-                 string smtpHost = "mail.cepes.ec";
-                 int puerto = 587;
-                 bool ssl = false;
-                 /* recuperar de base de tabla HostMail */
+
+                // recuperar de base de tabla HostMail 
+                /*   string Usuario = "prueba@cepes.ec";
+                   string Contrasenia = "Plus2019*";
+                   string smtpHost = "mail.cepes.ec";
+                   int puerto = 587;
+                   bool ssl = false;*/
+                /* recuperar de base de tabla HostMail */
 
                 email.From = new MailAddress(Usuario);
                 email.To.Add(new MailAddress(correo));
@@ -101,7 +101,7 @@ namespace CapaProceso.Consultas
             }
             catch (Exception e)
             {
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "EnviarCorreo.cs", " enviarcorreo", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "EnviarCorreo.cs", " enviarcorreo", e.ToString(), DateTime.Now, "consulta");
                 
                 return false;
             }

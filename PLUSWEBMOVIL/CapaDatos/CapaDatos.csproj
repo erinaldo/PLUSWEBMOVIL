@@ -57,6 +57,8 @@
     <Compile Include="Modelos\modeloFacturaPgs.cs" />
     <Compile Include="Modelos\modeloFacturasPagos.cs" />
     <Compile Include="Modelos\ModeloHost\modeloHostmail.cs" />
+    <Compile Include="Modelos\ModeloHost\modelowmm_correo.cs" />
+    <Compile Include="Modelos\ModeloHost\modelowmm_correo_receptor.cs" />
     <Compile Include="Modelos\modeloIngresoFacturas.cs" />
     <Compile Include="Modelos\modeloinsertarconfirmar.cs" />
     <Compile Include="Modelos\modeloMediosPago.cs" />

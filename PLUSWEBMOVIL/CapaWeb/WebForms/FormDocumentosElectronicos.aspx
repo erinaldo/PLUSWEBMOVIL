@@ -73,7 +73,7 @@
                            <td width="80%" class="busqueda">Tipo Documento:</td>
                           <td>
                               <asp:DropDownList ID="cbx_tipo_doc" Width="224px" class="textos" runat="server" Height="16px">
-                                  <asp:ListItem Value="VTA">Factura</asp:ListItem>
+                                  <asp:ListItem Value="VTAE">Factura</asp:ListItem>
                                   <asp:ListItem Value="NC">Nota Crédito</asp:ListItem>
                               </asp:DropDownList>
                           </td>

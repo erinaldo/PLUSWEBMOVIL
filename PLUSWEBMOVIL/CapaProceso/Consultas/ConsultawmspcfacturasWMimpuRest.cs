@@ -25,7 +25,26 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
                 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "ConsultawmspctctrxCotizacion.cs", "BuscarImpuestoRest", e.ToString(), DateTime.Today, usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "ConsultawmspctctrxCotizacion.cs", "BuscarImpuestoRest", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
+
+        public List<modelowmspcfacturasWMimpuRest> ImpuestosSinRetencion(string usuario, string cod_emp, string nro_trans, string impuesto, string autoret)
+        {
+            try
+            {
+               
+                List<modelowmspcfacturasWMimpuRest> listaAux = new List<modelowmspcfacturasWMimpuRest>();
+               
+                listaAux = consultaImpuesto.ListaImpuestosSinRetencion(usuario, cod_emp, nro_trans, impuesto,autoret);
+               
+                return listaAux;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "ConsultawmspctctrxCotizacion.cs", "ImpuestosSinRetencion", e.ToString(), DateTime.Now, usuario);
                 return null;
             }
         }

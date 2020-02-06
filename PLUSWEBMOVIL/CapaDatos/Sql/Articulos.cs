@@ -16,6 +16,7 @@ namespace CapaDatos.Sql
             public SqlConnection cn = null;            
             modelowmspcarticulos modeloarticulos = new modelowmspcarticulos();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        ValidarParametrizacionFactura conexion_erp = new ValidarParametrizacionFactura();
 
         public List<modelowmspcarticulos> ListaArticulos(string ArtB__usuario, string ArtB__cod_emp, string ArtB__articulo, string ArtB__tipo, string ArtB__compras, string ArtB__ventas)
         {
@@ -86,5 +87,37 @@ namespace CapaDatos.Sql
             }
         }
 
+        //Consulta ERP , periodo contable tabla(CmPrC)
+        public string UnidadMedida(string cod_emp, string usuario, string articulo)
+        {
+            try
+            {
+                string ConexionERP = conexion_erp.ConsultaConexionERP(cod_emp, usuario);
+                string unidad = "";
+                using (cn = conexion.genearConexionERP(ConexionERP))
+                {
+                    string consulta = ("SELECT ImRecUndS FROM ImRec WHERE ImRecCod =@articulo");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@articulo", SqlDbType.VarChar).Value = articulo;
+
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        unidad = Convert.ToString(dr["ImRecUndS"]);
+                    }
+                    return unidad;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "Articulos", "ValidarPeriodoContable", e.ToString(), DateTime.Now, usuario);
+                return "No se pudo completar la acción." + "ValidarPeriodoContable." + " Por favor notificar al administrador.";
+            }
         }
+
+    }
 }

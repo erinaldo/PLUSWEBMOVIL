@@ -40,12 +40,6 @@ namespace CapaProceso.RestCliente
                 Modelowmspclogo = null;
                 Modelowmspclogo = BuscarUsuarioLogo(Ccf_cod_emp, Ccf_usuario);
 
-
-                //StreamReader sr = new StreamReader("F:\\factura.txt");
-                // string contenido = sr.ReadToEnd();
-                //string jsonRes = contenido;
-                //sr.Close();
-
                 //Proporcionar credenciales
                 string username = Modelowmspclogo.username;
                 string password = Modelowmspclogo.password;
@@ -74,9 +68,7 @@ namespace CapaProceso.RestCliente
                 if (!jsonRespuestaDE.respuestaerror)//Si la factura no tiene errores
                 {
                     //Envia Pdf el pdf si es autorizado
-                    //sr = new StreamReader("F:\\pdf.txt");
-                    //contenido = sr.ReadToEnd();
-                    string jsonResPdf = "";
+                     string jsonResPdf = "";
                     //sr.Close();
 
                     string linkgenpdf = Modelowmspclogo.linkgenpdf;//Obtengo link para enviara pdf
@@ -90,15 +82,21 @@ namespace CapaProceso.RestCliente
                     //Consultar pdf, convertir a json
                     jsonResPdf = JsonConvert.SerializeObject(jsonFacturapdf.RespuestaJSONPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pdfBase64), Formatting.Indented);
 
-
-
-
                     //Envia el json armado para y obtiene la respuesta
                     jsonRespuestaDE = procesoRest.EnviarJSONDS(linkgenpdf, credentials, jsonResPdf);
                     /*Volver a preguntar si error es igul a nulo*/
                     if (jsonRespuestaDE.error.Trim() == null)
                     {
                         jsonRespuestaDE.error = "";
+                    }
+                    else
+                    {
+                        jsonRespuestaDE.jsonrRespuesta = "";
+                        jsonRespuestaDE.json = jsonResPdf;
+                        jsonRespuestaDE.nro_trans = Ccf_nro_trans;
+                        guardarResJson.InsertarRespuestaJsonDIANDS(jsonRespuestaDE);//Inserta la respuesta obtenida del servicio rest en la tabla
+
+                        return "Error al procesar nota de crédito, error DS";
                     }
 
                     if (jsonRespuestaDE.result.Trim() == null)
@@ -107,12 +105,10 @@ namespace CapaProceso.RestCliente
                     }
                     //PRUEBA JSON jsonrRespuesta
                    
-                        jsonRespuestaDE.jsonrRespuesta = "";
-                    
+                    jsonRespuestaDE.jsonrRespuesta = "";
                     jsonRespuestaDE.json = jsonResPdf;
                     jsonRespuestaDE.nro_trans = Ccf_nro_trans;
                     guardarResJson.InsertarRespuestaJsonDIANDS(jsonRespuestaDE);//Inserta la respuesta obtenida del servicio rest en la tabla
-
 
                     return "";
 
@@ -162,12 +158,6 @@ namespace CapaProceso.RestCliente
                 Modelowmspclogo = null;
                 Modelowmspclogo = BuscarUsuarioLogo(Ccf_cod_emp, Ccf_usuario);
 
-
-                //StreamReader sr = new StreamReader("F:\\factura.txt");
-                // string contenido = sr.ReadToEnd();
-                //string jsonRes = contenido;
-                //sr.Close();
-
                 //Proporcionar credenciales
                 string username = Modelowmspclogo.username;
                 string password = Modelowmspclogo.password;
@@ -208,9 +198,7 @@ namespace CapaProceso.RestCliente
                 }
                 //PRUEBA JSON jsonrRespuesta
                
-                    jsonRespuestaDE.jsonrRespuesta = "";
-                
-
+                jsonRespuestaDE.jsonrRespuesta = "";
                 jsonRespuestaDE.json = jsonResPdf;
                 jsonRespuestaDE.nro_trans = Ccf_nro_trans;
                 guardarResJson.InsertarRespuestaJsonDIANDS(jsonRespuestaDE);//Inserta la respuesta obtenida del servicio rest en la tabla
