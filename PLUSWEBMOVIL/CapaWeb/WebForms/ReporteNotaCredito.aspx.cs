@@ -79,9 +79,9 @@ namespace CapaWeb.WebForms
                       //Clase para pdf de cada empresa 
                     switch (Modelowmspclogo.pdf_nc.Trim())
                     {
-                        case "prueba":
+                        case "DEFECTO2":
 
-                            PdfNotaCredito pdf1 = new PdfNotaCredito();
+                            PdfNCV2Default2 pdf1 = new PdfNCV2Default2();
                             string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
                             Response.ContentType = "application/pdf";
                             Response.WriteFile(pathPdf1);
@@ -102,9 +102,9 @@ namespace CapaWeb.WebForms
                 {
                     switch (Modelowmspclogo.pdf_nc.Trim())
                     {
-                        case "prueba":
+                        case "DEFECTO2":
 
-                            PdfNotaCreditoElectronica pdf1 = new PdfNotaCreditoElectronica();
+                            PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
                             string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                             Response.ContentType = "application/pdf";
                             Response.WriteFile(pathPdf1);

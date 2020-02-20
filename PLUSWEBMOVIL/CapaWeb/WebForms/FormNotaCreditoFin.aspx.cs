@@ -180,6 +180,8 @@ namespace CapaWeb.WebForms
                         case "AFA":
                             try
                             {
+                                //TRX
+                                lbl_trans.Text = ConsultaNroTran.NroTrans(numerador);
                                 cargarListaDesplegables();
                                 Session.Remove("listaCliente");
                                 Session.Remove("listaFacturas");
@@ -205,17 +207,13 @@ namespace CapaWeb.WebForms
                                 Session.Remove("listaCliente");
                                 Session.Remove("valor_asignado");
                                 Session.Remove("Tipo");
+                              
                                 cargarListaDesplegables();
                                 DateTime hoy = DateTime.Today;
                                 fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
-
                                 //Consultar tasa de cambio
                                 ConsultarTasaCambioCanorus();
-                                /* ModeloRolMod = BuscarRolModificar( AmUsrLog, ComPwm, "VTA", "NA", "N");
-                                 if (ModeloRolMod.control_uso == "readonly=\"readonly\"")
-                                 {
-                                     precio.Enabled = false;
-                                 }*/
+
                                 break;
                             }
                             catch (Exception ex)
@@ -227,10 +225,11 @@ namespace CapaWeb.WebForms
                         case "UDP":
                             try
                             {
+                               
                                 Session.Remove("Tipo");
                                 Int64 id = Int64.Parse(qs["Id"].ToString());
                                 Session["valor_asignado"] = id.ToString();
-
+                                lbl_trans.Text = id.ToString();
                                 cargarListaDesplegables();
                                 LlenarFactura();
 
@@ -247,7 +246,7 @@ namespace CapaWeb.WebForms
                             {
                                 Int64 ide = Int64.Parse(qs["Id"].ToString());
                                 Session["valor_asignado"] = ide.ToString();
-
+                                lbl_trans.Text = ide.ToString();
                                 cargarListaDesplegables();
                                 LlenarFactura();
                                 BloquearNCVer();
@@ -480,6 +479,8 @@ namespace CapaWeb.WebForms
         protected void BloquearDatosFactura()
         {
             //Visible Datos Factura
+            lbl_trx_fac.Visible = true;
+            txt_nro_trans_padre.Visible = true;
             lbl_nro_factura.Visible = true;
             txt_nro_factura.Visible = true;
             lbl_subtotal_factura.Visible = true;
@@ -561,9 +562,10 @@ namespace CapaWeb.WebForms
             //botones
             AgregarNC.Enabled = false;
             Confirmar.Visible = false;
-            btnImpuestos.Enabled = false;
+            //btnImpuestos.Enabled = false;
             btnGuardarDetalle.Visible = false;
             btn_Fac.Enabled = false;
+
             //detalle producto
             txt_Codigo.Enabled = false;
             txt_Cantidad.Enabled = false;
@@ -1024,6 +1026,30 @@ namespace CapaWeb.WebForms
                 return null;
             }
         }
+
+        public modelowmtfacturascab Trans_Padre(string nro_trans)
+        {
+            try
+            {
+                lbl_error.Text = "";
+
+                listaConsCab = ConsultaCabe.ConsultaNCTransPadre(nro_trans);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
+
+                }
+                return conscabcera;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("Trans_Padre", ex.ToString());
+                return null;
+            }
+        }
         protected void LlenarFactura()
         {
             try
@@ -1031,9 +1057,10 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
                 //llenar formulario para la actualizacion de datos
 
-                string Ccf_nro_trans = Session["valor_asignado"].ToString();
-                conscabceraTipo = buscarTipoFac(Ccf_nro_trans);
+                string Ccf_nro_trans = lbl_trans.Text;
+                conscabceraTipo = Trans_Padre(Ccf_nro_trans);
                 Session["Ccf_tipo2"] = conscabceraTipo.tipo_nce.Trim();
+
                 listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 conscabcera = null;
                 foreach (modelowmtfacturascab item in listaConsCab)
@@ -1080,46 +1107,13 @@ namespace CapaWeb.WebForms
                 Session["sumaIva"] = Convert.ToString(conscabcera.iva);
                 Session["sumaTotal"] = Convert.ToString(conscabcera.total);
 
-
+                CargarCamposFactura(conscabceraTipo.nro_trans_padre);
                 //Carga detalle factura
                 string nro_trans = Ccf_nro_trans;
 
                 listaConsDetalle = ConsultaDeta.ConsultaDetalleFacura(nro_trans);
                 Session["detalle"] = listaConsDetalle;
 
-                //Consulta de bases e ivas
-               /* decimal baseiva19 = 0;
-                decimal iva19 = 0;
-                decimal baseiva15 = 0;
-                decimal iva15 = 0;
-                foreach (ModeloDetalleFactura item in listaConsDetalle)
-                {
-                    if (item.porc_iva == 19)
-                    {
-                        baseiva19 += item.base_iva;
-                        iva19 += item.valor_iva;
-                    }
-                    if (item.porc_iva == 5)
-                    {
-                        baseiva15 += item.base_iva;
-                        iva15 += item.valor_iva;
-                    }
-                }
-                decimal BaseIva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), baseiva19);
-                txtBaseIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), BaseIva19);
-                decimal Base15 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), baseiva15);
-                txtBase15.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Base15);
-                decimal Iva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), iva19);
-                txtIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Iva19);
-                decimal Iva15 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), iva15);
-                txtIva15.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Iva15);
-
-                //Llenar variables de seccion de bae e ivas
-
-                Session["sumaBase19"] = baseiva19;
-                Session["sumaBase15"] = baseiva15;
-                Session["sumaIva19"] = iva19;
-                Session["sumaIva15"] = iva15;*/
                 gv_Producto.DataSource = listaConsDetalle;
                 gv_Producto.DataBind();
                 gv_Producto.Height = 100;
@@ -1130,6 +1124,37 @@ namespace CapaWeb.WebForms
 
             }
 
+        }
+
+        public void CargarCamposFactura(string trx_factura)
+        {
+            DecimalesMoneda = null;
+            DecimalesMoneda = BuscarDecimales();
+            conscabceraTipo = null;
+            conscabceraTipo = Trans_Padre(trx_factura);
+            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, "0", trx_factura, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+            int count = 0;
+            conscabcera = null;
+            foreach (modelowmtfacturascab item in listaConsCab)
+            {
+                count++;
+                conscabcera = item;
+
+            }
+            /*Campos para insertar detalle de la nc*/
+            txt_nro_factura.Text = conscabcera.observacion;
+            txt_cod_docum.Text = conscabcera.cod_docum;
+            txt_serie_docum.Text = conscabcera.serie_docum;
+            txt_nro_docum.Text = conscabcera.nro_docum;
+            txt_nro_trans_padre.Text = conscabcera.nro_trans;
+           // lbl_tipo_fac.Text = conscabceraTipo.tipo_nce;
+            //Formato totales
+
+            txt_subtotal_factura.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.subtotal);
+            txt_total_factura.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.total);
+            txt_iva_factura.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.iva);
+            txt_descuento_factura.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.descuento);
+            BloquearDatosFactura();
         }
 
         public modeloCodProcesoFactura BuscarCodProceso(string cod_proceso)
@@ -1459,20 +1484,7 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-                if (Session["valor_asignado"] != null)
-                {
-                    GuardarCabezera.EliminarCabDetFactura(Session["valor_asignado"].ToString());
-                    valor_asignado = Session["valor_asignado"].ToString();
-                }
-                else
-                {
-                    //obtener numero de transaccion
-                    nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
-                    valor_asignado = nrotrans.valor_asignado;
-                    //Guardar N° transaccion 
-                    Session["valor_asignado"] = valor_asignado;
-                }
-
+              
                 DateTime Fecha = Convert.ToDateTime(fecha.Text);
                 //Obtener n° sucursal
                 ListaUsuSucursal = consultaUsuarioSucursal.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
@@ -1502,7 +1514,8 @@ namespace CapaWeb.WebForms
                 ModeloActualizarEmail.cod_tit = cliente.cod_tit.Trim();
                 ModeloActualizarEmail.parametro = "email";
                 ModeloActualizarEmail.valor = txtcorreo.Text;
-                //Envio de datos para actualizar email en RP  
+                 
+                ConsultaDatosTitular.ActualizarDatosTitulares(ModeloActualizarEmail); //Envio de datos para actualizar email en RP
                 cabecerafactura.cod_cliente = cliente.cod_tit;
                 cabecerafactura.dia = string.Format("{0:00}", Fecha.Day);
                 cabecerafactura.mes = string.Format("{0:00}", Fecha.Month);
@@ -1513,7 +1526,7 @@ namespace CapaWeb.WebForms
                 cabecerafactura.cod_vendedor = cod_vendedor.SelectedValue;
                 cabecerafactura.cod_fpago = cod_fpago.SelectedValue;
                 cabecerafactura.observaciones = area.Text;
-                cabecerafactura.nro_trans = valor_asignado;
+                cabecerafactura.nro_trans = lbl_trans.Text;
                 cabecerafactura.cod_emp = ComPwm;
                 cabecerafactura.cod_docum = "0";
                 cabecerafactura.nro_docum = "0";
@@ -1565,7 +1578,7 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
                 //Busca el nro de auditoria para poder insertar el detalle factura
                 //consulta nro_auditoria de la cabecera
-                string Ccf_nro_trans = valor_asignado;
+                string Ccf_nro_trans = lbl_trans.Text;
                 listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 int count = 0;
                 conscabcera = null;
@@ -1626,7 +1639,7 @@ namespace CapaWeb.WebForms
                         detallefactura.precio_unit = item.precio_unit;
                         detallefactura.base_imp = item.base_imp;
                         detallefactura.porc_iva = item.porc_iva;
-                        detallefactura.nro_trans = valor_asignado;
+                        detallefactura.nro_trans = lbl_trans.Text;
                         detallefactura.linea = contarLinea;
                         detallefactura.cod_emp = ComPwm;
                         detallefactura.cod_articulo = item.cod_articulo;
@@ -1748,6 +1761,8 @@ namespace CapaWeb.WebForms
         {
             try
             {
+                int contador = 0;
+                contador++;
                 lbl_error.Text = "";
                 //Consultar si el vendedor tiene asignada una sucursal
 
@@ -1786,6 +1801,9 @@ namespace CapaWeb.WebForms
                             }
                             else
                             {
+                              
+
+                                Confirmar.Enabled = false;
                                 string respuestaConfirmacionNC = "";
                                 //Boton Coonfirmar hace lo mismo que el salvar solo aumenta la insercion a la tabla wmt_facturas_ins
                                 conscabcera = null;
@@ -1825,7 +1843,8 @@ namespace CapaWeb.WebForms
                                     {
                                         mensaje.Text = "Su nota de crédito fue procesada exitosamente";
                                         Confirmar.Enabled = false;
-                                        GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
+                                        GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");//Actualiza NC a Finalizado
+                                        GuardarCabezera.ActualizarEstadoFactura(txt_nro_trans_padre.Text, "N");//Actualiza factura a Anulada
                                         Session.Remove("listaFacturas");
                                         Response.Redirect("FormBuscarNotaCredito.aspx");
 
@@ -1848,6 +1867,7 @@ namespace CapaWeb.WebForms
                             }
                             
                                 else {
+                                    GuardarCabezera.ActualizarEstadoFactura(txt_nro_trans_padre.Text, "N");//Actualiza factura a Anulada
                                     Session.Remove("listaFacturas");
                                     Response.Redirect("FormBuscarNotaCredito.aspx");
                                 }

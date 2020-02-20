@@ -58,8 +58,26 @@
        
     </script>
 
+      <script LANGUAGE="JavaScript">
 
-    <form id="form1" class="forms-sample" runat="server" method="post">
+var cuenta=0;
+
+function enviado() { 
+if (cuenta == 0)
+{
+cuenta++;
+return true;
+}
+else 
+{
+alert("La Factura ya ha sido enviado, espere por favor.");
+return false;
+}
+}
+// -->
+</script>
+
+    <form id="form1" class="forms-sample" runat="server" method="post" onSubmit="return enviado()">
         
        
         <div style="align-items: center">
@@ -232,6 +250,15 @@
 
                                     </label>
                                 </td>
+                                   <td align="right" valign="top" nowrap="nowrap" class="busqueda">
+                                    <div align="left">TRX:</div>
+                                </td>
+                                <td valign="top">
+                                    <label>
+                                       
+                                        <asp:Label ID="lbl_trans" class="textos"  Width="202" ReadOnly="true" runat="server"></asp:Label>
+                                    </label>
+                                </td>
                                </tr>
                             <tr>
                                 <td align="right" valign="top" nowrap="nowrap" class="busqueda">
@@ -306,6 +333,8 @@
 
                         <table border="0" id="MostrarDetalle" align="center" >
                 <tr>
+                    <td class="busqueda">
+                                    <asp:Label ID="Label13" class="busqueda" Visible="false" runat="server" Text="Label"></asp:Label></td>
                                  <td class="busqueda">
                                     <asp:Label ID="lblCod" class="busqueda" runat="server" Text="Label">Código</asp:Label></td>
                                 
@@ -324,6 +353,9 @@
                                 
                             </tr>
                             <tr>
+                                 <td>
+                                    <asp:TextBox ID="txt_linea" CssClass="textos" visible="false" runat="server"></asp:TextBox>
+                                  </td>
                                <td>
                                        <asp:TextBox ID="txt_Codigo"  CssClass="textos" placeholder="Buscar..."  AutoPostBack="True" OnTextChanged="BuscarArticulo_TextChanged" size="20" MaxLength="50" runat="server"></asp:TextBox>
                                 </td>
@@ -377,6 +409,14 @@
 
 
                                         <Columns>
+                                                <asp:TemplateColumn HeaderText="TRX" Visible="false" >
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="linea" runat="server" class="textos" Text='<%#Eval("linea") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+
                                             <asp:TemplateColumn HeaderText="Código" >
                                                 <ItemTemplate>
                                                     <span style="float: left;">
@@ -599,7 +639,7 @@
                                     <asp:Button ID="btnGuardarDetalle" Class="btnFactura1" visible="false" runat="server" OnClick="GuardarDetalle_Click"  Text="Salvar" />
                       
                                     <asp:Button ID="Cancelar" Class="btnFactura1"  runat="server" onclick="Cancelar_Click" UseSubmitBehavior="False" Text="Cancelar" />
-                                    <asp:Button ID="Confirmar"  Class="btnFactura1" runat="server"  OnClientClick="return confirm('¿Desea guardar la factura?');" OnClick="Confirmar_Click" Text="Confirmar" />
+                                    <asp:Button ID="Confirmar"  Class="btnFactura1" runat="server"  OnClick="Confirmar_Click" Text="Confirmar" />
                                     
                                
                                   </td>

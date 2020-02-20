@@ -873,13 +873,6 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 1;
                 pagos2.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("o consignar en", fontText));
-                cell.BorderWidthBottom = 0;
-                cell.BorderWidthLeft = 0;
-                cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 1;
-                cell.HorizontalAlignment = 1;
-                pagos2.AddCell(cell);
 
 
                 foreach (modelobancos item in ListaModelobancos)

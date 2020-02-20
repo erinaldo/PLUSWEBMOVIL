@@ -14,6 +14,81 @@ public class Numeradores
         public SqlConnection cn = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
 
+        public string NroTransaccion(string numerador)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    string Mnumerador =null;
+
+                    string insert = "UPDATE n SET n.valor_asignado = (SELECT SUM (valor_asignado + incremento)AS TotAcum FROM wm_numeradores  WHERE numerador = @numerador) FROM wm_numeradores n WHERE n.numerador = @numerador";
+
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+
+                    conmand.Parameters.Add("@numerador", SqlDbType.VarChar).Value = numerador;
+
+                    conmand.ExecuteNonQuery();
+
+
+                    string consulta = "SELECT TOP 1 *  FROM wm_numeradores WHERE numerador = @numerador";
+                    conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@numerador", SqlDbType.VarChar).Value = numerador;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+
+                        Mnumerador= Convert.ToString(dr["valor_asignado"]);
+                    }
+
+                    return Mnumerador;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", "Numeradores.cs", "ConsultaNroTransaccion", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
+
+        }
+        //-------------------------SP NUMERADOR PARA LA FACTURA TRX----------------------//
+        public string SPNumerador(string numerador)
+        {
+            try
+            {
+                
+                using (cn = conexion.genearConexion())
+                {
+                    string TRX ="";
+                    string consulta = ("numerador");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.CommandType = CommandType.StoredProcedure;
+
+                    conmand.Parameters.Add("@numerador", SqlDbType.VarChar).Value = numerador;
+                    conmand.Parameters.Add("@valor", SqlDbType.VarChar).Value = "0";
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        TRX = Convert.ToString(dr["valor"]);
+                    }
+                    return TRX;
+                    }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", "Numeradores.cs", "ConsultaNroTransaccion", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
+
+        }
         /*Consultamos el nro_trans de la tabla numeradores para la factura*/
         public modelonumerador ConsultaNroTransaccion(string numerador)
         {

@@ -41,6 +41,7 @@ namespace CapaWeb.WebForms
         Cosnsultawmspcarticulos ConsultaArticulo = new Cosnsultawmspcarticulos();
         List<modelowmspcarticulos> listaArticulos = null;
         modelowmspcarticulos articulo = new modelowmspcarticulos();
+        modelowmspcarticulos recursos_ncf = new modelowmspcarticulos();
 
 
         Consultawmsptitulares ConsultaTitulares = new Consultawmsptitulares();
@@ -207,6 +208,8 @@ namespace CapaWeb.WebForms
                         case "INS":
                             try
                             {
+                                //TRX
+                                lbl_trans.Text = ConsultaNroTran.NroTrans(numerador);
                                 Session.Remove("listaCliente");
                                 Session.Remove("valor_asignado");
                                 Session.Remove("Tipo");
@@ -220,10 +223,10 @@ namespace CapaWeb.WebForms
                                 ConsultarTasaCambioCanorus();
                                 SetearCampos();
 
-                                /* ModeloRolMod = BuscarRolModificar( AmUsrLog, ComPwm, "VTA", "NA", "N");
+                                /*ModeloRolMod = BuscarRolModificar( AmUsrLog, ComPwm, "VTA", "NA", "N");
                                  if (ModeloRolMod.control_uso == "readonly=\"readonly\"")
                                  {
-                                     precio.Enabled = false;
+                                     txt_Precio.Enabled = false;
                                  }*/
                                 break;
                             }
@@ -239,7 +242,7 @@ namespace CapaWeb.WebForms
                                 Session.Remove("Tipo");
                                 Int64 id = Int64.Parse(qs["Id"].ToString());
                                 Session["valor_asignado"] = id.ToString();
-                                txt_nro_trans_padre.Text = id.ToString();
+                                lbl_trans.Text = id.ToString();
                                 cargarListaDesplegables();
                                 LlenarFactura();
 
@@ -256,7 +259,7 @@ namespace CapaWeb.WebForms
                             {
                                 Int64 ide = Int64.Parse(qs["Id"].ToString());
                                 Session["valor_asignado"] = ide.ToString();
-
+                                lbl_trans.Text = ide.ToString();
                                 cargarListaDesplegables();
                                 LlenarFactura();
                                 BloquearNCVer();
@@ -332,6 +335,7 @@ namespace CapaWeb.WebForms
                     txt_serie_docum.Text = conscabcera.serie_docum;
                     txt_nro_docum.Text = conscabcera.nro_docum;
                     txt_nro_trans_padre.Text = conscabcera.nro_trans;
+                    lbl_tipo_fac.Text = conscabcera.tipo_nce;
                     //Formato totales
 
                     txt_subtotal_factura.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.subtotal);
@@ -348,6 +352,10 @@ namespace CapaWeb.WebForms
 
 
                 }
+                if (Session["saldoFacturas"] != null)
+                {
+                    txt_saldo_factura.Text = Session["saldoFacturas"].ToString();
+                }
 
 
                 ConsultarTasaCambioCanorus();
@@ -358,6 +366,59 @@ namespace CapaWeb.WebForms
             }
 
 
+        }
+        public void CargarCamposFactura(string trx_factura)
+        {
+            DecimalesMoneda = null;
+            DecimalesMoneda = BuscarDecimales();
+            conscabceraTipo = null;
+            conscabceraTipo = Trans_Padre(trx_factura);
+
+            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, "0", trx_factura, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+            int count = 0;
+            conscabcera = null;
+            foreach (modelowmtfacturascab item in listaConsCab)
+            {
+                count++;
+                conscabcera = item;
+
+            }
+            /*Campos para insertar detalle de la nc*/
+            txt_nro_factura.Text = conscabcera.observacion;
+            txt_cod_docum.Text = conscabcera.cod_docum;
+            txt_serie_docum.Text = conscabcera.serie_docum;
+            txt_nro_docum.Text = conscabcera.nro_docum;
+            txt_nro_trans_padre.Text = conscabcera.nro_trans;
+            lbl_tipo_fac.Text = conscabceraTipo.tipo_nce;
+
+            //saldo factura
+            if (Session["Ccf_tipo2"].ToString() == "NCV")
+            {
+
+                ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, conscabcera.cod_cliente, "C", "N");
+            }
+
+            else
+
+            {
+
+                ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, conscabcera.cod_cliente, "C", "N");
+            }
+            foreach (var item in ListaSaldoFacturas)
+            {
+                if (item.nro_trans == txt_nro_trans_padre.Text)
+                {
+                    txt_saldo_factura.Text = Convert.ToString(item.saldo);
+                }
+            }
+
+            //Formato totales
+
+            txt_subtotal_factura.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.subtotal);
+            txt_total_factura.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.total);
+            txt_iva_factura.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.iva);
+            txt_descuento_factura.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, conscabcera.descuento);
+            BloquearDatosFactura();
         }
         public void GuardarExcepciones(string metodo, string error)
         {
@@ -392,6 +453,8 @@ namespace CapaWeb.WebForms
         protected void BloquearDatosFactura()
         {
             //Visible Datos Factura
+            lbl_trx_padre.Visible = true;
+            txt_nro_trans_padre.Visible = true;
             lbl_nro_factura.Visible = true;
             txt_nro_factura.Visible = true;
             lbl_subtotal_factura.Visible = true;
@@ -441,6 +504,7 @@ namespace CapaWeb.WebForms
         protected void BloquearNCVer()
         {
             //inhabilitar cajas de texto cabecera factura
+            txt_Descripcion2.Enabled = false;
             dniCliente.Enabled = false;
             nombreCliente.Enabled = false;
             fonoCliente.Enabled = false;
@@ -467,7 +531,7 @@ namespace CapaWeb.WebForms
             //botones
             AgregarNC.Enabled = false;
             Confirmar.Visible = false;
-            btnImpuestos.Enabled = false;
+            //btnImpuestos.Enabled = false;
             btnGuardarDetalle.Visible = false;
             btn_Fac.Enabled = false;
             //detalle producto
@@ -647,133 +711,36 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-
-                if (Session["detalle"] != null)
+                //consultar con nro_trans, linea
+                txt_linea.Text = Convert.ToString(((Label)e.Item.Cells[0].FindControl("linea")).Text);
+                listaConsDetalle = ConsultaDeta.ConsultaDetalleFacuraLinea(lbl_trans.Text, txt_linea.Text);
+                detallefactura = null;
+                foreach (ModeloDetalleFactura item in listaConsDetalle)
                 {
-                    ModeloDetalleFactura detalle = new ModeloDetalleFactura();
-                    ModeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);// tomo la variable de secion 
-                    foreach (var item in ModeloDetalleFactura)
-                    {
-                        if (item.cod_articulo == Convert.ToString(((Label)e.Item.Cells[2].FindControl("cod_articulo")).Text))// comparo si la lista el cosigo de producto es igual al selecionado
-                        {
-                            detalle = item; // saco el item seleccionado
-                            break;
-                        }
-                    }
-                    //Consultamos cuantos descimales se van a usar redondeo
-                    DecimalesMoneda = null;
-                    DecimalesMoneda = BuscarDecimales();
+                    detallefactura = item;
 
-                    switch (e.CommandName) //ultilizo la variable para la opcion            
+                }
+
+                switch (e.CommandName) //ultilizo la variable para la opcion            
                     {
                         case "Editar":// lleno las cajas de texto con los datos para la edicon del item seleccionado
-                            txt_Codigo.Text = detalle.cod_articulo;
-                            txt_Descripcion.Text = detalle.nom_articulo;
-                            txt_Cantidad.Text = Convert.ToString(detalle.cantidad);
-                            txt_Desc.Text = Convert.ToString(detalle.porc_descto);
-                            txt_Precio.Text = Convert.ToString(detalle.precio_unit);
-                            txt_Iva.Text = detalle.porc_iva.ToString();
+                        txt_Codigo.Text = detallefactura.cod_articulo;
+                        txt_Descripcion.Text = detallefactura.nom_articulo;
+                        txt_Descripcion2.Text = detallefactura.nom_articulo2;
+                        txt_Cantidad.Text = String.Format("{0:N}", Math.Round(Convert.ToDecimal(detallefactura.cantidad), 0)).ToString();
+                        txt_Desc.Text = String.Format("{0:N}", Math.Round(Convert.ToDecimal(detallefactura.porc_descto), 2)).ToString();
+                        txt_Precio.Text = detallefactura.precio_unit.ToString();
+                        txt_Iva.Text = String.Format("{0:N}", Math.Round(Convert.ToDecimal(detallefactura.porc_iva), 2)).ToString();
 
-                            break;
+                        break;
 
                         case "Eliminar":
-                            /*Eliminar item de la grilla*/
-
-                            //Eliminar Total
-                            if (Session["sumaTotal"] != null)
-                            {
-                                sumaTotal = Convert.ToDecimal(Session["sumaTotal"]);
-                            }
-
-                            sumaTotal -= Convert.ToDecimal(detalle.total);
-                            Session["sumaTotal"] = sumaTotal.ToString();
-                            txtSumaTotal.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, sumaTotal);
-                            //base iva 19 totales
-
-                            if (Session["sumaBase19"] != null)
-                            {
-                                sumaBase19 = Convert.ToDecimal(Session["sumaBase19"]);
-                            }
-                            if (Math.Round(detalle.porc_iva, 0).ToString() == "19")
-                            {
-                                sumaBase19 -= detalle.subtotal;
-                                Session["sumaBase19"] = sumaBase19.ToString();
-                                txtBaseIva19.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, sumaBase19);
-                            }
-                            //base iva 15 totales
-
-                            if (Session["sumaBase15"] != null)
-                            {
-                                sumaBase15 = Convert.ToDecimal(Session["sumaBase15"]);
-                            }
-                            if (Math.Round(detalle.porc_iva, 0).ToString() == "5")
-                            {
-                                sumaBase15 -= detalle.subtotal;
-                                Session["sumaBase15"] = sumaBase15.ToString();
-                                txtBase15.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, sumaBase15);
-                            }
-                            //iva 19% totales
-
-                            if (Session["sumaIva19"] != null)
-                            {
-                                sumaIva19 = Convert.ToDecimal(Session["sumaIva19"]);
-                            }
-                            if (Math.Round(detalle.porc_iva, 0).ToString() == "19")
-                            {
-                                sumaIva19 -= detalle.detaiva;
-                                Session["sumaIva19"] = sumaIva19.ToString();
-                                txtIva19.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, sumaIva19);
-                            }
-                            //iva 15% totales
-
-                            if (Session["sumaIva15"] != null)
-                            {
-                                sumaIva15 = Convert.ToDecimal(Session["sumaIva15"]);
-                            }
-                            if (Math.Round(detalle.porc_iva, 0).ToString() == "5")
-                            {
-                                sumaIva15 -= detalle.detaiva;
-                                Session["sumaIva15"] = sumaIva15.ToString();
-                                txtIva15.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, sumaIva15);
-                            }
-                            //Eliminar Subtotal
-                            if (Session["sumaSubtotal"] != null)
-                            {
-                                sumaSubtotal = Convert.ToDecimal(Session["sumaSubtotal"]);
-                            }
-
-                            sumaSubtotal -= Convert.ToDecimal(detalle.subtotal);
-                            Session["sumaSubtotal"] = sumaSubtotal.ToString();
-                            txtSumaSubTo.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, sumaSubtotal);
-
-                            //Eliminar Descuento
-                            if (Session["sumaDescuento"] != null)
-                            {
-                                sumaDescuento = Convert.ToDecimal(Session["sumaDescuento"]);
-                            }
-                            sumaDescuento -= Convert.ToDecimal(detalle.detadescuento);
-                            Session["sumaDescuento"] = sumaDescuento.ToString();
-                            txtSumaDesc.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, sumaDescuento);
-                            //Eliminar Iva
-                            if (Session["sumaIva"] != null)
-                            {
-                                sumaIva = Convert.ToDecimal(Session["sumaIva"]);
-                            }
-                            sumaIva -= Convert.ToDecimal(detalle.detaiva);
-                            Session["sumaIva"] = sumaIva.ToString();
-                            txtSumaIva.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, sumaIva);
-                            //Eliminar base 19 y 15
-
-
-
-                            ModeloDetalleFactura.RemoveAt(e.Item.ItemIndex);
-                            Session["detalle"] = ModeloDetalleFactura;
-                            ModeloDetalleFactura = (Session["detalle"] as List<ModeloDetalleFactura>);
-                            gv_Producto.DataSource = ModeloDetalleFactura;
-                            gv_Producto.DataBind();
-                            break;
+                        GuardarDetalles.EliminarDetalleFactura(lbl_trans.Text.Trim(), txt_linea.Text, ComPwm, AmUsrLog);
+                        TraeDetalleFactura();
+                        txt_linea.Text = "";
+                        break;
                     }
-                }
+                
             }
             catch (Exception ex)
             {
@@ -850,9 +817,11 @@ namespace CapaWeb.WebForms
             {
 
                 lbl_error.Text = "";
+                DecimalesMoneda = null;
+                DecimalesMoneda = BuscarDecimales();
                 //llenar formulario para la actualizacion de datos
-                string Ccf_nro_trans = Session["valor_asignado"].ToString();
-                conscabceraTipo = buscarTipoFac(Ccf_nro_trans);
+                string Ccf_nro_trans = lbl_trans.Text;
+                conscabceraTipo = Trans_Padre(Ccf_nro_trans);
                 Session["Ccf_tipo2"] = conscabceraTipo.tipo_nce.Trim();
                 listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 int count = 0;
@@ -899,47 +868,15 @@ namespace CapaWeb.WebForms
                 Session["sumaDescuento"] = Convert.ToString(conscabcera.descuento);
                 Session["sumaIva"] = Convert.ToString(conscabcera.iva);
                 Session["sumaTotal"] = Convert.ToString(conscabcera.total);
-
+                //Cargar datos factura
+                //traer nro trans factura
+                CargarCamposFactura(conscabceraTipo.nro_trans_padre);
 
                 //Carga detalle factura
                 string nro_trans = Ccf_nro_trans;
 
                 listaConsDetalle = ConsultaDeta.ConsultaDetalleFacura(nro_trans);
                 Session["detalle"] = listaConsDetalle;
-
-                //Consulta de bases e ivas
-              /*  decimal baseiva19 = 0;
-                decimal iva19 = 0;
-                decimal baseiva15 = 0;
-                decimal iva15 = 0;
-                foreach (ModeloDetalleFactura item in listaConsDetalle)
-                {
-                    if (item.porc_iva == 19)
-                    {
-                        baseiva19 += item.base_iva;
-                        iva19 += item.valor_iva;
-                    }
-                    if (item.porc_iva == 5)
-                    {
-                        baseiva15 += item.base_iva;
-                        iva15 += item.valor_iva;
-                    }
-                }
-                decimal BaseIva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), baseiva19);
-                txtBaseIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), BaseIva19);
-                decimal Base15 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), baseiva15);
-                txtBase15.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Base15);
-                decimal Iva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), iva19);
-                txtIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Iva19);
-                decimal Iva15 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), iva15);
-                txtIva15.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Iva15);
-
-                //Llenar variables de seccion de bae e ivas
-
-                Session["sumaBase19"] = baseiva19;
-                Session["sumaBase15"] = baseiva15;
-                Session["sumaIva19"] = iva19;
-                Session["sumaIva15"] = iva15;*/
                 gv_Producto.DataSource = listaConsDetalle;
                 gv_Producto.DataBind();
                 gv_Producto.Height = 100;
@@ -1127,7 +1064,7 @@ namespace CapaWeb.WebForms
         {
 
             listaConsCab = null;
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), valor_asignado, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), lbl_trans.Text, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
 
             conscabcera = null;
             foreach (modelowmtfacturascab item in listaConsCab)
@@ -1264,65 +1201,212 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-                /*
-                 ---Comparar cantidades antes de agregar
-                 decimal cant_act = Convert.ToDecimal(txt_Cantidad.Text); Cantidad colocada en el monento
-                 decimal cant_ant = Convert.ToDecimal(txt_cantidad_pro.Text); Cant qu trae del detalle de la factura
-                 */
-                listaCantNCTotales = ConsultaDeta.ConsultaCantidadesNCDev(ComPwm, txt_nro_docum.Text, txt_serie_docum.Text, txt_Codigo.Text);
-                foreach (ModeloDetalleFactura item in listaCantNCTotales)
-                {
+                ValidarParametrosFactura();
+                //Mostrar grilla y guardar con estado P
+                InsertarCabeceraSL();
+                InsertarDetalleSL();
+                BloquearCabeceraNC();//Bloquear cabecera NC
+                TraeDetalleFactura();
 
-                    consCantNC = item;
 
-                }
-                decimal cant_act = Convert.ToDecimal(txt_Cantidad.Text);
-                decimal cant_ant = Convert.ToDecimal(txt_cantidad_pro.Text);
-                if (listaCantNCTotales.Count == 0)
-                {
-
-                    if (cant_act > cant_ant)
-                    {
-                        this.Page.Response.Write("<script language='JavaScript'>window.alert('La cantidad de devolución, no puede ser mayor que la cantidad de compra de producto ')+ error;</script>");
-                    }
-                    else
-                    {
-                        //Buscar Datos de parametrizacion------periodo contable
-                        ValidarParametrosFactura();
-                        //Mostrar grilla y guardar con estado P
-                        AgregarDetalleNotaCredito(); //Calcula totales y agrega a grilla
-                        GuardarDetalle(); //Guarda cabecera y detalle con estado P
-                        BloquearCabeceraNC();//Bloquear cabecera NC
-                        TraeDetalleFactura();
-                    }
-                }
-
-                else
-                {
-                    //Comparar cantidades  Cantidad vendida - Cantidad devuelta 
-                    decimal CompararValores = cant_ant - consCantNC.cantidad;
-                    if (cant_act > CompararValores || cant_ant == consCantNC.cantidad)
-                    {
-                        this.Page.Response.Write("<script language='JavaScript'>window.alert('La cantidad de devolución, no puede ser mayor que la cantidad de compra de producto ')+ error;</script>");
-                    }
-                    else
-                    {
-                        //Buscar Datos de parametrizacion------periodo contable
-                        ValidarParametrosFactura();
-                        //Mostrar grilla y guardar con estado P
-                        AgregarDetalleNotaCredito(); //Calcula totales y agrega a grilla
-                        GuardarDetalle(); //Guarda cabecera y detalle con estado P
-
-                        BloquearCabeceraNC();//Bloquear cabecera NC
-                        TraeDetalleFactura();
-
-                    }
-                }
             }
             catch (Exception ex)
             {
                 GuardarExcepciones("AgregarNC_Click", ex.ToString());
 
+            }
+        }
+
+        //Prueba cabcera sinn lista
+        public void InsertarCabeceraSL()
+        {
+            try
+            {
+
+                lbl_error.Text = "";
+                DateTime Fecha = Convert.ToDateTime(fecha.Text);
+                //Obtener n° sucursal
+                ListaUsuSucursal = consultaUsuarioSucursal.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
+                ModeloUsuSucursal = null;
+                foreach (modeloUsuariosucursal items in ListaUsuSucursal)
+                {
+                    ModeloUsuSucursal = items;
+                    break;
+                }
+
+                //obtener cliente
+                string error = "";
+                string Ven__cod_tit = dniCliente.Text;
+
+                lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+
+                cliente = null;
+                foreach (modelowmspctitulares item in lista)
+                {
+                    cliente = item;
+                    break;
+                }
+
+                //Procedimiento para actualizar email del titular
+                ModeloActualizarEmail.usuario = AmUsrLog;
+                ModeloActualizarEmail.empresa = ComPwm;
+                ModeloActualizarEmail.cod_tit = cliente.cod_tit.Trim();
+                ModeloActualizarEmail.parametro = "email";
+                ModeloActualizarEmail.valor = txtcorreo.Text;
+                //Envio de datos para actualizar email en RP  
+                ConsultaDatosTitular.ActualizarDatosTitulares(ModeloActualizarEmail);
+
+                //Consultar si ya existe la cabecera con lbl_trans
+                Boolean Cabecera = false;
+                Cabecera = GuardarCabezera.ConsultaSNCabFactura(lbl_trans.Text, ComPwm, AmUsrLog);
+
+                if (Cabecera == true) //Actulizar
+                {
+                    valor_asignado = lbl_trans.Text.Trim();
+                    //----------------------------------ACTUALIZA CABECERA-------------------------//
+                    cabecerafactura.cod_cliente = cliente.cod_tit;
+                    cabecerafactura.dia = string.Format("{0:00}", Fecha.Day);
+                    cabecerafactura.mes = string.Format("{0:00}", Fecha.Month);
+                    cabecerafactura.anio = Fecha.Year.ToString();
+                    cabecerafactura.fec_doc = fecha.Text;
+                    cabecerafactura.serie_docum = serie_docum.SelectedValue;
+                    cabecerafactura.cod_ccostos = cod_costos.SelectedValue;
+                    cabecerafactura.cod_vendedor = cod_vendedor.SelectedValue;
+                    cabecerafactura.cod_fpago = cod_fpago.SelectedValue;
+                    cabecerafactura.observaciones = area.Text;
+                    cabecerafactura.nro_trans = valor_asignado;
+                    cabecerafactura.cod_emp = ComPwm;
+                    cabecerafactura.usuario_mod = AmUsrLog;
+                    cabecerafactura.ocompra = ocompra.Text;
+                    cabecerafactura.cod_moneda = cmbCod_moneda.SelectedValue;
+                    cabecerafactura.diar = "0";
+                    cabecerafactura.mesr = "0";
+                    cabecerafactura.anior = "0";
+                    cabecerafactura.cod_sucursal = ModeloUsuSucursal.cod_sucursal;
+                    cabecerafactura.nro_pedido = nro_pedido.Text;
+                    cabecerafactura.nro_trans_padre = txt_nro_trans_padre.Text;
+                    cabecerafactura.mot_nce = "1";
+
+                    error = GuardarCabezera.ActualizarCabeceraNC(cabecerafactura);
+                    if (string.IsNullOrEmpty(error))
+                    {
+
+                    }
+                    else
+                    {
+                        Session["cabecera"] = cabecerafactura;
+                    }
+                }
+                else
+                { //Insertar
+                    //obtener numero de transaccion
+                    valor_asignado = lbl_trans.Text.Trim();
+                    //Guardar N° transaccion 
+                    Session["valor_asignado"] = valor_asignado;
+                    //------------------------INSERTAR CABCERA--------------------//
+                    cabecerafactura.cod_cliente = cliente.cod_tit;
+                    cabecerafactura.dia = string.Format("{0:00}", Fecha.Day);
+                    cabecerafactura.mes = string.Format("{0:00}", Fecha.Month);
+                    cabecerafactura.anio = Fecha.Year.ToString();
+                    cabecerafactura.fec_doc = fecha.Text;
+                    cabecerafactura.serie_docum = serie_docum.SelectedValue;
+                    cabecerafactura.cod_ccostos = cod_costos.SelectedValue;
+                    cabecerafactura.cod_vendedor = cod_vendedor.SelectedValue;
+                    cabecerafactura.cod_fpago = cod_fpago.SelectedValue;
+                    cabecerafactura.observaciones = area.Text;
+                    cabecerafactura.nro_trans = valor_asignado;
+                    cabecerafactura.cod_emp = ComPwm;
+                    cabecerafactura.cod_docum = "0";
+                    cabecerafactura.nro_docum = "0";
+                    cabecerafactura.subtotal = Convert.ToDecimal("0.00");
+                    cabecerafactura.iva = Convert.ToDecimal("0.00");
+                    cabecerafactura.monto_imponible = Convert.ToDecimal("0.00");
+                    cabecerafactura.total = Convert.ToDecimal("0.00");
+                    cabecerafactura.estado = "P";
+                    cabecerafactura.usuario_mod = AmUsrLog;
+                    cabecerafactura.nro_audit = "0"; // por defecto va cero s disapra triger
+                    cabecerafactura.ocompra = ocompra.Text;
+                    cabecerafactura.cod_moneda = cmbCod_moneda.SelectedValue;
+                    cabecerafactura.tipo = Session["Ccf_tipo2"].ToString(); //"NCVE";
+                    cabecerafactura.porc_descto = Convert.ToDecimal("0.00");
+                    cabecerafactura.descuento = Convert.ToDecimal("0.00");
+                    cabecerafactura.diar = "0";
+                    cabecerafactura.mesr = "0";
+                    cabecerafactura.anior = "0";
+                    cabecerafactura.cod_proc_aud = "RCOMNCRED";
+                    cabecerafactura.cod_sucursal = ModeloUsuSucursal.cod_sucursal;
+                    cabecerafactura.nro_pedido = nro_pedido.Text;
+                    cabecerafactura.nro_trans_padre = txt_nro_trans_padre.Text;
+                    //cabecerafactura.tipo_nce = "NCDE";
+                    cabecerafactura.mot_nce = "1"; //Motivo NC para DS 1 por devolucion
+                    error = GuardarCabezera.InsertarCabezeraNotaCredito(cabecerafactura);
+                    if (string.IsNullOrEmpty(error))
+                    {
+
+                    }
+                    else
+                    {
+                        Session["cabecera"] = cabecerafactura;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("InsertarCabeceraSL", ex.ToString());
+
+            }
+        }
+
+        public void InsertarDetalleSL()
+        {
+            try
+            {
+                lbl_error.Text = "";
+
+                articulo = null;
+                articulo = BuscarProducto(txt_Codigo.Text);
+
+
+                string linea_nueva = null; //ultimalinea
+                                           //CONSULTAR Y VERIFICAR SI EXISTE O NO EL DETALLE
+                                           //verificar si es insert, update
+                if (txt_linea.Text == null || txt_linea.Text == "")
+                {
+
+                    linea_nueva = GuardarDetalles.UltimaLinea(lbl_trans.Text.Trim(), ComPwm, AmUsrLog);
+                    if (linea_nueva == null)//Primera insercion
+                    {
+                        int linea_detalle = Convert.ToInt32(linea_nueva) + 1;
+                        GuardarDetalles.InsertarDetalleNCSL(txt_cod_docum.Text, txt_nro_docum.Text, txt_serie_docum.Text, txt_Descripcion.Text, txt_Descripcion2.Text, Convert.ToDecimal(txt_Cantidad.Text), Convert.ToDecimal(txt_Precio.Text), Convert.ToDecimal(articulo.porc_aiu), Convert.ToDecimal(txt_Iva.Text), lbl_trans.Text.Trim(), linea_detalle, ComPwm, txt_Codigo.Text, articulo.cod_concepret, Convert.ToDecimal(txt_Desc.Text), 0, articulo.cod_cta_vtas,
+                        articulo.cod_cta_cos, articulo.cod_cta_inve, AmUsrLog, "0", DateTime.Now, articulo.cod_tasa_impu, cod_costos.SelectedValue);
+                    }
+                    else
+                    { //si ya existen registros
+                        int linea_detalle = Convert.ToInt32(linea_nueva) + 1;
+                        GuardarDetalles.InsertarDetalleNCSL(txt_cod_docum.Text, txt_nro_docum.Text, txt_serie_docum.Text, txt_Descripcion.Text, txt_Descripcion2.Text, Convert.ToDecimal(txt_Cantidad.Text), Convert.ToDecimal(txt_Precio.Text), Convert.ToDecimal(articulo.porc_aiu), Convert.ToDecimal(txt_Iva.Text), lbl_trans.Text.Trim(), linea_detalle, ComPwm, txt_Codigo.Text, articulo.cod_concepret, Convert.ToDecimal(txt_Desc.Text), 0, articulo.cod_cta_vtas,
+                        articulo.cod_cta_cos, articulo.cod_cta_inve, AmUsrLog, "0", DateTime.Now, articulo.cod_tasa_impu, cod_costos.SelectedValue);
+
+                    }
+                }
+                else
+                {
+                    //Actualizacion de producto
+                    GuardarDetalles.ActualizarDetalleFacturaNCSL(txt_Descripcion2.Text, Convert.ToDecimal(txt_Cantidad.Text), Convert.ToDecimal(txt_Precio.Text), lbl_trans.Text.Trim(), Convert.ToInt32(txt_linea.Text), ComPwm, Convert.ToDecimal(txt_Desc.Text), AmUsrLog, cod_costos.SelectedValue);
+
+                }
+                txt_linea.Text = "";
+                txt_Codigo.Text = "";
+                txt_Descripcion.Text = "";
+                txt_Descripcion2.Text = "";
+                txt_Precio.Text = "0";
+                txt_Iva.Text = "0";
+                txt_Desc.Text = "0";
+                txt_Cantidad.Text = "1";
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("InsertarDetalleSL", ex.ToString());
+                //return null;
             }
         }
         public void AgregarCabeceraDetalle()
@@ -1505,7 +1589,7 @@ namespace CapaWeb.WebForms
 
                 //Busca el nro de auditoria para poder insertar el detalle factura
                 //consulta nro_auditoria de la cabecera
-                string Ccf_nro_trans = valor_asignado;
+                string Ccf_nro_trans = lbl_trans.Text;
                 listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 int count = 0;
                 conscabcera = null;
@@ -1677,6 +1761,86 @@ namespace CapaWeb.WebForms
 
             }
         }
+        public void FinalizarNotaCredito()
+        {
+            try
+            {
+
+                Confirmar.Visible = false;
+                Confirmar.Enabled = false;
+                string respuestaConfirmacionNC = "";
+                //Boton Coonfirmar hace lo mismo que el salvar solo aumenta la insercion a la tabla wmt_facturas_ins
+                InsertarCabeceraSL();
+                conscabcera = null;
+                conscabcera = BuscarCabecera();
+
+                confirmarinsertar.nro_trans = conscabcera.nro_trans;
+                confirmarinsertar.cod_emp = conscabcera.cod_emp;
+                confirmarinsertar.usuario_mod = AmUsrLog;
+                confirmarinsertar.fecha_mod = DateTime.Now;
+                confirmarinsertar.nro_audit = conscabcera.nro_audit;
+
+                respuestaConfirmacionNC = ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
+                //cOSNULTA BUSCAR TIPO DE FACTURA
+                conscabceraTipo = null;
+                conscabceraTipo = buscarTipoFac(conscabcera.nro_trans.Trim());
+                if (conscabceraTipo.tipo_nce.Trim() == "NCVE")
+                {
+                    if (respuestaConfirmacionNC == "")
+                    {
+                        //AVERIGUAR LA VERSION DE NC QUE USA
+                        string respuesta = "";
+                        if (Modelowmspclogo.version_fe == "1")
+                        {
+                            ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
+                            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", conscabcera.nro_trans, txt_nro_trans_padre.Text);
+                        }
+                        else
+                        {
+                            ConsumoRestNCFinV2 consumoRest = new ConsumoRestNCFinV2();
+                            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", conscabcera.nro_trans, txt_nro_trans_padre.Text);
+                        }
+
+
+
+                        if (respuesta == "")
+                        {
+                            mensaje.Text = "Su nota de crédito fue procesada exitosamente";
+                            Confirmar.Enabled = false;
+                            GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
+                            Session.Remove("listaFacturas");
+                            Response.Redirect("FormBuscarNotaCredito.aspx");
+
+                        }
+                        else
+                        {
+                            GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
+                            mensaje.Text = respuesta;
+                            Session.Remove("listaFacturas");
+                            Response.Redirect("FormBuscarNotaCredito.aspx");
+
+                        }
+                    }
+                    else
+                    {
+                        lbl_trx.Visible = true;
+                        lbl_trx.Text = respuestaConfirmacionNC;
+                    }
+                }
+                else
+                {
+                    Session.Remove("listaFacturas");
+                    Response.Redirect("FormBuscarNotaCredito.aspx");
+                }
+            
+            }
+
+            catch (Exception ex)
+            {
+                GuardarExcepciones("FinalizarNotaCredito", ex.ToString());
+
+            }
+        }
 
         protected void Confirmar_Click(object sender, EventArgs e)
         {
@@ -1693,7 +1857,10 @@ namespace CapaWeb.WebForms
                     count++;
                     break;
                 }
-
+                /*Validar  el saldo de la factura SI ES POSE/ VTAE*/
+                decimal valorSaldo = Convert.ToDecimal(txt_saldo_factura.Text);
+                decimal valorFactura = Convert.ToDecimal(txt_total_factura.Text);
+                decimal valorTotal = Convert.ToDecimal(txtSumaTotal.Text);
                 if (count == 0)
                 {
                     this.Page.Response.Write("<script language='JavaScript'>window.alert('Usuario no tiene asignada sucursal, por favor asignar para continuar con el proceso ')+ error;</script>");
@@ -1713,81 +1880,38 @@ namespace CapaWeb.WebForms
                         }
                         else
                         {
-                            if (Session["detalle"] == null)
+                            if (lbl_tipo_fac.Text.Trim() == "VTA" || lbl_tipo_fac.Text.Trim() == "VTAE")
                             {
-                                this.Page.Response.Write("<script language='JavaScript'>window.alert('No existen productos para la nota de crédito')+ error;</script>");
 
+                                if (valorTotal > valorSaldo)
+                                {
+                                    this.Page.Response.Write("<script language='JavaScript'>window.alert('La Nota de Crédito, no puede ser mayor que la Factura ')+ error;</script>");
+
+                                }
+                                else
+                                {
+                                       FinalizarNotaCredito();
+                                }
                             }
                             else
                             {
-                                string respuestaConfirmacionNC = "";
-                                //Boton Coonfirmar hace lo mismo que el salvar solo aumenta la insercion a la tabla wmt_facturas_ins
-                                conscabcera = null;
-                                conscabcera = GuardarDetalle();
-
-                                confirmarinsertar.nro_trans = conscabcera.nro_trans;
-                                confirmarinsertar.cod_emp = conscabcera.cod_emp;
-                                confirmarinsertar.usuario_mod = AmUsrLog;
-                                confirmarinsertar.fecha_mod = DateTime.Now;
-                                confirmarinsertar.nro_audit = conscabcera.nro_audit;
-
-                                respuestaConfirmacionNC = ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
-                                //cOSNULTA BUSCAR TIPO DE FACTURA
-                                conscabceraTipo = null;
-                                conscabceraTipo = buscarTipoFac(conscabcera.nro_trans.Trim());
-                                if (conscabceraTipo.tipo_nce.Trim() == "NCVE")
+                                if (valorTotal > valorFactura)
                                 {
-                                    if (respuestaConfirmacionNC == "")
-                                {
-                                        //AVERIGUAR LA VERSION DE NC QUE USA
-                                        string respuesta = "";
-                                        if (Modelowmspclogo.version_fe == "1")
-                                        {
-                                            ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
-                                            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", conscabcera.nro_trans, txt_nro_trans_padre.Text);
-                                        }
-                                        else
-                                        {
-                                            ConsumoRestNCFinV2 consumoRest = new ConsumoRestNCFinV2();
-                                            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", conscabcera.nro_trans, txt_nro_trans_padre.Text);
-                                        }
+                                    this.Page.Response.Write("<script language='JavaScript'>window.alert('La Nota de Crédito, no puede ser mayor que la Factura ')+ error;</script>");
 
-                                 
-                                   
-                                    if (respuesta == "")
-                                    {
-                                        mensaje.Text = "Su nota de crédito fue procesada exitosamente";
-                                        Confirmar.Enabled = false;
-                                        GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
-                                        Session.Remove("listaFacturas");
-                                        Response.Redirect("FormBuscarNotaCredito.aspx");
-
-                                    }
-                                    else
-                                    {
-                                        GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
-                                        mensaje.Text = respuesta;
-                                        Session.Remove("listaFacturas");
-                                        Response.Redirect("FormBuscarNotaCredito.aspx");
-
-                                    }
                                 }
                                 else
                                 {
-                                    lbl_trx.Visible = true;
-                                    lbl_trx.Text = respuestaConfirmacionNC;
+                                    FinalizarNotaCredito();
                                 }
+
                             }
-                                else
-                                {
-                                    Session.Remove("listaFacturas");
-                                    Response.Redirect("FormBuscarNotaCredito.aspx");
-                                }
-                            }
+
 
                         }
                     }
                 }
+                
             }
             catch (Exception ex)
             {
@@ -1816,6 +1940,30 @@ namespace CapaWeb.WebForms
             catch (Exception ex)
             {
                 GuardarExcepciones("buscarTipoFac", ex.ToString());
+                return null;
+            }
+        }
+
+        public modelowmtfacturascab Trans_Padre(string nro_trans)
+        {
+            try
+            {
+                lbl_error.Text = "";
+
+                listaConsCab = ConsultaCabe.ConsultaNCTransPadre(nro_trans);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
+
+                }
+                return conscabcera;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("Trans_Padre", ex.ToString());
                 return null;
             }
         }
@@ -1897,6 +2045,18 @@ namespace CapaWeb.WebForms
                         string like = '%' + txt_Codigo.Text + '%';
                         listaConsDetalle = ConsultaDeta.ConsultaDetFacNCDev(txt_nro_trans_padre.Text, like);
 
+                       listaArticulos = ConsultaArticulo.ConsultaArticulos(AmUsrLog, ComPwm, "A", "NCRED", "0", "0");
+                        foreach(modelowmspcarticulos item in listaArticulos)
+                        {
+                            ModeloDetalleFactura modelodetalleFactura = new ModeloDetalleFactura();
+                            modelodetalleFactura.cod_articulo = item.cod_articulo;
+                            modelodetalleFactura.nom_articulo = item.nom_articulo;
+                            modelodetalleFactura.nc_iva = String.Format("{0:N}", Math.Round(Convert.ToDecimal(item.precio), 2)).ToString();
+                            modelodetalleFactura.nc_pvp =item.porc_impuesto;
+                            
+                            listaConsDetalle.Add(modelodetalleFactura);
+                        }
+                       
                         foreach (ModeloDetalleFactura item in listaConsDetalle)
                         {
                             count++;
@@ -1956,7 +2116,25 @@ namespace CapaWeb.WebForms
 
             }
         }
-        
-        
+
+        protected void area_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                lbl_error.Text = "";
+                Boolean Cabecera = false;
+                Cabecera = GuardarCabezera.ConsultaSNCabFactura(lbl_trans.Text, ComPwm, AmUsrLog);
+                //Insertar cabecera unicamente si existe 
+                if (Cabecera == true)
+                {
+                    GuardarCabezera.ActualizarObserFactura(lbl_trans.Text, area.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("area_TextChanged", ex.ToString());
+
+            }
+        }
     }
 }

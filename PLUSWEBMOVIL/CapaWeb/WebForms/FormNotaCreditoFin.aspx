@@ -62,7 +62,25 @@
         }
           
     </script>
-     <form id="form1" class="forms-sample" runat="server" method="post">
+    <script LANGUAGE="JavaScript">
+
+var cuenta=0;
+
+function enviado() { 
+if (cuenta == 0)
+{
+cuenta++;
+return true;
+}
+else 
+{
+alert("La Nota de Crédito ya ha sido enviado, espere por favor.");
+return false;
+}
+}
+// -->
+</script>
+     <form id="form1" class="forms-sample" runat="server" method="post" onSubmit="return enviado()">
        
 
        
@@ -284,6 +302,23 @@
                                 <td>
                                     <asp:TextBox ID="txt_total_factura" Visible="false" Enabled="false" runat="server" Width="200px"></asp:TextBox>
                                 </td>
+                                 
+                                  <td align="right" valign="top" nowrap="nowrap" class="busqueda">
+                                    <div align="left">TRX:</div>
+                                </td>
+                                <td valign="top">
+                                    <label>
+                                       
+                                        <asp:Label ID="lbl_trans" class="textos"  Width="202" ReadOnly="true" runat="server"></asp:Label>
+                                    </label>
+                                </td>
+                                  <td  class="busqueda">
+                                    <asp:Label align="center" ID="lbl_trx_fac" Visible="false"  Width="100" runat="server" Text="TRX Factura:"></asp:Label>
+                                </td>
+                                  <td>
+                                   <asp:TextBox ID="txt_nro_trans_padre" class="textos" visible="false" enabled="false" runat="server" ></asp:TextBox>
+                              
+                                       </td>
                             </tr>
                             <tr>
                                <td>
@@ -296,9 +331,7 @@
                                <td>
                                    <asp:TextBox ID="txt_serie_docum" Visible="false" runat="server"></asp:TextBox>
                                </td>
-                               <td>
-                                   <asp:TextBox ID="txt_nro_trans_padre" Visible="false" runat="server"></asp:TextBox>
-                               </td>
+                              
                                 <td>
                                    <asp:TextBox ID="txt_saldo_factura" Visible="false" runat="server"></asp:TextBox>
                                </td>
@@ -408,7 +441,7 @@
                                         
                                         AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
                                          AllowSorting="True" ShowFooter="True"
-                                          CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" OnItemCommand="gv_Producto_ItemCommand">
+                                          CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" OnItemCommand="gv_Producto_ItemCommand" PageSize="2000">
 
 
                                         <Columns>
@@ -424,6 +457,14 @@
                                                 <ItemTemplate>
                                                     <span style="float: left;">
                                                         <asp:Label ID="nom_articulo" runat="server" class="textos" Text='<%#Eval("nom_articulo") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+
+                                              <asp:TemplateColumn HeaderText="Descripción">
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="nom_articulo2" runat="server" class="textos" Text='<%#Eval("nom_articulo2") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -604,7 +645,7 @@
                                 </td>
                                 <td >
                                     <asp:Button ID="Cancelar" Class="btnFactura1" OnClick="Cancelar_Click"  runat="server"  UseSubmitBehavior="False" Text="Cancelar" />
-                                    <asp:Button ID="Confirmar"  Class="btnFactura1" OnClick="Confirmar_Click" runat="server" OnClientClick="return confirm('¿Desea guardar la nota de crédito?');"  Text="Confirmar" />
+                                    <asp:Button ID="Confirmar"  Class="btnFactura1" OnClick="Confirmar_Click" runat="server"   Text="Confirmar" />
                                 </td>
                     
                             </tr>

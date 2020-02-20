@@ -16,6 +16,85 @@ namespace CapaDatos.Sql
         public SqlConnection cn = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         string metodo = "FacturaACab.cs";
+        //CONSULTA SI EXISTE CABCERA DE FACTURA
+        public Boolean ConsultaSNCabecera(string nro_trans, string cod_emp, string usuario)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    Boolean existe = false;
+                    string consulta = "SELECT * FROM wmt_facturas_cab WHERE nro_trans =@nro_trans";
+
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        existe = true;
+                    }
+                    return existe;
+            
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ConsultaSNCabecera", e.ToString(), DateTime.Now, usuario);
+                return false ;
+            }
+
+
+        }
+
+        //ACTUALIZAR CABECERA DE FACTURA
+        public string ActualizarCabeceraFactura(modelocabecerafactura cabezeraFactura)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    string update = "UPDATE wmt_facturas_cab SET cod_cliente =@cod_cliente, fec_doc =@fec_doc, dia =@dia, mes =@mes, anio =@anio, serie_docum =@serie_docum, cod_ccostos =@cod_ccostos, cod_vendedor =@cod_vendedor, cod_fpago =@cod_fpago, observaciones =@observaciones,usuario_mod =@usuario_mod,ocompra = @ocompra, cod_moneda = @cod_moneda, diar =@diar , mesr = @mesr, anior = @anior, cod_sucursal =@cod_sucursal, nro_pedido =@nro_pedido WHERE nro_trans =@nro_trans ";
+                    SqlCommand conmand = new SqlCommand(update, cn);
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = cabezeraFactura.nro_trans;
+                    conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = cabezeraFactura.cod_cliente;
+                    conmand.Parameters.Add("@fec_doc", SqlDbType.Date).Value = cabezeraFactura.fec_doc;
+                    conmand.Parameters.Add("@dia", SqlDbType.VarChar).Value = cabezeraFactura.dia;
+                    conmand.Parameters.Add("@mes", SqlDbType.VarChar).Value = cabezeraFactura.mes;
+                    conmand.Parameters.Add("@anio", SqlDbType.VarChar).Value = cabezeraFactura.anio;
+                    conmand.Parameters.Add("@serie_docum", SqlDbType.VarChar).Value = cabezeraFactura.serie_docum;
+                    conmand.Parameters.Add("@cod_ccostos", SqlDbType.VarChar).Value = cabezeraFactura.cod_ccostos;
+                    conmand.Parameters.Add("@cod_vendedor", SqlDbType.VarChar).Value = cabezeraFactura.cod_vendedor;
+                    conmand.Parameters.Add("@cod_fpago", SqlDbType.VarChar).Value = cabezeraFactura.cod_fpago;
+                    conmand.Parameters.Add("@observaciones", SqlDbType.VarChar).Value = cabezeraFactura.observaciones;
+                    conmand.Parameters.Add("@usuario_mod", SqlDbType.VarChar).Value = cabezeraFactura.usuario_mod;
+                    conmand.Parameters.Add("@ocompra", SqlDbType.VarChar).Value = cabezeraFactura.ocompra;
+                    conmand.Parameters.Add("@cod_moneda", SqlDbType.VarChar).Value = cabezeraFactura.cod_moneda;
+                    conmand.Parameters.Add("@diar", SqlDbType.VarChar).Value = cabezeraFactura.diar;
+                    conmand.Parameters.Add("@mesr", SqlDbType.VarChar).Value = cabezeraFactura.mesr;
+                    conmand.Parameters.Add("@anior", SqlDbType.VarChar).Value = cabezeraFactura.anior;
+                    conmand.Parameters.Add("@cod_sucursal", SqlDbType.VarChar).Value = cabezeraFactura.cod_sucursal.Trim();
+                    conmand.Parameters.Add("@nro_pedido", SqlDbType.VarChar).Value = cabezeraFactura.nro_pedido;
+
+                    int dr = conmand.ExecuteNonQuery();
+                    cn.Close();
+                    return "";
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cabezeraFactura.cod_emp, metodo, "ActualizarCabeceraFactura", e.ToString(), DateTime.Now, cabezeraFactura.usuario_mod);
+                return "No se pudo completar la acción." + "ActualizarCabeceraFactura." + " Por favor notificar al administrador.";
+            }
+
+
+        }
 
         //ACTUALIXAR DATOSFACTURA
         public string ActualizarDetalleFactura(ModeloDetalleFactura detalleFactura)
@@ -113,7 +192,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ActualizarObsFactura", e.ToString(), DateTime.Today, "UDP");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ActualizarObsFactura", e.ToString(), DateTime.Now, "UDP");
                 return "No se pudo completar la acción." + "ActualizarObsFactura." + " Por favor notificar al administrador.";
             }
 
@@ -349,7 +428,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "ConsultaFacturaNroTran", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "ConsultaFacturaNroTran", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
 
@@ -537,10 +616,55 @@ namespace CapaDatos.Sql
 
         }
 
-        
+        //Actualizar cabecera de NOTA CREDITO FINANCIERA/devolucion/anulacion
+        public string ActualizarCabeceraNCFinan(modelocabecerafactura cabezeraFactura)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    string update = "UPDATE wmt_facturas_cab SET cod_cliente =@cod_cliente, fec_doc =@fec_doc, dia =@dia, mes =@mes, anio =@anio, serie_docum =@serie_docum, cod_ccostos =@cod_ccostos, cod_vendedor =@cod_vendedor, cod_fpago =@cod_fpago, observaciones =@observaciones,usuario_mod =@usuario_mod,ocompra = @ocompra, cod_moneda = @cod_moneda, diar =@diar , mesr = @mesr, anior = @anior, cod_sucursal =@cod_sucursal, nro_pedido =@nro_pedido, nro_trans_padre =@nro_trans_padre, mot_nce =@mot_nce WHERE nro_trans =@nro_trans ";
+                    SqlCommand conmand = new SqlCommand(update, cn);
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = cabezeraFactura.nro_trans;
+                    conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = cabezeraFactura.cod_cliente;
+                    conmand.Parameters.Add("@fec_doc", SqlDbType.Date).Value = cabezeraFactura.fec_doc;
+                    conmand.Parameters.Add("@dia", SqlDbType.VarChar).Value = cabezeraFactura.dia;
+                    conmand.Parameters.Add("@mes", SqlDbType.VarChar).Value = cabezeraFactura.mes;
+                    conmand.Parameters.Add("@anio", SqlDbType.VarChar).Value = cabezeraFactura.anio;
+                    conmand.Parameters.Add("@serie_docum", SqlDbType.VarChar).Value = cabezeraFactura.serie_docum;
+                    conmand.Parameters.Add("@cod_ccostos", SqlDbType.VarChar).Value = cabezeraFactura.cod_ccostos;
+                    conmand.Parameters.Add("@cod_vendedor", SqlDbType.VarChar).Value = cabezeraFactura.cod_vendedor;
+                    conmand.Parameters.Add("@cod_fpago", SqlDbType.VarChar).Value = cabezeraFactura.cod_fpago;
+                    conmand.Parameters.Add("@observaciones", SqlDbType.VarChar).Value = cabezeraFactura.observaciones;
+                    conmand.Parameters.Add("@usuario_mod", SqlDbType.VarChar).Value = cabezeraFactura.usuario_mod;
+                    conmand.Parameters.Add("@ocompra", SqlDbType.VarChar).Value = cabezeraFactura.ocompra;
+                    conmand.Parameters.Add("@cod_moneda", SqlDbType.VarChar).Value = cabezeraFactura.cod_moneda;
+                    conmand.Parameters.Add("@diar", SqlDbType.VarChar).Value = cabezeraFactura.diar;
+                    conmand.Parameters.Add("@mesr", SqlDbType.VarChar).Value = cabezeraFactura.mesr;
+                    conmand.Parameters.Add("@anior", SqlDbType.VarChar).Value = cabezeraFactura.anior;
+                    conmand.Parameters.Add("@cod_sucursal", SqlDbType.VarChar).Value = cabezeraFactura.cod_sucursal.Trim();
+                    conmand.Parameters.Add("@nro_pedido", SqlDbType.VarChar).Value = cabezeraFactura.nro_pedido;
+                    conmand.Parameters.Add("@nro_trans_padre", SqlDbType.VarChar).Value = cabezeraFactura.nro_trans_padre;
+                    conmand.Parameters.Add("@mot_nce", SqlDbType.VarChar).Value = cabezeraFactura.mot_nce.Trim();
 
-    //Insertar cabecera de NOTA CREDITO FINANCIERA/devolucion/anulacion
-    public string InsertarCabeceraNCFinan(modelocabecerafactura cabezeraFactura)
+                    int dr = conmand.ExecuteNonQuery();
+                    cn.Close();
+                    return "";
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cabezeraFactura.cod_emp, metodo, "ActualizarCabeceraNCFinan", e.ToString(), DateTime.Now, cabezeraFactura.usuario_mod);
+                return "No se pudo completar la acción." + "ActualizarCabeceraNCFinan." + " Por favor notificar al administrador.";
+            }
+
+
+        }
+
+        //Insertar cabecera de NOTA CREDITO FINANCIERA/devolucion/anulacion
+        public string InsertarCabeceraNCFinan(modelocabecerafactura cabezeraFactura)
         {
             try
             {

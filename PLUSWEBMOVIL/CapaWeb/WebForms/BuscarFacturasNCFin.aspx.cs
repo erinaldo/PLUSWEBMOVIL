@@ -29,6 +29,7 @@ namespace CapaWeb.WebForms
 
         List<modelowmtfacturascab> listaConsCab = null;
         modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+        modelowmtfacturascab conscabceraTipo = new modelowmtfacturascab();
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
 
         ConsumoRest consumoRest = new ConsumoRest();
@@ -132,6 +133,30 @@ namespace CapaWeb.WebForms
             lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
 
         }
+        public modelowmtfacturascab buscarTipoFac(string nro_trans)
+        {
+            try
+            {
+                lbl_error.Text = "";
+
+                listaConsCab = ConsultaCabe.ConsultaTipoFactura(nro_trans);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
+
+                }
+                return conscabcera;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("buscarTipoFac", ex.ToString());
+                return null;
+            }
+        }
+
 
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
@@ -154,6 +179,10 @@ namespace CapaWeb.WebForms
                             Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                             saldo = Convert.ToDecimal(((Label)e.Item.Cells[5].FindControl("saldo")).Text);
                             //Consultamos la opcion seleccionada
+                            //Cnnsultar tipo de factura
+                            conscabceraTipo = null;
+                            conscabceraTipo = buscarTipoFac(Id.ToString());
+                            Ccf_tipo2 = conscabceraTipo.tipo_nce;
                             //Consulta de cabeecra
                             listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Id.ToString(), Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
 
@@ -161,6 +190,8 @@ namespace CapaWeb.WebForms
                             {
                                 if (item.nro_trans == Id.ToString())
                                 {
+                                    item.tipo_nce = conscabceraTipo.tipo_nce;
+
                                     conscabcera = item;
 
                                     break;
@@ -285,14 +316,14 @@ namespace CapaWeb.WebForms
                 if (Session["tipo_nc"].ToString() == "NCM")
                 {
 
-                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C","S");
+                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C","N");
                 }
 
                 else
 
                 {
 
-                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C","S");
+                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C","N");
                 }
 
 

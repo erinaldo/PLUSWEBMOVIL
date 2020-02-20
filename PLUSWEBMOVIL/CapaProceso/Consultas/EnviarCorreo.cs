@@ -60,7 +60,7 @@ namespace CapaProceso.Consultas
                 string Contrasenia = ModeloHost.contrasenia;
                 string smtpHost = ModeloHost.smtp;
                 int puerto =ModeloHost.puerto;
-                bool ssl = false;
+                bool ssl = true;
 
                 // recuperar de base de tabla HostMail 
                 /*   string Usuario = "prueba@cepes.ec";

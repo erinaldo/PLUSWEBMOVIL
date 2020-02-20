@@ -236,6 +236,13 @@
                                                         ImageUrl="~/Tema/imagenes/up.png" ToolTip="Reenviar" Width="16" />
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
+
+                                              <asp:TemplateColumn>
+                                                <ItemTemplate>
+                                                    <asp:ImageButton ID="imgRepeat" runat="server" CausesValidation="false" CommandName="Reactivar"
+                                                        ImageUrl="~/Tema/imagenes/repeat.png" ToolTip="Reactivar" Width="16" />
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
                                         </Columns>
 
 

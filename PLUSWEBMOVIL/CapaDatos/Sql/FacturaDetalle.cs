@@ -14,6 +14,59 @@ namespace CapaDatos.Sql
         public SqlConnection cn = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         string metodo = "FacturaDetalle.cs";
+        //RECUPERAR CON NRO_TRANS Y LINEA
+        public SqlDataReader ConsultaDetalleFacturaLinea(string nro_trans, string linea)
+        {
+            try
+            {
+                cn = conexion.genearConexion();
+                string consulta = "SELECT * FROM wmt_facturas_det WHERE nro_trans =@nro_trans and linea =@linea";
+                SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                conmand.Parameters.Add("linea", SqlDbType.VarChar).Value = linea;
+                SqlDataReader dr = conmand.ExecuteReader();
+
+                return dr;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ConsultaDetalleFacturaLinea", e.ToString(), DateTime.Now, "consulta");
+                return null;
+            }
+        }
+        //ENCONTRAR ELULTIMO NUMERO DE LINE AINSERTADO
+        public string UltimaLinea(string nro_trans, string cod_emp, string usuario)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+
+                    string linea =null;
+                    string insert = "SELECT TOP 1 linea FROM wmt_facturas_det WHERE nro_trans =@nro_trans ORDER BY linea DESC";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        linea = Convert.ToString(dr["linea"]);
+                    }
+                    return linea;
+                }
+            
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "UltimaLinea", e.ToString(), DateTime.Now, usuario);
+                return "No se pudo completar la acción." + "UltimaLinea." + " Por favor notificar al administrador.";
+            }
+
+        }
 
         public string EliminarDetalle(string nro_trans, string linea, string cod_emp, string usuario)
         {
@@ -21,7 +74,7 @@ namespace CapaDatos.Sql
             {
                 cn = conexion.genearConexion();
 
-                string insert = " DELETE FROM wmt_facturas_det WHERE nro_trans =@nro_trans, linea=@linea";
+                string insert = " DELETE FROM wmt_facturas_det WHERE nro_trans =@nro_trans and linea=@linea";
                 SqlCommand conmand = new SqlCommand(insert, cn);
                 conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
                 conmand.Parameters.Add("@linea", SqlDbType.VarChar).Value = linea;
@@ -33,8 +86,8 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "EliminarDetalle", e.ToString(), DateTime.Today, usuario);
-                return "No se pudo completar la acción." + "InsertarDetalle." + " Por favor notificar al administrador.";
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "EliminarDetalle", e.ToString(), DateTime.Now, usuario);
+                return "No se pudo completar la acción." + "EliminarDetalle." + " Por favor notificar al administrador.";
             }
 
         }
@@ -74,12 +127,157 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(detalleFactura.cod_emp, metodo, "InsertarDetalle", e.ToString(), DateTime.Today, detalleFactura.usuario_mod);
+                guardarExcepcion.ClaseInsertarExcepcion(detalleFactura.cod_emp, metodo, "InsertarDetalle", e.ToString(), DateTime.Now, detalleFactura.usuario_mod);
                 return "No se pudo completar la acción." + "InsertarDetalle." + " Por favor notificar al administrador.";
             }
 
         }
 
+        //insertra detalle sin lista InsertarDetalleNCSL
+        public string InsertarDetalleNCSL(string cod_doca, string nro_doca, string serie_doca,string nom_articulo, string nom_articulo2, decimal cantidad, decimal precio_unit, decimal base_imp, decimal porc_iva, string nro_trans, int linea, string cod_emp, string cod_articulo, string cod_concepret, decimal porc_descto, decimal valor_descto, string cod_cta_vtas, string cod_cta_cos, string cod_cta_inve, string usuario_mod, string nro_audit, DateTime fecha_mod, string tasa_iva, string cod_ccostos)
+        {
+            try
+            {
+                cn = conexion.genearConexion();
+                string insert = "INSERT INTO  wmt_facturas_det (cod_doca, nro_doca, serie_doca, nom_articulo, nom_articulo2, cantidad, precio_unit, base_imp, porc_iva, nro_trans, linea, cod_emp, cod_articulo, cod_concepret, porc_descto, valor_descto, cod_cta_vtas, cod_cta_cos, cod_cta_inve, usuario_mod, nro_audit, fecha_mod, tasa_iva, cod_ccostos) VALUES (@cod_doca, @nro_doca, @serie_doca,@nom_articulo, @nom_articulo2, @cantidad, @precio_unit, @base_imp, @porc_iva, @nro_trans, @linea, @cod_emp, @cod_articulo, @cod_concepret, @porc_descto, @valor_descto, @cod_cta_vtas, @cod_cta_cos, @cod_cta_inve, @usuario_mod, @nro_audit, @fecha_mod, @tasa_iva, @cod_ccostos)";
+                SqlCommand conmand = new SqlCommand(insert, cn);
+                conmand.Parameters.Add("@cod_doca", SqlDbType.VarChar).Value = cod_doca;
+                conmand.Parameters.Add("@nro_doca", SqlDbType.VarChar).Value = nro_doca;
+                conmand.Parameters.Add("@serie_doca", SqlDbType.VarChar).Value = serie_doca;
+                conmand.Parameters.Add("@nom_articulo", SqlDbType.VarChar).Value = nom_articulo;
+                conmand.Parameters.Add("@nom_articulo2", SqlDbType.VarChar).Value = nom_articulo2;
+                conmand.Parameters.Add("@cantidad", SqlDbType.Decimal).Value = cantidad;
+                conmand.Parameters.Add("@precio_unit", SqlDbType.Decimal).Value = precio_unit;
+                conmand.Parameters.Add("@base_imp", SqlDbType.Decimal).Value = base_imp;
+                conmand.Parameters.Add("@porc_iva", SqlDbType.Decimal).Value = porc_iva;
+                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                conmand.Parameters.Add("@linea", SqlDbType.Int).Value = linea;
+                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                conmand.Parameters.Add("@cod_articulo", SqlDbType.VarChar).Value = cod_articulo;
+                conmand.Parameters.Add("@cod_concepret", SqlDbType.VarChar).Value = cod_concepret;
+                conmand.Parameters.Add("@porc_descto", SqlDbType.Decimal).Value = porc_descto;
+                conmand.Parameters.Add("@valor_descto", SqlDbType.Decimal).Value = valor_descto;
+                conmand.Parameters.Add("@cod_cta_vtas", SqlDbType.VarChar).Value = cod_cta_vtas;
+                conmand.Parameters.Add("@cod_cta_cos", SqlDbType.VarChar).Value = cod_cta_cos;
+                conmand.Parameters.Add("@cod_cta_inve", SqlDbType.VarChar).Value = cod_cta_inve;
+                conmand.Parameters.Add("@usuario_mod", SqlDbType.VarChar).Value = usuario_mod;
+                conmand.Parameters.Add("@nro_audit", SqlDbType.VarChar).Value = nro_audit;
+                conmand.Parameters.Add("@fecha_mod", SqlDbType.DateTime).Value = fecha_mod;
+                conmand.Parameters.Add("@tasa_iva", SqlDbType.VarChar).Value = tasa_iva;
+                conmand.Parameters.Add("@cod_ccostos", SqlDbType.VarChar).Value = cod_ccostos;
+                int dr = conmand.ExecuteNonQuery();
+                cn.Close();
+                return "Factura salvada correctamente";
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "InsertarDetalleNCSL", e.ToString(), DateTime.Now, usuario_mod);
+                return "No se pudo completar la acción." + "InsertarDetalleNCSL." + " Por favor notificar al administrador.";
+            }
+
+        }
+
+        //insertra detalle sin lista
+        public string InsertarDetalleSL(string nom_articulo, string nom_articulo2,decimal cantidad, decimal precio_unit, decimal base_imp, decimal porc_iva, string nro_trans, int linea, string cod_emp, string cod_articulo,string cod_concepret,decimal porc_descto, decimal valor_descto, string cod_cta_vtas,string  cod_cta_cos,string  cod_cta_inve,string usuario_mod,string nro_audit,DateTime fecha_mod,string tasa_iva,string cod_ccostos)
+        {
+            try
+            {
+                cn = conexion.genearConexion();
+
+                string insert = "INSERT INTO  wmt_facturas_det (nom_articulo, nom_articulo2, cantidad, precio_unit, base_imp, porc_iva, nro_trans, linea, cod_emp, cod_articulo, cod_concepret, porc_descto, valor_descto, cod_cta_vtas, cod_cta_cos, cod_cta_inve, usuario_mod, nro_audit, fecha_mod, tasa_iva, cod_ccostos) VALUES (@nom_articulo, @nom_articulo2, @cantidad, @precio_unit, @base_imp, @porc_iva, @nro_trans, @linea, @cod_emp, @cod_articulo, @cod_concepret, @porc_descto, @valor_descto, @cod_cta_vtas, @cod_cta_cos, @cod_cta_inve, @usuario_mod, @nro_audit, @fecha_mod, @tasa_iva, @cod_ccostos)";
+                SqlCommand conmand = new SqlCommand(insert, cn);
+                conmand.Parameters.Add("@nom_articulo", SqlDbType.VarChar).Value = nom_articulo;
+                conmand.Parameters.Add("@nom_articulo2", SqlDbType.VarChar).Value = nom_articulo2;
+                conmand.Parameters.Add("@cantidad", SqlDbType.Decimal).Value = cantidad;
+                conmand.Parameters.Add("@precio_unit", SqlDbType.Decimal).Value = precio_unit;
+                conmand.Parameters.Add("@base_imp", SqlDbType.Decimal).Value = base_imp;
+                conmand.Parameters.Add("@porc_iva", SqlDbType.Decimal).Value = porc_iva;
+                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                conmand.Parameters.Add("@linea", SqlDbType.Int).Value = linea;
+                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                conmand.Parameters.Add("@cod_articulo", SqlDbType.VarChar).Value = cod_articulo;
+                conmand.Parameters.Add("@cod_concepret", SqlDbType.VarChar).Value = cod_concepret;
+                conmand.Parameters.Add("@porc_descto", SqlDbType.Decimal).Value = porc_descto;
+                conmand.Parameters.Add("@valor_descto", SqlDbType.Decimal).Value = valor_descto;
+                conmand.Parameters.Add("@cod_cta_vtas", SqlDbType.VarChar).Value = cod_cta_vtas;
+                conmand.Parameters.Add("@cod_cta_cos", SqlDbType.VarChar).Value = cod_cta_cos;
+                conmand.Parameters.Add("@cod_cta_inve", SqlDbType.VarChar).Value = cod_cta_inve;
+                conmand.Parameters.Add("@usuario_mod", SqlDbType.VarChar).Value = usuario_mod;
+                conmand.Parameters.Add("@nro_audit", SqlDbType.VarChar).Value = nro_audit;
+                conmand.Parameters.Add("@fecha_mod", SqlDbType.DateTime).Value = fecha_mod;
+                conmand.Parameters.Add("@tasa_iva", SqlDbType.VarChar).Value = tasa_iva;
+                conmand.Parameters.Add("@cod_ccostos", SqlDbType.VarChar).Value = cod_ccostos;
+                int dr = conmand.ExecuteNonQuery();
+                cn.Close();
+                return "Factura salvada correctamente";
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "InsertarDetalle", e.ToString(), DateTime.Now, usuario_mod);
+                return "No se pudo completar la acción." + "InsertarDetalle." + " Por favor notificar al administrador.";
+            }
+
+        }
+
+        //ACTUALIZAR DETALLE NOTA CREDITO SINLISTA
+        public string ActualizarDetalleNCSL(string nom_articulo2, decimal cantidad, decimal precio_unit, string nro_trans, int linea, string cod_emp, decimal porc_descto, string usuario_mod, string cod_ccostos)
+        {
+            try
+            {
+                cn = conexion.genearConexion();
+
+                string insert = "UPDATE wmt_facturas_det  SET nom_articulo2 = @nom_articulo2, cantidad = @cantidad, precio_unit = @precio_unit,porc_descto = @porc_descto, cod_ccostos = @cod_ccostos WHERE nro_trans = @nro_trans and linea = @linea";
+                SqlCommand conmand = new SqlCommand(insert, cn);
+                conmand.Parameters.Add("@nom_articulo2", SqlDbType.VarChar).Value = nom_articulo2;
+                conmand.Parameters.Add("@cantidad", SqlDbType.Decimal).Value = cantidad;
+                conmand.Parameters.Add("@precio_unit", SqlDbType.Decimal).Value = precio_unit;
+                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                conmand.Parameters.Add("@linea", SqlDbType.Int).Value = linea;
+                conmand.Parameters.Add("@porc_descto", SqlDbType.Decimal).Value = porc_descto;
+                conmand.Parameters.Add("@cod_ccostos", SqlDbType.VarChar).Value = cod_ccostos;
+                int dr = conmand.ExecuteNonQuery();
+                cn.Close();
+                return "Factura salvada correctamente";
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ActualizarDetalleSL", e.ToString(), DateTime.Now, usuario_mod);
+                return "No se pudo completar la acción." + "ActualizarDetalleSL." + " Por favor notificar al administrador.";
+            }
+
+        }
+
+        //ACTUALIZAR DETALLE SIN LISTAS
+        public string ActualizarDetalleSL( string nom_articulo2, decimal cantidad, decimal precio_unit,  string nro_trans, int linea, string cod_emp, decimal porc_descto,  string usuario_mod, string cod_ccostos)
+        {
+            try
+            {
+                cn = conexion.genearConexion();
+
+                string insert = "UPDATE wmt_facturas_det  SET nom_articulo2 = @nom_articulo2, cantidad = @cantidad, precio_unit = @precio_unit,porc_descto = @porc_descto, cod_ccostos = @cod_ccostos WHERE nro_trans = @nro_trans and linea = @linea";
+                SqlCommand conmand = new SqlCommand(insert, cn);
+                conmand.Parameters.Add("@nom_articulo2", SqlDbType.VarChar).Value = nom_articulo2;
+                conmand.Parameters.Add("@cantidad", SqlDbType.Decimal).Value = cantidad;
+                conmand.Parameters.Add("@precio_unit", SqlDbType.Decimal).Value = precio_unit;
+                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                conmand.Parameters.Add("@linea", SqlDbType.Int).Value = linea;
+                conmand.Parameters.Add("@porc_descto", SqlDbType.Decimal).Value = porc_descto;
+                conmand.Parameters.Add("@cod_ccostos", SqlDbType.VarChar).Value = cod_ccostos;
+                int dr = conmand.ExecuteNonQuery();
+                cn.Close();
+                return "Factura salvada correctamente";
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ActualizarDetalleSL", e.ToString(), DateTime.Now, usuario_mod);
+                return "No se pudo completar la acción." + "ActualizarDetalleSL." + " Por favor notificar al administrador.";
+            }
+
+        }
         /*Insertar detalle de NOTA DE CREDITO FINANCIERA*/
         public string InsertarDetalleNCFinanciera(ModeloDetalleFactura detalleFactura)
         {
@@ -133,9 +331,6 @@ namespace CapaDatos.Sql
                 SqlCommand conmand = new SqlCommand(consulta, cn);
 
                 conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
-
-
-
                 SqlDataReader dr = conmand.ExecuteReader();
 
                 return dr;
@@ -143,7 +338,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ConsultaDetalleFactura", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ConsultaDetalleFactura", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }

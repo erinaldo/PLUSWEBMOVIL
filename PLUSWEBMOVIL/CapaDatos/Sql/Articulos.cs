@@ -82,7 +82,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(ArtB__cod_emp, "Articulos.cs", "ListaArticulos", e.ToString(), DateTime.Today, ArtB__usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(ArtB__cod_emp, "Articulos.cs", "ListaArticulos", e.ToString(), DateTime.Now, ArtB__usuario);
                 return null;
             }
         }

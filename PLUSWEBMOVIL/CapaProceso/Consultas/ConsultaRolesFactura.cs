@@ -129,7 +129,7 @@ namespace CapaProceso.Consultas
                 return null;
             }
         }
-        //Rol Reactivar
+        //Rol Reactivar factura vta, vtae
         public List<modeloRolesFacturacion> BuscarRolReactivar(string usuario)
         {
             try
@@ -142,6 +142,23 @@ namespace CapaProceso.Consultas
             {
 
                 guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "BuscarRolReactivar", e.ToString(), DateTime.Today, usuario);
+                return null;
+            }
+        }
+
+        //Rol Reactivar factura pos, pose
+        public List<modeloRolesFacturacion> BuscarRolReactivarPOS(string usuario)
+        {
+            try
+            {
+                List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
+                lista = consultaRolesFacturacion.RespuestaRolReactivarPOS(usuario);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "BuscarRolReactivarPOS", e.ToString(), DateTime.Now, usuario);
                 return null;
             }
         }

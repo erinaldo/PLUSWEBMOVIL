@@ -15,11 +15,29 @@ namespace CapaProceso.Consultas
         modelonumerador modelonum = new modelonumerador();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
 
-        public modelonumerador ConsultaNumeradores(string numerador)
+        public string SPNumeradores(string numerador)
         {
             try
             {
-                modelonumerador Mnumerador = new modelonumerador();
+                string Mnumerador ="";
+
+                Mnumerador = numeradores.SPNumerador(numerador);
+
+                return Mnumerador;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", "ConsultaNumerador.cs", "SPNumeradores", e.ToString(), DateTime.Now, "consulta");
+                return null;
+            }
+        }
+        //
+        public modelonumerador  ConsultaNumeradores(string numerador)
+        {
+            try
+            {
+                modelonumerador Mnumerador =new modelonumerador();
 
                 Mnumerador = numeradores.ConsultaNroTransaccion(numerador);
 
@@ -29,6 +47,23 @@ namespace CapaProceso.Consultas
             {
 
                 guardarExcepcion.ClaseInsertarExcepcion("0", "ConsultaNumerador.cs", "ConsultaNumeradores", e.ToString(), DateTime.Today, "consulta");
+                return null;
+            }
+        }
+        public string NroTrans(string numerador)
+        {
+            try
+            {
+                string Mnumerador =null;
+
+                Mnumerador = numeradores.NroTransaccion(numerador);
+
+                return Mnumerador;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", "ConsultaNumerador.cs", "NroTrans", e.ToString(), DateTime.Today, "consulta");
                 return null;
             }
         }

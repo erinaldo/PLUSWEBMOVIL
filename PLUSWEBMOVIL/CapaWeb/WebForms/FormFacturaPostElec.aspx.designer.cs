@@ -175,6 +175,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox porc_descto;
         
         /// <summary>
+        /// Control lbl_trans.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_trans;
+        
+        /// <summary>
         /// Control lbl_proforma.
         /// </summary>
         /// <remarks>
@@ -256,6 +265,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label lbl_validacion;
         
         /// <summary>
+        /// Control Label13.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label13;
+        
+        /// <summary>
         /// Control lblCod.
         /// </summary>
         /// <remarks>
@@ -317,6 +335,15 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label2;
+        
+        /// <summary>
+        /// Control txt_linea.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_linea;
         
         /// <summary>
         /// Control txt_Codigo.

@@ -80,6 +80,7 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox txtBase15;
         protected global::System.Web.UI.WebControls.TextBox txtIva19;
         protected global::System.Web.UI.WebControls.TextBox txtIva15;
+        protected global::System.Web.UI.WebControls.TextBox txt_trx;
 
         /// <summary>
         /// Control cod_costos.
@@ -161,7 +162,8 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox area;
-        
+        protected global::System.Web.UI.WebControls.TextBox txt_linea;
+
         /// <summary>
         /// Control GuardarCabecera.
         /// </summary>
@@ -183,6 +185,7 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label Producto;
         protected global::System.Web.UI.WebControls.Label lbl_remision;
             protected global::System.Web.UI.WebControls.Label lbl_proforma;
+        protected global::System.Web.UI.WebControls.Label lbl_trans;
 
 
         /// <summary>

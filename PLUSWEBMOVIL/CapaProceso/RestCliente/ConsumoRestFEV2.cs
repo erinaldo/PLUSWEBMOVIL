@@ -74,10 +74,24 @@ namespace CapaProceso.RestCliente
  
                     string jsonResPdf = "";
                     string linkgenpdf = Modelowmspclogo.linkgenpdf;//Obtengo link para enviara pdf
+                    //Clase para pdf de cada empresa 
+                    string pathPdf=null;
 
+                    if(Modelowmspclogo.pdf_fe.Trim() == "DEFECTO2")
+                    {
+                        PdfFacEleV2Default2 pdf1 = new PdfFacEleV2Default2();
+                        pathPdf = pdf1.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
-                    PdfFacEleV2Default2 pdf = new PdfFacEleV2Default2();
-                    string pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);//Genero el pdf
+                    }
+                    else
+                        if(Modelowmspclogo.pdf_fe.Trim() == "DEFECTO")
+                    {
+                        
+                        PdfFacturaElectronica pdf = new PdfFacturaElectronica();
+                        pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+
+                    }
+
 
                     byte[] pdfBytes = File.ReadAllBytes(pathPdf);
                     string pdfBase64 = Convert.ToBase64String(pdfBytes);//Convierto el pdf en base 64
@@ -127,7 +141,7 @@ namespace CapaProceso.RestCliente
             {
 
                 guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "EnviarFactura", e.ToString(), DateTime.Today, Ccf_usuario);
-                return null;
+                return "Se produjo un error al enviar " + e.ToString();
             }
 
         }
@@ -172,9 +186,23 @@ namespace CapaProceso.RestCliente
                 //sr.Close();
 
                 string linkgenpdf = Modelowmspclogo.linkgenpdf;//Obtengo link para enviara pdf
+                                                               //Clase para pdf de cada empresa 
+                string pathPdf = null;
 
-                PdfFacEleV2Default2 pdf = new PdfFacEleV2Default2();
-                string pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);//Genero el pdf
+                if (Modelowmspclogo.pdf_fe.Trim() == "DEFECTO2")
+                {
+                    PdfFacEleV2Default2 pdf1 = new PdfFacEleV2Default2();
+                    pathPdf = pdf1.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+
+                }
+                else
+                    if (Modelowmspclogo.pdf_fe.Trim() == "DEFECTO")
+                {
+
+                    PdfFacturaElectronica pdf = new PdfFacturaElectronica();
+                    pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+
+                }
 
                 byte[] pdfBytes = File.ReadAllBytes(pathPdf);
                 string pdfBase64 = Convert.ToBase64String(pdfBytes);//Convierto el pdf en base 64

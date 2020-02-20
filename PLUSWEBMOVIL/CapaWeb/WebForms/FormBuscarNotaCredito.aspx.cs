@@ -184,6 +184,12 @@ namespace CapaWeb.WebForms
                 {
                     Grid.Columns[8].Visible = false;
                 }
+                //Rol reactivar NC USA LAS MISMAS DE FACTURA NORMAL
+                ListaModelosRoles = ConsultaRoles.BuscarRolReactivar(AmUsrLog);
+                if (ListaModelosRoles.Count == 0)
+                {
+                    Grid.Columns[13].Visible = false;
+                }
             }
             catch (Exception ex)
             {
@@ -613,6 +619,24 @@ namespace CapaWeb.WebForms
                         catch (Exception ex)
                         {
                             GuardarExcepciones("Grid_ItemCommand, Reenviar", ex.ToString());
+                        }
+                        break;
+                    case "Reactivar":
+                        try
+                        {
+                            Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+                            estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
+                             conscabcera = null;
+                            conscabcera = buscarCabezeraFactura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Convert.ToString(Id));
+                            Response.Redirect(Modelowmspclogo.sitio_app + "Reg_FacturasV_ReAct.asp" + "?nro_trans=" + Convert.ToString(Id) + "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo=" + Ccf_tipo2);
+
+
+                            break;
+
+                        }
+                        catch (Exception ex)
+                        {
+                            GuardarExcepciones("Grid_ItemCommand, Reactivar", ex.ToString());
                         }
                         break;
                 }

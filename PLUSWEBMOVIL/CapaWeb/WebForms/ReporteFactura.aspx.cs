@@ -80,7 +80,7 @@ namespace CapaWeb.WebForms
                     //Clase para pdf de cada empresa 
                     switch (Modelowmspclogo.pdf_fe.Trim())
                     {
-                        case "PDF_CATBAYONA":
+                        case "DEFECTO2":
                             PdfFacVTAV2 pdf1 = new PdfFacVTAV2();
                             string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
                             Response.ContentType = "application/pdf";
@@ -112,7 +112,7 @@ namespace CapaWeb.WebForms
                     //Clase para pdf de cada empresa 
                     switch (Modelowmspclogo.pdf_fe.Trim())
                     {
-                        case "PDF_CATBAYONA":
+                        case "DEFECTO2":
                             PdfFacEleV2Default2 pdf1 = new PdfFacEleV2Default2();
                             string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                             Response.ContentType = "application/pdf";

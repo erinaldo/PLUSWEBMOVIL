@@ -15,7 +15,36 @@ namespace CapaProceso.Consultas
         modelocabecerafactura modelocabfactura = new modelocabecerafactura();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         string metodo = "CabezeaFactura.cs";
+        //Actualizar cabecera nota de crédito
+        public string ActualizarCabeceraNC(modelocabecerafactura cabezeraFactura)
+        {
+            try
+            {
+                string respuesta = factura.ActualizarCabeceraNCFinan(cabezeraFactura);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
 
+                guardarExcepcion.ClaseInsertarExcepcion(cabezeraFactura.cod_emp, metodo, "ActualizarCabeceraNC", e.ToString(), DateTime.Now, cabezeraFactura.usuario_mod);
+                return "No se pudo completar la acción." + "ActualizarCabeceraNC." + " Por favor notificar al administrador.";
+            }
+        }
+        //Actulizar cabcera factura
+        public string ActualizarCabeceraFactura(modelocabecerafactura cabezeraFactura)
+        {
+            try
+            {
+                string respuesta = factura.ActualizarCabeceraFactura(cabezeraFactura);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cabezeraFactura.cod_emp, metodo, "ActualizarCabeceraFactur", e.ToString(), DateTime.Now, cabezeraFactura.usuario_mod);
+                return "No se pudo completar la acción." + "ActualizarCabeceraFactura." + " Por favor notificar al administrador.";
+            }
+        }
         public string ActualizaDetalleFactura(ModeloDetalleFactura detalleFactura)
         {
             try
@@ -26,7 +55,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(detalleFactura.cod_emp, metodo, "ActualizaDetalleFactura", e.ToString(), DateTime.Today, detalleFactura.usuario_mod);
+                guardarExcepcion.ClaseInsertarExcepcion(detalleFactura.cod_emp, metodo, "ActualizaDetalleFactura", e.ToString(), DateTime.Now, detalleFactura.usuario_mod);
                 return "No se pudo completar la acción." + "ActualizaDetalleFactura." + " Por favor notificar al administrador.";
             }
 
@@ -43,7 +72,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cabezeraFactura.cod_emp, metodo, "InsertarCabezeraNotaCredito", e.ToString(), DateTime.Today, cabezeraFactura.usuario_mod);
+                guardarExcepcion.ClaseInsertarExcepcion(cabezeraFactura.cod_emp, metodo, "InsertarCabezeraNotaCredito", e.ToString(), DateTime.Now, cabezeraFactura.usuario_mod);
                 return "No se pudo completar la acción." + "InsertarCabezeraNotaCredito." + " Por favor notificar al administrador.";
             }
         }
@@ -58,7 +87,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cabezeraFactura.cod_emp, metodo, "InsertarCabezeraFactura", e.ToString(), DateTime.Today, cabezeraFactura.usuario_mod);
+                guardarExcepcion.ClaseInsertarExcepcion(cabezeraFactura.cod_emp, metodo, "InsertarCabezeraFactura", e.ToString(), DateTime.Now, cabezeraFactura.usuario_mod);
                 return "No se pudo completar la acción." + "InsertarCabezeraFactura." + " Por favor notificar al administrador.";
             }
         }
@@ -74,7 +103,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ActualizarEstadoFactura", e.ToString(), DateTime.Today,"UDP");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ActualizarEstadoFactura", e.ToString(), DateTime.Now,"UDP");
                 return "No se pudo completar la acción." + "ActualizarEstadoFactura." + " Por favor notificar al administrador.";
             }
         }
@@ -89,7 +118,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ActualizarObserFactur", e.ToString(), DateTime.Today, "UDP");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ActualizarObserFactur", e.ToString(), DateTime.Now, "UDP");
                 return "No se pudo completar la acción." + "ActualizarObserFactur." + " Por favor notificar al administrador.";
             }
         }
@@ -103,8 +132,23 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "EliminarCabDetFactura", e.ToString(), DateTime.Today, "DLT");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "EliminarCabDetFactura", e.ToString(), DateTime.Now, "DLT");
                 return "No se pudo completar la acción." + "EliminarCabDetFactura." + " Por favor notificar al administrador.";
+            }
+        }
+
+        public Boolean ConsultaSNCabFactura(string nro_trans, string cod_emp, string usuario)
+        {
+            try
+            {
+                Boolean respuesta = factura.ConsultaSNCabecera(nro_trans, cod_emp, usuario);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ConsultaSNCabFactura", e.ToString(), DateTime.Now, usuario);
+                return false;
             }
         }
     }

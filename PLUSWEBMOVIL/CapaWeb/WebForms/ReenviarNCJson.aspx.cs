@@ -169,7 +169,11 @@ namespace CapaWeb.WebForms
                 {
                     mensaje.Text = "La Nota Crédito fue enviada exitosamente";
                     btn_reenviar.Enabled = false;
-                    ActualizarEstadoFact.ActualizarEstadoFactura(lbl_nro_trans.Text, "F");
+                    ActualizarEstadoFact.ActualizarEstadoFactura(lbl_nro_trans.Text, "F"); //Actualizar estado nc
+                    if (conscabcera.mot_nce.Trim() == "2")
+                    {
+                       ActualizarEstadoFact.ActualizarEstadoFactura(conscabcera.nro_trans_padre.Trim(), "N");//Actualiza factura a Anulada
+                    }
 
 
                 }
@@ -239,8 +243,11 @@ namespace CapaWeb.WebForms
                 {
                     mensaje.Text = "La Nota Crédito fue enviada exitosamente";
                     btn_reenviar.Enabled = false;
-                    ActualizarEstadoFact.ActualizarEstadoFactura(lbl_nro_trans.Text, "F");
-
+                    ActualizarEstadoFact.ActualizarEstadoFactura(lbl_nro_trans.Text, "F");//Actualiza estado de la nc
+                    if (conscabcera.mot_nce.Trim() == "2")
+                    {
+                        ActualizarEstadoFact.ActualizarEstadoFactura(conscabcera.nro_trans_padre.Trim(), "N");//Actualiza factura a Anulada
+                    }
 
                 }
                 else

@@ -193,7 +193,7 @@ namespace CapaWeb.WebForms
                             //Consultamos la opcion seleccionada saldos y totales
                             if (total != saldo)
                             {
-                                this.Page.Response.Write("<script language='JavaScript'>window.alert('La Factura seleccionada no se puede Anular ')+ error;</script>");
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('La Factura seleccionada no se puede Anular,saldo no es igual al total de la factura ')+ error;</script>");
                             }
                             else
                             {

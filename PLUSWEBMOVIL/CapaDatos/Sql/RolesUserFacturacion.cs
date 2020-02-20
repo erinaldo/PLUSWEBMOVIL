@@ -114,7 +114,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "RespuestaRolPrint", e.ToString(), DateTime.Today, usuario);
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "RespuestaRolPrint", e.ToString(), DateTime.Now, usuario);
                 return null;
             }
         }
@@ -254,7 +254,7 @@ namespace CapaDatos.Sql
                 return null;
             }
         }
-        //Consultar rol reactivar
+        //Consultar rol reactivar factura vta, vtae
         public List<modeloRolesFacturacion> RespuestaRolReactivar(string usuario)
         {
             try
@@ -262,7 +262,7 @@ namespace CapaDatos.Sql
                 using (cn = conexion.genearConexion())
                 {
                     List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
-                    string consulta = ("SELECT cod_rol FROM wm_userroles WHERE usuario = @usuario AND cod_rol IN ('30','31','312','3121','31212')");
+                    string consulta = ("SELECT cod_rol FROM wm_userroles WHERE usuario = @usuario AND cod_rol IN ('31219')");
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
@@ -283,7 +283,41 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "RespuestaRolReactivar", e.ToString(), DateTime.Today, usuario);
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "RespuestaRolReactivar", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
+
+        //Consultar rol reactivar POS
+        public List<modeloRolesFacturacion> RespuestaRolReactivarPOS(string usuario)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
+                    string consulta = ("SELECT cod_rol FROM wm_userroles WHERE usuario = @usuario AND cod_rol IN ('31269')");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloRolesFacturacion item = new modeloRolesFacturacion();
+                        item.cod_rol = Convert.ToString(dr["cod_rol"]);
+
+                        lista.Add(item);
+                    }
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "RespuestaRolReactivarPOS", e.ToString(), DateTime.Now, usuario);
                 return null;
             }
         }

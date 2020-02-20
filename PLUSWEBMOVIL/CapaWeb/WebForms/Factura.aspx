@@ -57,9 +57,26 @@
 
        
     </script>
+    <script LANGUAGE="JavaScript">
 
+var cuenta=0;
 
-    <form id="form1" class="forms-sample" runat="server" method="post">
+function enviado() { 
+if (cuenta == 0)
+{
+cuenta++;
+return true;
+}
+else 
+{
+alert("La Factura ya ha sido enviado, espere por favor.");
+return false;
+}
+}
+// -->
+</script>
+
+    <form id="form1" class="forms-sample" runat="server" method="post" onSubmit="return enviado()">
         
        
         <div style="align-items: center">
@@ -232,6 +249,15 @@
 
                                     </label>
                                 </td>
+                                  <td align="right" valign="top" nowrap="nowrap" class="busqueda">
+                                    <div align="left">TRX:</div>
+                                </td>
+                                <td valign="top">
+                                    <label>
+                                       
+                                        <asp:Label ID="lbl_trans" class="textos"  Width="202" ReadOnly="true" runat="server"></asp:Label>
+                                    </label>
+                                </td>
                                </tr>
                             <tr>
                                 <td align="right" valign="top" nowrap="nowrap" class="busqueda">
@@ -310,6 +336,9 @@
                         <table border="0" id="MostrarDetalle" align="center" >
                             <tr>
                                 <td class="busqueda">
+                                    <asp:Label ID="Label12" class="busqueda" runat="server" visible="false">linea</asp:Label></td>
+                                
+                                <td class="busqueda">
                                     <asp:Label ID="Articulo" class="busqueda" runat="server" Text="Label">Articulo</asp:Label></td>
                                 <td>
                                     <asp:Label ID="Producto" class="busqueda" runat="server" Text="Label">Descripción</asp:Label>
@@ -333,6 +362,9 @@
                               
                             </tr>
                             <tr>
+                                 <td>
+                                    <asp:TextBox ID="txt_linea" CssClass="textos" visible="false" runat="server"></asp:TextBox>
+                                  </td>
 
                                 <td>
                                     <asp:TextBox ID="BuscarArticulo" runat="server" placeholder="Buscar..."  size="20" MaxLength="50" AutoPostBack="True" OnTextChanged="BuscarArticulo_TextChanged"></asp:TextBox>
@@ -614,7 +646,7 @@
                                 </td>
                                 <td >
                                     <asp:Button ID="Cancelar" Class="btnFactura1"  runat="server" onclick="Cancelar_Click" UseSubmitBehavior="False" Text="Cancelar" />
-                                    <asp:Button ID="Confirmar"  Class="btnFactura1" runat="server" OnClientClick="return confirm('¿Desea guardar la factura?');" OnClick="Confirmar_Click" Text="Confirmar" />
+                                    <asp:Button ID="Confirmar"  Class="btnFactura1" runat="server"  OnClick="Confirmar_Click" Text="Confirmar" />
                                 </td>
                     
                             </tr>

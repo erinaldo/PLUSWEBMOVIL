@@ -62,7 +62,25 @@
         }
           
     </script>
-      <form id="form1" class="forms-sample" runat="server" method="post">
+    <script LANGUAGE="JavaScript">
+
+var cuenta=0;
+
+function enviado() { 
+if (cuenta == 0)
+{
+cuenta++;
+return true;
+}
+else 
+{
+alert("La Nota de Crédito ya ha sido enviado, espere por favor.");
+return false;
+}
+}
+// -->
+</script>
+      <form id="form1" class="forms-sample" runat="server" method="post" onSubmit="return enviado()">
        
         <div style="align-items: center">
             <table>
@@ -283,7 +301,23 @@
                                 <td>
                                     <asp:TextBox ID="txt_total_factura" Visible="false" Enabled="false" class="textos" runat="server" Width="200px"></asp:TextBox>
                                 </td>
-                               
+                                <td align="right" valign="top" nowrap="nowrap" class="busqueda">
+                                    <div align="left">TRX:</div>
+                                </td>
+                                <td valign="top">
+                                    <label>
+                                       
+                                        <asp:Label ID="lbl_trans" class="textos"  Width="202" ReadOnly="true" runat="server"></asp:Label>
+                                    </label>
+                                </td>
+                                <td class="busqueda">
+                                    <asp:Label align="center" ID="lbl_trx_padre" Visible="false"  Width="100" runat="server" Text="TRX Factura:"></asp:Label>
+                                  </td>
+                                 <td>
+                                   <asp:TextBox ID="txt_nro_trans_padre" Visible="false" Enabled="false" runat="server"></asp:TextBox>
+                                     <asp:Label ID="lbl_tipo_fac"  class="textos"   runat="server" ></asp:Label>
+                               </td>
+
 
                             </tr>
                             <tr>
@@ -297,11 +331,12 @@
                                <td>
                                    <asp:TextBox ID="txt_serie_docum" Visible="false" runat="server"></asp:TextBox>
                                </td>
-                               <td>
-                                   <asp:TextBox ID="txt_nro_trans_padre" Visible="false" runat="server"></asp:TextBox>
-                               </td>
+                              
                                  <td>
                                    <asp:TextBox ID="txt_cantidad_pro" Visible="false" runat="server"></asp:TextBox>
+                               </td>
+                                 <td>
+                                   <asp:TextBox ID="txt_saldo_factura" Visible="false" runat="server"></asp:TextBox>
                                </td>
                                </tr>
 
@@ -312,7 +347,7 @@
                                     <div align="left">Observaciones:</div>
                                 </td>
                                 <td colspan="5">
-                                    <asp:TextBox ID="area" runat="server" Width="900"  class="textos" MaxLength="250" TextMode="MultiLine" onKeyDown="cuentaCaracteres()" onKeyUp="cuentaCaracteres()" cols="150" Rows="3"></asp:TextBox>
+                                    <asp:TextBox ID="area" runat="server" Width="900"  class="textos" MaxLength="250" TextMode="MultiLine" onKeyDown="cuentaCaracteres()" onKeyUp="cuentaCaracteres()" cols="150" Rows="3" OnTextChanged="area_TextChanged"></asp:TextBox>
                                     <div class="textos2" align="left">Caracteres disponibles: <b><span id="myCounter">250</span></b></div>
                                 </td>
                             </tr>
@@ -346,10 +381,14 @@
                         <table border="0" id="AgregarObservacion"  align="center" >
                             <tr>
                                  <td class="busqueda">
+                                    <asp:Label ID="Label13" class="busqueda" Visible="false" runat="server" Text="Label"></asp:Label></td>
+                                 <td class="busqueda">
                                     <asp:Label ID="lblCod" class="busqueda" runat="server" Text="Label">Código</asp:Label></td>
                                 
                                  <td class="busqueda">
                                     <asp:Label ID="lblDes" class="busqueda" runat="server" Text="Label">Descripción</asp:Label></td>
+                                <td class="busqueda">
+                                    <asp:Label ID="Label12" class="busqueda" runat="server" Text="Label">Descripción</asp:Label></td>
                                  <td class="busqueda">
                                     <asp:Label ID="lblCan" class="busqueda" runat="server" Text="Label">Cantidad</asp:Label></td>
                                  <td class="busqueda">
@@ -361,18 +400,25 @@
                                 
                             </tr>
                             <tr>
+                                
+                                <td>
+                                    <asp:TextBox ID="txt_linea" CssClass="textos" visible="false" runat="server"></asp:TextBox>
+                                  </td>
                                <td>
                                        <asp:TextBox ID="txt_Codigo"  CssClass="textos" placeholder="Buscar..."  AutoPostBack="True" OnTextChanged="txt_Codigo_TextChanged" size="20" MaxLength="50" runat="server"></asp:TextBox>
                                 </td>
                                 <td >
                                     <asp:TextBox ID="txt_Descripcion" CssClass="textos" Size="40" ReadOnly="true" runat="server"></asp:TextBox>
                                  </td>
+                                 <td >
+                                    <asp:TextBox ID="txt_Descripcion2" CssClass="textos" Size="40" runat="server"></asp:TextBox>
+                                 </td>
                                 <td>
                                     <asp:TextBox ID="txt_Cantidad" CssClass="textos" min="1" step="0.01"  type="number" value="1" Width="60px"  runat="server"></asp:TextBox>
                                     
                                 </td>
                                  <td>
-                                    <asp:TextBox ID="txt_Precio" CssClass="textos" ReadOnly="true"   value="0" Width="100px" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="txt_Precio" runat="server" CssClass="textos" type="number"   step="any" value="0" Width="100px" ></asp:TextBox>
                                     
                                 </td>
                                  <td>
@@ -409,10 +455,17 @@
                                         
                                         AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
                                          AllowSorting="True" ShowFooter="True"
-                                          CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" OnItemCommand="gv_Producto_ItemCommand">
+                                          CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" OnItemCommand="gv_Producto_ItemCommand" PageSize="2000">
 
 
                                         <Columns>
+                                             <asp:TemplateColumn HeaderText="linea" Visible="false" >
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="linea" runat="server" class="textos" Text='<%#Eval("linea") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
                                             <asp:TemplateColumn HeaderText="Código" >
                                                 <ItemTemplate>
                                                     <span style="float: left;">
@@ -425,6 +478,14 @@
                                                 <ItemTemplate>
                                                     <span style="float: left;">
                                                         <asp:Label ID="nom_articulo" runat="server" class="textos" Text='<%#Eval("nom_articulo") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+
+                                              <asp:TemplateColumn HeaderText="Descripción">
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="nom_articulo2" runat="server" class="textos" Text='<%#Eval("nom_articulo2") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -618,7 +679,7 @@
                                 </td>
                                 <td >
                                     <asp:Button ID="Cancelar" Class="btnFactura1" OnClick="Cancelar_Click"  runat="server"  UseSubmitBehavior="False" Text="Cancelar" />
-                                    <asp:Button ID="Confirmar"  Class="btnFactura1" OnClick="Confirmar_Click" runat="server" OnClientClick="return confirm('¿Desea guardar la nota de crédito?');"  Text="Confirmar" />
+                                    <asp:Button ID="Confirmar"  Class="btnFactura1" OnClick="Confirmar_Click" runat="server"  Text="Confirmar" />
                                 </td>
                     
                             </tr>

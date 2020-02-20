@@ -178,7 +178,7 @@ namespace CapaWeb.WebForms
                 //Escoger opcion
 
                 int Id;
-
+                decimal saldo;
                 switch (e.CommandName) //ultilizo la variable para la opcion
                 {
 
@@ -186,6 +186,7 @@ namespace CapaWeb.WebForms
                         try
                         {
                             Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+                            saldo = Convert.ToDecimal(((Label)e.Item.Cells[5].FindControl("saldo")).Text);
                             //Consultamos la opcion seleccionada
                             //cOSNULTA BUSCAR TIPO DE FACTURA
                             conscabceraTipo = null;
@@ -208,6 +209,7 @@ namespace CapaWeb.WebForms
 
                             // Crea la variable de sessión
                             Session["listaFacturas"] = conscabcera;
+                            Session["saldoFacturas"] = saldo;
 
                             // Refrescamos el formuario padre
                             ClientScript.RegisterClientScriptBlock(GetType(), "Refresca", "window.opener.location.reload(); window.close();", true);

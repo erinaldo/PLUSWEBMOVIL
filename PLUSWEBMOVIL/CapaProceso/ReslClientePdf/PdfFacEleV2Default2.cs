@@ -322,7 +322,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.BorderWidthRight = 1;
                 cell.BorderWidthLeft = 1;
                 cell.BorderWidthBottom = 0;
-                cell.HorizontalAlignment = 0;
+                cell.HorizontalAlignment = 1;
                 tabladetaEmpresa1.AddCell(cell);
 
                 cell = new PdfPCell(tabladetaEmpresa1);//this line made the difference
@@ -439,6 +439,15 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 0;
                 tablaCab1.AddCell(cell);
 
+                cell = new PdfPCell(new Paragraph("Ciudad:      " + conscabcera.nom_ciudad, fontText1));
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
+                cell.BorderWidthLeft = 1;
+                cell.BorderWidthBottom = 0;
+                cell.Colspan = 1;
+                cell.HorizontalAlignment = 0;
+                tablaCab1.AddCell(cell);
+
                 cell = new PdfPCell(new Paragraph("Email:        "+ conscabcera.email_tit, fontText1));
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 0;
@@ -488,14 +497,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 tablaCab2.AddCell(cell);
 
 
-                cell = new PdfPCell(new Paragraph("Ciudad:          "+ conscabcera.nom_ciudad, fontText1));
-                cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 1;
-                cell.BorderWidthLeft = 0;
-                cell.BorderWidthBottom = 0;
-                cell.Colspan = 2;
-                cell.HorizontalAlignment = 0;
-                tablaCab2.AddCell(cell);
+             
 
                 cell = new PdfPCell(new Paragraph("Moneda:         "+ conscabcera.cod_moneda, fontText1));
                 cell.BorderWidthTop = 0;
@@ -507,6 +509,15 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 tablaCab2.AddCell(cell);
 
                 cell = new PdfPCell(new Paragraph("O.Compra:      "+ conscabcera.ocompra, fontText1));
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthBottom =0;
+                cell.Colspan = 2;
+                cell.HorizontalAlignment = 0;
+                tablaCab2.AddCell(cell);
+    
+                cell = new PdfPCell(new Paragraph("Vendedor:      " + conscabcera.nom_vendedor, fontText1));
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 1;
                 cell.BorderWidthLeft = 0;
@@ -524,18 +535,19 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
     
                 //opcion detalle cabcera
-                PdfPTable detacab = new PdfPTable(6);//cantidad de columnas que va tener la tabla
+                PdfPTable detacab = new PdfPTable(7);//cantidad de columnas que va tener la tabla
                 detacab.WidthPercentage = 100;
                
                // detacab.DefaultCell.BackgroundColor(193, 185, 172);
                 // detacab.SpacingBefore = 5;
-                float[] values = new float[6];
+                float[] values = new float[7];
                 values[0] = 90;
                 values[1] = 300;
                 values[2] = 60;
-                values[3] = 80;
-                values[4] = 70;
-                values[5] = 110;
+                values[3] = 70;
+                values[4] = 100;
+                values[5] = 70;
+                values[6] = 110;
                // values[6] = 110;
                 detacab.SetWidths(values);
 
@@ -570,7 +582,16 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.BackgroundColor = new BaseColor(220, 217, 211);
                 detacab.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("CANTIDAD", titulo2));
+                cell = new PdfPCell(new Paragraph("CANT", titulo2));
+                cell.BorderWidthBottom = 1;
+                cell.BorderWidthLeft = 1;
+                cell.BorderWidthTop = 1;
+                cell.BorderWidthRight = 1;
+                cell.HorizontalAlignment = 1;
+                cell.BackgroundColor = new BaseColor(220, 217, 211);
+                detacab.AddCell(cell);
+
+                cell = new PdfPCell(new Paragraph("P.UNIT", titulo2));
                 cell.BorderWidthBottom = 1;
                 cell.BorderWidthLeft = 1;
                 cell.BorderWidthTop = 1;
@@ -602,7 +623,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
 
                 //Cargar Detalle factura
-                PdfPTable detalle = new PdfPTable(6);//cantidad de columnas que va tener la tabla
+                PdfPTable detalle = new PdfPTable(7);//cantidad de columnas que va tener la tabla
                 detalle.WidthPercentage = 100f;
                 float[] alto = { 150f, 150f, 150f };
                 
@@ -613,13 +634,15 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 detalle.DefaultCell.BorderWidthTop = 0;
                 detalle.DefaultCell.BorderWidthRight = 1;
                
-                values = new float[6];
+                values = new float[7];
+              
                 values[0] = 90;
                 values[1] = 300;
                 values[2] = 60;
-                values[3] = 80;
-                values[4] = 70;
-                values[5] = 110;
+                values[3] = 70;
+                values[4] = 100;
+                values[5] = 70;
+                values[6] = 110;
                 // values[6] = 110;
 
                 detalle.HorizontalAlignment = 2;
@@ -635,6 +658,8 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                     detalle.DefaultCell.HorizontalAlignment = 1; detalle.AddCell(new Paragraph(unidad, fontText3));
                     decimal cantidadP = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, item.cantidad);
                     detalle.DefaultCell.HorizontalAlignment = 2; detalle.AddCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, cantidadP), fontText3));
+                    decimal precio_un1 = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, item.precio_unit);
+                    detalle.DefaultCell.HorizontalAlignment = 2; detalle.AddCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo_pu, precio_un1), fontText1));
 
                     decimal porc_des = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, item.porc_iva);
                     detalle.DefaultCell.HorizontalAlignment = 2; detalle.AddCell(new Paragraph(porc_des.ToString(), fontText3));

@@ -72,9 +72,19 @@ namespace CapaProceso.RestCliente
                     //sr.Close();
 
                     string linkgenpdf = Modelowmspclogo.linkgenpdf;//Obtengo link para enviara pdf
+                    string pathPdf = null;
+                    switch (Modelowmspclogo.pdf_nc.Trim())
+                    {
+                        case "DEFECTO2":
 
-                    PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
-                    string pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);//Genero el pdf
+                            PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
+                             pathPdf = pdf1.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                             break;
+                        case "DEFECTO":
+                            PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
+                             pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                            break;
+                    }
 
                     byte[] pdfBytes = File.ReadAllBytes(pathPdf);
                     string pdfBase64 = Convert.ToBase64String(pdfBytes);//Convierto el pdf en base 64
@@ -85,7 +95,7 @@ namespace CapaProceso.RestCliente
                     //Envia el json armado para y obtiene la respuesta
                     jsonRespuestaDE = procesoRest.EnviarJSONDS(linkgenpdf, credentials, jsonResPdf);
                     /*Volver a preguntar si error es igul a nulo*/
-                    if (jsonRespuestaDE.error.Trim() == null)
+                    if (jsonRespuestaDE.error == " ")
                     {
                         jsonRespuestaDE.error = "";
                     }
@@ -122,8 +132,8 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "EnviarFactura", e.ToString(), DateTime.Today, Ccf_usuario);
-                return null;
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "EnviarFactura", e.ToString(), DateTime.Now, Ccf_usuario);
+                return "Se produjo un error al enviar " + e.ToString();
             }
 
 
@@ -172,10 +182,22 @@ namespace CapaProceso.RestCliente
 
                 string linkgenpdf = Modelowmspclogo.linkgenpdf;//Obtengo link para enviara pdf
 
-                PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
-                string pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);//Genero el pdf
+                string pathPdf = null;
+                switch (Modelowmspclogo.pdf_nc.Trim())
+                {
+                    case "DEFECTO2":
 
-                byte[] pdfBytes = File.ReadAllBytes(pathPdf);
+                        PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
+                        pathPdf = pdf1.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                        break;
+                    case "DEFECTO":
+                        PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
+                        pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                        break;
+                }
+
+
+                        byte[] pdfBytes = File.ReadAllBytes(pathPdf);
                 string pdfBase64 = Convert.ToBase64String(pdfBytes);//Convierto el pdf en base 64
 
                 //Consultar pdf, convertir a json
@@ -215,7 +237,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "enviarPDF", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "enviarPDF", e.ToString(), DateTime.Now, Ccf_usuario);
                 return "No se pudo completar la acción." + "enviarPDF." + " Por favor notificar al administrador.";
             }
 
