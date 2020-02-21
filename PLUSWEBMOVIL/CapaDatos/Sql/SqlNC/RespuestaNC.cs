@@ -51,11 +51,54 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "RespuestaNC.cs", "ConsultaRespuestaQR", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "RespuestaNC.cs", "ConsultaRespuestaQR", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
 
         }
+
+        //consultar cufe de una factura
+        public List<JsonRespuestaNC> ConsultaCUFE(string nro_trans)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<JsonRespuestaNC> lista = new List<JsonRespuestaNC>();
+                    string consulta = "SELECT TOP 1 * FROM wmt_respuestaDS WHERE nro_trans =@nro_trans AND cufe <> ' '";
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("nro_trans", SqlDbType.VarChar).Value = nro_trans;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        JsonRespuestaNC item = new JsonRespuestaNC();
+                        item.nro_trans = Convert.ToString(dr["nro_trans"]);
+                        item.linea = Convert.ToInt16(dr["linea"]);
+                        item.qrdata = Convert.ToString(dr["qrdata"]);
+                        item.xml = Convert.ToString(dr["xml"]);
+                        item.id = Convert.ToString(dr["id"]);
+                        item.cufe = Convert.ToString(dr["cufe"]);
+                        item.error = Convert.ToString(dr["error"]);
+                        item.json = Convert.ToString(dr["json"]);
+                        item.result = Convert.ToString(dr["result"]);
+                        lista.Add(item);
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "RespuestaNC.cs", " ConsultaCUFE", e.ToString(), DateTime.Now, "consulta");
+                return null;
+            }
+
+        }
+
         //Consultar por linea la respuesta
         public List<JsonRespuestaNC> RespuestaLineaQR(string nro_trans,  string linea)
         {
@@ -93,7 +136,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "RespuestaNC.cs", "RespuestaLineaQR", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "RespuestaNC.cs", "RespuestaLineaQR", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }
@@ -125,7 +168,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(jsonRespuestaNC.nro_trans, "RespuestaDC.cs", "InsertarRespuestaNC", e.ToString(), DateTime.Today, "INS");
+                guardarExcepcion.ClaseInsertarExcepcion(jsonRespuestaNC.nro_trans, "RespuestaDC.cs", "InsertarRespuestaNC", e.ToString(), DateTime.Now, "INS");
                 return "No se pudo completar la acción." + "InsertarRespuestaNC." + " Por favor notificar al administrador.";
             }
 
@@ -161,7 +204,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(item.nro_trans, "RespuestaDC.cs", "InsertarRespuestaDS_DIANFEV2", e.ToString(), DateTime.Today, "INS");
+                guardarExcepcion.ClaseInsertarExcepcion(item.nro_trans, "RespuestaDC.cs", "InsertarRespuestaDS_DIANFEV2", e.ToString(), DateTime.Now, "INS");
                 return "No se pudo completar la acción." + "Insertar" + " Por favor notificar al administrador.";
             }
 

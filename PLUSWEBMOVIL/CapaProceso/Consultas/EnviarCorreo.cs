@@ -94,7 +94,7 @@ namespace CapaProceso.Consultas
                 smtp.Host = smtpHost;
                 smtp.Port = puerto;                
                 smtp.Credentials = new NetworkCredential(Usuario, Contrasenia);
-                smtp.EnableSsl = ssl;
+                smtp.EnableSsl = ssl;               
                 smtp.Send(email);
 
                 return true;

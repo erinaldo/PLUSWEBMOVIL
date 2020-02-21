@@ -126,7 +126,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             }
             catch (Exception e)
             {
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "BuscarRespuestaDS", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "BuscarRespuestaDS", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }

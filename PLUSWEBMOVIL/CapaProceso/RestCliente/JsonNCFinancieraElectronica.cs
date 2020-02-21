@@ -117,7 +117,7 @@ namespace CapaProceso.RestCliente
                 string tipoFactura = "";
                 EncabezadoNC encabezado = new EncabezadoNC();
                 //Recuperar el cufe ce la factura
-                ListaModelorespuestaDs = consultaRespuestaDS.RespuestaLineaQr(nro_factura, "1");
+                ListaModelorespuestaDs = consultaRespuestaDS.ConsultaCUFE(nro_factura);
                 int count = 0;
                 foreach (var item in ListaModelorespuestaDs)
                 {
