@@ -111,6 +111,9 @@ namespace CapaProceso.RestCliente
 
                 listaConsDet = ConsultaDeta.ConsultaDetalleFacura(Ccf_nro_trans);
 
+                ModeloCotizacion = null;
+                ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
+
                 conscabcera = null;
                 conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
@@ -125,7 +128,12 @@ namespace CapaProceso.RestCliente
                 //Pruebas emisor 830106032
                 //Produccion emisor =Convert.ToInt32(Modeloempresa.nro_dgi2);
                 //nUEVOS CAMPOS FE version2
-                encabezado.baseimpuesto = Convert.ToDecimal(conscabcera.monto_imponible); //base imponible
+                if (conscabcera.cod_moneda.Trim() != "COP")
+                {
+                    encabezado.baseimpuesto = Convert.ToDecimal(conscabcera.monto_imponible) * Convert.ToDecimal(ModeloCotizacion.tc_mov1c); //base imponible
+                }
+                else
+                { encabezado.baseimpuesto = Convert.ToDecimal(conscabcera.monto_imponible); }
                 encabezado.codmoneda = conscabcera.cod_moneda.Trim();
                 encabezado.comentarios = conscabcera.observaciones;
                 encabezado.emisor = Convert.ToInt32(Modeloempresa.nro_dgi2);
@@ -134,7 +142,14 @@ namespace CapaProceso.RestCliente
                 encabezado.fvence = conscabcera.fec_venc.ToString("yyyy-MM-dd");
                 encabezado.idsuc = 1;
                 encabezado.idvendedor = Convert.ToInt32(conscabcera.cod_vendedor);
-                encabezado.iva = Convert.ToDecimal(conscabcera.iva);
+                if (conscabcera.cod_moneda.Trim() != "COP")
+                {
+                    encabezado.iva = Convert.ToDecimal(conscabcera.iva) * Convert.ToDecimal(ModeloCotizacion.tc_mov1c); //base imponible
+                }
+                else
+                {
+                    encabezado.iva = Convert.ToDecimal(conscabcera.iva);
+                }
                 encabezado.mediopago = "ZZZ";//POR DEFECTO ZZZ-------------
                 if (conscabcera.cod_fpago.Trim() =="00") //1 = contado, 2= credito
                  { encabezado.metodopago = 1; }
@@ -149,10 +164,24 @@ namespace CapaProceso.RestCliente
                 encabezado.ordencompra = Convert.ToString(conscabcera.ocompra);
                 // para prueba set
                 encabezado.prefijo =  Convert.ToString(conscabcera.serie_docum.Trim());
-                encabezado.subtotal = Convert.ToInt32(conscabcera.subtotal);
+                if (conscabcera.cod_moneda.Trim() != "COP")
+                {
+                    encabezado.subtotal = Convert.ToDecimal(conscabcera.subtotal) * Convert.ToDecimal(ModeloCotizacion.tc_mov1c); //base imponible
+                }
+                else
+                {
+                    encabezado.subtotal = Convert.ToInt32(conscabcera.subtotal);
+                }
                 encabezado.sucursal = Convert.ToInt16(conscabcera.cod_sucursal);
                 encabezado.terminospago = "30"; //por defecto 30
-                encabezado.total = Convert.ToInt32(conscabcera.total);
+                if (conscabcera.cod_moneda.Trim() != "COP")
+                {
+                    encabezado.total = Convert.ToDecimal(conscabcera.total) * Convert.ToDecimal(ModeloCotizacion.tc_mov1c); //base imponible
+                }
+                else
+                {
+                    encabezado.total = Convert.ToInt32(conscabcera.total);
+                }
                 encabezado.totalDet = listaConsDet.Count; //la cantidad de lineas del detalle de la factura
                 encabezado.totalImp = 1; //la cantidad de lineas de los impuestos
                 encabezado.usuario = Ccf_usuario;  //Usuario que facturo
@@ -187,10 +216,15 @@ namespace CapaProceso.RestCliente
                     itemDetalle.cantidad = Convert.ToInt32(item.cantidad);
                     itemDetalle.idproducto = item.cod_articulo.Trim();
                     itemDetalle.idunidad = "EA";//Por defecto
-                    itemDetalle.iva = Convert.ToInt32(item.valor_iva);
                     if (conscabcera.cod_moneda.Trim() != "COP")
                     {
-                        itemDetalle.ivausd = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * itemDetalle.iva;
+                        itemDetalle.iva = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.valor_iva;
+                    }
+                    else { itemDetalle.iva = item.valor_iva; }
+                   
+                    if (conscabcera.cod_moneda.Trim() != "COP")
+                    {
+                        itemDetalle.ivausd = item.valor_iva;
                     }
                     else
                     { itemDetalle.ivausd = 0; }
@@ -200,23 +234,31 @@ namespace CapaProceso.RestCliente
                     itemDetalle.porcdcto = Convert.ToInt32(item.porc_descto);
                     itemDetalle.porciva = Convert.ToInt32(item.porc_iva);
                     itemDetalle.pos = item.linea;
-                    itemDetalle.precio = Convert.ToInt32(item.precio_unit);
                     if (conscabcera.cod_moneda.Trim() != "COP")
                     {
-                        itemDetalle.preciousd = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * itemDetalle.precio;
+                        itemDetalle.precio = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.precio_unit;
+                    }
+                    else { itemDetalle.precio = item.precio_unit; }
+                    
+                    if (conscabcera.cod_moneda.Trim() != "COP")
+                    {
+                        itemDetalle.preciousd = item.precio_unit;
                     }
                     else { itemDetalle.preciousd = 0; }
                     itemDetalle.subpartidaarancelaria = ""; //por defecto en blanco
-                    itemDetalle.subtotal = Convert.ToInt32(item.subtotal);
                     if (conscabcera.cod_moneda.Trim() != "COP")
                     {
-                                             
-                        itemDetalle.subtotalusd = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * itemDetalle.subtotal;
+                        itemDetalle.subtotal = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.subtotal;
+                    }
+                    else { itemDetalle.subtotal = item.subtotal; }
+                    
+
+                    if (conscabcera.cod_moneda.Trim() != "COP")
+                    {                      
+                        itemDetalle.subtotalusd = item.subtotal;
                     }
                     else
-                    {
-                        
-                       
+                    {                        
                         itemDetalle.subtotalusd = 0;
                     }
                     detalle.Add(itemDetalle);
@@ -245,11 +287,19 @@ namespace CapaProceso.RestCliente
                 ModeloImpuesto = null;
                 ModeloImpuesto = BuscarImpuestosREst(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans, impuesto_rest);
 
+                if (conscabcera.cod_moneda.Trim() != "COP")
+                {
+                    item.base_calculo = Convert.ToDecimal(ModeloImpuesto.base_impu) *Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
+                    item.porciva = Convert.ToDecimal(ModeloImpuesto.porc_impu);
+                    item.valor = Convert.ToDecimal(ModeloImpuesto.valor_impu) * Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
+                }
+                else
+                {
 
-
-                item.base_calculo = Convert.ToDecimal(ModeloImpuesto.base_impu);
-                item.porciva = Convert.ToDecimal(ModeloImpuesto.porc_impu);
-                item.valor = Convert.ToDecimal(ModeloImpuesto.valor_impu);
+                    item.base_calculo = Convert.ToDecimal(ModeloImpuesto.base_impu);
+                    item.porciva = Convert.ToDecimal(ModeloImpuesto.porc_impu);
+                    item.valor = Convert.ToDecimal(ModeloImpuesto.valor_impu);
+                }
 
                 impuesto.Add(item);
 

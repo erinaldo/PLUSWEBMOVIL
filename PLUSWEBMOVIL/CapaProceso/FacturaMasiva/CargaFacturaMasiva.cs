@@ -396,7 +396,7 @@ namespace CapaProceso.FacturaMasiva
             }
             catch (Exception ex)
             {
-                guardarExcepcion.ClaseInsertarExcepcion(ComPwm, metodo, "InsertarCabecera", ex.ToString(), DateTime.Today, AmUsrLog);
+                guardarExcepcion.ClaseInsertarExcepcion(ComPwm, metodo, "InsertarCabecera", ex.ToString(), DateTime.Now, AmUsrLog);
                 
 
             }
@@ -408,14 +408,7 @@ namespace CapaProceso.FacturaMasiva
             try
             {
                 
-                //Insertar producto en la grilla calcular totales
-                DateTime hoy = DateTime.Today;
-               string fecha_actual = DateTime.Today.ToString("yyyy-MM-dd");
-                //Consultar tasa de cambio
-                string dia = string.Format("{0:00}", hoy.Day);
-                string mes = string.Format("{0:00}", hoy.Month);
-                string anio = hoy.Year.ToString();
-                modeloFacturaEMasiva ModeloDetalle = new modeloFacturaEMasiva();
+                  modeloFacturaEMasiva ModeloDetalle = new modeloFacturaEMasiva();
                 foreach (var proDet in listaD)
                 {
                     ModeloDetalle = proDet;
@@ -424,37 +417,18 @@ namespace CapaProceso.FacturaMasiva
                     ModeloDetalleFactura item = new ModeloDetalleFactura();
                     articulo = null;
                     articulo = BuscarProducto(ComPwm,AmUsrLog, ModeloDetalle.articulo);
-
-                  
-
                    
                     Boolean existe = false;
-                    foreach (ModeloDetalleFactura itemSuma in ModeloDetalleFactura)
-                    {
-                        if (itemSuma.cod_articulo == articulo.cod_articulo)
-                        {
-                            existe = true;
-
-                            /* sumo los nuevos valores agregados al producto*/
-                            itemSuma.cantidad += Convert.ToDecimal(ModeloDetalle.cant_pro);
-                            itemSuma.precio_unit = Convert.ToDecimal(ModeloDetalle.precio_unit);
-                            itemSuma.porc_iva = Convert.ToDecimal(ModeloDetalle.porc_iva);
-                            itemSuma.porc_descto = Convert.ToDecimal(0);
-
-                            break;
-                        }
-                    }
-
 
                     if (!existe)
                     {
                         item.cod_articulo = ModeloDetalle.articulo;
                         item.nom_articulo = articulo.nom_articulo; //Verificar cuando viene vacio no es permitido xpor ds
-                        item.nom_articulo2 = articulo.nom_articulo;
-                        item.cod_ccostos = "900"; //Traer valor por defecto
+                        item.nom_articulo2 = ModeloDetalle.descripcion2;
+                        item.cod_ccostos = "000";//ccostos.cod_dpto;  //Traer valor por defecto
                         item.cantidad = Convert.ToDecimal(ModeloDetalle.cant_pro);
                         item.precio_unit = Convert.ToDecimal(ModeloDetalle.precio_unit);
-                        item.porc_iva = Convert.ToDecimal(ModeloDetalle.porc_iva);
+                        item.porc_iva = Convert.ToDecimal(articulo.porc_impuesto);
                         item.porc_descto = ModeloDetalle.porc_desc;
                         item.cod_cta_cos = articulo.cod_cta_cos;
                         item.cod_cta_inve = articulo.cod_cta_inve;
@@ -473,7 +447,7 @@ namespace CapaProceso.FacturaMasiva
             }
             catch (Exception ex)
             {
-                guardarExcepcion.ClaseInsertarExcepcion(ComPwm, metodo, "InsertarDetalle", ex.ToString(), DateTime.Today, AmUsrLog);
+                guardarExcepcion.ClaseInsertarExcepcion(ComPwm, metodo, "InsertarDetalle", ex.ToString(), DateTime.Now, AmUsrLog);
 
             }
         }
@@ -517,7 +491,7 @@ namespace CapaProceso.FacturaMasiva
                         detallefactura.cod_cta_inve = item.cod_cta_inve;
                         detallefactura.usuario_mod = AmUsrLog;
                         detallefactura.nro_audit = conscabcera.nro_audit;
-                        detallefactura.fecha_mod = DateTime.Today;
+                        detallefactura.fecha_mod = DateTime.Now;
                         detallefactura.tasa_iva = item.tasa_iva;
                         detallefactura.cod_ccostos = item.cod_ccostos;
                         error = GuardarDetalles.InsertarDetalleFactura(detallefactura);
@@ -536,7 +510,7 @@ namespace CapaProceso.FacturaMasiva
             }
             catch (Exception ex)
             {
-                guardarExcepcion.ClaseInsertarExcepcion(ComPwm, metodo, "GuardarDetalle", ex.ToString(), DateTime.Today, AmUsrLog);
+                guardarExcepcion.ClaseInsertarExcepcion(ComPwm, metodo, "GuardarDetalle", ex.ToString(), DateTime.Now, AmUsrLog);
                 return null;
 
             }
