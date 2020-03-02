@@ -153,9 +153,9 @@ namespace CapaProceso.Consultas
                 cliente = null;
                 cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, Ven__fono);
                //--------TRAER DATOS DE LA TABLA wmm_correos, wmm_correos_emisor--------//
-                modelowmm_correos = FormatoEmail( Ccf_cod_emp, "AEMLMA", "RCOMFELECT", Ccf_usuario);
+                modelowmm_correos = FormatoEmail( Ccf_cod_emp, "RCOMFELECT", "DocElec", Ccf_usuario);
                // modelo_correoreceptor = CorreoReceptor(Ccf_cod_emp, "AEMLMA", "RCOMFELECT", Ccf_usuario);
-                listaCorreoRece = consultaCorreos.ListaCorreoReceptor(Ccf_cod_emp, "AEMLMA", "RCOMFELECT", Ccf_usuario);
+                listaCorreoRece = consultaCorreos.ListaCorreoReceptor(Ccf_cod_emp, "RCOMFELECT", "DocElec", Ccf_usuario);
 
                 modelo_correoreceptor = null;
                 foreach (modelowmm_correo_receptor item in listaCorreoRece)

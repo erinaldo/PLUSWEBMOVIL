@@ -113,11 +113,25 @@ namespace CapaWeb.WebForms
                     switch (Modelowmspclogo.pdf_fe.Trim())
                     {
                         case "DEFECTO2":
-                            PdfFacEleV2Default2 pdf1 = new PdfFacEleV2Default2();
-                            string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                            Response.ContentType = "application/pdf";
-                            Response.WriteFile(pathPdf1);
-                            Response.End();
+                            if(conscabcera.estado.Trim() == "C")
+                            {
+                                PdfFacVTAV2 pdf1 = new PdfFacVTAV2();
+                                string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                                Response.ContentType = "application/pdf";
+                                Response.WriteFile(pathPdf1);
+                                Response.End();
+
+                            }
+                            else
+                            {
+                                PdfFacEleV2Default2 pdf1 = new PdfFacEleV2Default2();
+                                string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                                Response.ContentType = "application/pdf";
+                                Response.WriteFile(pathPdf1);
+                                Response.End();
+
+                            }
+                           
                             break;
                         case "DEFECTO":
                             PdfFacturaElectronica pdf = new PdfFacturaElectronica();

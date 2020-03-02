@@ -103,14 +103,30 @@ namespace CapaWeb.WebForms
                     switch (Modelowmspclogo.pdf_nc.Trim())
                     {
                         case "DEFECTO2":
+                            if (conscabcera.estado.Trim() == "C")
+                            {
 
-                            PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
-                            string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                            Response.ContentType = "application/pdf";
-                            Response.WriteFile(pathPdf1);
-                            Response.End();
-                            break;
+                                PdfNCV2Default2 pdf1 = new PdfNCV2Default2();
+                                string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                                Response.ContentType = "application/pdf";
+                                Response.WriteFile(pathPdf1);
+                                Response.End();
+                                break;
+
+                            }
+                            else
+                            {
+                                PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
+                                string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                                Response.ContentType = "application/pdf";
+                                Response.WriteFile(pathPdf1);
+                                Response.End();
+                                break;
+                            }
+                           
+                            
                         case "DEFECTO":
+                            
                             PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
                             string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                             Response.ContentType = "application/pdf";

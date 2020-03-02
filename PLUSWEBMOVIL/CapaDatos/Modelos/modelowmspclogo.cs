@@ -29,6 +29,8 @@ namespace CapaDatos.Modelos
         public string cod_emp_erp { get; set; }
         public string pdf_fe { get; set; }
         public string pdf_nc { get; set; }
+        public int cantidad_decimal { get; set; }
+        public int pvp_decimal { get; set; }
 
     }
 }

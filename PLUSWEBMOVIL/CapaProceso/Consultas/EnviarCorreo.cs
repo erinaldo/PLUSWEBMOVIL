@@ -56,11 +56,16 @@ namespace CapaProceso.Consultas
                 ModeloHost = null;
                 ModeloHost = buscarDatosHostEmpresa(cod_emp);
                 /*Datos desde la base de pw*/
-               string Usuario = ModeloHost.correo;
+                string Usuario = ModeloHost.correo;
                 string Contrasenia = ModeloHost.contrasenia;
                 string smtpHost = ModeloHost.smtp;
-                int puerto =ModeloHost.puerto;
-                bool ssl = true;
+                int puerto = ModeloHost.puerto;
+                bool ssl;
+                if (ModeloHost.secure ==1)
+                { 
+                 ssl = true;
+                }
+                else { ssl = false; }
 
                 // recuperar de base de tabla HostMail 
                 /*   string Usuario = "prueba@cepes.ec";
@@ -91,10 +96,13 @@ namespace CapaProceso.Consultas
                 }
 
                 email.IsBodyHtml = true;
+               // SmtpClient smtp = new SmtpClient("mail@pluscolombia.com", 587);
                 smtp.Host = smtpHost;
-                smtp.Port = puerto;                
-                smtp.Credentials = new NetworkCredential(Usuario, Contrasenia);
-                smtp.EnableSsl = ssl;               
+                smtp.Port = puerto;
+                smtp.EnableSsl = ssl;
+              //  smtp.UseDefaultCredentials = false;
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.Credentials = new NetworkCredential(Usuario, Contrasenia);            
                 smtp.Send(email);
 
                 return true;

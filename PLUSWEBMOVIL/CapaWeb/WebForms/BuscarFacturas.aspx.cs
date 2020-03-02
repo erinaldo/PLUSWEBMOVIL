@@ -448,6 +448,11 @@ namespace CapaWeb.WebForms
                                         qs.Add("Id", Id.ToString());
                                         Response.Write("<script>window.open('" + "ReporteFactura.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
                                         break;
+                                    case "CONTABILIZADO":
+
+                                        qs.Add("Id", Id.ToString());
+                                        Response.Write("<script>window.open('" + "ReporteFactura.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
+                                        break;
                                     default:
                                         this.Page.Response.Write("<script language='JavaScript'>window.alert('SU FACTURA ESTA " + estadoM + "')+ error;</script>");
                                         break;

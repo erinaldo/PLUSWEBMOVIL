@@ -307,13 +307,11 @@ namespace CapaWeb.WebForms
                             }
                             //Buscar el xml TRAE TODAS LAS RESPUESTAS
                             ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(Id.ToString());
-                            int count = 0;
                             foreach (var item in ListaModelorespuestaDs)
                             {
                                 if (item.xml != "")
                                 {
                                     ModeloResQr = item;
-                                    count++;
                                 }
 
                             }
@@ -332,16 +330,36 @@ namespace CapaWeb.WebForms
                                     if (conscabcera.tipo_nce =="NCVE" || conscabcera.tipo_nce == "NCME")
                                     {
                                         //Tipo NCE siempre trae lleno cuando es nc
-                                        PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
                                         Ccf_tipo2 = "NC";
-                                        pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Id.ToString());
+                                          if (Modelowmspclogo.pdf_nc.Trim() =="DEFECTO2")
+                                            {
+                                                    PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
+                                                    pathPdf = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                                           }
+                                        else
+                                        {
+                                            PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
+                                             pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+
+                                        }
+
 
                                     }
                                     else
                                     {
-                                        Ccf_tipo2 = conscabcera.tipo_nce.Trim();
-                                        PdfFacturaElectronica pdf = new PdfFacturaElectronica();
-                                        pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Id.ToString());
+                                        if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+                                        {
+
+                                            PdfFacEleV2Default2 pdf = new PdfFacEleV2Default2();
+                                             pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                                        }
+                                        else
+                                        {
+                                            PdfFacturaElectronica pdf = new PdfFacturaElectronica();
+                                             pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+
+                                        }
+
                                     }
 
 

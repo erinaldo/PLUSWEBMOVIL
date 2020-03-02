@@ -58,6 +58,8 @@ namespace CapaDatos.Sql
                         item.cod_emp_erp = Convert.ToString(dr["cod_emp_erp"]);
                         item.pdf_fe = Convert.ToString(dr["pdf_fe"]);
                         item.pdf_nc = Convert.ToString(dr["pdf_nc"]);
+                        item.cantidad_decimal = Convert.ToInt32(dr["cantidad_decimal"]);
+                        item.pvp_decimal = Convert.ToInt32(dr["pvp_decimal"]);
 
                         lista.Add(item);
 

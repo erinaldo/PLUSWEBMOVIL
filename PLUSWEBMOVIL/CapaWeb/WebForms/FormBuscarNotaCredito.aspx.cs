@@ -461,7 +461,12 @@ namespace CapaWeb.WebForms
                                     qs.Add("Id", Id.ToString());
                                     Response.Write("<script>window.open('" + "ReporteNotaCredito.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
                                     break;
-                                default:
+                                 case "CONTABILIZADO":
+
+                                        qs.Add("Id", Id.ToString());
+                                        Response.Write("<script>window.open('" + "ReporteNotaCredito.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
+                                        break;
+                                    default:
                                     this.Page.Response.Write("<script language='JavaScript'>window.alert('SU NOTA DE CRÉDITO ESTA " + estadoM + "')+ error;</script>");
                                     break;
 
