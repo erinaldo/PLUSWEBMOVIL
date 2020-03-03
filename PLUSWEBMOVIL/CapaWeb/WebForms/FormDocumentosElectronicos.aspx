@@ -169,8 +169,16 @@
                                          
                                         <asp:TemplateColumn>
                                                 <ItemTemplate>
-                                                    <asp:ImageButton ID="imgReenviar" runat="server" OnClientClick="return confirm('¿Desea enviar el documento?');"  CausesValidation="false" CommandName="Reenviar"
-                                                        ImageUrl="~/Tema/imagenes/up.png" ToolTip="Reenviar" Width="16" />
+                                                    <asp:ImageButton ID="imgReenviar" runat="server" OnClientClick="return confirm('¿Desea enviar el documento al remitente?');"  CausesValidation="false" CommandName="Reenviar"
+                                                        ImageUrl="~/Tema/imagenes/mail_send.png" ToolTip="Reenviar Remitente" Width="16" />
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+                                        
+
+                                        <asp:TemplateColumn>
+                                                <ItemTemplate>
+                                                    <asp:ImageButton ID="ReenviarCorreo" runat="server" OnClientClick="return confirm('¿Desea enviar el documento al cliente?');"  CausesValidation="false" CommandName="Reenviar Cliente"
+                                                        ImageUrl="~/Tema/imagenes/up.png" ToolTip="Reenviar Cliente" Width="16" />
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
                                         </Columns>

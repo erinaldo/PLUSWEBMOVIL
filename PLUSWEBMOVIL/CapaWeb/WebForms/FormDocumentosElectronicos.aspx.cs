@@ -295,16 +295,15 @@ namespace CapaWeb.WebForms
                         {
                             Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                             estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
+                            Ccf_nro_trans = Id.ToString();
                             //Saber si en nc o factura
                             listaConsCab = ConsultaCabe.ConsultaNCTransPadre(Id.ToString());
-                            int count1 = 0;
                             conscabcera = null;
                             foreach (modelowmtfacturascab item in listaConsCab)
                             {
-                                count1++;
-                                conscabcera = item;
-
+                                 conscabcera = item;
                             }
+                            Ccf_tipo2 = conscabcera.tipo_nce;
                             //Buscar el xml TRAE TODAS LAS RESPUESTAS
                             ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(Id.ToString());
                             foreach (var item in ListaModelorespuestaDs)
@@ -365,8 +364,6 @@ namespace CapaWeb.WebForms
 
                                     Boolean error = enviarcorreocliente.EnviarCorreoCliente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Id.ToString(), pathPdf, pathXml);
 
-
-
                                     break;
                                 default:
                                     this.Page.Response.Write("<script language='JavaScript'>window.alert('SU DOCUMENTO ESTA " + estadoM + "')+ error;</script>");
@@ -382,7 +379,9 @@ namespace CapaWeb.WebForms
 
                         }
                         break;
+                    
                 }
+                
             }
             catch (Exception ex)
             {

@@ -44,7 +44,7 @@
             } else {
                 respuesta = true;
             }
-            if (precio == null || precio == "" || precio <= 0) {
+            if (precio == null || precio == "") {
                 alert("Ingrese precio");
                 respuesta = false;
             } else {

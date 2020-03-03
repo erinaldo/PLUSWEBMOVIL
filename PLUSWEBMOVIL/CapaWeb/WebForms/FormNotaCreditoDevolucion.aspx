@@ -51,7 +51,7 @@
             } else {
                 respuesta = true;
             }
-            if (txt_Precio == null || txt_Precio == "" || txt_Precio <= 0) {
+            if (txt_Precio == null || txt_Precio == "") {
                 alert("Ingrese precio");
                 respuesta = false;
             } else {
