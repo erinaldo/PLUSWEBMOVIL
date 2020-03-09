@@ -285,7 +285,28 @@ namespace CapaWeb.WebForms
 
                 int Id;
                 string estadoM = "";
-                string estadoIM = "";
+                //--------------------------------DATOS PARA LOS CASOS--------------------------------
+                Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
+                estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
+                Ccf_nro_trans = Id.ToString();
+                //Saber si en nc o factura
+                listaConsCab = ConsultaCabe.ConsultaNCTransPadre(Id.ToString());
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    conscabcera = item;
+                }
+                Ccf_tipo2 = conscabcera.tipo_nce;
+                //Buscar el xml TRAE TODAS LAS RESPUESTAS
+                ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(Id.ToString());
+                foreach (var item in ListaModelorespuestaDs)
+                {
+                    if (item.xml != "")
+                    {
+                        ModeloResQr = item;
+                    }
+
+                }
                 switch (e.CommandName) //ultilizo la variable para la opcion
                 {
 
@@ -293,28 +314,6 @@ namespace CapaWeb.WebForms
                     case "Reenviar":
                         try
                         {
-                            Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
-                            estadoM = Convert.ToString(((Label)e.Item.Cells[5].FindControl("nom_corto")).Text);
-                            Ccf_nro_trans = Id.ToString();
-                            //Saber si en nc o factura
-                            listaConsCab = ConsultaCabe.ConsultaNCTransPadre(Id.ToString());
-                            conscabcera = null;
-                            foreach (modelowmtfacturascab item in listaConsCab)
-                            {
-                                 conscabcera = item;
-                            }
-                            Ccf_tipo2 = conscabcera.tipo_nce;
-                            //Buscar el xml TRAE TODAS LAS RESPUESTAS
-                            ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(Id.ToString());
-                            foreach (var item in ListaModelorespuestaDs)
-                            {
-                                if (item.xml != "")
-                                {
-                                    ModeloResQr = item;
-                                }
-
-                            }
-
                             switch (estadoM)
                             {
                                 case "FINALIZADO":
@@ -362,8 +361,15 @@ namespace CapaWeb.WebForms
                                     }
 
 
-                                    Boolean error = enviarcorreocliente.EnviarCorreoCliente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Id.ToString(), pathPdf, pathXml);
-
+                                    Boolean error = enviarcorreocliente.EnviarCorreoRemitente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Id.ToString(), pathPdf, pathXml);
+                                    if (error == false)
+                                    {
+                                        lbl_error.Text = "Ocurrio un problema al enviar por favor verifique que el documento sea electronico y las credenciales";
+                                    }
+                                    else
+                                    {
+                                        lbl_error.Text = "Se envío correctamente el documento";
+                                    }
                                     break;
                                 default:
                                     this.Page.Response.Write("<script language='JavaScript'>window.alert('SU DOCUMENTO ESTA " + estadoM + "')+ error;</script>");
@@ -375,11 +381,88 @@ namespace CapaWeb.WebForms
                         }
                         catch (Exception ex)
                         {
-                            GuardarExcepciones("Grid_ItemCommand, Reenviar", ex.ToString());
+                            GuardarExcepciones("Grid_ItemCommand, Reenviar Remitente", ex.ToString());
 
                         }
                         break;
-                    
+                    case "Reenviar Cliente": //envio de correo directamente al cliente
+                        try
+                        {
+                            switch (estadoM)
+                            {
+                                case "FINALIZADO":
+                                    Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
+                                    string pathPdf = "";
+                                    string StringXml = ModeloResQr.xml;
+                                    string pathTemporal = Modelowmspclogo.pathtmpfac;
+                                    string nombreXml = ModeloResQr.cufe.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + ".xml";
+                                    string pathXml = pathTemporal + nombreXml;
+                                    File.WriteAllText(pathXml, StringXml);
+
+                                    if (conscabcera.tipo_nce == "NCVE" || conscabcera.tipo_nce == "NCME")
+                                    {
+                                        //Tipo NCE siempre trae lleno cuando es nc
+                                        Ccf_tipo2 = "NC";
+                                        if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+                                        {
+                                            PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
+                                            pathPdf = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                                        }
+                                        else
+                                        {
+                                            PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
+                                            pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+
+                                        }
+
+
+                                    }
+                                    else
+                                    {
+                                        if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+                                        {
+
+                                            PdfFacEleV2Default2 pdf = new PdfFacEleV2Default2();
+                                            pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                                        }
+                                        else
+                                        {
+                                            PdfFacturaElectronica pdf = new PdfFacturaElectronica();
+                                            pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+
+                                        }
+
+                                    }
+
+
+                                    Boolean error = enviarcorreocliente.EnviarCorreoCliente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Id.ToString(), pathPdf, pathXml);
+
+                                  if(error==false)
+                                    {
+                                        lbl_error.Text = "Ocurrio un problema al enviar por favor verifique que el documento sea electronico y las credenciales";
+                                    }
+                                    else
+                                    {
+                                        lbl_error.Text = "Se envío correctamente el documento";
+                                    }
+                                        break;
+                                default:
+                                    this.Page.Response.Write("<script language='JavaScript'>window.alert('SU DOCUMENTO ESTA " + estadoM + "')+ error;</script>");
+                                    break;
+
+                            }
+
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            GuardarExcepciones("Grid_ItemCommand, Reenviar Cliente", ex.ToString());
+
+                        }
+
+                        break;
+
+
                 }
                 
             }

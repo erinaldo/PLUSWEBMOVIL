@@ -6,6 +6,8 @@ using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
 using CapaProceso.RestCliente;
 using CapaDatos.Modelos;
+using System.IO;
+using CapaProceso.GenerarPDF.FacturaElectronica;
 
 namespace CapaWeb.WebForms
 {
@@ -113,7 +115,9 @@ namespace CapaWeb.WebForms
 
         ConsultaValidarParametrosFactura consultaValidarFactura = new ConsultaValidarParametrosFactura();
 
-
+        public List<JsonRespuestaDE> ListaModelorespuestaDs = null;
+        public JsonRespuestaDE ModeloResQr = new JsonRespuestaDE();
+        public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
 
         public string ComPwm;
         public string AmUsrLog;
@@ -1389,6 +1393,51 @@ namespace CapaWeb.WebForms
             }
         }
 
+        public void EnviarCorreoRemitente(string nro_trans, string tipo)
+        {
+            try
+            {
+
+                Ccf_tipo2 = tipo;
+                Ccf_nro_trans = nro_trans;
+                //Buscar el xml TRAE TODAS LAS RESPUESTAS
+                ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
+                foreach (var item in ListaModelorespuestaDs)
+                {
+                    if (item.xml != "")
+                    {
+                        ModeloResQr = item;
+                    }
+
+                }
+                Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
+                string pathPdf = "";
+                string StringXml = ModeloResQr.xml;
+                string pathTemporal = Modelowmspclogo.pathtmpfac;
+                string nombreXml = ModeloResQr.cufe.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + ".xml";
+                string pathXml = pathTemporal + nombreXml;
+                File.WriteAllText(pathXml, StringXml);
+                //-------------OBTENER EL XML Y PDF PARA EL ENVIO-------------------//
+                if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+                {
+
+                    PdfFacEleV2Default2 pdf = new PdfFacEleV2Default2();
+                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                }
+                else
+                {
+                    PdfFacturaElectronica pdf = new PdfFacturaElectronica();
+                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+
+                }
+                Boolean error = enviarcorreocliente.EnviarCorreoRemitente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, pathXml);
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("EnviarCorreoRemitente", ex.ToString());
+
+            }
+        }
         protected void Confirmar_Click(object sender, EventArgs e)
         {
             try
@@ -1467,6 +1516,8 @@ namespace CapaWeb.WebForms
                                             mensaje.Text = "Su factura fue procesada exitosamente";
                                             Confirmar.Enabled = false;
                                             GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
+                                            //Enviar correo al remitente si no da error
+                                            EnviarCorreoRemitente(conscabcera.nro_trans, conscabceraTipo.tipo_nce.Trim());
                                             Response.Redirect("BuscarFacturas.aspx");
 
                                         }

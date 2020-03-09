@@ -50,6 +50,8 @@ namespace CapaDatos.Sql
                         item.fec_caducidad = item.fec_venc.ToString("yyyy-MM-dd");
                         item.tipo = Convert.ToString(dr["tipo"]);
                         item.tipo_fac =Convert.ToString(dr["factura_elec"]);
+                        item.meses = Convert.ToString(dr["meses"]);
+                        item.prefijo = Convert.ToString(dr["prefijo"]);
                         lista.Add(item);
 
                     }

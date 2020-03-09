@@ -20,9 +20,11 @@ namespace CapaDatos.Modelos
         public DateTime fec_venc { get; set; }
         public string tipo { get; set; }
         public string tipo_fac { get; set; }
+        public string meses { get; set; }
+        public string prefijo { get; set; }
 
 
-      
-     
+
+
     }
 }

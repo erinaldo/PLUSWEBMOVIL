@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tema\css\StylePront.css" />
+    <Content Include="Tema\imagenes\mail_send.png" />
     <Content Include="WebForms\BuscaFacturasNCAn.aspx" />
     <Content Include="WebForms\BuscarArticuloNCDevolucion.aspx" />
     <Content Include="WebForms\BuscarCentroCosto.aspx" />

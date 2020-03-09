@@ -6,6 +6,8 @@ using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
 using CapaProceso.RestCliente;
 using CapaDatos.Modelos;
+using CapaProceso.GenerarPDF.FacturaElectronica;
+using System.IO;
 
 namespace CapaWeb.WebForms
 {
@@ -22,6 +24,10 @@ namespace CapaWeb.WebForms
         public CabezeraFactura ActualizarEstadoFact = new CabezeraFactura();
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
+
+        public List<JsonRespuestaDE> ListaModelorespuestaDs = null;
+        public JsonRespuestaDE ModeloResQr = new JsonRespuestaDE();
+        public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
         public string ComPwm;
         public string AmUsrLog;
         public string nro_trans = null;
@@ -36,6 +42,9 @@ namespace CapaWeb.WebForms
         public string Ccf_diaf = null;
         public string Ccf_mesf = null;
         public string Ccf_aniof = null;
+        public string Ccf_tipo1 = "C";
+        public string Ccf_tipo2 = "NCVE";
+        public string Ccf_nro_trans = "0";
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -174,6 +183,7 @@ namespace CapaWeb.WebForms
                     {
                        ActualizarEstadoFact.ActualizarEstadoFactura(conscabcera.nro_trans_padre.Trim(), "N");//Actualiza factura a Anulada
                     }
+                    EnviarCorreoRemitente(lbl_nro_trans.Text, conscabcera.tipo_nce);//CORREO REMITENTE
 
 
                 }
@@ -205,6 +215,51 @@ namespace CapaWeb.WebForms
             }
         }
 
+        public void EnviarCorreoRemitente(string nro_trans, string tipo)
+        {
+            try
+            {
+               
+                Ccf_tipo2 = tipo;
+                Ccf_nro_trans = nro_trans;
+                //Buscar el xml TRAE TODAS LAS RESPUESTAS
+                ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
+                foreach (var item in ListaModelorespuestaDs)
+                {
+                    if (item.xml != "")
+                    {
+                        ModeloResQr = item;
+                    }
+
+                }
+                Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
+                string pathPdf = "";
+                string StringXml = ModeloResQr.xml;
+                string pathTemporal = Modelowmspclogo.pathtmpfac;
+                string nombreXml = ModeloResQr.cufe.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + ".xml";
+                string pathXml = pathTemporal + nombreXml;
+                File.WriteAllText(pathXml, StringXml);
+                //-------------OBTENER EL XML Y PDF PARA EL ENVIO-------------------//
+                if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+                {
+
+                    PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
+                    pathPdf = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                }
+                else
+                {
+                    PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
+                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans); ;
+
+                }
+                Boolean error = enviarcorreocliente.EnviarCorreoRemitente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, pathXml);
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("EnviarCorreoRemitente", ex.ToString());
+
+            }
+        }
         protected void btn_reenviarpdf_Click(object sender, EventArgs e)
         {
             try
@@ -248,6 +303,7 @@ namespace CapaWeb.WebForms
                     {
                         ActualizarEstadoFact.ActualizarEstadoFactura(conscabcera.nro_trans_padre.Trim(), "N");//Actualiza factura a Anulada
                     }
+                    EnviarCorreoRemitente(lbl_nro_trans.Text, conscabcera.tipo_nce);//CORREO REMITENTE
 
                 }
                 else

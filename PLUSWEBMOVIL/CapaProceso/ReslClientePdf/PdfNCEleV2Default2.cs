@@ -147,7 +147,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             }
             catch (Exception e)
             {
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "buscarDetalleFactura", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "buscarDetalleFactura", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }
@@ -169,7 +169,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             }
             catch (Exception e)
             {
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "buscarCabezeraFactura", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "buscarCabezeraFactura", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -218,7 +218,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "buscarCabezeraNC", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "buscarCabezeraNC", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -302,7 +302,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
 
                 //LIsta Resolucion facturas
-                listaRes = ConsultaResolucion.ConsultaResolusiones(Ccf_usuario, Ccf_cod_emp, "V", "0", "C");
+                listaRes = ConsultaResolucion.ConsultaResolusiones(Ccf_usuario, Ccf_cod_emp, "0", conscabcera.serie_docum , "C");
                 resolucion = null;
                 foreach (modelowmspcresfact item in listaRes)
                 {
@@ -410,12 +410,12 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase("Vigencia 18 meses desde " + resolucion.fec_emision + " hasta " + resolucion.fec_caducidad, fontText3)); //7 tamaño
+                cell = new PdfPCell(new Phrase("Vigencia "+resolucion.meses+ " meses desde " + resolucion.fec_emision + " hasta " + resolucion.fec_caducidad, fontText3)); //7 tamaño
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase("Habilita el prefijo " + resolucion.serie_docum + " desde " + resolucion.nro_docum + " hasta " + resolucion.nro_docum_ref, fontText3)); //7 tamaño
+                cell = new PdfPCell(new Phrase("Habilita el prefijo " + resolucion.prefijo + " desde " + resolucion.nro_docum + " hasta " + resolucion.nro_docum_ref, fontText3)); //7 tamaño
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa.AddCell(cell);

@@ -137,8 +137,7 @@ namespace CapaProceso.Consultas
             }
         }
 
-
-        public Boolean EnviarCorreoCliente(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string pathPdf, string pathXml)
+        public Boolean EnviarCorreoRemitente(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string pathPdf, string pathXml)
         {
             try
             {
@@ -149,13 +148,15 @@ namespace CapaProceso.Consultas
 
                 //Buscar datos especificos del cliente
 
-                string Ven__cod_tit = conscabcera.cod_cliente;
-                cliente = null;
-                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, Ven__fono);
-               //--------TRAER DATOS DE LA TABLA wmm_correos, wmm_correos_emisor--------//
-                modelowmm_correos = FormatoEmail( Ccf_cod_emp, "RCOMFELECT", "DocElec", Ccf_usuario);
-               // modelo_correoreceptor = CorreoReceptor(Ccf_cod_emp, "AEMLMA", "RCOMFELECT", Ccf_usuario);
-                listaCorreoRece = consultaCorreos.ListaCorreoReceptor(Ccf_cod_emp, "RCOMFELECT", "DocElec", Ccf_usuario);
+         
+                string email = "";
+
+           
+               
+                //--------TRAER DATOS DE LA TABLA wmm_correos, wmm_correos_emisor--------//
+                modelowmm_correos = FormatoEmail(Ccf_cod_emp, "RCOMFELECT", "DocElecRem", Ccf_usuario);
+                // modelo_correoreceptor = CorreoReceptor(Ccf_cod_emp, "AEMLMA", "RCOMFELECT", Ccf_usuario);
+                listaCorreoRece = consultaCorreos.ListaCorreoReceptor(Ccf_cod_emp, "RCOMFELECT", "DocElecRem", Ccf_usuario);
 
                 modelo_correoreceptor = null;
                 foreach (modelowmm_correo_receptor item in listaCorreoRece)
@@ -163,11 +164,55 @@ namespace CapaProceso.Consultas
                     if (item.email != null)
                     {
                         EnviarCorreo correo = new EnviarCorreo();
-                        string nombre = "";
-                        string email = "";
-
-                        nombre = cliente.nom_tit;
                         email = item.email;
+                        string mensaje = "<strong>  </strong>" + modelowmm_correos.texto + "<br/>" + modelowmm_correos.firma;
+
+                        List<string> listaPath = new List<string>();// lista de archivos adjuntos
+                        listaPath.Add(pathPdf);
+                        listaPath.Add(pathXml);
+                        correo.enviarcorreo(modelowmm_correos.titulo, mensaje, email, listaPath, Ccf_cod_emp);
+                        return true;
+
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+
+                }
+                return true;
+
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "EnviarCorreoRemitente", e.ToString(), DateTime.Now, Ccf_usuario);
+                return false;
+            }
+        }
+        public Boolean EnviarCorreoCliente(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string pathPdf, string pathXml)
+        {
+            try
+            {
+                //Consultamos los datos del cliente
+                
+                conscabcera = null;
+                conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+
+                //Buscar datos especificos del cliente
+             
+                string email = "";
+                string Ven__cod_tit = conscabcera.cod_cliente;
+                
+                email = conscabcera.email_tit;
+                //--------TRAER DATOS DE LA TABLA wmm_correos, wmm_correos_emisor--------//
+                modelowmm_correos = FormatoEmail( Ccf_cod_emp, "RCOMFELECT", "DocElecCli", Ccf_usuario);
+                
+                    if (conscabcera.email_tit != null)
+                    {
+                        EnviarCorreo correo = new EnviarCorreo();
+                          
                         string mensaje = "<strong>  </strong>" + modelowmm_correos.texto + "<br/>" + modelowmm_correos.firma;
 
                             List<string> listaPath = new List<string>();// lista de archivos adjuntos
@@ -181,16 +226,11 @@ namespace CapaProceso.Consultas
                     {
                         return false;
                     }
-
-
-                    }
-                return true;
-
             }
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "EnviarCorreoCliente", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "EnviarCorreoCliente", e.ToString(), DateTime.Now, Ccf_usuario);
                 return false;
             }
 
