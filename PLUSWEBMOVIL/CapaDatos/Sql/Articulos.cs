@@ -70,7 +70,7 @@ namespace CapaDatos.Sql
                         item.valor_impu = Convert.ToString(dr["valor_impu"]);
                         decimal formPrecio = Convert.ToDecimal(dr["precio_total"]);
                         item.precio_total = String.Format("{0:N2}", formPrecio).ToString();
-
+                        item.negativo = Convert.ToString(dr["negativo"]);
 
                         lista.Add(item);
 

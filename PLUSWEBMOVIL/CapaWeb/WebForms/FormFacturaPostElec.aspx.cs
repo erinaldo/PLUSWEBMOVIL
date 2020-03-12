@@ -1501,11 +1501,34 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
+                lbl_validacion.Text = "";
+                lbl_validacion.Visible = false;
                 ValidarParametrosFactura();
                 //Agrega el producto a la grilla gv_Producto  
-                InsertarCabeceraSL();
-                InsertarDetalleSL();
-                TraeDetalleFactura();
+                articulo = null;
+                articulo = BuscarProducto(txt_Codigo.Text);
+                if (Convert.ToDecimal(txt_Precio.Text) < 0)
+                {
+                    if (articulo.negativo == "S")
+                    {
+
+                        InsertarCabecera();
+                        InsertarDetalleSL();
+                        TraeDetalleFactura();
+
+                    }
+                    else
+                    {
+                        lbl_validacion.Text = "No se puede ingresar valores negativos";
+                        lbl_validacion.Visible = true;
+                    }
+                }
+                else
+                {
+                    InsertarCabecera();
+                    InsertarDetalleSL();
+                    TraeDetalleFactura();
+                }
             }
             catch (Exception ex)
             {

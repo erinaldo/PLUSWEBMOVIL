@@ -32,5 +32,6 @@ namespace CapaDatos.Modelos
         public string valor_impu { get; set; }
         public string precio_total { get; set; }
         public decimal precio_prueba { get; set; }
+        public string negativo { get; set; }
     }
 }

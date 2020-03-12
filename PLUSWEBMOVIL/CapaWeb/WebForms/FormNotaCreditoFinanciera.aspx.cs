@@ -1434,17 +1434,36 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-               // System.Threading.Thread.Sleep(30000);
-                /*
-                 ---Comparar cantidades antes de agregar
-                 Va a guardar con estado P solo si es menor que el saldo
-                 sino solo se va a mostrar en la grilla sin afectar pwm
-                 */
+                lbl_validacion.Text = "";
+                lbl_validacion.Visible = false;
                 ValidarParametrosFactura();
-                InsertarCabeceraSL(); //Calcula totales y agrega a grilla
-                InsertarDetalleSL();
-                BloquearCabeceraNC();
-                TraeDetalleFactura();
+ 
+                articulo = null;
+                articulo = BuscarProducto(txt_Codigo.Text);
+                if (Convert.ToDecimal(txt_Precio.Text) < 0)
+                {
+                    if (articulo.negativo == "S")
+                    {
+
+                        InsertarCabeceraSL(); //Calcula totales y agrega a grilla
+                        InsertarDetalleSL();
+                        BloquearCabeceraNC();
+                        TraeDetalleFactura();
+
+                    }
+                    else
+                    {
+                        lbl_validacion.Text = "No se puede ingresar valores negativos";
+                        lbl_validacion.Visible = true;
+                    }
+                }
+                else
+                {
+                    InsertarCabeceraSL(); //Calcula totales y agrega a grilla
+                    InsertarDetalleSL();
+                    BloquearCabeceraNC();
+                    TraeDetalleFactura();
+                }
             }
             catch (Exception ex)
             {

@@ -1290,6 +1290,7 @@ namespace CapaWeb.WebForms
                         }
                         else
                         {
+                     
                             //Consultar si el vendedor tiene asignada una sucursal
                             ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
                             int count = 0;
@@ -1321,12 +1322,36 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
+                lbl_validacion.Text = "";
+                lbl_validacion.Visible = false;
                 //Buscar Datos de parametrizacion------periodo contable
                 ValidarParametrosFactura();
                 //Agrega el producto a la grilla gv_Producto  
-                InsertarCabecera();
-                InsertarDetalleSL();
-                TraeDetalleFactura();
+                articulo = null;
+                articulo = BuscarProducto(BuscarArticulo.Text);
+                if (Convert.ToDecimal(precio.Text) < 0)
+                {
+                    if (articulo.negativo == "S")
+                    {
+                        
+                        InsertarCabecera();
+                        InsertarDetalleSL();
+                        TraeDetalleFactura();
+
+                    }
+                    else
+                    {
+                        lbl_validacion.Text = "No se puede ingresar valores negativos";
+                        lbl_validacion.Visible = true;
+                    }
+                }
+                else
+                {
+                    InsertarCabecera();
+                    InsertarDetalleSL();
+                    TraeDetalleFactura();
+                }
+                
             }
             catch (Exception ex)
             {
@@ -2003,6 +2028,8 @@ namespace CapaWeb.WebForms
 
             }
         }
+
+        
     }
 }
 

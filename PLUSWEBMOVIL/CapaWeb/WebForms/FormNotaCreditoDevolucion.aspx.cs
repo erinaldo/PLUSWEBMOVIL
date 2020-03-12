@@ -1207,12 +1207,37 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
+                lbl_validacion.Text = "";
+                lbl_validacion.Visible = false;
                 ValidarParametrosFactura();
                 //Mostrar grilla y guardar con estado P
-                InsertarCabeceraSL();
-                InsertarDetalleSL();
-                BloquearCabeceraNC();//Bloquear cabecera NC
-                TraeDetalleFactura();
+     
+                articulo = null;
+                articulo = BuscarProducto(txt_Codigo.Text);
+                if (Convert.ToDecimal(txt_Precio.Text) < 0)
+                {
+                    if (articulo.negativo == "S")
+                    {
+
+                        InsertarCabeceraSL();
+                        InsertarDetalleSL();
+                        BloquearCabeceraNC();//Bloquear cabecera NC
+                        TraeDetalleFactura();
+
+                    }
+                    else
+                    {
+                        lbl_validacion.Text = "No se puede ingresar valores negativos";
+                        lbl_validacion.Visible = true;
+                    }
+                }
+                else
+                {
+                    InsertarCabeceraSL();
+                    InsertarDetalleSL();
+                    BloquearCabeceraNC();//Bloquear cabecera NC
+                    TraeDetalleFactura();
+                }
 
 
             }
