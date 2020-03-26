@@ -114,7 +114,9 @@
     <Compile Include="Consultas\ConsultaRolesFactura.cs" />
     <Compile Include="Consultas\ConsultaRolModPrecio.cs" />
     <Compile Include="Consultas\ConsultasNC\ConsultaSaldosFacturas.cs" />
+    <Compile Include="Consultas\ConsultasNC\ConsultawmtrespuestaND.cs" />
     <Compile Include="Consultas\ConsultasNC\ConsultawmtrespuestaNC.cs" />
+    <Compile Include="Consultas\ConsultasNC\GuardarrespuestaNDDS.cs" />
     <Compile Include="Consultas\ConsultasNC\GuardarrespuestaNCDS.cs" />
     <Compile Include="Consultas\ConsultaSucursalempresa.cs" />
     <Compile Include="Consultas\ConsultaUsuarioEmpresa.cs" />
@@ -142,7 +144,6 @@
     <Compile Include="FacturaMasiva\CargaFacturaMasiva.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonPdfNCV2.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonPdfNCElectronica.cs" />
-    <Compile Include="GenerarPDF\FacturaElectronica\JsonPdfNDElectronica.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonFacturaElecVer2.cs" />
     <Compile Include="ReslClientePdf\JsonFacElecVer2PDF.cs" />
     <Compile Include="ReslClientePdf\JsonNCPDF V2.cs" />
@@ -150,6 +151,8 @@
     <Compile Include="ReslClientePdf\JsonFacturaPDF.cs" />
     <Compile Include="ReslClientePdf\JsonNDPDF.cs" />
     <Compile Include="ReslClientePdf\PdfCierreCaja.cs" />
+    <Compile Include="ReslClientePdf\PdfNDV2Default2.cs" />
+    <Compile Include="ReslClientePdf\PdfNDEleV2Default2.cs" />
     <Compile Include="ReslClientePdf\PdfNCV2Default2.cs" />
     <Compile Include="ReslClientePdf\PdfNCEleV2Default2.cs" />
     <Compile Include="ReslClientePdf\PdfFacVTAV2.cs" />
@@ -168,21 +171,21 @@
     <Compile Include="RestCliente\ComprobanteFacturaJSON.cs" />
     <Compile Include="RestCliente\ComprobanteNDJSON.cs" />
     <Compile Include="RestCliente\ConsumoRestFEV2.cs" />
+    <Compile Include="RestCliente\ConsumoRestNDFinV2.cs" />
     <Compile Include="RestCliente\ConsumoRestNCFinV2.cs" />
     <Compile Include="RestCliente\ConsumoRestNCFin.cs" />
     <Compile Include="RestCliente\ConsumoRest.cs" />
-    <Compile Include="RestCliente\ConsumoRestND.cs" />
     <Compile Include="RestCliente\JsonFacturacionElectronicaV2.cs" />
+    <Compile Include="RestCliente\JsonNDFinancieraElectronicaV2.cs" />
     <Compile Include="RestCliente\JsonNCFinancieraElectronicaV2.cs" />
     <Compile Include="RestCliente\JsonNCFinancieraElectronica.cs" />
     <Compile Include="RestCliente\JsonFacturacionElectronica.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonFdfFacturaElectronica.cs" />
-    <Compile Include="RestCliente\JsonNDElectronica.cs" />
     <Compile Include="RestCliente\ProcesoRestFEV2.cs" />
+    <Compile Include="RestCliente\ProcesoRestNDV2.cs" />
     <Compile Include="RestCliente\ProcesoRestNCV2.cs" />
     <Compile Include="RestCliente\ProcesoRestNC.cs" />
     <Compile Include="RestCliente\ProcesoRest.cs" />
-    <Compile Include="RestCliente\ProcesoRestND.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CapaDatos\CapaDatos.csproj">

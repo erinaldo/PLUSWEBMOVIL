@@ -15,6 +15,7 @@ namespace CapaDatos.Modelos
         
         public string parametro { get; set; }
         public string valor { get; set; }
-        
+        public string sucursal { get; set; }
+
     }
 }

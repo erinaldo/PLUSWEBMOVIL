@@ -16,7 +16,7 @@ using System.Web;
 
 namespace CapaProceso.GenerarPDF.FacturaElectronica
 {
-    public class PdfNCV2Default2
+    public class PdfNDEleV2Default2
     {
         public modelowmtfacturascab conscabcera = new modelowmtfacturascab();
         public modelowmtfacturascab conscabceraTipo = new modelowmtfacturascab();
@@ -81,7 +81,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
         public string nro_trans = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         Articulos consulta_uni = new Articulos();
-        string metodo = "PdfNCEleV2Default2.cs";
+        string metodo = "PdfNDEleV2Default2.cs";
         //Buscar cantidad de decimales q se va ausar x tipo de moneda
         public modelowmspcmonedas BuscarDecimales(string usuario, string empresa, string cod_moneda)
         {
@@ -126,7 +126,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             }
             catch (Exception e)
             {
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "BuscarRespuestaDS", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "BuscarRespuestaDS", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }
@@ -147,7 +147,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             }
             catch (Exception e)
             {
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "buscarDetalleFactura", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "buscarDetalleFactura", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }
@@ -169,7 +169,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             }
             catch (Exception e)
             {
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "buscarCabezeraFactura", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "buscarCabezeraFactura", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -226,15 +226,16 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
         {
             try
             {
+                string documento_apli = null;
                 string Tipo = null;
-                //Buscar cab NC
+                //Buscar cab N DEBITO
                 conscabcera = null;
                 conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                 //Obtener nro factura
                 consdetalle = null;
                 consdetalle = buscarDetalleFactura(Ccf_nro_trans);
 
-                //motivo de NC
+                //motivo de N DEBITO
                 conscabceraNCMot = null;
                 conscabceraNCMot = buscarMotNC(Ccf_nro_trans);
 
@@ -252,17 +253,15 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                     conscabceraTipo = item;
 
                 }
-                if (conscabceraTipo.tipo_nce.Trim() == "POS")
+                
+                    Tipo = conscabceraTipo.tipo_nce.Trim();
+                if(Tipo =="VTAE" || Tipo =="POSE")
                 {
-                    Tipo = "POS";
+                    documento_apli = "Factura";
                 }
-                if (conscabceraTipo.tipo_nce.Trim() == "VTA")
-                {
-                    Tipo = "VTA";
-
-                }
-
-                //CABECERA NC
+                else { documento_apli = "Nota Crédito"; }
+               
+                //CABECERA DE FACTURA O NOTA CREDITO
                 conscabceraNC = null;
                 conscabceraNC = buscarCabezeraNC(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Tipo, conscabceraNCMot.nro_trans_padre.Trim());
 
@@ -301,8 +300,8 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 ModeloCotizacion = null;
                 ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
 
-                //LIsta Resolucion facturas
-                listaRes = ConsultaResolucion.ConsultaResolusiones(Ccf_usuario, Ccf_cod_emp, "0", conscabcera.serie_docum, "C");
+                //LIsta Resolucion Notas debito
+                listaRes = ConsultaResolucion.ConsultaResolusiones(Ccf_usuario, Ccf_cod_emp, "0", conscabcera.serie_docum , "C");
                 resolucion = null;
                 foreach (modelowmspcresfact item in listaRes)
                 {
@@ -373,6 +372,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
                 PdfPTable tabladetaEmpresa = new PdfPTable(1);
                 tabladetaEmpresa.WidthPercentage = 100;
+
                 cell = new PdfPCell(new Phrase(Modeloempresa.nom_emp, tipo1));
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
@@ -404,12 +404,12 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa.AddCell(cell);
-                cell = new PdfPCell(new Phrase("Resolucion Nota Credito N°." + resolucion.cod_atrib1, fontText3)); //7 tamaño
+                cell = new PdfPCell(new Phrase("Resolucion Nota Debito Electronica N°." + resolucion.cod_atrib1, fontText3)); //7 tamaño
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase("Vigencia "+ resolucion.meses+" meses desde " + resolucion.fec_emision + " hasta " + resolucion.fec_caducidad, fontText3)); //7 tamaño
+                cell = new PdfPCell(new Phrase("Vigencia "+resolucion.meses+ " meses desde " + resolucion.fec_emision + " hasta " + resolucion.fec_caducidad, fontText3)); //7 tamaño
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa.AddCell(cell);
@@ -427,8 +427,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 PdfPTable tabladetaEmpresa1 = new PdfPTable(1);
                 tabladetaEmpresa1.WidthPercentage = 100;
 
-
-                cell = new PdfPCell(new Phrase("NOTA CRÉDITO ", tipo1));
+                cell = new PdfPCell(new Phrase("NOTA DÉBITO ELECTRÓNICA ", tipo1));
                 cell.BorderWidthTop = 1;
                 cell.BorderWidthRight = 1;
                 cell.BorderWidthLeft = 1;
@@ -490,8 +489,6 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 tablaLogo.AddCell(cell);
                 document.Add(tablaLogo);
 
-
-
                 //Llenar cabecera con clase celdas
                 PdfPTable tablaCab = new PdfPTable(5);
                 tablaCab.WidthPercentage = 100;
@@ -536,6 +533,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.BorderWidthRight = 0;
                 cell.BorderWidthLeft = 1;
                 cell.BorderWidthBottom = 0;
+                cell.Colspan = 1;
                 cell.HorizontalAlignment = 0;
                 tablaCab1.AddCell(cell);
 
@@ -544,6 +542,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.BorderWidthRight = 0;
                 cell.BorderWidthLeft = 1;
                 cell.BorderWidthBottom = 0;
+                cell.Colspan = 1;
                 cell.HorizontalAlignment = 0;
                 tablaCab1.AddCell(cell);
 
@@ -560,34 +559,26 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 0;
                 cell.BorderWidthLeft = 1;
-                cell.BorderWidthBottom = 0;
-                cell.HorizontalAlignment = 0;
-                tablaCab1.AddCell(cell);
-
-                cell = new PdfPCell(new Paragraph("Matriz:", fontText1));
-                cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 0;
-                cell.BorderWidthLeft = 1;
                 cell.BorderWidthBottom = 1;
+                cell.Colspan = 1;
                 cell.HorizontalAlignment = 0;
                 tablaCab1.AddCell(cell);
                 //FIN PRIMERA TABLA
-
+               
 
                 cell = new PdfPCell(tablaCab1);
                 cell.HorizontalAlignment = 1;
                 cell.Border = 0;
                 tablaCab.AddCell(cell); //añadir a tabla prinipal
-
-                //Tablas dos
-                PdfPTable tablaCab3 = new PdfPTable(1);
+                                        
+                PdfPTable tablaCab3 = new PdfPTable(1);//tabla 2 columna 2
                 tablaCab3.WidthPercentage = 100;
                 cell = new PdfPCell();
 
                 cell = new PdfPCell(new Paragraph(conscabcera.nom_tit, fontText1));
                 cell.BorderWidthTop = 1;
                 cell.BorderWidthRight = 0;
-                cell.BorderWidthLeft = 0;
+                cell.BorderWidthLeft = 1;
                 cell.BorderWidthBottom = 0;
                 cell.HorizontalAlignment = 0;
                 tablaCab3.AddCell(cell);
@@ -595,31 +586,34 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell = new PdfPCell(new Paragraph(conscabcera.nro_dgi2 + "-" + conscabcera.nro_dgi1, fontText1));
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 0;
-                cell.BorderWidthLeft = 0;
+                cell.BorderWidthLeft = 1;
                 cell.BorderWidthBottom = 0;
+                cell.Colspan = 1;
                 cell.HorizontalAlignment = 0;
                 tablaCab3.AddCell(cell);
 
                 cell = new PdfPCell(new Paragraph(conscabcera.dir_tit, fontText1));
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 0;
-                cell.BorderWidthLeft = 0;
+                cell.BorderWidthLeft = 1;
                 cell.BorderWidthBottom = 0;
-                 cell.HorizontalAlignment = 0;
+                cell.Colspan = 1;
+                cell.HorizontalAlignment = 0;
                 tablaCab3.AddCell(cell);
 
                 cell = new PdfPCell(new Paragraph(conscabcera.tel_tit, fontText1));
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 0;
-                cell.BorderWidthLeft = 0;
+                cell.BorderWidthLeft = 1;
                 cell.BorderWidthBottom = 0;
+                cell.Colspan = 1;
                 cell.HorizontalAlignment = 0;
                 tablaCab3.AddCell(cell);
 
                 cell = new PdfPCell(new Paragraph(conscabcera.nom_ciudad, fontText1));
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 0;
-                cell.BorderWidthLeft = 0;
+                cell.BorderWidthLeft = 1;
                 cell.BorderWidthBottom = 0;
                 cell.Colspan = 1;
                 cell.HorizontalAlignment = 0;
@@ -628,26 +622,20 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell = new PdfPCell(new Paragraph(conscabcera.email_tit, fontText1));
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 0;
-                cell.BorderWidthLeft = 0;
-                cell.BorderWidthBottom = 0;
-                cell.HorizontalAlignment = 0;
-                tablaCab3.AddCell(cell);
-
-                cell = new PdfPCell(new Paragraph(conscabcera.codnom_suc, fontText1));
-                cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 0;
-                cell.BorderWidthLeft = 0;
+                cell.BorderWidthLeft = 1;
                 cell.BorderWidthBottom = 1;
+                cell.Colspan = 1;
                 cell.HorizontalAlignment = 0;
                 tablaCab3.AddCell(cell);
-
-                //FIN PRIMERA TABLA
-
+  
                 cell = new PdfPCell(tablaCab3);
                 cell.HorizontalAlignment = 1;
                 cell.Border = 0;
-                tablaCab.AddCell(cell);
-                //-------------------fin tablal dos
+                tablaCab.AddCell(cell); //añadir a tabla prinipal
+
+                //---------------fintabla 2
+
+
                 cell = new PdfPCell();
                 cell.HorizontalAlignment = 1;
                 cell.BorderWidthTop = 1;
@@ -660,17 +648,17 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 tablaCab2.WidthPercentage = 100;
                 cell = new PdfPCell();
 
-                cell = new PdfPCell(new Paragraph("Fecha Factura a aplicar:", fontText1));
+                cell = new PdfPCell(new Paragraph(documento_apli+" a aplicar:", fontText1));
                 cell.BorderWidthTop = 1;
-                cell.BorderWidthRight = 0;
+                cell.BorderWidthRight = 1;
                 cell.BorderWidthLeft = 0;
                 cell.BorderWidthBottom = 0;
                 cell.HorizontalAlignment = 0;
                 tablaCab2.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("Factura a aplicar:", fontText1));
+                cell = new PdfPCell(new Paragraph("Fecha "+documento_apli+" a aplicar:", fontText1));
                 cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 0;
+                cell.BorderWidthRight = 1;
                 cell.BorderWidthLeft = 0;
                 cell.BorderWidthBottom = 0;
                 cell.HorizontalAlignment = 0;
@@ -678,7 +666,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
                 cell = new PdfPCell(new Paragraph("Forma Pago:", fontText1));
                 cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 0;
+                cell.BorderWidthRight = 1;
                 cell.BorderWidthLeft = 0;
                 cell.BorderWidthBottom = 0;
                 cell.HorizontalAlignment = 0;
@@ -686,23 +674,23 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
                 cell = new PdfPCell(new Paragraph("Fecha Vto:", fontText1));
                 cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 0;
+                cell.BorderWidthRight = 1;
                 cell.BorderWidthLeft = 0;
                 cell.BorderWidthBottom = 0;
                 cell.HorizontalAlignment = 0;
                 tablaCab2.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("Moneda:", fontText1));
+                cell = new PdfPCell(new Paragraph("Moneda: ", fontText1));
                 cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 0;
+                cell.BorderWidthRight = 1;
                 cell.BorderWidthLeft = 0;
                 cell.BorderWidthBottom = 0;
                 cell.HorizontalAlignment = 0;
                 tablaCab2.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("Vendedor:", fontText1));
+                cell = new PdfPCell(new Paragraph("Vendedor: ", fontText1));
                 cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 0;
+                cell.BorderWidthRight = 1;
                 cell.BorderWidthLeft = 0;
                 cell.BorderWidthBottom = 1;
                 cell.HorizontalAlignment = 0;
@@ -713,11 +701,11 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.Border = 0;
                 tablaCab.AddCell(cell); //añadir a tabla prinipal
 
-                PdfPTable tablaCab5 = new PdfPTable(1); //tablas 4
+                PdfPTable tablaCab5 = new PdfPTable(1);//tabla 4 columna 4
                 tablaCab5.WidthPercentage = 100;
                 cell = new PdfPCell();
 
-                cell = new PdfPCell(new Paragraph(conscabceraNC.fec_doc_str, fontText1));
+                cell = new PdfPCell(new Paragraph(conscabceraNC.observacion, fontText1));
                 cell.BorderWidthTop = 1;
                 cell.BorderWidthRight = 1;
                 cell.BorderWidthLeft = 0;
@@ -725,12 +713,12 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 0;
                 tablaCab5.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph(conscabceraNC.observacion, fontText1));
+                cell = new PdfPCell(new Paragraph(conscabceraNC.fec_doc_str, fontText1));
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 1;
                 cell.BorderWidthLeft = 0;
                 cell.BorderWidthBottom = 0;
-                cell.HorizontalAlignment = 0;
+                 cell.HorizontalAlignment = 0;
                 tablaCab5.AddCell(cell);
 
                 cell = new PdfPCell(new Paragraph(conscabcera.nom_fpago, fontText1));
@@ -739,7 +727,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.BorderWidthLeft = 0;
                 cell.BorderWidthBottom = 0;
                 cell.HorizontalAlignment = 0;
-                tablaCab5.AddCell(cell);
+                tablaCab2.AddCell(cell);
 
                 cell = new PdfPCell(new Paragraph(conscabcera.fec_venc_str, fontText1));
                 cell.BorderWidthTop = 0;
@@ -897,7 +885,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                     detalle.DefaultCell.HorizontalAlignment = 1; detalle.AddCell(new Paragraph(unidad, fontText3));
                    // decimal cantidadP = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, item.cantidad);
                     detalle.DefaultCell.HorizontalAlignment = 2; detalle.AddCell(new Paragraph(ConsultaCMonedas.FormatorNumero(Modelowmspclogo.cantidad_decimal.ToString(), item.cantidad), fontText3));
-                   // decimal precio_un1 = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, item.precio_unit);
+                  //  decimal precio_un1 = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, item.precio_unit);
                     detalle.DefaultCell.HorizontalAlignment = 2; detalle.AddCell(new Paragraph(ConsultaCMonedas.FormatorNumero(Modelowmspclogo.pvp_decimal.ToString(), item.precio_unit), fontText3));
 
                     decimal porc_des = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, item.porc_iva);
@@ -905,7 +893,6 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
                     decimal precio_un = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo_pu, item.subtotal);
                     detalle.DefaultCell.HorizontalAlignment = 2; detalle.AddCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, precio_un), fontText3));
-
 
                 }
                 for (int i = 0; i <18-contadorEspacio; i++)
@@ -1252,23 +1239,57 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
    
                 document.Add(obser);
                 //informacion tributaria
-                PdfPTable infotri = new PdfPTable(1);//cantidad de columnas que va tener la tabla
+                PdfPTable infotri = new PdfPTable(2);//cantidad de columnas que va tener la tabla
                 infotri.WidthPercentage = 100;
                 infotri.SpacingAfter = 10;
                 cell = new PdfPCell();
 
-                cell = new PdfPCell(new Paragraph(Modelocomercial.info_trib1, fontText2));
+                float[] val_info = new float[2];
+                val_info[0] = 20;
+                val_info[1] = 100;
+                infotri.SetWidths(val_info);
+
+                float[] deta_tot2 = { 0.55f };
+                cell = new PdfPCell();
+
+                iTextSharp.text.Image imagenp = iTextSharp.text.Image.GetInstance(qr);
+                imagenp.Border = 0;
+                imagenp.Alignment = Element.ALIGN_RIGHT;
+                imagenp.ScaleAbsolute(50f, 50f);
+
+                cell = new PdfPCell(imagenp);
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
                 infotri.AddCell(cell);
+
+                PdfPTable infotri1 = new PdfPTable(1);//cantidad de columnas que va tener la tabla
+                infotri1.WidthPercentage = 100;
+                cell = new PdfPCell();
+                cell.Border = 0;
+ 
+                cell = new PdfPCell(new Paragraph(Modelocomercial.info_trib1, fontText2));
+                cell.Border = 0;
+                cell.HorizontalAlignment = 0;
+                infotri1.AddCell(cell);
+
+                cell = new PdfPCell(new Paragraph("CUFE: " + ModeloResQr.cufe, fontText2));
+                cell.Border = 0;
+                cell.HorizontalAlignment = 0;
+                infotri1.AddCell(cell);
 
                 DateTime prueba = DateTime.Now;
                 cell = new PdfPCell(new Paragraph("Fecha hora expedición: " + prueba.ToString(), fontText2));
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
-                infotri.AddCell(cell);
+                infotri1.AddCell(cell);
 
+                cell = new PdfPCell(infotri1);
+                cell.Border = 0;
+                infotri.AddCell(cell);
                 document.Add(infotri); //imprime la tablas
+
+               
+      
 
                 document.Close();
 
@@ -1336,7 +1357,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ImagenQR", e.ToString(), DateTime.Now, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ImagenQR", e.ToString(), DateTime.Today, "consulta");
                 return "No se pudo completar la acción." + "ImagenQR." + " Por favor notificar al administrador.";
             }
         }

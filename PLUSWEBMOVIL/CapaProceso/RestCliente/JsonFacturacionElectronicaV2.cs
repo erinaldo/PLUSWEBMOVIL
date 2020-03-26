@@ -322,33 +322,34 @@ namespace CapaProceso.RestCliente
                 TerceroFEV2 tercero = new TerceroFEV2();
                 modelowmspctitulares vendedor = new modelowmspctitulares();
                 modelowmspctitulares cliente = new modelowmspctitulares();
-
+                //---------------datos sucursal-----------------
                 string Ven__cod_tit = conscabcera.cod_cliente;
+                string sucursal_cli = conscabcera.cod_suc_cli;
                 cliente = null;
-                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi,sucursal_cli);
 
                 ModeloUsuSucursal = BuscarUsuarioSucursal(Ccf_cod_emp, Ccf_usuario);
 
                 vendedor = null;
-                vendedor = buscarCliente(Ccf_usuario, Ccf_cod_emp, "vendedores", conscabcera.cod_vendedor, Ven__cod_dgi);
+                vendedor = buscarCliente(Ccf_usuario, Ccf_cod_emp, "vendedores", conscabcera.cod_vendedor, Ven__cod_dgi,"0");
 
-                sucursal.ciudad = vendedor.nom_ciudad;
+                sucursal.ciudad = cliente.ciudad_tit;
                 sucursal.codcliente = conscabcera.cod_cliente;
                 sucursal.codpostal = "000000"; //por defecto
                 sucursal.contacto1 = cliente.razon_social; //persona cotacto
                 sucursal.ctoemail1 = cliente.email_tit; //email contacto
-                sucursal.departamento = vendedor.nom_provincia;
-                sucursal.direccion1 = vendedor.dir_tit;
-                sucursal.dpto = vendedor.cod_provincia;
-                sucursal.email = vendedor.email_tit;
+                sucursal.departamento = cliente.nom_provincia;
+                sucursal.direccion1 = cliente.dir_tit;
+                sucursal.dpto = cliente.cod_provincia;
+                sucursal.email = cliente.email_tit;
                 sucursal.emailfe = cliente.email_tit;
-                sucursal.idsuc = Convert.ToInt16(conscabcera.cod_sucursal.Trim());
+                sucursal.idsuc = Convert.ToInt16(cliente.cod_sucursal.Trim());
                 sucursal.idvendedor = Convert.ToInt64(conscabcera.cod_vendedor);
                 sucursal.movil = "";
-                sucursal.mun = vendedor.ciudad_tit;
+                sucursal.mun = cliente.ciudad_tit;
                 sucursal.paisreceptor = "CO";//cliente.cod_pais; //pais del cliente iso 3166-1
-                sucursal.razonsocial = vendedor.razon_social;
-                sucursal.telefono1 = vendedor.tel_tit;
+                sucursal.razonsocial = cliente.razon_social;
+                sucursal.telefono1 = cliente.tel_tit;
                 sucursal.telefono2 = "";
                 return sucursal;
             }
@@ -371,7 +372,7 @@ namespace CapaProceso.RestCliente
 
                 string Ven__cod_tit = conscabcera.cod_cliente;
                 cliente = null;
-                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi,"0");
 
                 tercero.apli1 = cliente.primer_apellido;
                 tercero.apl2 = cliente.segundo_apellido;
@@ -399,12 +400,12 @@ namespace CapaProceso.RestCliente
             }
         }
 
-        public modelowmspctitulares buscarCliente(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi)
+        public modelowmspctitulares buscarCliente(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi, string cod_suc)
         {
             try
             {
 
-                lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, cod_suc);
                 int count = 0;
                 cliente = null;
                 foreach (modelowmspctitulares item in lista)

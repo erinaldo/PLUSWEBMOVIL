@@ -1,7 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="FormNotaCreditoFinanciera.aspx.cs" Inherits="CapaWeb.WebForms.FormNotaCreditoFinanciera" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="FormNotaDebitoFin.aspx.cs" Inherits="CapaWeb.WebForms.FormNotaDebitoFin" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-  
-<script LANGUAGE="JavaScript">
+    <script LANGUAGE="JavaScript">
 
 var cuenta=0;
 
@@ -13,7 +12,7 @@ return true;
 }
 else 
 {
-alert("La Nota de Crédito ya ha sido enviado, espere por favor.");
+alert("La Nota de Débito ya ha sido enviada, espere por favor.");
 return false;
 }
 }
@@ -89,7 +88,7 @@ return false;
                         <td valign="top">
                             <table width="100%" border="0" cellspacing="0">
                                 <tr>
-                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="FormBuscarNotaCredito.aspx">Nota de Crédito</a>---&gt;Nuevo</td>
+                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="BuscarNotaDebito.aspx">Nota de Débito</a>---&gt;Nuevo</td>
                                 </tr>
                             </table>
                         </td>
@@ -103,7 +102,7 @@ return false;
                 </tr>
                 <tr>
                     <td valing="center">
-                        <p class="Subtitulo2" >Nota de Crédito Financiera</p>
+                        <p class="Subtitulo2" >Nota de Débito Financiera</p>
                     </td>
                 </tr>
                  <tr>
@@ -309,10 +308,10 @@ return false;
                                   </td>
                                 <td>
                                     <asp:DropDownList ID="cbx_motivo_nc" class="textos" Visible="false" runat="server" Width="254px">
-                                        <asp:ListItem Value="3">Rebaja total aplicada</asp:ListItem>
-                                        <asp:ListItem Value="4">Descuento total aplicado</asp:ListItem>
-                                        <asp:ListItem Value="5">Rescisión: Nulidad por falta de requisitos</asp:ListItem>
-                                        <asp:ListItem Value="6">Otros</asp:ListItem>
+                                        <asp:ListItem Value="1">Intereses</asp:ListItem>
+                                        <asp:ListItem Value="2">Gastos por cobrar</asp:ListItem>
+                                        <asp:ListItem Value="3">Cambio del valor</asp:ListItem>
+                                        
                                     </asp:DropDownList>
                                     
                                 </td>
@@ -396,7 +395,7 @@ return false;
                 <tr>
                     <td>
 
-                        <div class="Subtitulo1">Detalle Nota de Crédito</div>
+                        <div class="Subtitulo1">Detalle Nota de Débito</div>
                     </td>
                 </tr
                 <tr>
@@ -695,5 +694,4 @@ return false;
         </div>
 
     </form>
-    
 </asp:Content>

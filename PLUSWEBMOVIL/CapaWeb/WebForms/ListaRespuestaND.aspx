@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="ListaRespuestaNDDS.aspx.cs" Inherits="CapaWeb.WebForms.ListaRespuestaNDDS" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="ListaRespuestaND.aspx.cs" Inherits="CapaWeb.WebForms.ListaRespuestaND" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
      <form id="form1" class="forms-sample" runat="server" method="post">
           <div style="align-items: center">
@@ -7,7 +7,7 @@
                         <td valign="top">
                             <table width="100%" border="0" cellspacing="0">
                                 <tr>
-                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="FormBuscarNotaCredito.aspx">Nota Débito</a>---&gt;Nuevo</td>
+                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="BuscarNotaDebito.aspx">Nota Débito</a>---&gt;Nuevo</td>
                                 </tr>
                             </table>
                         </td>
@@ -18,6 +18,12 @@
                         <p class="Subtitulo1">Lista de incidencias</p>
                     </td>
                 </tr>
+                 <tr>
+                    <td>
+                        <asp:Label ID="lbl_error" runat="server"  class="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
                 <tr>
                     <td>
 
@@ -43,7 +49,7 @@
                                             <asp:TemplateColumn HeaderText="TRX" >
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="nro_trans" runat="server" Text='<%#Eval("nro_trans") %>'></asp:Label>
+                                                        <asp:Label ID="nro_trans" CssClass="textos" runat="server" Text='<%#Eval("nro_trans") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -51,7 +57,7 @@
                                             <asp:TemplateColumn HeaderText="LINEA">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="linea" runat="server" Text='<%#Eval("linea") %>'></asp:Label>
+                                                        <asp:Label ID="linea" runat="server" CssClass="textos" Text='<%#Eval("linea") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -59,7 +65,7 @@
                                              <asp:TemplateColumn HeaderText="QRDATA">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="qrdata" runat="server" Text='<%#Eval("qrdata") %>'></asp:Label>
+                                                        <asp:Label ID="qrdata" runat="server" CssClass="textos" Text='<%#Eval("qrdata") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -69,7 +75,7 @@
                                               <asp:TemplateColumn HeaderText="ERROR">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
-                                                        <asp:Label ID="error" runat="server" Text='<%#Eval("error") %>'></asp:Label>
+                                                        <asp:Label ID="error" runat="server" CssClass="textos" Text='<%#Eval("error") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -81,13 +87,19 @@
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
                                             
+                                                  <asp:TemplateColumn HeaderText="DIAN">
+                                                <ItemTemplate>
+                                                    <asp:ImageButton ID="imgVer" runat="server" CausesValidation="false" CommandName="Ver"
+                                                        ImageUrl="~/Tema/imagenes/search.png" ToolTip="Ver DIAN" Width="20" />
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
 
                                           
                                         </Columns>
 
 
                                         <FooterStyle BackColor="White" ForeColor="#00000f" />
-                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />
+                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" CssClass="busqueda" ForeColor="White" />
                                         <ItemStyle ForeColor="#00000f" />
                                         <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" Mode="NumericPages" />
                                         <SelectedItemStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
@@ -101,7 +113,11 @@
                         </table>
                     </td>
                 </tr>
-               
+                  <tr>
+                    <td>
+                        
+                    </td>
+                </tr>
                        
          <tr>
                     <td>

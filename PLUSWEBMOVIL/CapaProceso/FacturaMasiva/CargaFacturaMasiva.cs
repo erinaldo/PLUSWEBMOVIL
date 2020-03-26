@@ -332,7 +332,7 @@ namespace CapaProceso.FacturaMasiva
                 string error = "";
                 string Ven__cod_tit = factura.dni_cliente;
 
-                listaClientes = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                listaClientes = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi,"0");
 
                 clientes = null;
                 foreach (modelowmspctitulares item in listaClientes)

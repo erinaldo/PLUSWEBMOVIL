@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="BuscarNotaDebito.aspx.cs" Inherits="CapaWeb.WebForms.BuscarNotaDebito" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-     <form id="form1" name="form1" class="forms-sample" runat="server" method="post">
+      <form id="form1" name="form1" class="forms-sample" runat="server" method="post">
          <div style="align-items: left">
             <table>
                  <tr>
@@ -26,12 +26,16 @@
                                 <tr>
                                     <td><p class="Subtitulo2">Para realizar una nueva Nota de Débito: </p></td>
                                     <td> 
+                                <asp:Button ID="btn_FinancieraND" onclick="btn_FinancieraND_Click" Visible="false" class="botones" runat="server" Text="FINANCIERA" />
+                                    &nbsp;
                                 <asp:Button ID="btn_AnularNC" onclick="btn_AnularNC_Click" Visible="false" class="botones" runat="server" Text="POR ANULACIÓN DE NOTA CRÉDITO" />
                                     &nbsp;
-                        
-                                <asp:Button ID="btn_DevolucionNC" onclick="btn_DevolucionNC_Click" Visible="false" class="botones" runat="server" Text="POR DEVOLUCIÓN" />
                                     </td>
-
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                        
+                                        &nbsp;</td>
                                 </tr>
                                 </table>                         
                         </td>
@@ -46,8 +50,7 @@
                     </tr>
                  <tr>
                     <td>
-                        <asp:Label ID="lbl_error" runat="server"  class="textos_error" Text=""></asp:Label>
-                        
+                        <asp:Label ID="lbl_error" CssClass="textos_error" runat="server" Text=""></asp:Label>
                         </td>
                     </tr>
                 <tr>
@@ -111,7 +114,7 @@
                         <tr>
                     <td>
 
-                        <div class="Subtitulo1">Listado de Notas Crédito</div>
+                        <div class="Subtitulo1">Listado de Notas Débito</div>
                     </td>
                 </tr>
                         <tr>
@@ -227,10 +230,17 @@
                                                         ImageUrl="~/Tema/imagenes/up.png" ToolTip="Reenviar" Width="16" />
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
+
+                                               <asp:TemplateColumn>
+                                                <ItemTemplate>
+                                                    <asp:ImageButton ID="imgRepeat" runat="server" CausesValidation="false" CommandName="Reactivar"
+                                                        ImageUrl="~/Tema/imagenes/repeat.png" ToolTip="Reactivar" Width="16" />
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
                                         </Columns>
 
                                         <FooterStyle BackColor="White" ForeColor="#00000f" />
-                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />
+                                        <HeaderStyle BackColor="#DD6D29" CssClass="busqueda" Font-Bold="True" ForeColor="White" />
                                         <ItemStyle ForeColor="#00000f" />
                                         <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" Mode="NumericPages" />
                                         <SelectedItemStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />

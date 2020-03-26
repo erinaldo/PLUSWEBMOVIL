@@ -12,17 +12,17 @@ namespace CapaProceso.RestCliente
         public int cantidad { get; set; }
         public string idproducto { get; set; }
         public string idunidad { get; set; }
-        public int iva { get; set; }
+        public decimal iva { get; set; }
         public Decimal ivausd { get; set; }
         public string nombreproducto { get; set; }
         public string operacion { get; set; }
         public int porcdcto { get; set; }
         public int porciva { get; set; }
         public int pos { get; set; }
-        public int precio { get; set; }
+        public decimal precio { get; set; }
         public Decimal preciousd { get; set; }
         public string subpartidaarancelaria { get; set; }
-        public int subtotal { get; set; }
+        public decimal subtotal { get; set; }
         public Decimal subtotalusd { get; set; }
        
     }

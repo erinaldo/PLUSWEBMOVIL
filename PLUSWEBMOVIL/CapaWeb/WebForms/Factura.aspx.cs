@@ -187,7 +187,8 @@ namespace CapaWeb.WebForms
                     dniCliente.Text = cliente.nro_dgi2;
                     fonoCliente.Text = cliente.tel_tit;
                     txtcorreo.Text = cliente.email_tit;
-
+                    suc_cliente.Text = cliente.cod_sucursal;
+                    sucursal_lbl.Text = cliente.codnom_suc;
                 }
 
                 if (Session["articulo"] != null)
@@ -435,6 +436,8 @@ namespace CapaWeb.WebForms
                 cod_costos.SelectedValue = conscabcera.cod_ccostos;
                 cmbCod_moneda.SelectedValue = conscabcera.cod_moneda.Trim();
                 cod_vendedor.SelectedValue = conscabcera.cod_vendedor;
+                suc_cliente.Text = conscabcera.cod_suc_cli;
+                sucursal_lbl.Text = conscabcera.codnom_suc;
                 //Consultamos cuantos descimales se van a usar redondeo
                 decimal SubTotal = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.subtotal);
                 txtSumaSubTo.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), SubTotal);
@@ -462,39 +465,7 @@ namespace CapaWeb.WebForms
                 listaConsDetalle = ConsultaDeta.ConsultaDetalleFacura(nro_trans);
                 Session["detalle"] = listaConsDetalle;
 
-                //Consulta de bases e ivas
-              /*  decimal baseiva19 = 0;
-                decimal iva19 = 0;
-                decimal baseiva15 = 0;
-                decimal iva15 = 0;
-                foreach (ModeloDetalleFactura item in listaConsDetalle)
-                {
-                    if (item.porc_iva == 19)
-                    {
-                        baseiva19 += item.base_iva;
-                        iva19 += item.valor_iva;
-                    }
-                    if (item.porc_iva == 5)
-                    {
-                        baseiva15 += item.base_iva;
-                        iva15 += item.valor_iva;
-                    }
-                }
-                decimal BaseIva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), baseiva19);
-                txtBaseIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), BaseIva19);
-                decimal Base15 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), baseiva15);
-                txtBase15.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Base15);
-                decimal Iva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), iva19);
-                txtIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Iva19);
-                decimal Iva15 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), iva15);
-                txtIva15.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Iva15);
-
-                //Llenar variables de seccion de bae e ivas
-
-                Session["sumaBase19"] = baseiva19;
-                Session["sumaBase15"] = baseiva15;
-                Session["sumaIva19"] = iva19;
-                Session["sumaIva15"] = iva15;*/
+ 
                 gv_Producto.DataSource = listaConsDetalle;
                 gv_Producto.DataBind();
                 gv_Producto.Height = 100;
@@ -853,7 +824,7 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
                 //Busca el nro de auditoria para poder insertar el detalle factura
                 //consulta nro_auditoria de la cabecera
-                string Ccf_nro_trans = valor_asignado;
+                string Ccf_nro_trans = lbl_trans.Text;
                 listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 int count = 0;
                 conscabcera = null;
@@ -896,7 +867,7 @@ namespace CapaWeb.WebForms
                 string error = "";
                 string Ven__cod_tit = dniCliente.Text;
 
-                lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi,suc_cliente.Text);
 
                 cliente = null;
                 foreach (modelowmspctitulares item in lista)
@@ -911,6 +882,7 @@ namespace CapaWeb.WebForms
                 ModeloActualizarEmail.cod_tit = cliente.cod_tit.Trim();
                 ModeloActualizarEmail.parametro = "email";
                 ModeloActualizarEmail.valor = txtcorreo.Text;
+                ModeloActualizarEmail.sucursal = suc_cliente.Text;
                 //Envio de datos para actualizar email en RP  
                 ConsultaDatosTitular.ActualizarDatosTitulares(ModeloActualizarEmail);
 
@@ -942,6 +914,7 @@ namespace CapaWeb.WebForms
                     cabecerafactura.anior = "0";
                     cabecerafactura.cod_sucursal = ModeloUsuSucursal.cod_sucursal;
                     cabecerafactura.nro_pedido = nro_pedido.Text;
+                    cabecerafactura.cod_suc_cli = suc_cliente.Text; //sucursal cliente
 
                     error = GuardarCabezera.ActualizarCabeceraFactura(cabecerafactura);
                     if (string.IsNullOrEmpty(error))
@@ -992,7 +965,7 @@ namespace CapaWeb.WebForms
                     cabecerafactura.cod_proc_aud = "RCOMFACT";
                     cabecerafactura.cod_sucursal = ModeloUsuSucursal.cod_sucursal;
                     cabecerafactura.nro_pedido = nro_pedido.Text;
-
+                    cabecerafactura.cod_suc_cli = suc_cliente.Text; //sucursal cliente
                     error = GuardarCabezera.InsertarCabezeraFactura(cabecerafactura);
                     if (string.IsNullOrEmpty(error))
                     {
@@ -1090,8 +1063,14 @@ namespace CapaWeb.WebForms
             {
                 lbl_error.Text = "";
                 string Ven__cod_tit = dniCliente.Text;
-
-                lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                if(suc_cliente.Text == "" || suc_cliente.Text ==null)
+                { 
+                lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi,null);
+                }
+                else
+                {
+                    lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, suc_cliente.Text);
+                }
 
                 int contar = 0;
                 cliente = null;
@@ -1115,6 +1094,8 @@ namespace CapaWeb.WebForms
                         fonoCliente.Text = "";
                         dniCliente.Text = "";
                         txtcorreo.Text = "";
+                        suc_cliente.Text = "";
+                        sucursal_lbl.Text = "";
                         // this.Page.Response.Write("<script language='JavaScript'>window.open('./CrearCliente.aspx','Crear Cliente', 'top=100,width=580 ,height=400, left=400');</script>");
 
                     }
@@ -1127,6 +1108,8 @@ namespace CapaWeb.WebForms
                         fonoCliente.Text = cliente.tel_tit;
                         dniCliente.Text = cliente.nro_dgi2;
                         txtcorreo.Text = cliente.email_tit;
+                        suc_cliente.Text = cliente.cod_sucursal;
+                        sucursal_lbl.Text = cliente.codnom_suc;
                         cmbCod_moneda.SelectedValue = cliente.moncli.Trim();
                         //Consulta las proofrmas de ese cliente
                         ListaProofrmas = ConsultaProformas.BuscarProformas(cliente.cod_tit, "A", "PF");

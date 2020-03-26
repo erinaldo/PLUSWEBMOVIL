@@ -491,15 +491,17 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 document.Add(tablaLogo);
 
                 //Llenar cabecera con clase celdas
-                PdfPTable tablaCab = new PdfPTable(3);
+                PdfPTable tablaCab = new PdfPTable(5);
                 tablaCab.WidthPercentage = 100;
                 tablaCab.SpacingAfter = 10;
                 cell = new PdfPCell();
-    
-                float[] value = new float[3];
-                value[0] = 100;
-                value[1] = 10;
-                value[2] = 70;
+
+                float[] value = new float[5];
+                value[0] = 25;
+                value[1] = 100;
+                value[2] = 20;
+                value[3] = 60;
+                value[4] = 90;
                 tablaCab.SetWidths(value);
 
                 float[] tablaCab4 = { 0.55f };
@@ -510,7 +512,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 tablaCab1.WidthPercentage = 100;
                 cell = new PdfPCell();
 
-                cell = new PdfPCell(new Paragraph("Cliente:       "+ conscabcera.nom_tit, fontText1));
+                cell = new PdfPCell(new Paragraph("Cliente:", fontText1));
                 cell.BorderWidthTop = 1;
                 cell.BorderWidthRight = 0;
                 cell.BorderWidthLeft = 1;
@@ -518,7 +520,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 0;
                 tablaCab1.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("NIT/CC:      "+ conscabcera.nro_dgi2 + "-" + conscabcera.nro_dgi1, fontText1));
+                cell = new PdfPCell(new Paragraph("NIT/CC:", fontText1));
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 0;
                 cell.BorderWidthLeft = 1;
@@ -527,7 +529,23 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 0;
                 tablaCab1.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("Direccion:   "+ conscabcera.dir_tit, fontText1));
+                cell = new PdfPCell(new Paragraph("Direccion:", fontText1));
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
+                cell.BorderWidthLeft = 1;
+                cell.BorderWidthBottom = 0;
+                cell.HorizontalAlignment = 0;
+                tablaCab1.AddCell(cell);
+
+                cell = new PdfPCell(new Paragraph("Telefono:", fontText1));
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
+                cell.BorderWidthLeft = 1;
+                cell.BorderWidthBottom = 0;
+                cell.HorizontalAlignment = 0;
+                tablaCab1.AddCell(cell);
+
+                cell = new PdfPCell(new Paragraph("Ciudad:", fontText1));
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 0;
                 cell.BorderWidthLeft = 1;
@@ -536,42 +554,98 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 0;
                 tablaCab1.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("Telefono:    "+ conscabcera.tel_tit, fontText1));
+                cell = new PdfPCell(new Paragraph("Email:", fontText1));
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 0;
                 cell.BorderWidthLeft = 1;
                 cell.BorderWidthBottom = 0;
-                cell.Colspan = 1;
                 cell.HorizontalAlignment = 0;
                 tablaCab1.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("Ciudad:      " + conscabcera.nom_ciudad, fontText1));
-                cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 0;
-                cell.BorderWidthLeft = 1;
-                cell.BorderWidthBottom = 0;
-                cell.Colspan = 1;
-                cell.HorizontalAlignment = 0;
-                tablaCab1.AddCell(cell);
-
-                cell = new PdfPCell(new Paragraph("Email:        "+ conscabcera.email_tit, fontText1));
+                cell = new PdfPCell(new Paragraph("Matriz:", fontText1));
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 0;
                 cell.BorderWidthLeft = 1;
                 cell.BorderWidthBottom = 1;
-                cell.Colspan = 1;
                 cell.HorizontalAlignment = 0;
                 tablaCab1.AddCell(cell);
                 //FIN PRIMERA TABLA
-               
+
 
                 cell = new PdfPCell(tablaCab1);
                 cell.HorizontalAlignment = 1;
                 cell.Border = 0;
                 tablaCab.AddCell(cell); //añadir a tabla prinipal
 
+                //Tablas dos
+                PdfPTable tablaCab3 = new PdfPTable(1);
+                tablaCab3.WidthPercentage = 100;
+                cell = new PdfPCell();
 
+                cell = new PdfPCell(new Paragraph(conscabcera.nom_tit, fontText1));
+                cell.BorderWidthTop = 1;
+                cell.BorderWidthRight = 0;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthBottom = 0;
+                cell.HorizontalAlignment = 0;
+                tablaCab3.AddCell(cell);
 
+                cell = new PdfPCell(new Paragraph(conscabcera.nro_dgi2 + "-" + conscabcera.nro_dgi1, fontText1));
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthBottom = 0;
+                cell.HorizontalAlignment = 0;
+                tablaCab3.AddCell(cell);
+
+                cell = new PdfPCell(new Paragraph(conscabcera.dir_tit, fontText1));
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthBottom = 0;
+                cell.HorizontalAlignment = 0;
+                tablaCab3.AddCell(cell);
+
+                cell = new PdfPCell(new Paragraph(conscabcera.tel_tit, fontText1));
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthBottom = 0;
+                cell.HorizontalAlignment = 0;
+                tablaCab3.AddCell(cell);
+
+                cell = new PdfPCell(new Paragraph(conscabcera.nom_ciudad, fontText1));
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthBottom = 0;
+                cell.Colspan = 1;
+                cell.HorizontalAlignment = 0;
+                tablaCab3.AddCell(cell);
+
+                cell = new PdfPCell(new Paragraph(conscabcera.email_tit, fontText1));
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthBottom = 0;
+                cell.HorizontalAlignment = 0;
+                tablaCab3.AddCell(cell);
+
+                cell = new PdfPCell(new Paragraph(conscabcera.codnom_suc, fontText1));
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 0;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthBottom = 1;
+                cell.HorizontalAlignment = 0;
+                tablaCab3.AddCell(cell);
+
+                //FIN PRIMERA TABLA
+
+                cell = new PdfPCell(tablaCab3);
+                cell.HorizontalAlignment = 1;
+                cell.Border = 0;
+                tablaCab.AddCell(cell);
+                //-------------------fin tablal dos
                 cell = new PdfPCell();
                 cell.HorizontalAlignment = 1;
                 cell.BorderWidthTop = 1;
@@ -580,74 +654,124 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.BorderWidthBottom = 1;
                 tablaCab.AddCell(cell);
 
-                PdfPTable tablaCab2 = new PdfPTable(2); //tablas 3
+                PdfPTable tablaCab2 = new PdfPTable(1); //tablas 3
                 tablaCab2.WidthPercentage = 100;
                 cell = new PdfPCell();
 
-                cell = new PdfPCell(new Paragraph("Factura a aplicar:          " + conscabceraNC.observacion, fontText1));
+                cell = new PdfPCell(new Paragraph("Fecha Factura a aplicar:", fontText1));
                 cell.BorderWidthTop = 1;
-                cell.BorderWidthRight = 1;
+                cell.BorderWidthRight = 0;
                 cell.BorderWidthLeft = 0;
                 cell.BorderWidthBottom = 0;
-                cell.Colspan = 2;
                 cell.HorizontalAlignment = 0;
                 tablaCab2.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("Fecha Factura a aplicar: " + conscabceraNC.fec_doc_str, fontText1));
+                cell = new PdfPCell(new Paragraph("Factura a aplicar:", fontText1));
                 cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 1;
+                cell.BorderWidthRight = 0;
                 cell.BorderWidthLeft = 0;
                 cell.BorderWidthBottom = 0;
-                cell.Colspan = 2;
                 cell.HorizontalAlignment = 0;
                 tablaCab2.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("Forma Pago:                 "+ conscabcera.nom_fpago, fontText1));
+                cell = new PdfPCell(new Paragraph("Forma Pago:", fontText1));
                 cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 1;
+                cell.BorderWidthRight = 0;
                 cell.BorderWidthLeft = 0;
                 cell.BorderWidthBottom = 0;
-                cell.Colspan = 2;
                 cell.HorizontalAlignment = 0;
                 tablaCab2.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("Fecha Vto:                    "+ conscabcera.fec_venc_str, fontText1));
+                cell = new PdfPCell(new Paragraph("Fecha Vto:", fontText1));
                 cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 1;
+                cell.BorderWidthRight = 0;
                 cell.BorderWidthLeft = 0;
                 cell.BorderWidthBottom = 0;
-                cell.Colspan = 2;
                 cell.HorizontalAlignment = 0;
                 tablaCab2.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("Moneda:                       "+ conscabcera.cod_moneda, fontText1));
+                cell = new PdfPCell(new Paragraph("Moneda:", fontText1));
                 cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 1;
+                cell.BorderWidthRight = 0;
                 cell.BorderWidthLeft = 0;
                 cell.BorderWidthBottom = 0;
-                cell.Colspan = 2;
                 cell.HorizontalAlignment = 0;
                 tablaCab2.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("Vendedor:                   " + conscabcera.nom_vendedor, fontText1));
+                cell = new PdfPCell(new Paragraph("Vendedor:", fontText1));
                 cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 1;
+                cell.BorderWidthRight = 0;
                 cell.BorderWidthLeft = 0;
                 cell.BorderWidthBottom = 1;
-                cell.Colspan = 2;
                 cell.HorizontalAlignment = 0;
                 tablaCab2.AddCell(cell);
-
-
 
                 cell = new PdfPCell(tablaCab2);
                 cell.HorizontalAlignment = 0;
                 cell.Border = 0;
                 tablaCab.AddCell(cell); //añadir a tabla prinipal
 
+                PdfPTable tablaCab5 = new PdfPTable(1); //tablas 4
+                tablaCab5.WidthPercentage = 100;
+                cell = new PdfPCell();
+
+                cell = new PdfPCell(new Paragraph(conscabceraNC.fec_doc_str, fontText1));
+                cell.BorderWidthTop = 1;
+                cell.BorderWidthRight = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthBottom = 0;
+                cell.HorizontalAlignment = 0;
+                tablaCab5.AddCell(cell);
+
+                cell = new PdfPCell(new Paragraph(conscabceraNC.observacion, fontText1));
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthBottom = 0;
+                cell.HorizontalAlignment = 0;
+                tablaCab5.AddCell(cell);
+
+                cell = new PdfPCell(new Paragraph(conscabcera.nom_fpago, fontText1));
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthBottom = 0;
+                cell.HorizontalAlignment = 0;
+                tablaCab5.AddCell(cell);
+
+                cell = new PdfPCell(new Paragraph(conscabcera.fec_venc_str, fontText1));
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthBottom = 0;
+                cell.HorizontalAlignment = 0;
+                tablaCab5.AddCell(cell);
+
+                cell = new PdfPCell(new Paragraph(conscabcera.cod_moneda, fontText1));
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthBottom = 0;
+                cell.HorizontalAlignment = 0;
+                tablaCab5.AddCell(cell);
+
+                cell = new PdfPCell(new Paragraph(conscabcera.nom_vendedor, fontText1));
+                cell.BorderWidthTop = 0;
+                cell.BorderWidthRight = 1;
+                cell.BorderWidthLeft = 0;
+                cell.BorderWidthBottom = 1;
+                cell.HorizontalAlignment = 0;
+                tablaCab5.AddCell(cell);
+
+                cell = new PdfPCell(tablaCab5);
+                cell.HorizontalAlignment = 0;
+                cell.Border = 0;
+                tablaCab.AddCell(cell); //añadir a tabla prinipal
+
                 document.Add(tablaCab);
 
-    
+
+
                 //opcion detalle cabcera
                 PdfPTable detacab = new PdfPTable(7);//cantidad de columnas que va tener la tabla
                 detacab.WidthPercentage = 100;

@@ -208,6 +208,7 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@fecha_mod", SqlDbType.DateTime).Value = fecha_mod;
                 conmand.Parameters.Add("@tasa_iva", SqlDbType.VarChar).Value = tasa_iva;
                 conmand.Parameters.Add("@cod_ccostos", SqlDbType.VarChar).Value = cod_ccostos;
+                
                 int dr = conmand.ExecuteNonQuery();
                 cn.Close();
                 return "Factura salvada correctamente";

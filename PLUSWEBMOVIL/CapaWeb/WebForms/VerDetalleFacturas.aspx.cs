@@ -930,7 +930,7 @@ namespace CapaWeb.WebForms
             string error = "";
             string Ven__cod_tit = dniCliente.Text;
 
-            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi,"0");
 
             cliente = null;
             foreach (modelowmspctitulares item in lista)
@@ -1070,7 +1070,7 @@ namespace CapaWeb.WebForms
         {
             string Ven__cod_tit = dniCliente.Text;
 
-            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+            lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi,"null");
 
             int contar = 0;
             cliente = null;

@@ -10,7 +10,7 @@
 namespace CapaWeb.WebForms {
     
     
-    public partial class FormNotaDebitoF {
+    public partial class FormNotaDebitoAnu {
         
         /// <summary>
         /// Control form1.
@@ -22,6 +22,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// Control lbl_error.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_error;
+        
+        /// <summary>
         /// Control mensaje.
         /// </summary>
         /// <remarks>
@@ -29,15 +38,6 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label mensaje;
-        
-        /// <summary>
-        /// Control cod_tit.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label cod_tit;
         
         /// <summary>
         /// Control dniCliente.
@@ -265,6 +265,33 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox txt_total_factura;
         
         /// <summary>
+        /// Control lbl_trans.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_trans;
+        
+        /// <summary>
+        /// Control lbl_trx_fac.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_trx_fac;
+        
+        /// <summary>
+        /// Control txt_nro_trans_padre.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_nro_trans_padre;
+        
+        /// <summary>
         /// Control txt_cod_docum.
         /// </summary>
         /// <remarks>
@@ -292,22 +319,31 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox txt_serie_docum;
         
         /// <summary>
-        /// Control txt_nro_trans_padre.
+        /// Control txt_saldo_factura.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_nro_trans_padre;
+        protected global::System.Web.UI.WebControls.TextBox txt_saldo_factura;
         
         /// <summary>
-        /// Control txt_cantidad_pro.
+        /// Control suc_cliente.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_cantidad_pro;
+        protected global::System.Web.UI.WebControls.Label suc_cliente;
+        
+        /// <summary>
+        /// Control sucursal_lbl.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label sucursal_lbl;
         
         /// <summary>
         /// Control area.
@@ -326,6 +362,15 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbl_trx;
+        
+        /// <summary>
+        /// Control lbl_validacion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_validacion;
         
         /// <summary>
         /// Control lblCod.

@@ -29,6 +29,7 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = ActualizarDatos.usuario;
                     conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = ActualizarDatos.empresa;
                     conmand.Parameters.Add("@cod_tit", SqlDbType.VarChar).Value = ActualizarDatos.cod_tit.Trim();
+                    conmand.Parameters.Add("@cod_sucursal", SqlDbType.VarChar).Value = ActualizarDatos.sucursal;
                     conmand.Parameters.Add("@parametro", SqlDbType.VarChar).Value = ActualizarDatos.parametro.Trim();
                     conmand.Parameters.Add("@valor", SqlDbType.VarChar).Value = ActualizarDatos.valor.Trim();
                 
@@ -40,7 +41,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
                 
-                guardarExcepcion.ClaseInsertarExcepcion(ActualizarDatos.empresa, "ActualizarDatosTitular.cs", "ActualizarDatTitular", e.ToString(), DateTime.Today, ActualizarDatos.usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(ActualizarDatos.empresa, "ActualizarDatosTitular.cs", "ActualizarDatTitular", e.ToString(), DateTime.Now, ActualizarDatos.usuario);
                 return "No se pudo completar la acción." + "ActualizarDatTitular." + " Por favor notificar al administrador."; 
             }
 

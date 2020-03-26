@@ -58,7 +58,7 @@ namespace CapaDatos.Sql
             {
                 using (cn = conexion.genearConexion())
                 {
-                    string update = "UPDATE wmt_facturas_cab SET cod_cliente =@cod_cliente, fec_doc =@fec_doc, dia =@dia, mes =@mes, anio =@anio, serie_docum =@serie_docum, cod_ccostos =@cod_ccostos, cod_vendedor =@cod_vendedor, cod_fpago =@cod_fpago, observaciones =@observaciones,usuario_mod =@usuario_mod,ocompra = @ocompra, cod_moneda = @cod_moneda, diar =@diar , mesr = @mesr, anior = @anior, cod_sucursal =@cod_sucursal, nro_pedido =@nro_pedido WHERE nro_trans =@nro_trans ";
+                    string update = "UPDATE wmt_facturas_cab SET cod_cliente =@cod_cliente, fec_doc =@fec_doc, dia =@dia, mes =@mes, anio =@anio, serie_docum =@serie_docum, cod_ccostos =@cod_ccostos, cod_vendedor =@cod_vendedor, cod_fpago =@cod_fpago, observaciones =@observaciones,usuario_mod =@usuario_mod,ocompra = @ocompra, cod_moneda = @cod_moneda, diar =@diar , mesr = @mesr, anior = @anior, cod_sucursal =@cod_sucursal, nro_pedido =@nro_pedido , cod_suc_cli=@cod_suc_cli WHERE nro_trans =@nro_trans ";
                     SqlCommand conmand = new SqlCommand(update, cn);
                     conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = cabezeraFactura.nro_trans;
                     conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = cabezeraFactura.cod_cliente;
@@ -79,6 +79,7 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@anior", SqlDbType.VarChar).Value = cabezeraFactura.anior;
                     conmand.Parameters.Add("@cod_sucursal", SqlDbType.VarChar).Value = cabezeraFactura.cod_sucursal.Trim();
                     conmand.Parameters.Add("@nro_pedido", SqlDbType.VarChar).Value = cabezeraFactura.nro_pedido;
+                    conmand.Parameters.Add("@cod_suc_cli", SqlDbType.VarChar).Value = cabezeraFactura.cod_suc_cli;
 
                     int dr = conmand.ExecuteNonQuery();
                     cn.Close();
@@ -417,7 +418,9 @@ namespace CapaDatos.Sql
                         item.cod_sucursal = Convert.ToString(dr["cod_sucursal"]);
                         item.nro_pedido = Convert.ToString(dr["nro_pedido"]);
                         item.email_tit = Convert.ToString(dr["email_tit"]);
-
+                        item.cod_suc_cli = Convert.ToString(dr["cod_suc"]);
+                        item.nom_suc = Convert.ToString(dr["nom_suc"]);
+                        item.codnom_suc = Convert.ToString(dr["sucurcli"]);
                         lista.Add(item);
 
                     }
@@ -562,7 +565,7 @@ namespace CapaDatos.Sql
             {
                 using (cn = conexion.genearConexion())
                 {
-                    string insert = "INSERT INTO  wmt_facturas_cab  (cod_cliente, fec_doc, dia, mes, anio, serie_docum, cod_ccostos, cod_vendedor, cod_fpago, observaciones, nro_trans, cod_emp, cod_docum, nro_docum, subtotal, iva, monto_imponible, total, estado, usuario_mod, nro_audit, ocompra, cod_moneda, tipo, porc_descto, descuento, diar, mesr, anior, cod_proc_aud, cod_sucursal, nro_pedido) VALUES( @cod_cliente, @fec_doc, @dia, @mes, @anio, @serie_docum, @cod_ccostos, @cod_vendedor, @cod_fpago, @observaciones, @nro_trans, @cod_emp, @cod_docum, @nro_docum, @subtotal, @iva, @monto_imponible, @total, @estado, @usuario_mod, @nro_audit, @ocompra, @cod_moneda, @tipo, @porc_descto, @descuento, @diar, @mesr, @anior, @cod_proc_aud, @cod_sucursal, @nro_pedido)";
+                    string insert = "INSERT INTO  wmt_facturas_cab  (cod_cliente, fec_doc, dia, mes, anio, serie_docum, cod_ccostos, cod_vendedor, cod_fpago, observaciones, nro_trans, cod_emp, cod_docum, nro_docum, subtotal, iva, monto_imponible, total, estado, usuario_mod, nro_audit, ocompra, cod_moneda, tipo, porc_descto, descuento, diar, mesr, anior, cod_proc_aud, cod_sucursal, nro_pedido, cod_suc_cli) VALUES( @cod_cliente, @fec_doc, @dia, @mes, @anio, @serie_docum, @cod_ccostos, @cod_vendedor, @cod_fpago, @observaciones, @nro_trans, @cod_emp, @cod_docum, @nro_docum, @subtotal, @iva, @monto_imponible, @total, @estado, @usuario_mod, @nro_audit, @ocompra, @cod_moneda, @tipo, @porc_descto, @descuento, @diar, @mesr, @anior, @cod_proc_aud, @cod_sucursal, @nro_pedido, @cod_suc_cli)";
 
                     SqlCommand conmand = new SqlCommand(insert, cn);
 
@@ -598,7 +601,8 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@cod_proc_aud", SqlDbType.VarChar).Value = cabezeraFactura.cod_proc_aud;
                     conmand.Parameters.Add("@cod_sucursal", SqlDbType.VarChar).Value = cabezeraFactura.cod_sucursal.Trim();
                     conmand.Parameters.Add("@nro_pedido", SqlDbType.VarChar).Value = cabezeraFactura.nro_pedido;
-                   
+                    conmand.Parameters.Add("@cod_suc_cli", SqlDbType.VarChar).Value = cabezeraFactura.cod_suc_cli;
+
 
                     int dr = conmand.ExecuteNonQuery();
                     cn.Close();
@@ -609,7 +613,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cabezeraFactura.cod_emp, metodo, "InsertarCabcecera", e.ToString(), DateTime.Today, cabezeraFactura.usuario_mod);
+                guardarExcepcion.ClaseInsertarExcepcion(cabezeraFactura.cod_emp, metodo, "InsertarCabcecera", e.ToString(), DateTime.Now, cabezeraFactura.usuario_mod);
                 return "No se pudo completar la acción." + "InsertarCabcecera." + " Por favor notificar al administrador.";
             }
 
@@ -623,7 +627,7 @@ namespace CapaDatos.Sql
             {
                 using (cn = conexion.genearConexion())
                 {
-                    string update = "UPDATE wmt_facturas_cab SET cod_cliente =@cod_cliente, fec_doc =@fec_doc, dia =@dia, mes =@mes, anio =@anio, serie_docum =@serie_docum, cod_ccostos =@cod_ccostos, cod_vendedor =@cod_vendedor, cod_fpago =@cod_fpago, observaciones =@observaciones,usuario_mod =@usuario_mod,ocompra = @ocompra, cod_moneda = @cod_moneda, diar =@diar , mesr = @mesr, anior = @anior, cod_sucursal =@cod_sucursal, nro_pedido =@nro_pedido, nro_trans_padre =@nro_trans_padre, mot_nce =@mot_nce WHERE nro_trans =@nro_trans ";
+                    string update = "UPDATE wmt_facturas_cab SET cod_cliente =@cod_cliente, fec_doc =@fec_doc, dia =@dia, mes =@mes, anio =@anio, serie_docum =@serie_docum, cod_ccostos =@cod_ccostos, cod_vendedor =@cod_vendedor, cod_fpago =@cod_fpago, observaciones =@observaciones,usuario_mod =@usuario_mod,ocompra = @ocompra, cod_moneda = @cod_moneda, diar =@diar , mesr = @mesr, anior = @anior, cod_sucursal =@cod_sucursal, nro_pedido =@nro_pedido, nro_trans_padre =@nro_trans_padre, mot_nce =@mot_nce, cod_suc_cli=@cod_suc_cli WHERE nro_trans =@nro_trans ";
                     SqlCommand conmand = new SqlCommand(update, cn);
                     conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = cabezeraFactura.nro_trans;
                     conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = cabezeraFactura.cod_cliente;
@@ -646,7 +650,7 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@nro_pedido", SqlDbType.VarChar).Value = cabezeraFactura.nro_pedido;
                     conmand.Parameters.Add("@nro_trans_padre", SqlDbType.VarChar).Value = cabezeraFactura.nro_trans_padre;
                     conmand.Parameters.Add("@mot_nce", SqlDbType.VarChar).Value = cabezeraFactura.mot_nce.Trim();
-
+                    conmand.Parameters.Add("@cod_suc_cli", SqlDbType.VarChar).Value = cabezeraFactura.cod_suc_cli;
                     int dr = conmand.ExecuteNonQuery();
                     cn.Close();
                     return "";
@@ -670,7 +674,7 @@ namespace CapaDatos.Sql
             {
                 using (cn = conexion.genearConexion())
                 {
-                    string insert = "INSERT INTO  wmt_facturas_cab  (cod_cliente, fec_doc, dia, mes, anio, serie_docum, cod_ccostos, cod_vendedor, cod_fpago, observaciones, nro_trans, cod_emp, cod_docum, nro_docum, subtotal, iva, monto_imponible, total, estado, usuario_mod, nro_audit, ocompra, cod_moneda, tipo, porc_descto, descuento, diar, mesr, anior, cod_proc_aud, cod_sucursal, nro_pedido, nro_trans_padre, mot_nce) VALUES( @cod_cliente, @fec_doc, @dia, @mes, @anio, @serie_docum, @cod_ccostos, @cod_vendedor, @cod_fpago, @observaciones, @nro_trans, @cod_emp, @cod_docum, @nro_docum, @subtotal, @iva, @monto_imponible, @total, @estado, @usuario_mod, @nro_audit, @ocompra, @cod_moneda, @tipo, @porc_descto, @descuento, @diar, @mesr, @anior, @cod_proc_aud, @cod_sucursal, @nro_pedido, @nro_trans_padre, @mot_nce)";
+                    string insert = "INSERT INTO  wmt_facturas_cab  (cod_cliente, fec_doc, dia, mes, anio, serie_docum, cod_ccostos, cod_vendedor, cod_fpago, observaciones, nro_trans, cod_emp, cod_docum, nro_docum, subtotal, iva, monto_imponible, total, estado, usuario_mod, nro_audit, ocompra, cod_moneda, tipo, porc_descto, descuento, diar, mesr, anior, cod_proc_aud, cod_sucursal, nro_pedido, nro_trans_padre, mot_nce, cod_suc_cli) VALUES( @cod_cliente, @fec_doc, @dia, @mes, @anio, @serie_docum, @cod_ccostos, @cod_vendedor, @cod_fpago, @observaciones, @nro_trans, @cod_emp, @cod_docum, @nro_docum, @subtotal, @iva, @monto_imponible, @total, @estado, @usuario_mod, @nro_audit, @ocompra, @cod_moneda, @tipo, @porc_descto, @descuento, @diar, @mesr, @anior, @cod_proc_aud, @cod_sucursal, @nro_pedido, @nro_trans_padre, @mot_nce, @cod_suc_cli)";
 
                     SqlCommand conmand = new SqlCommand(insert, cn);
 
@@ -709,6 +713,7 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@nro_trans_padre", SqlDbType.VarChar).Value = cabezeraFactura.nro_trans_padre;
                   
                     conmand.Parameters.Add("@mot_nce", SqlDbType.VarChar).Value = cabezeraFactura.mot_nce.Trim();
+                    conmand.Parameters.Add("@cod_suc_cli", SqlDbType.VarChar).Value = cabezeraFactura.cod_suc_cli;
 
                     int dr = conmand.ExecuteNonQuery();
                     cn.Close();

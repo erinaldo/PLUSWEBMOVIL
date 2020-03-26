@@ -259,6 +259,13 @@ return false;
                                         <asp:Label ID="lbl_trans" class="textos"  Width="202" ReadOnly="true" runat="server"></asp:Label>
                                     </label>
                                 </td>
+                               <td align="right" valign="top" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Sucursal:</div>
+                                </td>
+                                <td>
+                                    <asp:Label ID="suc_cliente" runat="server" class="textos" Visible="false" Text=""></asp:Label>
+                                    <asp:Label ID="sucursal_lbl" runat="server" class="textos" Text=""></asp:Label>
+                                </td>
                                </tr>
                             <tr>
                                 <td align="right" valign="top" nowrap="nowrap" class="busqueda">
@@ -293,6 +300,7 @@ return false;
                                   </td>
 
                            </tr>
+                            
                             <tr>
                                 
                                 <td align="right" valign="top" nowrap="nowrap" class="busqueda">

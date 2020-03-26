@@ -28,22 +28,22 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "Consultawmsptitulares.cs", "ConsultaUsuarios", e.ToString(), DateTime.Today, usuario_mod);
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "Consultawmsptitulares.cs", "ConsultaUsuarios", e.ToString(), DateTime.Now, usuario_mod);
                 return null;
             }
         }
-        public List<modelowmspctitulares> ConsultaTitulares(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi)
+        public List<modelowmspctitulares> ConsultaTitulares(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi, string cod_suc)
         {
             try
             {
                 List<modelowmspctitulares> lista = new List<modelowmspctitulares>();
-                lista = documento.ListaBuscaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                lista = documento.ListaBuscaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, cod_suc);
                 return lista;
             }
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ven__cod_emp, "Consultawmsptitulares.cs", "ConsultaTitulares", e.ToString(), DateTime.Today, Ven__usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ven__cod_emp, "Consultawmsptitulares.cs", "ConsultaTitulares", e.ToString(), DateTime.Now, Ven__usuario);
                 return null;
             }
         }

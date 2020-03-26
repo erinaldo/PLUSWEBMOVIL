@@ -179,7 +179,13 @@ namespace CapaProceso.RestCliente
                 Modelowmspclogo = BuscarUsuarioLogo(Ccf_cod_emp, Ccf_usuario);
                 //Pruebas emisor 830106032
                 //Produccion emisor =Convert.ToInt32(Modeloempresa.nro_dgi2);
-                encabezado.baseimpuesto = Convert.ToDecimal(conscabcera.monto_imponible); //base imponible
+                if (conscabceraNC.cod_moneda.Trim() != "COP")
+                {
+                    encabezado.baseimpuesto = Convert.ToDecimal(conscabceraNC.monto_imponible) * Convert.ToDecimal(ModeloCotizacion.tc_mov1c); //base imponible
+                }
+                else
+                { encabezado.baseimpuesto = Convert.ToDecimal(conscabceraNC.monto_imponible); }
+                
                 encabezado.codmoneda = conscabceraNC.cod_moneda.Trim();
                 encabezado.comentarios = conscabceraNC.observaciones;
                 encabezado.emisor = Convert.ToInt32(Modeloempresa.nro_dgi2);
@@ -187,10 +193,10 @@ namespace CapaProceso.RestCliente
                 encabezado.fecha = conscabceraNC.fec_doc.ToString("yyyy-MM-dd");
                 encabezado.fvence = conscabceraNC.fec_venc.ToString("yyyy-MM-dd");
                 encabezado.idsuc = 1;
-                encabezado.idvendedor = 0;//Convert.ToInt32(conscabceraNC.cod_vendedor);
+                encabezado.idvendedor = Convert.ToInt32(conscabceraNC.cod_vendedor);
                 encabezado.iva = Convert.ToDecimal(conscabceraNC.iva);
                 encabezado.mediopago = "ZZZ";//POR DEFECTO ZZZ
-                if (conscabcera.cod_fpago.Trim() == "00") //1 = contado, 2= credito
+                if (conscabceraNC.cod_fpago.Trim() == "00") //1 = contado, 2= credito
                 { encabezado.metodopago = 1; }
                 else
                 {
@@ -203,13 +209,29 @@ namespace CapaProceso.RestCliente
                 encabezado.ref_cufe = ModeloResQr.cufe; //CUFE Factura emitida
                 encabezado.ref_doc = conscabcera.serie_docum; //prefijo de la factura parapruebas
                 encabezado.ref_fecha = conscabcera.fec_doc.ToString("yyyy-MM-dd");
-                encabezado.ref_num = Convert.ToInt64(consdetalle.nro_doca); //numero de la factura
-                //encabezado.prefijo = "NC"; // para pruebas (NC)
-                encabezado.subtotal = Convert.ToInt32(conscabceraNC.subtotal);
+                encabezado.ref_num = Convert.ToInt64(conscabcera.nro_docum); //numero de la factura
+                                                                             //encabezado.prefijo = "NC"; // para pruebas (NC)
+                if (conscabceraNC.cod_moneda.Trim() != "COP")
+                {
+                    encabezado.subtotal = Convert.ToDecimal(conscabceraNC.subtotal) * Convert.ToDecimal(ModeloCotizacion.tc_mov1c); //base imponible
+                }
+                else
+                {
+                    encabezado.subtotal = Convert.ToInt32(conscabceraNC.subtotal); 
+                }
+               
                 encabezado.sucursal = Convert.ToInt16(conscabceraNC.cod_sucursal);
                 encabezado.terminospago = "30"; //por defecto 30
                 encabezado.tlmotivodv = Convert.ToInt32(conscabceraNCMot.mot_nce);//NC PARA ANULAR FACTURA (2)
-                encabezado.total = Convert.ToInt32(conscabceraNC.total);
+               
+                if (conscabceraNC.cod_moneda.Trim() != "COP")
+                {
+                    encabezado.total = Convert.ToDecimal(conscabceraNC.total) * Convert.ToDecimal(ModeloCotizacion.tc_mov1c); //base imponible
+                }
+                else
+                {
+                    encabezado.total = Convert.ToInt32(conscabceraNC.total);
+                }
                 encabezado.totalDet = listaConsDet.Count; //la cantidad de lineas del detalle de la factura
                 encabezado.totalImp = 1; //la cantidad de lineas de los impuestos
                 encabezado.usuario = Ccf_usuario;  //Usuario que facturo
@@ -246,39 +268,53 @@ namespace CapaProceso.RestCliente
                     itemDetalle.idproducto = item.cod_articulo.Trim();
                     itemDetalle.idunidad = "EA";//Pore defecto v2
                     itemDetalle.iva = Convert.ToInt32(item.valor_iva);
-                    if (conscabcera.cod_moneda.Trim() != "COP")
+                    if (conscabceraNC.cod_moneda.Trim() != "COP")
                     {
-                        itemDetalle.ivausd = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * itemDetalle.iva;
+                        itemDetalle.iva = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.valor_iva;
                     }
-                    else { itemDetalle.ivausd = 0; }
+                    else { itemDetalle.iva = item.valor_iva; }
+                    if (conscabceraNC.cod_moneda.Trim() != "COP")
+                    {
+                        itemDetalle.ivausd = item.valor_iva;
+                    }
+                    else
+                    { itemDetalle.ivausd = 0; }
 
                     itemDetalle.nombreproducto = item.nom_articulo;
                     itemDetalle.operacion = "SA"; //Factura en venta
                     itemDetalle.porcdcto = Convert.ToInt32(item.porc_descto);
                     itemDetalle.porciva = Convert.ToInt32(item.porc_iva);
                     itemDetalle.pos = item.linea;
-                    itemDetalle.precio = Convert.ToInt32(item.precio_unit);
-                    if (conscabcera.cod_moneda.Trim() != "COP")
+                   
+                    if (conscabceraNC.cod_moneda.Trim() != "COP")
                     {
-                        itemDetalle.preciousd = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * itemDetalle.precio;
+                        itemDetalle.precio = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.precio_unit;
                     }
-                    else
+                    else { itemDetalle.precio = item.precio_unit; }
+
+                    if (conscabceraNC.cod_moneda.Trim() != "COP")
                     {
-                        itemDetalle.preciousd = 0;
+                        itemDetalle.preciousd = item.precio_unit;
                     }
+                    else { itemDetalle.preciousd = 0; }
                     itemDetalle.subpartidaarancelaria = "";
-                     itemDetalle.subtotal = Convert.ToInt32(item.subtotal);
                     if (conscabcera.cod_moneda.Trim() != "COP")
                     {
-                                            
-                        itemDetalle.subtotalusd = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * itemDetalle.subtotal;
+                        itemDetalle.subtotal = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.subtotal;
+                    }
+                    else { itemDetalle.subtotal = item.subtotal; }
+
+
+                    if (conscabcera.cod_moneda.Trim() != "COP")
+                    {
+                        itemDetalle.subtotalusd = item.subtotal;
                     }
                     else
                     {
-                                          
                         itemDetalle.subtotalusd = 0;
                     }
-                    detalle.Add(itemDetalle);
+
+                        detalle.Add(itemDetalle);
 
                 }
 
@@ -303,12 +339,20 @@ namespace CapaProceso.RestCliente
                 //Buscamos todos los impuestos de la factura
                 ModeloImpuesto = null;
                 ModeloImpuesto = BuscarImpuestosREst(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans, impuesto_rest);
+                if (conscabceraNC.cod_moneda.Trim() != "COP")
+                {
+                    item.base_calculo = Convert.ToDecimal(ModeloImpuesto.base_impu) * Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
+                    item.porciva = Convert.ToDecimal(ModeloImpuesto.porc_impu);
+                    item.valor = Convert.ToDecimal(ModeloImpuesto.valor_impu) * Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
+                }
+                else
+                {
 
+                    item.base_calculo = Convert.ToDecimal(ModeloImpuesto.base_impu);
+                    item.porciva = Convert.ToDecimal(ModeloImpuesto.porc_impu);
+                    item.valor = Convert.ToDecimal(ModeloImpuesto.valor_impu);
+                }
 
-
-                item.base_calculo = Convert.ToDecimal(ModeloImpuesto.base_impu);
-                item.porciva = Convert.ToDecimal(ModeloImpuesto.porc_impu);
-                item.valor = Convert.ToDecimal(ModeloImpuesto.valor_impu);
 
                 impuesto.Add(item);
 
@@ -331,33 +375,34 @@ namespace CapaProceso.RestCliente
                 TerceroNCV2 tercero = new TerceroNCV2();
                 modelowmspctitulares vendedor = new modelowmspctitulares();
                 modelowmspctitulares cliente = new modelowmspctitulares();
-
+                //................ENVIAR DATO DE LA SUCURSAL Y SOCION NEGOCIO
+                string cod_suc_cli = conscabceraNC.cod_suc_cli;
                 string Ven__cod_tit = conscabceraNC.cod_cliente;
                 cliente = null;
-                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, cod_suc_cli);
 
                 ModeloUsuSucursal = BuscarUsuarioSucursal(Ccf_cod_emp, Ccf_usuario);
 
                 vendedor = null;
-                vendedor = buscarCliente(Ccf_usuario, Ccf_cod_emp, "vendedores", conscabceraNC.cod_vendedor, Ven__cod_dgi);
-
-                sucursal.ciudad = vendedor.nom_ciudad;
+                vendedor = buscarCliente(Ccf_usuario, Ccf_cod_emp, "vendedores", conscabceraNC.cod_vendedor, Ven__cod_dgi,"0");
+                //----------------DATOS PROPISO DE LA SUCURSAL DEL CLIENTE AL QUE SE FACTURA----------------------------
+                sucursal.ciudad = cliente.ciudad_tit; //nombre ciudad
                 sucursal.codcliente = conscabceraNC.cod_cliente;
                 sucursal.codpostal = "000000"; //por defecto
                 sucursal.contacto1 = cliente.razon_social; //persona cotacto
-                sucursal.ctoemail1 = cliente.email_tit; //email contacto
-                sucursal.departamento = vendedor.nom_provincia;
-                sucursal.direccion1 = vendedor.dir_tit;
-                sucursal.dpto = vendedor.cod_provincia;
-                sucursal.email = vendedor.email_tit;
+                sucursal.ctoemail1 = cliente.email_tit; //email contacto.sucursal
+                sucursal.departamento = cliente.nom_provincia;
+                sucursal.direccion1 = cliente.dir_tit;
+                sucursal.dpto = cliente.cod_provincia;
+                sucursal.email = cliente.email_tit;
                 sucursal.emailfe = cliente.email_tit;
-                sucursal.idsuc = Convert.ToInt16(conscabceraNC.cod_sucursal.Trim());
-                sucursal.idvendedor = 0;//Convert.ToInt64(conscabceraNC.cod_vendedor);
+                sucursal.idsuc = Convert.ToInt16(cliente.cod_sucursal.Trim());
+                sucursal.idvendedor = Convert.ToInt64(conscabceraNC.cod_vendedor);
                 sucursal.movil = "";
-                sucursal.mun = vendedor.ciudad_tit;
+                sucursal.mun = cliente.ciudad_tit;
                 sucursal.paisreceptor = "CO";//cliente.cod_pais; //pais del cliente iso 3166-1
-                sucursal.razonsocial = vendedor.razon_social;
-                sucursal.telefono1 = vendedor.tel_tit;
+                sucursal.razonsocial = cliente.razon_social;
+                sucursal.telefono1 = cliente.tel_tit;
                 sucursal.telefono2 = "";
                 return sucursal;
             }
@@ -379,7 +424,7 @@ namespace CapaProceso.RestCliente
 
                 string Ven__cod_tit = conscabceraNC.cod_cliente;
                 cliente = null;
-                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, conscabceraNC.cod_suc_cli);
 
                 tercero.apli1 = cliente.primer_apellido;
                 tercero.apl2 = cliente.segundo_apellido;
@@ -406,12 +451,12 @@ namespace CapaProceso.RestCliente
             }
         }
 
-        public modelowmspctitulares buscarCliente(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi)
+        public modelowmspctitulares buscarCliente(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi, string cod_suc)
         {
 
             try
             {
-                lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, cod_suc);
                 int count = 0;
                 cliente = null;
                 foreach (modelowmspctitulares item in lista)

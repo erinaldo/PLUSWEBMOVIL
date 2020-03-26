@@ -207,19 +207,20 @@
     <Content Include="WebForms\FormNotaCreditoDevolucion.aspx" />
     <Content Include="WebForms\FormNotaCreditoFin.aspx" />
     <Content Include="WebForms\FormNotaCreditoFinanciera.aspx" />
-    <Content Include="WebForms\FormNotaDebitoAnulacion.aspx" />
-    <Content Include="WebForms\FormNotaDebitoF.aspx" />
+    <Content Include="WebForms\FormNotaDebitoAnu.aspx" />
+    <Content Include="WebForms\FormNotaDebitoFin.aspx" />
     <Content Include="WebForms\FormParametros.aspx" />
     <Content Include="WebForms\FormRespuestaDIAN.aspx" />
     <Content Include="WebForms\FormRespuestaJsonNC.aspx" />
     <Content Include="WebForms\FormRespuestaJson.aspx" />
-    <Content Include="WebForms\FormRespuestaJsonND.aspx" />
     <Content Include="WebForms\FormRespuestaNCDIAN.aspx" />
+    <Content Include="WebForms\FormRespuestaNDDIAN.aspx" />
+    <Content Include="WebForms\FormRespuestaNDJson.aspx" />
     <Content Include="WebForms\FormSucursalempresa.aspx" />
     <Content Include="WebForms\FormUsuariosucursal.aspx" />
     <Content Include="WebForms\Index.html" />
     <Content Include="WebForms\ListaRespuestaNCDS.aspx" />
-    <Content Include="WebForms\ListaRespuestaNDDS.aspx" />
+    <Content Include="WebForms\ListaRespuestaND.aspx" />
     <Content Include="WebForms\MediosPagoPos.aspx" />
     <Content Include="WebForms\PortalFacturas.aspx" />
     <Content Include="WebForms\ReenviarFacturaJson.aspx" />
@@ -229,6 +230,7 @@
     <Content Include="WebForms\ReporteCierreCaja.aspx" />
     <Content Include="WebForms\ReporteNCAnuFac.aspx" />
     <Content Include="WebForms\ReporteFactura.aspx" />
+    <Content Include="WebForms\ReporteNotaDebito.aspx" />
     <Content Include="WebForms\VerDetalleFacturas.aspx" />
   </ItemGroup>
   <ItemGroup>
@@ -578,19 +580,19 @@
     <Compile Include="WebForms\FormNotaCreditoFinanciera.aspx.designer.cs">
       <DependentUpon>FormNotaCreditoFinanciera.aspx</DependentUpon>
     </Compile>
-    <Compile Include="WebForms\FormNotaDebitoAnulacion.aspx.cs">
-      <DependentUpon>FormNotaDebitoAnulacion.aspx</DependentUpon>
+    <Compile Include="WebForms\FormNotaDebitoAnu.aspx.cs">
+      <DependentUpon>FormNotaDebitoAnu.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WebForms\FormNotaDebitoAnulacion.aspx.designer.cs">
-      <DependentUpon>FormNotaDebitoAnulacion.aspx</DependentUpon>
+    <Compile Include="WebForms\FormNotaDebitoAnu.aspx.designer.cs">
+      <DependentUpon>FormNotaDebitoAnu.aspx</DependentUpon>
     </Compile>
-    <Compile Include="WebForms\FormNotaDebitoF.aspx.cs">
-      <DependentUpon>FormNotaDebitoF.aspx</DependentUpon>
+    <Compile Include="WebForms\FormNotaDebitoFin.aspx.cs">
+      <DependentUpon>FormNotaDebitoFin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WebForms\FormNotaDebitoF.aspx.designer.cs">
-      <DependentUpon>FormNotaDebitoF.aspx</DependentUpon>
+    <Compile Include="WebForms\FormNotaDebitoFin.aspx.designer.cs">
+      <DependentUpon>FormNotaDebitoFin.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormParametros.aspx.cs">
       <DependentUpon>FormParametros.aspx</DependentUpon>
@@ -620,19 +622,26 @@
     <Compile Include="WebForms\FormRespuestaJson.aspx.designer.cs">
       <DependentUpon>FormRespuestaJson.aspx</DependentUpon>
     </Compile>
-    <Compile Include="WebForms\FormRespuestaJsonND.aspx.cs">
-      <DependentUpon>FormRespuestaJsonND.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebForms\FormRespuestaJsonND.aspx.designer.cs">
-      <DependentUpon>FormRespuestaJsonND.aspx</DependentUpon>
-    </Compile>
     <Compile Include="WebForms\FormRespuestaNCDIAN.aspx.cs">
       <DependentUpon>FormRespuestaNCDIAN.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\FormRespuestaNCDIAN.aspx.designer.cs">
       <DependentUpon>FormRespuestaNCDIAN.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormRespuestaNDDIAN.aspx.cs">
+      <DependentUpon>FormRespuestaNDDIAN.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormRespuestaNDDIAN.aspx.designer.cs">
+      <DependentUpon>FormRespuestaNDDIAN.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormRespuestaNDJson.aspx.cs">
+      <DependentUpon>FormRespuestaNDJson.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormRespuestaNDJson.aspx.designer.cs">
+      <DependentUpon>FormRespuestaNDJson.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\ListaRespuestaNCDS.aspx.cs">
       <DependentUpon>ListaRespuestaNCDS.aspx</DependentUpon>
@@ -641,12 +650,12 @@
     <Compile Include="WebForms\ListaRespuestaNCDS.aspx.designer.cs">
       <DependentUpon>ListaRespuestaNCDS.aspx</DependentUpon>
     </Compile>
-    <Compile Include="WebForms\ListaRespuestaNDDS.aspx.cs">
-      <DependentUpon>ListaRespuestaNDDS.aspx</DependentUpon>
+    <Compile Include="WebForms\ListaRespuestaND.aspx.cs">
+      <DependentUpon>ListaRespuestaND.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WebForms\ListaRespuestaNDDS.aspx.designer.cs">
-      <DependentUpon>ListaRespuestaNDDS.aspx</DependentUpon>
+    <Compile Include="WebForms\ListaRespuestaND.aspx.designer.cs">
+      <DependentUpon>ListaRespuestaND.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\MediosPagoPos.aspx.cs">
       <DependentUpon>MediosPagoPos.aspx</DependentUpon>
@@ -696,6 +705,13 @@
     </Compile>
     <Compile Include="WebForms\ReporteNotaCredito.aspx.designer.cs">
       <DependentUpon>ReporteNotaCredito.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\ReporteNotaDebito.aspx.cs">
+      <DependentUpon>ReporteNotaDebito.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\ReporteNotaDebito.aspx.designer.cs">
+      <DependentUpon>ReporteNotaDebito.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>

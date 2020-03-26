@@ -336,7 +336,15 @@ return false;
                                    <asp:TextBox ID="txt_saldo_factura" Visible="false" runat="server"></asp:TextBox>
                                </td>
                                </tr>
-
+                             <tr>
+                                <td align="right" valign="top" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Sucursal:</div>
+                                </td>
+                                <td>
+                                    <asp:Label ID="suc_cliente" runat="server" class="textos" Visible="false" Text=""></asp:Label>
+                                    <asp:Label ID="sucursal_lbl" runat="server" class="textos" Text=""></asp:Label>
+                                </td>
+                            </tr>
                           
                             <tr>
                                 

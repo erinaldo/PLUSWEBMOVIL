@@ -6,6 +6,8 @@ using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
 using CapaProceso.RestCliente;
 using CapaDatos.Modelos;
+using CapaProceso.GenerarPDF.FacturaElectronica;
+using System.IO;
 
 namespace CapaWeb.WebForms
 {
@@ -15,165 +17,288 @@ namespace CapaWeb.WebForms
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
 
-        public CabezeraFactura ActualizarEstadoFact = new CabezeraFactura();
-
-
-        modelocabecerafactura cabecerafactura = new modelocabecerafactura();
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
-
-        List<ModeloDetalleFactura> ModeloDetalleFactura = new List<ModeloDetalleFactura>();
-        Consultawmtfacturasdet ConsultaDeta = new Consultawmtfacturasdet();
-        ModeloDetalleFactura detallefactura = new ModeloDetalleFactura();
-
-        modelowmtfacturascab conscabcera = new modelowmtfacturascab();
-        ModeloDetalleFactura consdetalle = new ModeloDetalleFactura();
         List<modelowmtfacturascab> listaConsCab = null;
+        modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+
+        public CabezeraFactura ActualizarEstadoFact = new CabezeraFactura();
+        ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
+        modeloExepciones ModeloExcepcion = new modeloExepciones();
+
+        public List<JsonRespuestaDE> ListaModelorespuestaDs = null;
+        public JsonRespuestaDE ModeloResQr = new JsonRespuestaDE();
+        public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
         public string ComPwm;
         public string AmUsrLog;
         public string nro_trans = null;
+        public string Ccf_estado = null;
+        public string Ccf_cliente = null;
+        public string Ccf_cod_docum = null;
+        public string Ccf_serie_docum = null;
+        public string Ccf_nro_docum = null;
+        public string Ccf_diai = null;
+        public string Ccf_mesi = null;
+        public string Ccf_anioi = null;
+        public string Ccf_diaf = null;
+        public string Ccf_mesf = null;
+        public string Ccf_aniof = null;
+        public string Ccf_tipo1 = "C";
+        public string Ccf_tipo2 = "NCVE";
+        public string Ccf_nro_trans = "0";
         protected void Page_Load(object sender, EventArgs e)
         {
-            RecuperarCokie();
-            ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
-            foreach (var item in ListaModelowmspclogo)
+            try
             {
-                Modelowmspclogo = item;
-                break;
+                lbl_error.Text = "";
+
+                RecuperarCokie();
+                ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
+                foreach (var item in ListaModelowmspclogo)
+                {
+                    Modelowmspclogo = item;
+                    break;
+                }
+                if (!IsPostBack)
+                {
+
+                    QueryString qs = ulrDesencriptada();
+                    Int64 ide = Int64.Parse(qs["Id"].ToString());
+                    lbl_nro_trans.Text = ide.ToString();
+
+
+                }
             }
-            if (!IsPostBack)
+            catch (Exception ex)
             {
-
-                QueryString qs = ulrDesencriptada();
-                Int64 ide = Int64.Parse(qs["Id"].ToString());
-                lbl_nro_trans.Text = ide.ToString();
-
+                GuardarExcepciones("Page_Load", ex.ToString());
 
             }
         }
 
+        public void GuardarExcepciones(string metodo, string error)
+        {
+            //obtener numero de transaccion
 
+            ModeloExcepcion.cod_emp = ComPwm;
+            ModeloExcepcion.proceso = "ReenviarNotaDebitoJson.aspx";
+            ModeloExcepcion.metodo = metodo;
+            ModeloExcepcion.error = error;
+            ModeloExcepcion.fecha_hora = DateTime.Now;
+            ModeloExcepcion.usuario_mod = AmUsrLog;
+            consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
+            //mandar mensaje de error a label
+            lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
+        }
         public void RecuperarCokie()
         {
-            if (Request.Cookies["ComPwm"] != null)
+            try
             {
-                ComPwm = Request.Cookies["ComPwm"].Value;
-            }
-            else
-            {
-                Response.Redirect("../Inicio.asp");
-            }
+                lbl_error.Text = "";
+
+                if (Request.Cookies["ComPwm"] != null)
+                {
+                    ComPwm = Request.Cookies["ComPwm"].Value;
+                }
+                else
+                {
+                    Response.Redirect("../Inicio.asp");
+                }
 
 
-            if (Request.Cookies["AmUsrLog"] != null)
+                if (Request.Cookies["AmUsrLog"] != null)
+                {
+                    AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+
+                }
+            }
+            catch (Exception ex)
             {
-                AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+                GuardarExcepciones("RecuperarCokie", ex.ToString());
 
             }
         }
 
-        public modelowmtfacturascab buscarTipoFac(string nro_trans)
-        {
-
-            listaConsCab = ConsultaCabe.ConsultaTipoFactura(nro_trans);
-            int count = 0;
-            conscabcera = null;
-            foreach (modelowmtfacturascab item in listaConsCab)
-            {
-                count++;
-                conscabcera = item;
-
-            }
-            return conscabcera;
-        }
         public QueryString ulrDesencriptada()
         {
-            //1- guardo el Querystring encriptado que viene desde el request en mi objeto
-            QueryString qs = new QueryString(Request.QueryString);
+            try
+            {
+                lbl_error.Text = "";
 
-            ////2- Descencripto y de esta manera obtengo un array Clave/Valor normal
-            qs = Encryption.DecryptQueryString(qs);
-            return qs;
+
+                //1- guardo el Querystring encriptado que viene desde el request en mi objeto
+                QueryString qs = new QueryString(Request.QueryString);
+
+                ////2- Descencripto y de esta manera obtengo un array Clave/Valor normal
+                qs = Encryption.DecryptQueryString(qs);
+                return qs;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("ulrDesencriptada", ex.ToString());
+                return null;
+            }
         }
 
         protected void btn_reenviar_Click(object sender, EventArgs e)
         {
-            conscabcera = null;
-            conscabcera = buscarTipoFac(lbl_nro_trans.Text);
-            string Tipo_fac = null;
-            if (conscabcera.tipo_nce.ToString() == "VTAE")
+            try
             {
-                Tipo_fac = "VTAE";
-            }
-            else
-            {
+                lbl_error.Text = "";
 
-                Tipo_fac = "POSE";
-            }
-            ConsumoRest consumoRest = new ConsumoRest();
-            string respuesta = "";
-            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", Tipo_fac, lbl_nro_trans.Text);
-            if (respuesta == "")
-            {
-                mensaje.Text = "Su factura fue enviada exitosamente";
-                btn_reenviar.Enabled = false;
-                ActualizarEstadoFact.ActualizarEstadoFactura(lbl_nro_trans.Text, "F");
+                //Consulta nro_trans factura 
+                listaConsCab = ConsultaCabe.ConsultaNCTransPadre(lbl_nro_trans.Text);
+
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    conscabcera = item;
+
+                }
+                lbl_nro_factura.Text = conscabcera.nro_trans_padre;
 
 
+
+                //AVERIGUAR LA VERSION DE NC QUE USA
+                string respuesta = "";
+                if (Modelowmspclogo.version_fe == "2")
+                {
+                    ConsumoRestNDFinV2 consumoRest = new ConsumoRestNDFinV2();
+                    respuesta = consumoRest.EnviarNotaDebito(ComPwm, AmUsrLog, "C", "NC", lbl_nro_trans.Text, conscabcera.nro_trans_padre);
+                }
+         
+                if (respuesta == "")
+                {
+                    mensaje.Text = "La Nota Dédito fue enviada exitosamente";
+                    btn_reenviar.Enabled = false;
+                    ActualizarEstadoFact.ActualizarEstadoFactura(lbl_nro_trans.Text, "F"); //Actualizar estado nNOTA DEBITO
+                    if (conscabcera.mot_nce.Trim() == "4")
+                    {
+                        ActualizarEstadoFact.ActualizarEstadoFactura(conscabcera.nro_trans_padre.Trim(), "N");//Actualiza NOTA CREDITO a Anulada
+                    }
+                    EnviarCorreoRemitente(lbl_nro_trans.Text, conscabcera.tipo_nce);//CORREO REMITENTE
+                }
+                else
+                {
+                    mensaje.Text = respuesta;
+
+                }
             }
-            else
+            catch (Exception ex)
             {
-                mensaje.Text = respuesta;
+                GuardarExcepciones("btn_reenviar_Click", ex.ToString());
 
             }
         }
 
         protected void btn_cancelar_Click(object sender, EventArgs e)
         {
-            conscabcera = null;
-            conscabcera = buscarTipoFac(lbl_nro_trans.Text);
-
-            if (conscabcera.tipo_nce.ToString() == "VTAE")
+            try
             {
-                Response.Redirect("BuscarFacturas.aspx");
+                lbl_error.Text = "";
+
+                Response.Redirect("BuscarNotaDebito.aspx");
             }
-            else
+            catch (Exception ex)
             {
+                GuardarExcepciones("btn_cancelar_Click", ex.ToString());
 
-                Response.Redirect("BuscarFacturaPOS.aspx");
             }
-
         }
 
+        public void EnviarCorreoRemitente(string nro_trans, string tipo)
+        {
+            try
+            {
+
+                Ccf_tipo2 = tipo;
+                Ccf_nro_trans = nro_trans;
+                //Buscar el xml TRAE TODAS LAS RESPUESTAS
+                ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
+                foreach (var item in ListaModelorespuestaDs)
+                {
+                    if (item.xml != "")
+                    {
+                        ModeloResQr = item;
+                    }
+
+                }
+                Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
+                string pathPdf = "";
+                string StringXml = ModeloResQr.xml;
+                string pathTemporal = Modelowmspclogo.pathtmpfac;
+                string nombreXml = ModeloResQr.cufe.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + ".xml";
+                string pathXml = pathTemporal + nombreXml;
+                File.WriteAllText(pathXml, StringXml);
+                //-------------OBTENER EL XML Y PDF PARA EL ENVIO-------------------//
+                if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+                {
+
+                    PdfNDEleV2Default2 pdf1 = new PdfNDEleV2Default2();
+                    pathPdf = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                }
+
+                Boolean error = enviarcorreocliente.EnviarCorreoRemitente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, pathXml);
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("EnviarCorreoRemitente", ex.ToString());
+
+            }
+        }
         protected void btn_reenviarpdf_Click(object sender, EventArgs e)
         {
-            conscabcera = null;
-            conscabcera = buscarTipoFac(lbl_nro_trans.Text);
-            string Tipo_fac = null;
-            if (conscabcera.tipo_nce.ToString() == "VTAE")
+            try
             {
-                Tipo_fac = "VTAE";
-            }
-            else
-            {
+                lbl_error.Text = "";
 
-                Tipo_fac = "POSE";
-            }
-            ConsumoRest consumoRest = new ConsumoRest();
-            string respuesta = "";
-            respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", Tipo_fac, lbl_nro_trans.Text);
-            if (respuesta == "")
-            {
-                mensaje.Text = "Su factura fue enviada exitosamente"; ;
-                btn_reenviar.Enabled = false;
-                ActualizarEstadoFact.ActualizarEstadoFactura(lbl_nro_trans.Text, "F");
+                //Consulta nro_trans factura 
+                listaConsCab = ConsultaCabe.ConsultaNCTransPadre(lbl_nro_trans.Text);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
+
+                }
+                lbl_nro_factura.Text = conscabcera.nro_trans_padre;
 
 
+                //AVERIGUAR LA VERSION DE NC QUE USA
+                string respuesta = "";
+                if (Modelowmspclogo.version_fe == "2")
+                {
+             
+                    ConsumoRestNDFinV2 consumoRest = new ConsumoRestNDFinV2();
+                    respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", "NC", lbl_nro_trans.Text);
+                }
+
+
+
+                if (respuesta == "")
+                {
+                    mensaje.Text = "La Nota Débito fue enviada exitosamente";
+                    btn_reenviar.Enabled = false;
+                    ActualizarEstadoFact.ActualizarEstadoFactura(lbl_nro_trans.Text, "F");//Actualiza estado de la NOTA DEBITO
+                    if (conscabcera.mot_nce.Trim() == "4")
+                    {
+                        ActualizarEstadoFact.ActualizarEstadoFactura(conscabcera.nro_trans_padre.Trim(), "N");//Actualiza NOTA CREDITO a Anulada
+                    }
+                    EnviarCorreoRemitente(lbl_nro_trans.Text, conscabcera.tipo_nce);//CORREO REMITENTE
+
+                }
+                else
+                {
+                    mensaje.Text = respuesta;
+
+                }
             }
-            else
+            catch (Exception ex)
             {
-                mensaje.Text = respuesta;
+                GuardarExcepciones("btn_reenviarpdf_Click", ex.ToString());
 
             }
+
         }
     }
 }

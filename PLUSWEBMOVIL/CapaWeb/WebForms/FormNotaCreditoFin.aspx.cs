@@ -276,7 +276,8 @@ namespace CapaWeb.WebForms
                     dniCliente.Text = cliente.nro_dgi2;
                     fonoCliente.Text = cliente.tel_tit;
                     txtcorreo.Text = cliente.email_tit;
-
+                    suc_cliente.Text = cliente.cod_sucursal;
+                    sucursal_lbl.Text = cliente.codnom_suc;
                 }
                 //Variable de listaClienteFac busqueda de facturas
                 if (Session["listaFacturas"] != null)
@@ -587,7 +588,14 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
                 string Ven__cod_tit = dniCliente.Text;
 
-                lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                if (suc_cliente.Text == "" || suc_cliente.Text == null)
+                {
+                    lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, null);
+                }
+                else
+                {
+                    lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, suc_cliente.Text);
+                }
 
                 int contar = 0;
                 cliente = null;
@@ -611,6 +619,8 @@ namespace CapaWeb.WebForms
                         fonoCliente.Text = "";
                         dniCliente.Text = "";
                         txtcorreo.Text = "";
+                        suc_cliente.Text = "";
+                        sucursal_lbl.Text = "";
                         // this.Page.Response.Write("<script language='JavaScript'>window.open('./CrearCliente.aspx','Crear Cliente', 'top=100,width=580 ,height=400, left=400');</script>");
 
                     }
@@ -623,8 +633,8 @@ namespace CapaWeb.WebForms
                         fonoCliente.Text = cliente.tel_tit;
                         dniCliente.Text = cliente.nro_dgi2;
                         txtcorreo.Text = cliente.email_tit;
-
-
+                        suc_cliente.Text = cliente.cod_sucursal;
+                        sucursal_lbl.Text = cliente.codnom_suc;
 
                     }
                 }
@@ -1089,6 +1099,8 @@ namespace CapaWeb.WebForms
                 cod_costos.SelectedValue = conscabcera.cod_ccostos;
                 cmbCod_moneda.SelectedValue = conscabcera.cod_moneda;
                 cod_vendedor.SelectedValue = conscabcera.cod_vendedor;
+                suc_cliente.Text = conscabcera.cod_suc_cli;
+                sucursal_lbl.Text = conscabcera.codnom_suc;
                 //Consultamos cuantos descimales se van a usar redondeo
                 DecimalesMoneda = null;
                 DecimalesMoneda = BuscarDecimales();
@@ -1505,7 +1517,7 @@ namespace CapaWeb.WebForms
                 string error = "";
                 string Ven__cod_tit = dniCliente.Text;
 
-                lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi,suc_cliente.Text);
 
                 cliente = null;
                 foreach (modelowmspctitulares item in lista)
@@ -1520,8 +1532,9 @@ namespace CapaWeb.WebForms
                 ModeloActualizarEmail.cod_tit = cliente.cod_tit.Trim();
                 ModeloActualizarEmail.parametro = "email";
                 ModeloActualizarEmail.valor = txtcorreo.Text;
-                 
+                ModeloActualizarEmail.sucursal = suc_cliente.Text;
                 ConsultaDatosTitular.ActualizarDatosTitulares(ModeloActualizarEmail); //Envio de datos para actualizar email en RP
+
                 cabecerafactura.cod_cliente = cliente.cod_tit;
                 cabecerafactura.dia = string.Format("{0:00}", Fecha.Day);
                 cabecerafactura.mes = string.Format("{0:00}", Fecha.Month);
@@ -1557,6 +1570,7 @@ namespace CapaWeb.WebForms
                 cabecerafactura.nro_trans_padre = txt_nro_trans_padre.Text;
                 // cabecerafactura.tipo_nce = "NCAE"; //NC por anulacion electronica
                 cabecerafactura.mot_nce = "2"; //Motivo DS  1 por anulación
+                cabecerafactura.cod_suc_cli = suc_cliente.Text;
 
                 error = GuardarCabezera.InsertarCabezeraNotaCredito(cabecerafactura);
                 if (string.IsNullOrEmpty(error))
@@ -1695,7 +1709,7 @@ namespace CapaWeb.WebForms
                 /* SP wmspc_facturasWM_saldo TRAE SOLO FACTURAS CON SALDO DIFERENTE DE 0*/
                 string Ven__cod_tit = dniCliente.Text;
 
-                lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi,suc_cliente.Text);
 
                 cliente = null;
                 foreach (modelowmspctitulares item in lista)

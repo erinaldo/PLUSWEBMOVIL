@@ -77,5 +77,9 @@ namespace CapaDatos.Modelos
         public string nro_trans_padre { get; set; }
         public string tipo_nce { get; set; }
         public string mot_nce { get; set; }
+        //---datos sucursal
+        public string cod_suc_cli { get; set; }
+        public string nom_suc { get; set; }
+        public string codnom_suc { get; set; }
     }
 }

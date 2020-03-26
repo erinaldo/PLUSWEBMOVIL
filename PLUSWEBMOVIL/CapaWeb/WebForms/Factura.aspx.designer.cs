@@ -49,7 +49,8 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label cod_tit;
-        
+        protected global::System.Web.UI.WebControls.Label sucursal_lbl;
+
         /// <summary>
         /// Control nombreCliente.
         /// </summary>
@@ -186,6 +187,7 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label lbl_remision;
             protected global::System.Web.UI.WebControls.Label lbl_proforma;
         protected global::System.Web.UI.WebControls.Label lbl_trans;
+        protected global::System.Web.UI.WebControls.Label suc_cliente;
 
 
         /// <summary>

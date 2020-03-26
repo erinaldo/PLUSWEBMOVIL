@@ -64,7 +64,7 @@ namespace CapaDatos.Sql.SqlNC
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, "SaldosFacturas.cs", "ConsultaFacturasSaldos", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, "SaldosFacturas.cs", "ConsultaFacturasSaldos", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
 
@@ -153,7 +153,7 @@ namespace CapaDatos.Sql.SqlNC
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "SaldosFacturas.cs", " ConsultaFacturasVTASaldos", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "SaldosFacturas.cs", " ConsultaFacturasVTASaldos", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
 
@@ -195,7 +195,7 @@ namespace CapaDatos.Sql.SqlNC
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "SaldosFacturas.cs", "ConsultaDocumEletronicos", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "SaldosFacturas.cs", "ConsultaDocumEletronicos", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
 

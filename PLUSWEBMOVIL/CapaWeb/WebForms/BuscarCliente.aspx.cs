@@ -101,7 +101,7 @@ namespace CapaWeb.WebForms
             {
                 lbl_error.Text = "";
 
-                lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi,null);
 
                 Session["lista"] = lista;
                 gvPerson.DataSource = lista;
@@ -120,7 +120,7 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-
+                /*
                 //
                 // Se obtiene la fila seleccionada del gridview
                 //
@@ -147,7 +147,7 @@ namespace CapaWeb.WebForms
                 Session["cliente"] = cliente;
 
                 // Refrescamos el formuario padre
-                ClientScript.RegisterClientScriptBlock(GetType(), "Refresca", "window.opener.location.reload(); window.close();", true);
+                ClientScript.RegisterClientScriptBlock(GetType(), "Refresca", "window.opener.location.reload(); window.close();", true);*/
             }
             catch (Exception ex)
             {
@@ -166,8 +166,8 @@ namespace CapaWeb.WebForms
             {
                 lbl_error.Text = "";
 
-                gvPerson.PageIndex = 0;
-                gvPerson.PageIndex = e.NewPageIndex;
+               // gvPerson.PageIndex = 0;
+                //gvPerson.PageIndex = e.NewPageIndex;
 
                 CargarGrilla(TxtBuscarCliente.Text);
             }
@@ -208,6 +208,53 @@ namespace CapaWeb.WebForms
             }
         }
 
+        protected void Grid_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
+        {
+            gvPerson.CurrentPageIndex = 0;
+            gvPerson.CurrentPageIndex = e.NewPageIndex;
+            CargarGrilla(TxtBuscarCliente.Text);
+        }
 
+        protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
+        {
+            try
+            {
+                lbl_error.Text = "";
+                string  socio;
+                string sucursal = "";
+               
+                switch (e.CommandName) //ultilizo la variable para la opcion
+                {
+
+                    case "Select":
+
+                            lbl_error.Text = "";
+                            socio = Convert.ToString(((Label)e.Item.Cells[1].FindControl("cod_tit")).Text);
+                            sucursal = Convert.ToString(((Label)e.Item.Cells[2].FindControl("cod_sucursal")).Text);
+                        lista = (List<modelowmspctitulares>)Session["lista"];
+                        foreach (var item in lista)
+                        {
+                            if (item.cod_tit == socio && item.cod_sucursal == sucursal)
+                            {
+                                cliente = item;
+
+                                break;
+                            }
+
+                        }
+                        // Crea la variable de sessión
+                        Session["cliente"] = cliente;
+
+                        // Refrescamos el formuario padre
+                        ClientScript.RegisterClientScriptBlock(GetType(), "Refresca", "window.opener.location.reload(); window.close();", true);
+
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("Grid_ItemCommand", ex.ToString());
+            }
+        }
     }
 }

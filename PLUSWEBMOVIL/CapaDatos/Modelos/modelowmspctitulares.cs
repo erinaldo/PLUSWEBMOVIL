@@ -44,6 +44,11 @@ namespace CapaDatos.Modelos
         public string cod_sop { get; set; }
         public string moncli { get; set; }
         public string regimen_tributacion { get; set; }
+        //-------DATOS DE LA SUCURSAL 16-03-2020--------------------//
+        public string cod_sucursal { get; set; }
+        public string nom_sucursal { get; set; }
+        public string codnom_suc { get; set; }
+      
 
     }
 }

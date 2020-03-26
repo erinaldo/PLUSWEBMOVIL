@@ -41,26 +41,77 @@
                             <tr>
                                 <td>
 
-                                    <asp:GridView ID="gvPerson" runat="server" AutoGenerateColumns="False"
-                                        CellPadding="4" BackColor="#DD6D29" DataKeyNames="cod_tit"
-                                         OnPageIndexChanging="gvPerson_PageIndexChanging" AllowPaging="true" OnSelectedIndexChanged="gvPerson_SelectedIndexChanged">
-                                        <RowStyle BackColor="#EFF3FB" />
+                                     <asp:DataGrid ID="gvPerson" runat="server" onrowcreated="GriTipoUsuario_RowCreated"
+                                        onrowcommand="GriTipoUsuario_RowCommand"
+                                        AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
+                                        OnItemCommand="Grid_ItemCommand" AllowSorting="True" ShowFooter="True"
+                                        OnPageIndexChanged="Grid_PageIndexChanged" PageSize="9" CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1">
+
+
                                         <Columns>
 
-                                            <asp:BoundField DataField="nom_tit" ItemStyle-CssClass="textos" HeaderText="Cliente" />
-                                            <asp:BoundField DataField="nro_dgi2" ItemStyle-CssClass="textos" HeaderText="Cédula" />
-                                            <asp:BoundField DataField="tel_tit" ItemStyle-CssClass="textos" HeaderText="Teléfono" />
+                                             <asp:TemplateColumn HeaderText="COD_TIT" Visible="false" >
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="cod_tit" class="textos" runat="server" Text='<%#Eval("cod_tit") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+                                            <asp:TemplateColumn HeaderText="SUCURSAL" Visible="false" >
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="cod_sucursal" class="textos" runat="server" Text='<%#Eval("cod_sucursal") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
 
-                                            <asp:ButtonField ButtonType="Button"  ControlStyle-CssClass="botones" CommandName="Select" HeaderText="Seleccionar" ShowHeader="True" Text="Seleccionar" />
+                                             <asp:TemplateColumn HeaderText="SUCURSAL"  >
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="codnom_suc" class="textos" runat="server" Text='<%#Eval("codnom_suc") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
 
-                                        </Columns>
-                                        <FooterStyle BackColor="#CC0066" Font-Bold="True" ForeColor="White" />
-                                        <PagerStyle BackColor="#DD6D29" ForeColor="White" HorizontalAlign="Center" BorderStyle="None" />
-                                        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                            <asp:TemplateColumn HeaderText="CLIENTE">
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="nom_tit" runat="server" class="textos" Text='<%#Eval("nom_tit") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+
+                                            <asp:TemplateColumn HeaderText="CÉDULA">
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        
+                                                        <asp:Label ID="nro_dgi2"  class="textos" runat="server" Text='<%#Eval("nro_dgi2") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+
+                                            <asp:TemplateColumn HeaderText="CIUDAD">
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="ciu_sucursal" runat="server" class="textos" Text='<%#Eval("nom_ciudad") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                               
+                                            </asp:TemplateColumn>
+
+                                            <asp:ButtonColumn ButtonType="PushButton" CommandName="Select"  Text="Seleccionar" ItemStyle-CssClass="botones"></asp:ButtonColumn>
+                                            
+                                         </Columns>
+
+
+                                        <FooterStyle BackColor="White" ForeColor="#00000f" />
                                         <HeaderStyle BackColor="#DD6D29" CssClass="busqueda" Font-Bold="True" ForeColor="White" />
-                                        <EditRowStyle BackColor="#2461BF" />
-                                        <AlternatingRowStyle BackColor="White" />
-                                    </asp:GridView>
+                                        <ItemStyle ForeColor="#00000f" />
+                                        <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" Mode="NumericPages" />
+                                        <SelectedItemStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+
+
+                                    </asp:DataGrid>
                                 </td>
                             </tr>
                         </table>

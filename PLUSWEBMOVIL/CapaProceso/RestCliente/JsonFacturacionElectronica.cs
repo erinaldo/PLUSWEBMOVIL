@@ -245,12 +245,12 @@ namespace CapaProceso.RestCliente
 
                 string Ven__cod_tit = conscabcera.cod_cliente;
                 cliente = null;
-                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi,conscabcera.cod_suc_cli);
 
                 ModeloUsuSucursal = BuscarUsuarioSucursal(Ccf_cod_emp, Ccf_usuario);
 
                 vendedor = null;
-                vendedor = buscarCliente(Ccf_usuario, Ccf_cod_emp, "vendedores", conscabcera.cod_vendedor, Ven__cod_dgi);
+                vendedor = buscarCliente(Ccf_usuario, Ccf_cod_emp, "vendedores", conscabcera.cod_vendedor, Ven__cod_dgi,"0");
 
                 sucursal.ciudad = vendedor.nom_ciudad;
                 sucursal.codcliente = conscabcera.cod_cliente;
@@ -287,7 +287,7 @@ namespace CapaProceso.RestCliente
 
                 string Ven__cod_tit = conscabcera.cod_cliente;
                 cliente = null;
-                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi,"0");
 
                 tercero.apli1 = cliente.primer_apellido;
                 tercero.apl2 = cliente.segundo_apellido;
@@ -312,12 +312,12 @@ namespace CapaProceso.RestCliente
             }
         }
 
-        public modelowmspctitulares buscarCliente(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi)
+        public modelowmspctitulares buscarCliente(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi, string cod_suc)
         {
             try
             {
 
-                lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi);
+                lista = ConsultaTitulares.ConsultaTitulares(Ven__usuario, Ven__cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, cod_suc);
                 int count = 0;
                 cliente = null;
                 foreach (modelowmspctitulares item in lista)

@@ -14,7 +14,7 @@ namespace CapaDatos.Sql
         public SqlConnection cn = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
 
-        public List<modelowmspctitulares> ListaBuscaTitulares(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi)
+        public List<modelowmspctitulares> ListaBuscaTitulares(string Ven__usuario, string Ven__cod_emp, string Ven__cod_tipotit, string Ven__cod_tit, string Ven__cod_dgi, string cod_suc)
         {
             try
             {
@@ -30,9 +30,7 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@cod_tipotit", SqlDbType.VarChar).Value = Ven__cod_tipotit;
                     conmand.Parameters.Add("@cod_tit", SqlDbType.VarChar).Value = Ven__cod_tit;
                     conmand.Parameters.Add("@cod_dgi", SqlDbType.VarChar).Value = Ven__cod_dgi;
-
-
-
+                    conmand.Parameters.Add("@cod_sucursal", SqlDbType.VarChar).Value = cod_suc;
 
                     SqlDataReader dr = conmand.ExecuteReader();
 
@@ -67,13 +65,16 @@ namespace CapaDatos.Sql
                         item.segundo_apellido = Convert.ToString(dr["segundo_apellido"]);
                         item.razon_social = Convert.ToString(dr["razon_social"]);
                         item.control_tit = Convert.ToString(dr["control_tit"]);
-
                         item.control_uso = Convert.ToString(dr["control_uso"]);
                         item.control_uso2 = Convert.ToString(dr["control_uso2"]);
                         item.cod_sop = Convert.ToString(dr["cod_sop"]);
                         item.moncli = Convert.ToString(dr["moncli"]);
                         item.regimen_tributacion = Convert.ToString(dr["regimen_tributacion"]);
-
+                        //--datos sucursal----
+                        item.cod_sucursal = Convert.ToString(dr["cod_suc"]);
+                        item.nom_sucursal = Convert.ToString(dr["nom_suc"]);
+                        item.codnom_suc = Convert.ToString(dr["sucurcli"]);
+                      
                         lista.Add(item);
 
                     }
@@ -84,7 +85,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ven__cod_emp, "Documenton.cs", "ListaBuscaTitulares", e.ToString(), DateTime.Today, Ven__usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ven__cod_emp, "Documenton.cs", "ListaBuscaTitulares", e.ToString(), DateTime.Now, Ven__usuario);
                 return null;
             }
 
@@ -133,7 +134,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ven__cod_emp, "Documenton.cs", "ListaBuscaCliente", e.ToString(), DateTime.Today, Ven__usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ven__cod_emp, "Documenton.cs", "ListaBuscaCliente", e.ToString(), DateTime.Now, Ven__usuario);
                 return null;
             }
 

@@ -1,6 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="FormNotaDebitoAnulacion.aspx.cs" Inherits="CapaWeb.WebForms.FormNotaDebitoAnulacion" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="FormNotaDebitoAnu.aspx.cs" Inherits="CapaWeb.WebForms.FormNotaDebitoAnu" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-         <script type="text/javascript">
+       <script type="text/javascript">
 
         function cuentaCaracteres() {
             var cantidadCaracteresPermitidos = 250;
@@ -62,7 +62,25 @@
         }
           
     </script>
-     <form id="form1" class="forms-sample" runat="server" method="post">
+    <script LANGUAGE="JavaScript">
+
+var cuenta=0;
+
+function enviado() { 
+if (cuenta == 0)
+{
+cuenta++;
+return true;
+}
+else 
+{
+alert("La Nota de Débito ya ha sido enviada, espere por favor.");
+return false;
+}
+}
+// -->
+</script>
+     <form id="form1" class="forms-sample" runat="server" method="post" onSubmit="return enviado()">
        
 
        
@@ -72,7 +90,7 @@
                         <td valign="top">
                             <table width="100%" border="0" cellspacing="0">
                                 <tr>
-                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="BuscarFacturasNC.aspx">Nota de Débito</a>---&gt;Nuevo</td>
+                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="BuscarNotaDebito.aspx">Nota de Débito</a>---&gt;Nuevo</td>
                                 </tr>
                             </table>
                         </td>
@@ -86,10 +104,14 @@
                 </tr>
                 <tr>
                     <td valing="center">
-                        <p class="Subtitulo2" >Nota de Débito por: Anulación de Nota Crédito</p>
+                        <p class="Subtitulo2" >Nota de Débito por: Anulación de Nota de Crédito</p>
                     </td>
                 </tr>
-                
+                 <tr>
+                    <td>
+                        <asp:Label ID="lbl_error" CssClass="textos_error" runat="server" Text=""></asp:Label>
+                        </td>
+                    </tr>
                 <tr>
                     <td>
                         <p class="Subtitulo1">Por favor ingrese los datos solicitados:</p>
@@ -110,7 +132,6 @@
                             <tr>
                                 <td colspan="4">
                                     <asp:Label ID="mensaje" name="mensaje" runat="server" Text=""></asp:Label>
-                                     <asp:Label ID="cod_tit" required="required" runat="server" Text="" Visible="False"></asp:Label>
                                 </td>
                             </tr>
 
@@ -125,8 +146,8 @@
 
                                 </td>
                                 <td class="textos" colspan="2">
-                                   
-                                    <asp:TextBox required="required" ID="nombreCliente" class="textos" Width="300" MaxLength="50" runat="server" ReadOnly="true"></asp:TextBox>
+
+                                    <asp:TextBox required="required" ID="nombreCliente" class="textos" Width="355" MaxLength="50" runat="server" ReadOnly="true"></asp:TextBox>
                                 </td>
                                  <td align="right" nowrap="nowrap" class="busqueda">
                                     <div align="left">Teléfono:</div>
@@ -141,7 +162,7 @@
                                 </td>
                                 <td>
                                     <label>
-                                        <asp:TextBox ID="txtcorreo"  type="email" required="required" title="correo@gmail.com" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" Width="202" class="textos" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtcorreo"  type="email" required="required" title="correo@gmail.com"  Width="202" class="textos" runat="server"></asp:TextBox>
 
                                     </label>
                                 </td>
@@ -238,15 +259,15 @@
                                     </label>
                                 </td>
                                 <td class="busqueda" >
-                                    <asp:Label align="left" ID="lbl_fac1"  Width="100" runat="server" Text="Facturas:"></asp:Label>
+                                    <asp:Label align="left" ID="lbl_fac1"  Width="100" runat="server" Text="Nota Crédito:"></asp:Label>
                                   </td>
                                
                                
                                <td>
-                                   <asp:Button ID="btn_Fac" onclick="btn_Fac_Click" CssClass="botones"  Width="147px" runat="server" Text="Buscar Nota Crédito" />
+                                   <asp:Button ID="btn_Fac" onclick="btn_Fac_Click" CssClass="botones"  Width="150px" runat="server" Text="Buscar Nota Crédito" />
                                   </td>
                                 <td class="busqueda">
-                                    <asp:Label align="center" Visible="false" ID="lbl_nro_factura"  Width="100" runat="server" Text="Nro Factura:"></asp:Label>
+                                    <asp:Label align="center" Visible="False" ID="lbl_nro_factura"  Width="128px" runat="server" Text="Nro Nota Crédito:"></asp:Label>
                                   </td>
                                 <td>
                                     <asp:TextBox ID="txt_nro_factura" Visible="false"  Enabled="false" runat="server" Width="202px"></asp:TextBox>
@@ -255,19 +276,19 @@
                              <tr>
                                 
                                 <td class="busqueda" align="left" valign="top" nowrap="nowrap">
-                                    <asp:Label align="center" Visible="False" ID="lbl_subtotal_factura"  Width="124px" runat="server" Text="Subtotal Factura:"></asp:Label>
+                                    <asp:Label align="center" Visible="False" ID="lbl_subtotal_factura"  Width="159px" runat="server" Text="Subtotal Nota Crédito:"></asp:Label>
                                   </td>
                                 <td>
                                     <asp:TextBox ID="txt_subtotal_factura" Visible="false" Enabled="false" runat="server" Width="200px"></asp:TextBox>
                                 </td>
                                 <td class="busqueda" align="left" valign="top" nowrap="nowrap">
-                                    <asp:Label align="center" ID="lbl_descuento_factura" Visible="False"  Width="129px" runat="server" Text="Descuento Factura:"></asp:Label>
+                                    <asp:Label align="center" ID="lbl_descuento_factura" Visible="False"  Width="138px" runat="server" Text="Desct. Nota Crédito:"></asp:Label>
                                   </td>
                                 <td>
                                     <asp:TextBox ID="txt_descuento_factura" Visible="false" Enabled="false" runat="server" Width="247px"></asp:TextBox>
                                 </td>
                                 <td class="busqueda">
-                                    <asp:Label align="center" ID="lbl_iva_factura" Visible="false" Width="100" runat="server" Text="Iva Factura:"></asp:Label>
+                                    <asp:Label align="center" ID="lbl_iva_factura" Visible="false" Width="129px" runat="server" Text="Iva Nota Crédito:"></asp:Label>
                                   </td>
                                 <td>
                                     <asp:TextBox ID="txt_iva_factura" Enabled="false" Visible="false" runat="server" Width="201px"></asp:TextBox>
@@ -276,11 +297,28 @@
                              </tr>
                              <tr>
                                 <td class="busqueda">
-                                    <asp:Label align="center" ID="lbl_total_factura" Visible="false"  Width="100" runat="server" Text="Total Factura:"></asp:Label>
+                                    <asp:Label align="center" ID="lbl_total_factura" Visible="false"  Width="129px" runat="server" Text="Total Nota Crédito:"></asp:Label>
                                   </td>
                                 <td>
                                     <asp:TextBox ID="txt_total_factura" Visible="false" Enabled="false" runat="server" Width="200px"></asp:TextBox>
                                 </td>
+                                 
+                                  <td align="right" valign="top" nowrap="nowrap" class="busqueda">
+                                    <div align="left">TRX:</div>
+                                </td>
+                                <td valign="top">
+                                    <label>
+                                       
+                                        <asp:Label ID="lbl_trans" class="textos"  Width="202" ReadOnly="true" runat="server"></asp:Label>
+                                    </label>
+                                </td>
+                                  <td  class="busqueda">
+                                    <asp:Label align="center" ID="lbl_trx_fac" Visible="false"  Width="130px" runat="server" Text="TRX Nota Crédito:"></asp:Label>
+                                </td>
+                                  <td>
+                                   <asp:TextBox ID="txt_nro_trans_padre" class="textos" visible="false" enabled="false" runat="server" ></asp:TextBox>
+                              
+                                       </td>
                             </tr>
                             <tr>
                                <td>
@@ -293,14 +331,20 @@
                                <td>
                                    <asp:TextBox ID="txt_serie_docum" Visible="false" runat="server"></asp:TextBox>
                                </td>
-                               <td>
-                                   <asp:TextBox ID="txt_nro_trans_padre" Visible="false" runat="server"></asp:TextBox>
-                               </td>
+                              
                                 <td>
                                    <asp:TextBox ID="txt_saldo_factura" Visible="false" runat="server"></asp:TextBox>
                                </td>
                                </tr>
-
+                             <tr>
+                                <td align="right" valign="top" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Sucursal:</div>
+                                </td>
+                                <td>
+                                    <asp:Label ID="suc_cliente" runat="server" class="textos" Visible="false" Text=""></asp:Label>
+                                    <asp:Label ID="sucursal_lbl" runat="server" class="textos" Text=""></asp:Label>
+                                </td>
+                            </tr>
                           
                             <tr>
                                 
@@ -326,7 +370,7 @@
                     <td>
                         <asp:Label ID="lbl_trx" visible="false" class="Subtitulo2" runat="server" Text=""></asp:Label>
 
-                        
+                         <asp:Label ID="lbl_validacion" visible="false" class="Subtitulo2" runat="server" Text=""></asp:Label>
                     </td>
                 </tr>
 
@@ -405,7 +449,7 @@
                                         
                                         AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
                                          AllowSorting="True" ShowFooter="True"
-                                          CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" OnItemCommand="gv_Producto_ItemCommand">
+                                          CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" OnItemCommand="gv_Producto_ItemCommand" PageSize="2000">
 
 
                                         <Columns>
@@ -421,6 +465,14 @@
                                                 <ItemTemplate>
                                                     <span style="float: left;">
                                                         <asp:Label ID="nom_articulo" runat="server" class="textos" Text='<%#Eval("nom_articulo") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+
+                                              <asp:TemplateColumn HeaderText="Descripción">
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        <asp:Label ID="nom_articulo2" runat="server" class="textos" Text='<%#Eval("nom_articulo2") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -459,7 +511,7 @@
                                            <asp:TemplateColumn HeaderText="Base IVA">
                                                 <ItemTemplate>
                                                     <span style="float: right;">
-                                                        <asp:Label ID="baseIva" runat="server" class="textos" Text='<%#Eval("subtotal", "{0:N}") %>'></asp:Label>
+                                                        <asp:Label ID="baseIva" runat="server" class="textos" Text='<%#Eval("base_iva", "{0:N}") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
@@ -490,7 +542,7 @@
                                         </Columns>
 
                                         <FooterStyle BackColor="White" ForeColor="#00000f" />
-                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />
+                                        <HeaderStyle BackColor="#DD6D29" Font-Bold="True" CssClass="busqueda" ForeColor="White" />
                                         <ItemStyle ForeColor="#00000f" />
                                         <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" Mode="NumericPages" />
                                         <SelectedItemStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
@@ -547,7 +599,7 @@
                               </tr>
                             <tr>
                                 <td>
-                                    <asp:Label  CssClass="busqueda" ID="Label8" runat="server" Text="Base Iva 19%:"></asp:Label>
+                                    <asp:Label  CssClass="busqueda" ID="Label8" runat="server" Text="Base Iva:"></asp:Label>
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtBaseIva19" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
@@ -555,15 +607,15 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <asp:Label  CssClass="busqueda" ID="Label9" runat="server" Text="Base Iva 5%:"></asp:Label>
+                                    <asp:Label  CssClass="busqueda" ID="Label9" runat="server" Visible="false" Text="Base Iva 5%:"></asp:Label>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtBase15" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="txtBase15" CssClass="textos" Visible="false" ReadOnly="true" runat="server"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <asp:Label  CssClass="busqueda" ID="Label10" runat="server" Text="Iva 19%:"></asp:Label>
+                                    <asp:Label  CssClass="busqueda" ID="Label10" runat="server" Text="Iva:"></asp:Label>
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtIva19" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
@@ -571,10 +623,10 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <asp:Label  CssClass="busqueda" ID="Label11" runat="server" Text="Iva 5%:"></asp:Label>
+                                    <asp:Label  CssClass="busqueda" ID="Label11" Visible="false" runat="server" Text="Iva 5%:"></asp:Label>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtIva15" CssClass="textos" ReadOnly="true" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="txtIva15" CssClass="textos" Visible="false" ReadOnly="true" runat="server"></asp:TextBox>
                                 </td>
                             </tr>
 
@@ -601,7 +653,7 @@
                                 </td>
                                 <td >
                                     <asp:Button ID="Cancelar" Class="btnFactura1" OnClick="Cancelar_Click"  runat="server"  UseSubmitBehavior="False" Text="Cancelar" />
-                                    <asp:Button ID="Confirmar"  Class="btnFactura1" OnClick="Confirmar_Click" runat="server" OnClientClick="return confirm('¿Desea guardar la nota de crédito?');"  Text="Confirmar" />
+                                    <asp:Button ID="Confirmar"  Class="btnFactura1" OnClick="Confirmar_Click" runat="server"   Text="Confirmar" />
                                 </td>
                     
                             </tr>

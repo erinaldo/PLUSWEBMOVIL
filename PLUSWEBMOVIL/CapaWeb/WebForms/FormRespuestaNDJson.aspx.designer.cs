@@ -10,7 +10,7 @@
 namespace CapaWeb.WebForms {
     
     
-    public partial class BuscarNotaDebito {
+    public partial class FormRespuestaNDJson {
         
         /// <summary>
         /// Control form1.
@@ -22,51 +22,6 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// Control ImgAyuda.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ImgAyuda;
-        
-        /// <summary>
-        /// Control lblAyuda.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAyuda;
-        
-        /// <summary>
-        /// Control btn_FinancieraND.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_FinancieraND;
-        
-        /// <summary>
-        /// Control btn_AnularNC.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_AnularNC;
-        
-        /// <summary>
-        /// Control txtAcceso.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label txtAcceso;
-        
-        /// <summary>
         /// Control lbl_error.
         /// </summary>
         /// <remarks>
@@ -76,75 +31,102 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label lbl_error;
         
         /// <summary>
-        /// Control txtCliente.
+        /// Control FormularioRes.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCliente;
+        protected global::System.Web.UI.HtmlControls.HtmlTable FormularioRes;
         
         /// <summary>
-        /// Control txtSerie.
+        /// Control mensaje.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSerie;
+        protected global::System.Web.UI.WebControls.Label mensaje;
         
         /// <summary>
-        /// Control txtDocumento.
+        /// Control txt_nro_trans.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDocumento;
+        protected global::System.Web.UI.WebControls.TextBox txt_nro_trans;
         
         /// <summary>
-        /// Control fechainicio.
+        /// Control txt_id.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fechainicio;
+        protected global::System.Web.UI.WebControls.TextBox txt_id;
         
         /// <summary>
-        /// Control fechafin.
+        /// Control txt_linea.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fechafin;
+        protected global::System.Web.UI.WebControls.TextBox txt_linea;
         
         /// <summary>
-        /// Control estados.
+        /// Control txt_qrdata.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList estados;
+        protected global::System.Web.UI.WebControls.TextBox txt_qrdata;
         
         /// <summary>
-        /// Control Buscar.
+        /// Control txt_xml.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Buscar;
+        protected global::System.Web.UI.WebControls.TextBox txt_xml;
         
         /// <summary>
-        /// Control Grid.
+        /// Control txt_cufe.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DataGrid Grid;
+        protected global::System.Web.UI.WebControls.TextBox txt_cufe;
+        
+        /// <summary>
+        /// Control txt_error.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_error;
+        
+        /// <summary>
+        /// Control txt_result.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_result;
+        
+        /// <summary>
+        /// Control txt_json.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_json;
     }
 }

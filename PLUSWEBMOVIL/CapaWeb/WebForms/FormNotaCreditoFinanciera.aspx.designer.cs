@@ -373,6 +373,24 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label lbl_tipo_fac;
         
         /// <summary>
+        /// Control suc_cliente.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label suc_cliente;
+        
+        /// <summary>
+        /// Control sucursal_lbl.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label sucursal_lbl;
+        
+        /// <summary>
         /// Control area.
         /// </summary>
         /// <remarks>

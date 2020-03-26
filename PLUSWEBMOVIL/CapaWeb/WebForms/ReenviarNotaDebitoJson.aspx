@@ -1,13 +1,13 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="ReenviarNotaDebitoJson.aspx.cs" Inherits="CapaWeb.WebForms.ReenviarNotaDebitoJson" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-       <form id="form1" class="forms-sample" runat="server" method="post">
+      <form id="form1" class="forms-sample" runat="server" method="post">
           <div style="align-items: center">
             <table>
                 <tr>
                         <td valign="top">
                             <table width="100%" border="0" cellspacing="0">
                                 <tr>
-                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="FormBuscarNotaCredito.aspx">Nota Débito</a>---&gt;Nuevo</td>
+                                    <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="BuscarNotaDebito.aspx">Nota Débito</a>---&gt;Nuevo</td>
                                 </tr>
                             </table>
                         </td>
@@ -18,6 +18,12 @@
                         <p class="Subtitulo1">Reenviar Nota Débito</p>
                     </td>
                 </tr>
+                  <tr>
+                    <td>
+                        <asp:Label ID="lbl_error" runat="server"  CssClass="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
                 <tr>
                     <td>
 
