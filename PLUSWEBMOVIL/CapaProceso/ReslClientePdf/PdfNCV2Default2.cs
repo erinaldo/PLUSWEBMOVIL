@@ -608,13 +608,26 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                  cell.HorizontalAlignment = 0;
                 tablaCab3.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph(conscabcera.tel_tit, fontText1));
-                cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 0;
-                cell.BorderWidthLeft = 0;
-                cell.BorderWidthBottom = 0;
-                cell.HorizontalAlignment = 0;
-                tablaCab3.AddCell(cell);
+                if (conscabcera.tel_tit == "")
+                {
+                    cell = new PdfPCell(new Paragraph(" ", fontText1));
+                    cell.BorderWidthTop = 0;
+                    cell.BorderWidthRight = 0;
+                    cell.BorderWidthLeft = 0;
+                    cell.BorderWidthBottom = 0;
+                    cell.HorizontalAlignment = 0;
+                    tablaCab3.AddCell(cell);
+                }
+                else
+                {
+                    cell = new PdfPCell(new Paragraph(conscabcera.tel_tit, fontText1));
+                    cell.BorderWidthTop = 0;
+                    cell.BorderWidthRight = 0;
+                    cell.BorderWidthLeft = 0;
+                    cell.BorderWidthBottom = 0;
+                    cell.HorizontalAlignment = 0;
+                    tablaCab3.AddCell(cell);
+                }
 
                 cell = new PdfPCell(new Paragraph(conscabcera.nom_ciudad, fontText1));
                 cell.BorderWidthTop = 0;
