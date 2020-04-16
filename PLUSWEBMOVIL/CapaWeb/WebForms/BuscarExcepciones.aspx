@@ -54,6 +54,11 @@
                              <td>
                             <asp:TextBox ID="txtDocumento" class="textos" width="215" value="0" runat="server"></asp:TextBox>
                           <div class="textos_sm">0 = Todos</div></td> 
+
+                             <td class="busqueda">Método:</td>
+                             <td>
+                            <asp:TextBox ID="txtmetodo" class="textos" width="215" value="0" runat="server"></asp:TextBox>
+                          <div class="textos_sm">0 = Todos</div></td> 
                         </tr>
                          
                         
@@ -67,14 +72,14 @@
                           <td>
                                 <asp:TextBox ID="fechafin" type="date"  Width="213px"  runat="server"></asp:TextBox>
                             </td>
-
+                             <td> </td>
+                            <td aling="rigth"><asp:Button ID="Buscar" runat="server" OnClick="Buscar_Click" class="botones" Text="Buscar" /></td>
                           
                         </tr>
                         <tr valign="top">
                             
                             
-                            <td> </td>
-                            <td aling="rigth"><asp:Button ID="Buscar" runat="server" OnClick="Buscar_Click" class="botones" Text="Buscar" /></td>
+                           
                         </tr>
                         
                       </table>
@@ -124,11 +129,20 @@
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
 
-                                            <asp:TemplateColumn HeaderText="PROGRAMA">
+                                            <asp:TemplateColumn HeaderText="PROCESO">
                                                 <ItemTemplate>
                                                     <span style="float: left;">
                                                         
                                                         <asp:Label ID="proceso" Type="date" class="textos" runat="server" Text='<%#Eval("proceso") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+
+                                            <asp:TemplateColumn HeaderText="MÉTODO">
+                                                <ItemTemplate>
+                                                    <span style="float: left;">
+                                                        
+                                                        <asp:Label ID="metodo" Type="date" class="textos" runat="server" Text='<%#Eval("metodo") %>'></asp:Label>
                                                     </span>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
