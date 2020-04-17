@@ -9,6 +9,7 @@ using CapaDatos.Modelos;
 using CapaDatos.Modelos.ModelosNC;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using System.IO;
+using CapaProceso.ReslClientePdf;
 
 namespace CapaWeb.WebForms
 {
@@ -187,29 +188,6 @@ namespace CapaWeb.WebForms
                     //Recibir opciones
                     switch (qs["TRN"].Substring(0, 3))
                     {
-                        case "AFA":
-                            try
-                            {
-                                cargarListaDesplegables();
-                                Session.Remove("listaCliente");
-                                Session.Remove("listaArticulos");
-                                Session.Remove("articulo");
-                                Session.Remove("ListaFacturas");
-                                Session.Remove("valor_asignado");
-
-                                Session["Tipo"] = "Anular";
-                                DateTime hoy1 = DateTime.Today;
-                                fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
-
-                                ConsultarTasaCambioCanorus();
-
-                                break;
-                            }
-                            catch (Exception ex)
-                            {
-                                GuardarExcepciones("Page_Load, AFA", ex.ToString());
-                            }
-                            break;
 
                         case "INS":
                             try
@@ -223,8 +201,7 @@ namespace CapaWeb.WebForms
                                 Session.Remove("ListaFacturas");
                                 Session.Remove("valor_asignado");
                                 cargarListaDesplegables();
-                                DateTime hoy = DateTime.Today;
-                                fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+
                                 //Consultar tasa de cambio
                                 ConsultarTasaCambioCanorus();
                                 SetearCampos();
@@ -683,8 +660,8 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-                DateTime hoy = DateTime.Today;
-                fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                DateTime hoy = Convert.ToDateTime(fecha.Text);
+                
                 string dia = string.Format("{0:00}", hoy.Day);
                 string mes = string.Format("{0:00}", hoy.Month);
                 string anio = hoy.Year.ToString();
@@ -789,8 +766,14 @@ namespace CapaWeb.WebForms
                 if (resolucion.tipo_fac == "S")
                 {
                     Session["Ccf_tipo2"] = "NCVE";
+                    DateTime hoy = DateTime.Today;
+                    fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                    fecha.Enabled = false;
                 }
-                else { Session["Ccf_tipo2"] = "NCV"; }
+                else { Session["Ccf_tipo2"] = "NCV";
+
+                    fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                }
 
 
                 //lista ccostos
@@ -1269,6 +1252,11 @@ namespace CapaWeb.WebForms
 
                 lbl_error.Text = "";
                 DateTime Fecha = Convert.ToDateTime(fecha.Text);
+                if (Session["Ccf_tipo2"].ToString() == "NCVE")
+                {
+                    Fecha = DateTime.Today;
+                    fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                }
                 //Obtener n° sucursal
                 ListaUsuSucursal = consultaUsuarioSucursal.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
                 ModeloUsuSucursal = null;
@@ -1876,8 +1864,12 @@ namespace CapaWeb.WebForms
                 }
                 else
                 {
-                    Session.Remove("listaFacturas");
-                    Response.Redirect("FormBuscarNotaCredito.aspx");
+                    if (respuestaConfirmacionNC == "")
+                    {
+                        EnviarCorreoCliente(conscabcera.nro_trans, conscabceraTipo.tipo_nce.Trim());
+                        Session.Remove("listaFacturas");
+                        Response.Redirect("FormBuscarNotaCredito.aspx");
+                    }
                 }
             
             }
@@ -1889,6 +1881,39 @@ namespace CapaWeb.WebForms
             }
         }
 
+        public void EnviarCorreoCliente(string nro_trans, string tipo)
+        {
+            try
+            {
+
+                Ccf_tipo2 = tipo;
+                Ccf_nro_trans = nro_trans;
+
+                Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
+                string pathPdf = "";
+                string pathXml = "";
+
+                //-------------OBTENER PDF PARA EL ENVIO-------------------//
+                if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+                {
+
+                    PdfNCV2Default2 pdf = new PdfNCV2Default2();
+                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                }
+                else
+                {
+                    PdfNotaCredito pdf = new PdfNotaCredito();
+                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+
+                }
+                Boolean error = enviarcorreocliente.EnviarCorreoCliente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, pathXml);
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("EnviarCorreoCliente", ex.ToString());
+
+            }
+        }
         public void EnviarCorreoRemitente(string nro_trans, string tipo)
         {
             try
@@ -1966,7 +1991,7 @@ namespace CapaWeb.WebForms
                     }
                     else
                     {
-                        if (txtSumaTotal.Text == "0.00")
+                        if (Convert.ToDecimal(txtSumaTotal.Text) == 0)
                         {
                             this.Page.Response.Write("<script language='JavaScript'>window.alert('No existen productos para la nota de crédito')+ error;</script>");
                         }

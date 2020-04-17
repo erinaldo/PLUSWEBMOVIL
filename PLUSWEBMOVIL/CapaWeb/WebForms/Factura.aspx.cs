@@ -8,6 +8,7 @@ using CapaProceso.RestCliente;
 using CapaDatos.Modelos;
 using System.IO;
 using CapaProceso.GenerarPDF.FacturaElectronica;
+using CapaProceso.ReslClientePdf;
 
 namespace CapaWeb.WebForms
 {
@@ -238,8 +239,7 @@ namespace CapaWeb.WebForms
                                 cargarListaDesplegables();
                                 Session.Remove("listaCliente");
                                 Session.Remove("valor_asignado");
-                                DateTime hoy = DateTime.Today;
-                                fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                               
                                 //Consultar tasa de cambio
                                 ConsultarTasaCambioCanorus();
                                 ModeloRolMod = BuscarRolModificar(AmUsrLog, ComPwm, "VTA", "PR", "N");
@@ -321,8 +321,8 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-                DateTime hoy = DateTime.Today;
-                fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+       
+                DateTime hoy =Convert.ToDateTime(fecha.Text);
                 string dia = string.Format("{0:00}", hoy.Day);
                 string mes = string.Format("{0:00}", hoy.Month);
                 string anio = hoy.Year.ToString();
@@ -519,8 +519,16 @@ namespace CapaWeb.WebForms
                 if (resolucion.tipo_fac == "S")
                 {
                     Session["Ccf_tipo2"] = "VTAE";
+                    DateTime hoy = DateTime.Today;
+                    fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                    fecha.Enabled = false;
+
                 }
-                else { Session["Ccf_tipo2"] = "VTA"; }
+                else
+                {
+                    Session["Ccf_tipo2"] = "VTA";
+                    fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                }
                 //Ccf_tipo2 = "VTA";
                 //lista ccostos
                 listaCostos = ConsultaCCostos.ConsultaCCostos(AmUsrLog, ComPwm, CC__cod_dpto);
@@ -765,8 +773,13 @@ namespace CapaWeb.WebForms
                 articulo = BuscarProducto(BuscarArticulo.Text);
                 cmbCod_moneda.Enabled = false;
                 //Insertar producto en la grilla calcular totales
-                DateTime hoy = DateTime.Today;
+                DateTime hoy =Convert.ToDateTime(fecha.Text);
+                if (Session["Ccf_tipo2"].ToString() == "VTAE")
+                { 
+                hoy = DateTime.Today;
                 fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                }
+               
                 //Consultar tasa de cambio
                 string dia = string.Format("{0:00}", hoy.Day);
                 string mes = string.Format("{0:00}", hoy.Month);
@@ -854,6 +867,12 @@ namespace CapaWeb.WebForms
 
                 lbl_error.Text = "";
                 DateTime Fecha = Convert.ToDateTime(fecha.Text);
+                if (Session["Ccf_tipo2"].ToString() == "VTAE")
+                {
+                    Fecha = DateTime.Today;
+                    fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                }
+               
                 //Obtener n° sucursal
                 ListaUsuSucursal = consultaUsuarioSucursal.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
                 ModeloUsuSucursal = null;
@@ -1446,6 +1465,40 @@ namespace CapaWeb.WebForms
 
             }
         }
+
+        public void EnviarCorreoCliente(string nro_trans, string tipo)
+        {
+            try
+            {
+
+                Ccf_tipo2 = tipo;
+                Ccf_nro_trans = nro_trans;
+             
+                Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
+                string pathPdf = "";
+                string pathXml = "";
+
+                //-------------OBTENER PDF PARA EL ENVIO-------------------//
+                if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+                {
+
+                    PdfFacVTAV2 pdf = new PdfFacVTAV2();
+                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                }
+                else
+                {
+                    PdfFacturaVTA pdf = new PdfFacturaVTA();
+                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+
+                }
+                Boolean error = enviarcorreocliente.EnviarCorreoCliente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, pathXml);
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("EnviarCorreoCliente", ex.ToString());
+
+            }
+        }
         protected void Confirmar_Click(object sender, EventArgs e)
         {
             try
@@ -1475,7 +1528,7 @@ namespace CapaWeb.WebForms
                     }
                     else
                     {
-                        if (txtSumaTotal.Text == "0.00")
+                        if (Convert.ToDecimal(txtSumaTotal.Text) == 0)
                         {
                             this.Page.Response.Write("<script language='JavaScript'>window.alert('No existen productos para facturar')+ error;</script>");
                         }
@@ -1544,7 +1597,16 @@ namespace CapaWeb.WebForms
                                         lbl_trx.Text = respuestaConfirmacionFAC;
                                     }
                                 }
-                                else { Response.Redirect("BuscarFacturas.aspx"); }
+                                else
+                            {
+
+                                if (respuestaConfirmacionFAC == "")
+                                {
+                                    //Enviar correo al remitente si no da error
+                                    EnviarCorreoCliente(conscabcera.nro_trans, conscabceraTipo.tipo_nce.Trim());
+                                    Response.Redirect("BuscarFacturas.aspx");
+                                }
+                            }
 
 
                             }

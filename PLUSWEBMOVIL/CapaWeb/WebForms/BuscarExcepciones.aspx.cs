@@ -201,9 +201,11 @@ namespace CapaWeb.WebForms
 
                 if (cbx_usuario.SelectedValue != "0")
                 {
-                    if (txtDocumento.Text != "0")
+                    if(txtDocumento.Text != "0")
+                    { 
+                    if (txtDocumento.Text != "0" && txtmetodo.Text !="0")
                     {
-                        listaExcepciones = consultaExcepcion.ListaExcepcionPC(ComPwm, cbx_usuario.SelectedValue.Trim(), txtDocumento.Text.Trim(), Fechainicio, Fechafin, AmUsrLog);
+                        listaExcepciones = consultaExcepcion.ListaExcepcionPC(ComPwm, cbx_usuario.SelectedValue.Trim(), txtDocumento.Text.Trim(), Fechainicio, Fechafin, AmUsrLog, txtmetodo.Text.Trim());
                         Grid.DataSource = listaExcepciones;
                         Grid.DataBind();
                         Grid.Height = 100;
@@ -211,18 +213,40 @@ namespace CapaWeb.WebForms
                     else
 
                     {
-                        //Busqueda por usuario y fechas
-                        listaExcepciones = consultaExcepcion.ListaExcepcionUsuarioFe(ComPwm, cbx_usuario.SelectedValue.Trim(), Fechainicio, Fechafin, AmUsrLog);
-                        Grid.DataSource = listaExcepciones;
-                        Grid.DataBind();
-                        Grid.Height = 100;
-
+                            if (txtDocumento.Text != "0" && txtmetodo.Text == "0")
+                            {
+                                //Busca por proceso, usuario, fecha
+                                listaExcepciones = consultaExcepcion.ListaExcepcionProUsuFec(ComPwm, cbx_usuario.SelectedValue.Trim(), txtDocumento.Text.Trim(), Fechainicio, Fechafin, AmUsrLog);
+                                Grid.DataSource = listaExcepciones;
+                                Grid.DataBind();
+                                Grid.Height = 100;
+                            }
+                   
                     }
+                    }
+                    else
+                    {
+                        if (txtDocumento.Text == "0" && txtmetodo.Text != "0")
+                        {
+                            //Busca por metodo, usuario, fecha
+                            listaExcepciones = consultaExcepcion.ListaExcepcionMetUsuFec(ComPwm, cbx_usuario.SelectedValue.Trim(),  Fechainicio, Fechafin, AmUsrLog, txtmetodo.Text.Trim());
+                            Grid.DataSource = listaExcepciones;
+                            Grid.DataBind();
+                            Grid.Height = 100;
+                        }
+                        else
+                        {
+                            //Busqueda por usuario y fechas
+                            listaExcepciones = consultaExcepcion.ListaExcepcionUsuarioFe(ComPwm, cbx_usuario.SelectedValue.Trim(), Fechainicio, Fechafin, AmUsrLog);
+                            Grid.DataSource = listaExcepciones;
+                            Grid.DataBind();
+                            Grid.Height = 100;
 
-
+                        }
+                    }
                 }
                 else
-                    if (txtDocumento.Text == "0")
+                    if (txtDocumento.Text == "0" && txtmetodo.Text =="0")
                 {
                     //Busca solo por fechas
                     listaExcepciones = consultaExcepcion.ListaExcepcionPFecha(ComPwm, Fechainicio, Fechafin, AmUsrLog);
@@ -233,10 +257,18 @@ namespace CapaWeb.WebForms
                 }
                 else
                 {
-                    if (txtDocumento.Text != "0")
+                    if (txtDocumento.Text != "0" && txtmetodo.Text =="0")
                     {
                         //Busca por documento(proceso) y fecha
                         listaExcepciones = consultaExcepcion.ListaExcepcionProcesoFecha(ComPwm, txtDocumento.Text.Trim(), Fechainicio, Fechafin, AmUsrLog);
+                        Grid.DataSource = listaExcepciones;
+                        Grid.DataBind();
+                        Grid.Height = 100;
+                    }
+                    else
+                    {
+                        //Busca por metodo, fechas y todos los usuarios
+                        listaExcepciones = consultaExcepcion.ListaExcepcionMetodoFecha(ComPwm,  Fechainicio, Fechafin, AmUsrLog,txtmetodo.Text.Trim());
                         Grid.DataSource = listaExcepciones;
                         Grid.DataBind();
                         Grid.Height = 100;

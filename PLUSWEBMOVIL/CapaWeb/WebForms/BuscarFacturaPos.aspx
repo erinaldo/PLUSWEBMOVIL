@@ -99,7 +99,7 @@
                           <td>
                               <asp:DropDownList ID="cbx_tipo_factura" class="textos" runat="server" Height="16px" Width="204px">
                                   <asp:ListItem Value="POSE">FACTURA ELECTRÓNICA</asp:ListItem>
-                                  <asp:ListItem Value="POS">FACTURA NORMAL</asp:ListItem>
+                                  <asp:ListItem Value="POS">POR COMPUTADOR</asp:ListItem>
                               </asp:DropDownList>
                           </td>
                             

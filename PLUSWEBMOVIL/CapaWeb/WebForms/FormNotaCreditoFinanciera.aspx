@@ -173,7 +173,7 @@ return false;
                                 </td>
                                 <td>
                                    
-                                    <asp:TextBox ID="fecha" type="date" onkeyup="FechaActual();" Width="248" required="required" value="today" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="fecha" type="date"  Width="248" required="required"  runat="server"></asp:TextBox>
 
                                 </td>
 

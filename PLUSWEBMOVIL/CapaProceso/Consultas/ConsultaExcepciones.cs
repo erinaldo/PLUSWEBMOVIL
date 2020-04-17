@@ -42,18 +42,50 @@ namespace CapaProceso.Consultas
                 return null;
             }
         }
-        public List<modeloExepciones> ListaExcepcionPC(string cod_emp, string usuario,  string proceso, DateTime fecha_ini, DateTime fecha_fin, string usuario_mod)
+        public List<modeloExepciones> ListaExcepcionPC(string cod_emp, string usuario,  string proceso, DateTime fecha_ini, DateTime fecha_fin, string usuario_mod, string metodo)
         {
             try
             {
                 List<modeloExepciones> lista = new List<modeloExepciones>();
-                lista = excepcion.ListaExcepcionPC(cod_emp, usuario,  proceso,  fecha_ini, fecha_fin, usuario_mod);
+                lista = excepcion.ListaExcepcionPC(cod_emp, usuario,  proceso,  fecha_ini, fecha_fin, usuario_mod, metodo);
                 return lista;
             }
             catch (Exception e)
             {
 
                 
+                return null;
+            }
+        }
+        //Proceso usuario fecha
+        public List<modeloExepciones> ListaExcepcionProUsuFec(string cod_emp, string usuario, string proceso, DateTime fecha_ini, DateTime fecha_fin, string usuario_mod)
+        {
+            try
+            {
+                List<modeloExepciones> lista = new List<modeloExepciones>();
+                lista = excepcion.ListaExcepcionProUsuFec(cod_emp, usuario, proceso, fecha_ini, fecha_fin, usuario_mod);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+
+                return null;
+            }
+        }
+        //busca metodo usuario fecha
+        public List<modeloExepciones> ListaExcepcionMetUsuFec(string cod_emp, string usuario,  DateTime fecha_ini, DateTime fecha_fin, string usuario_mod, string metodo)
+        {
+            try
+            {
+                List<modeloExepciones> lista = new List<modeloExepciones>();
+                lista = excepcion.ListaExcepcionMetUsuFec(cod_emp, usuario, fecha_ini, fecha_fin, usuario_mod, metodo);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+
                 return null;
             }
         }
@@ -74,6 +106,24 @@ namespace CapaProceso.Consultas
                 return null;
             }
         }
+
+        //Buscar excepciones por metodo y fechas
+
+        public List<modeloExepciones> ListaExcepcionMetodoFecha(string cod_emp,  DateTime fecha_ini, DateTime fecha_fin, string usuario_mod,string metodo)
+        {
+            try
+            {
+                List<modeloExepciones> lista = new List<modeloExepciones>();
+                lista = excepcion.ListaExcepcionMetodoFechas(cod_emp, fecha_ini, fecha_fin, usuario_mod, metodo);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                return null;
+            }
+        }
+
         //Buscar excepciones por proceso y fechas
 
         public List<modeloExepciones> ListaExcepcionProcesoFecha(string cod_emp, string proceso, DateTime fecha_ini, DateTime fecha_fin, string usuario_mod)
