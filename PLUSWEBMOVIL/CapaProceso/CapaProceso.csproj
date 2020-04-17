@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comfiar\ComfiarEsquema.cs" />
+    <Compile Include="Comfiar\ModeloFacturaXml.cs" />
     <Compile Include="Consultas\CabezeraFactura.cs" />
     <Compile Include="Consultas\ConsultaActualizarTitular.cs" />
     <Compile Include="Consultas\ConsultaBancos.cs" />
