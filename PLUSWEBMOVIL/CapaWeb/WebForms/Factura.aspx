@@ -21,7 +21,8 @@
             var porcdescto = document.getElementById("<%= porcdescto.ClientID %>").value;
             var area = document.getElementById("<%= area.ClientID %>").value;
             var txt = document.getElementById("<%= area.ClientID %>").value;
-             var txtcorreo = document.getElementById("<%= txtcorreo.ClientID %>").value;
+            var txtcorreo = document.getElementById("<%= txtcorreo.ClientID %>").value;
+           var  lbl_tipofac = document.getElementById("<%= lbl_tipofac.ClientID %>").value;
             var n = txt.length;
             var respuesta;
             if (BuscarArticulo == null || BuscarArticulo == "") {
@@ -50,7 +51,6 @@
             } else {
                 respuesta = true;
             }
-           
             return respuesta
         }
         
@@ -153,7 +153,7 @@ return false;
                                 </td>
                                 <td>
                                     <label>
-                                        <asp:TextBox ID="txtcorreo"  type="email" required="required" title="correo@gmail.com"  Width="202" class="textos" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtcorreo"  type="email"  title="correo@gmail.com"  Width="202" class="textos" runat="server"></asp:TextBox>
 
                                     </label>
                                 </td>
@@ -253,6 +253,7 @@ return false;
                                     <div align="left">TRX:</div>
                                 </td>
                                 <td valign="top">
+                                    <asp:Label ID="lbl_tipofac" class="textos" runat="server" Text=""></asp:Label>
                                     <label>
                                        
                                         <asp:Label ID="lbl_trans" class="textos"  Width="202" ReadOnly="true" runat="server"></asp:Label>

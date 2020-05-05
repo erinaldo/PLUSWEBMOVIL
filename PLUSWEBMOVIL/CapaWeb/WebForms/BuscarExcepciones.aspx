@@ -73,15 +73,12 @@
                                 <asp:TextBox ID="fechafin" type="date"  Width="213px"  runat="server"></asp:TextBox>
                             </td>
                              <td> </td>
-                            <td aling="rigth"><asp:Button ID="Buscar" runat="server" OnClick="Buscar_Click" class="botones" Text="Buscar" /></td>
+                            <td aling="rigth"><asp:Button ID="Buscar" runat="server" OnClick="Buscar_Click" class="botones" Text="Buscar" />
+                                <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Button" />
+                            </td>
                           
                         </tr>
-                        <tr valign="top">
-                            
-                            
-                           
-                        </tr>
-                        
+                                                
                       </table>
                   </td>
                         </tr>
@@ -91,7 +88,7 @@
                          <hr />
                     </td>
                 </tr>
-                        <tr>
+                        
                     <td>
 
                         <div class="Subtitulo1">Listado de Excepciones</div>

@@ -87,8 +87,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comfiar\ComfiarEsquema.cs" />
+    <Compile Include="Comfiar\ModeloFacturaV2Xml.cs" />
     <Compile Include="Comfiar\ModeloFacturaXml.cs" />
+    <Compile Include="Comfiar\XmlFacturaV1.cs" />
+    <Compile Include="ConfiarPrueba\LLenarModelo.cs" />
+    <Compile Include="ConfiarPrueba\ModeloConfiar.cs" />
     <Compile Include="Consultas\CabezeraFactura.cs" />
     <Compile Include="Consultas\ConsultaActualizarTitular.cs" />
     <Compile Include="Consultas\ConsultaBancos.cs" />

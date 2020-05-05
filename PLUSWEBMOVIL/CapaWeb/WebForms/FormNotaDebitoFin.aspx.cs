@@ -9,6 +9,7 @@ using CapaDatos.Modelos;
 using CapaDatos.Modelos.ModelosNC;
 using System.IO;
 using CapaProceso.GenerarPDF.FacturaElectronica;
+using CapaDatos.Sql;
 
 namespace CapaWeb.WebForms
 {
@@ -1366,7 +1367,9 @@ namespace CapaWeb.WebForms
 
                 articulo = null;
                 articulo = BuscarProducto(txt_Codigo.Text);
-
+                //Consultar la referencia cruzada
+                Articulos referencia_C = new Articulos();
+                string cod_articulo2 = referencia_C.ReferenciaCArticulo(AmUsrLog, ComPwm, lbl_trans.Text);
 
                 string linea_nueva = null; //ultimalinea
                                            //CONSULTAR Y VERIFICAR SI EXISTE O NO EL DETALLE
@@ -1379,13 +1382,13 @@ namespace CapaWeb.WebForms
                     {
                         int linea_detalle = Convert.ToInt32(linea_nueva) + 1;
                         GuardarDetalles.InsertarDetalleNCSL(txt_cod_docum.Text, txt_nro_docum.Text, txt_serie_docum.Text, txt_Descripcion.Text, txt_Descripcion2.Text, Convert.ToDecimal(txt_Cantidad.Text), Convert.ToDecimal(txt_Precio.Text), Convert.ToDecimal(articulo.porc_aiu), Convert.ToDecimal(txt_Iva.Text), lbl_trans.Text.Trim(), linea_detalle, ComPwm, txt_Codigo.Text, articulo.cod_concepret, Convert.ToDecimal(txt_Desc.Text), 0, articulo.cod_cta_vtas,
-                        articulo.cod_cta_cos, articulo.cod_cta_inve, AmUsrLog, "0", DateTime.Now, articulo.cod_tasa_impu, cod_costos.SelectedValue);
+                        articulo.cod_cta_cos, articulo.cod_cta_inve, AmUsrLog, "0", DateTime.Now, articulo.cod_tasa_impu, cod_costos.SelectedValue, cod_articulo2);
                     }
                     else
                     { //si ya existen registros
                         int linea_detalle = Convert.ToInt32(linea_nueva) + 1;
                         GuardarDetalles.InsertarDetalleNCSL(txt_cod_docum.Text, txt_nro_docum.Text, txt_serie_docum.Text, txt_Descripcion.Text, txt_Descripcion2.Text, Convert.ToDecimal(txt_Cantidad.Text), Convert.ToDecimal(txt_Precio.Text), Convert.ToDecimal(articulo.porc_aiu), Convert.ToDecimal(txt_Iva.Text), lbl_trans.Text.Trim(), linea_detalle, ComPwm, txt_Codigo.Text, articulo.cod_concepret, Convert.ToDecimal(txt_Desc.Text), 0, articulo.cod_cta_vtas,
-                        articulo.cod_cta_cos, articulo.cod_cta_inve, AmUsrLog, "0", DateTime.Now, articulo.cod_tasa_impu, cod_costos.SelectedValue);
+                        articulo.cod_cta_cos, articulo.cod_cta_inve, AmUsrLog, "0", DateTime.Now, articulo.cod_tasa_impu, cod_costos.SelectedValue, cod_articulo2);
 
                     }
                 }

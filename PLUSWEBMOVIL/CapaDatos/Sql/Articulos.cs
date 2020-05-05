@@ -17,6 +17,67 @@ namespace CapaDatos.Sql
             modelowmspcarticulos modeloarticulos = new modelowmspcarticulos();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         ValidarParametrizacionFactura conexion_erp = new ValidarParametrizacionFactura();
+        //eliminar Articulos referencia cruzada
+        public string EliminarArticuloTem(string usuario, string cod_emp, string nro_trans)
+        {
+            try
+            {
+
+                using (cn = conexion.genearConexion())
+                {
+                    
+
+                    string insert = " DELETE FROM wmt_facturas_art WHERE nro_trans =@nro_trans";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+
+                    int dr = conmand.ExecuteNonQuery();
+                    cn.Close();
+                    return "Articulo eliminado correctamente";
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "Articulos.cs", "EliminarArticuloTem", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
+        //Lista Articulos referencia cruzada
+        public string ReferenciaCArticulo(string usuario, string cod_emp, string nro_trans)
+        {
+            try
+            {
+
+                using (cn = conexion.genearConexion())
+                {
+                    string cod_referencia = null;
+
+                    string consulta = ("wmspc_facturasWM_art");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.CommandType = CommandType.StoredProcedure;
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        cod_referencia = Convert.ToString(dr["cod_articulo2"]);
+                    }
+                    return cod_referencia;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "Articulos.cs", "ReferenciaCArticulo", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
 
         public List<modelowmspcarticulos> ListaArticulos(string ArtB__usuario, string ArtB__cod_emp, string ArtB__articulo, string ArtB__tipo, string ArtB__compras, string ArtB__ventas)
         {

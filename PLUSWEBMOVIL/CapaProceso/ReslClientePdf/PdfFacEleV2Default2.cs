@@ -820,7 +820,12 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 foreach (ModeloDetalleFactura item in listaConsDet)
                 {
                     contadorEspacio ++;
-                    detalle.DefaultCell.HorizontalAlignment = 0; detalle.AddCell(new Paragraph(item.cod_articulo, fontText3));
+                    if (item.cod_articulo2 == null || item.cod_articulo2 == "")
+                    { detalle.DefaultCell.HorizontalAlignment = 0; detalle.AddCell(new Paragraph(item.cod_articulo, fontText3)); }
+                    else
+                    {
+                        detalle.DefaultCell.HorizontalAlignment = 0; detalle.AddCell(new Paragraph(item.cod_articulo2, fontText3));
+                    }
                     detalle.DefaultCell.HorizontalAlignment = 0; detalle.AddCell(new Paragraph(item.nom_articulo+ " "+ item.nom_articulo2.Trim(), fontText3));
                     string unidad = consulta_uni.UnidadMedida(Ccf_cod_emp, Ccf_usuario, item.cod_articulo.Trim());
                     detalle.DefaultCell.HorizontalAlignment = 1; detalle.AddCell(new Paragraph(unidad, fontText3));

@@ -14,6 +14,33 @@ namespace CapaDatos.Sql
         public SqlConnection cn = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         string metodo = "FacturaDetalle.cs";
+        //insertra detalle sin lista
+        public string InsertarArticuloTemp(string nro_trans, string cod_articulo, string nro_trans_ref, int linea, string cod_emp,  string usuario_mod)
+        {
+            try
+            {
+                cn = conexion.genearConexion();
+
+                string insert = "INSERT INTO  wmt_facturas_art (nro_trans, cod_articulo, nro_trans_ref, linea) VALUES (@nro_trans, @cod_articulo, @nro_trans_ref, @linea)";
+                SqlCommand conmand = new SqlCommand(insert, cn);
+                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                conmand.Parameters.Add("@cod_articulo", SqlDbType.VarChar).Value = cod_articulo;
+                conmand.Parameters.Add("@nro_trans_ref", SqlDbType.VarChar).Value = nro_trans;
+                conmand.Parameters.Add("@linea", SqlDbType.Int).Value = linea;
+
+                int dr = conmand.ExecuteNonQuery();
+                cn.Close();
+                return "Articulo guardado correctamente";
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, " InsertarArticuloTem", e.ToString(), DateTime.Now, usuario_mod);
+                return "No se pudo completar la acción." + "InsertarDetalle." + " Por favor notificar al administrador.";
+            }
+
+        }
+
         //RECUPERAR CON NRO_TRANS Y LINEA
         public SqlDataReader ConsultaDetalleFacturaLinea(string nro_trans, string linea)
         {
@@ -134,12 +161,12 @@ namespace CapaDatos.Sql
         }
 
         //insertra detalle sin lista InsertarDetalleNCSL
-        public string InsertarDetalleNCSL(string cod_doca, string nro_doca, string serie_doca,string nom_articulo, string nom_articulo2, decimal cantidad, decimal precio_unit, decimal base_imp, decimal porc_iva, string nro_trans, int linea, string cod_emp, string cod_articulo, string cod_concepret, decimal porc_descto, decimal valor_descto, string cod_cta_vtas, string cod_cta_cos, string cod_cta_inve, string usuario_mod, string nro_audit, DateTime fecha_mod, string tasa_iva, string cod_ccostos)
+        public string InsertarDetalleNCSL(string cod_doca, string nro_doca, string serie_doca,string nom_articulo, string nom_articulo2, decimal cantidad, decimal precio_unit, decimal base_imp, decimal porc_iva, string nro_trans, int linea, string cod_emp, string cod_articulo, string cod_concepret, decimal porc_descto, decimal valor_descto, string cod_cta_vtas, string cod_cta_cos, string cod_cta_inve, string usuario_mod, string nro_audit, DateTime fecha_mod, string tasa_iva, string cod_ccostos,string cod_articulo2)
         {
             try
             {
                 cn = conexion.genearConexion();
-                string insert = "INSERT INTO  wmt_facturas_det (cod_doca, nro_doca, serie_doca, nom_articulo, nom_articulo2, cantidad, precio_unit, base_imp, porc_iva, nro_trans, linea, cod_emp, cod_articulo, cod_concepret, porc_descto, valor_descto, cod_cta_vtas, cod_cta_cos, cod_cta_inve, usuario_mod, nro_audit, fecha_mod, tasa_iva, cod_ccostos) VALUES (@cod_doca, @nro_doca, @serie_doca,@nom_articulo, @nom_articulo2, @cantidad, @precio_unit, @base_imp, @porc_iva, @nro_trans, @linea, @cod_emp, @cod_articulo, @cod_concepret, @porc_descto, @valor_descto, @cod_cta_vtas, @cod_cta_cos, @cod_cta_inve, @usuario_mod, @nro_audit, @fecha_mod, @tasa_iva, @cod_ccostos)";
+                string insert = "INSERT INTO  wmt_facturas_det (cod_doca, nro_doca, serie_doca, nom_articulo, nom_articulo2, cantidad, precio_unit, base_imp, porc_iva, nro_trans, linea, cod_emp, cod_articulo, cod_concepret, porc_descto, valor_descto, cod_cta_vtas, cod_cta_cos, cod_cta_inve, usuario_mod, nro_audit, fecha_mod, tasa_iva, cod_ccostos,cod_articulo2) VALUES (@cod_doca, @nro_doca, @serie_doca,@nom_articulo, @nom_articulo2, @cantidad, @precio_unit, @base_imp, @porc_iva, @nro_trans, @linea, @cod_emp, @cod_articulo, @cod_concepret, @porc_descto, @valor_descto, @cod_cta_vtas, @cod_cta_cos, @cod_cta_inve, @usuario_mod, @nro_audit, @fecha_mod, @tasa_iva, @cod_ccostos,@cod_articulo2)";
                 SqlCommand conmand = new SqlCommand(insert, cn);
                 conmand.Parameters.Add("@cod_doca", SqlDbType.VarChar).Value = cod_doca;
                 conmand.Parameters.Add("@nro_doca", SqlDbType.VarChar).Value = nro_doca;
@@ -165,9 +192,10 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@fecha_mod", SqlDbType.DateTime).Value = fecha_mod;
                 conmand.Parameters.Add("@tasa_iva", SqlDbType.VarChar).Value = tasa_iva;
                 conmand.Parameters.Add("@cod_ccostos", SqlDbType.VarChar).Value = cod_ccostos;
+                conmand.Parameters.Add("@cod_articulo2", SqlDbType.VarChar).Value = cod_articulo2;
                 int dr = conmand.ExecuteNonQuery();
                 cn.Close();
-                return "Factura salvada correctamente";
+                return "Nota crédito salvada correctamente";
             }
             catch (Exception e)
             {
@@ -179,13 +207,13 @@ namespace CapaDatos.Sql
         }
 
         //insertra detalle sin lista
-        public string InsertarDetalleSL(string nom_articulo, string nom_articulo2,decimal cantidad, decimal precio_unit, decimal base_imp, decimal porc_iva, string nro_trans, int linea, string cod_emp, string cod_articulo,string cod_concepret,decimal porc_descto, decimal valor_descto, string cod_cta_vtas,string  cod_cta_cos,string  cod_cta_inve,string usuario_mod,string nro_audit,DateTime fecha_mod,string tasa_iva,string cod_ccostos)
+        public string InsertarDetalleSL(string nom_articulo, string nom_articulo2,decimal cantidad, decimal precio_unit, decimal base_imp, decimal porc_iva, string nro_trans, int linea, string cod_emp, string cod_articulo,string cod_concepret,decimal porc_descto, decimal valor_descto, string cod_cta_vtas,string  cod_cta_cos,string  cod_cta_inve,string usuario_mod,string nro_audit,DateTime fecha_mod,string tasa_iva,string cod_ccostos, string cod_articulo2)
         {
             try
             {
                 cn = conexion.genearConexion();
 
-                string insert = "INSERT INTO  wmt_facturas_det (nom_articulo, nom_articulo2, cantidad, precio_unit, base_imp, porc_iva, nro_trans, linea, cod_emp, cod_articulo, cod_concepret, porc_descto, valor_descto, cod_cta_vtas, cod_cta_cos, cod_cta_inve, usuario_mod, nro_audit, fecha_mod, tasa_iva, cod_ccostos) VALUES (@nom_articulo, @nom_articulo2, @cantidad, @precio_unit, @base_imp, @porc_iva, @nro_trans, @linea, @cod_emp, @cod_articulo, @cod_concepret, @porc_descto, @valor_descto, @cod_cta_vtas, @cod_cta_cos, @cod_cta_inve, @usuario_mod, @nro_audit, @fecha_mod, @tasa_iva, @cod_ccostos)";
+                string insert = "INSERT INTO  wmt_facturas_det (nom_articulo, nom_articulo2, cantidad, precio_unit, base_imp, porc_iva, nro_trans, linea, cod_emp, cod_articulo, cod_concepret, porc_descto, valor_descto, cod_cta_vtas, cod_cta_cos, cod_cta_inve, usuario_mod, nro_audit, fecha_mod, tasa_iva, cod_ccostos, cod_articulo2) VALUES (@nom_articulo, @nom_articulo2, @cantidad, @precio_unit, @base_imp, @porc_iva, @nro_trans, @linea, @cod_emp, @cod_articulo, @cod_concepret, @porc_descto, @valor_descto, @cod_cta_vtas, @cod_cta_cos, @cod_cta_inve, @usuario_mod, @nro_audit, @fecha_mod, @tasa_iva, @cod_ccostos,@cod_articulo2)";
                 SqlCommand conmand = new SqlCommand(insert, cn);
                 conmand.Parameters.Add("@nom_articulo", SqlDbType.VarChar).Value = nom_articulo;
                 conmand.Parameters.Add("@nom_articulo2", SqlDbType.VarChar).Value = nom_articulo2;
@@ -208,7 +236,7 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@fecha_mod", SqlDbType.DateTime).Value = fecha_mod;
                 conmand.Parameters.Add("@tasa_iva", SqlDbType.VarChar).Value = tasa_iva;
                 conmand.Parameters.Add("@cod_ccostos", SqlDbType.VarChar).Value = cod_ccostos;
-                
+                conmand.Parameters.Add("@cod_articulo2", SqlDbType.VarChar).Value = cod_articulo2;
                 int dr = conmand.ExecuteNonQuery();
                 cn.Close();
                 return "Factura salvada correctamente";
@@ -362,7 +390,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ConsultaDetalleFacNCDev", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ConsultaDetalleFacNCDev", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }

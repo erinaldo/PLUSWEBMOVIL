@@ -234,7 +234,7 @@ namespace CapaProceso.FacturaMasiva
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(ArtB__cod_emp, metodo, "TotalFacturas", e.ToString(), DateTime.Today, ArtB__usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(ArtB__cod_emp, metodo, "TotalFacturas", e.ToString(), DateTime.Now, ArtB__usuario);
                 return null;
             }
         }

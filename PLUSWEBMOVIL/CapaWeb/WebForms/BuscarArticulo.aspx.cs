@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using CapaProceso.Consultas;
 using CapaProceso.Modelos;
 using CapaDatos.Modelos;
+using CapaDatos.Sql;
 
 namespace CapaWeb.WebForms
 {
@@ -28,6 +29,7 @@ namespace CapaWeb.WebForms
         public string ArtB__tipo = "0";
         public string ArtB__compras = "0";
         public string ArtB__ventas = "S";
+        public string nro_trans = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -57,6 +59,7 @@ namespace CapaWeb.WebForms
                         gvProducto.DataBind();
 
                     }
+           
                 }
             }
             catch (Exception ex)
@@ -210,6 +213,7 @@ namespace CapaWeb.WebForms
                     }
 
                 }
+
                 // Crea la variable de sessión
                 Session["articulo"] = articulo;
 

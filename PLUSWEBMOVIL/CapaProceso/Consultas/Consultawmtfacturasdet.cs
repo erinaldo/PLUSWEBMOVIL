@@ -32,6 +32,7 @@ namespace CapaProceso.Consultas
                     item.nro_doca = Convert.ToString(dr["nro_doca"]);
                     item.serie_doca = Convert.ToString(dr["serie_doca"]);
                     item.cod_articulo = Convert.ToString(dr["cod_articulo"]);
+                    item.cod_articulo2 = Convert.ToString(dr["cod_articulo2"]);
                     item.nom_articulo = Convert.ToString(dr["nom_articulo"]);
                     item.nom_articulo2 = Convert.ToString(dr["nom_articulo2"]);
                     item.cantidad = Convert.ToDecimal(dr["cantidad"]);
@@ -101,6 +102,7 @@ namespace CapaProceso.Consultas
                     item.nro_doca = Convert.ToString(dr["nro_doca"]);
                     item.serie_doca = Convert.ToString(dr["serie_doca"]);
                     item.cod_articulo = Convert.ToString(dr["cod_articulo"]);
+                    item.cod_articulo2 = Convert.ToString(dr["cod_articulo2"]);
                     item.nom_articulo = Convert.ToString(dr["nom_articulo"]);
                     item.nom_articulo2 = Convert.ToString(dr["nom_articulo2"]);
                     item.cantidad = Convert.ToDecimal(dr["cantidad"]);
@@ -148,7 +150,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ConsultaDetalleFacura", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ConsultaDetalleFacura", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }

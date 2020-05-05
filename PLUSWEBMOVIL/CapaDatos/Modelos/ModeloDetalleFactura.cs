@@ -15,6 +15,7 @@ namespace CapaProceso.Modelos
         public string nro_doca { get; set; }
         public string serie_doca { get; set; }
         public string cod_articulo { get; set; }
+        public string cod_articulo2 { get; set; }
         public string nom_articulo { get; set; }
         public string nom_articulo2 { get; set; }
         public decimal cantidad { get; set; }

@@ -50,11 +50,11 @@ namespace CapaProceso.Consultas
         }
 
         //INSERTAR DETALLE NC SIN LISTA
-        public string InsertarDetalleNCSL(string cod_doca, string nro_doca, string serie_doca, string nom_articulo, string nom_articulo2, decimal cantidad, decimal precio_unit, decimal base_imp, decimal porc_iva, string nro_trans, int linea, string cod_emp, string cod_articulo, string cod_concepret, decimal porc_descto, decimal valor_descto, string cod_cta_vtas, string cod_cta_cos, string cod_cta_inve, string usuario_mod, string nro_audit, DateTime fecha_mod, string tasa_iva, string cod_ccostos)
+        public string InsertarDetalleNCSL(string cod_doca, string nro_doca, string serie_doca, string nom_articulo, string nom_articulo2, decimal cantidad, decimal precio_unit, decimal base_imp, decimal porc_iva, string nro_trans, int linea, string cod_emp, string cod_articulo, string cod_concepret, decimal porc_descto, decimal valor_descto, string cod_cta_vtas, string cod_cta_cos, string cod_cta_inve, string usuario_mod, string nro_audit, DateTime fecha_mod, string tasa_iva, string cod_ccostos, string cod_articulo2)
         {
             try
             {
-                string respuesta = detalleFacturas.InsertarDetalleNCSL(cod_doca, nro_doca,serie_doca, nom_articulo, nom_articulo2, cantidad, precio_unit, base_imp, porc_iva, nro_trans, linea, cod_emp, cod_articulo, cod_concepret, porc_descto, valor_descto, cod_cta_vtas, cod_cta_cos, cod_cta_inve, usuario_mod, nro_audit, fecha_mod, tasa_iva, cod_ccostos);
+                string respuesta = detalleFacturas.InsertarDetalleNCSL(cod_doca, nro_doca,serie_doca, nom_articulo, nom_articulo2, cantidad, precio_unit, base_imp, porc_iva, nro_trans, linea, cod_emp, cod_articulo, cod_concepret, porc_descto, valor_descto, cod_cta_vtas, cod_cta_cos, cod_cta_inve, usuario_mod, nro_audit, fecha_mod, tasa_iva, cod_ccostos, cod_articulo2);
                 return respuesta;
             }
             catch (Exception e)
@@ -67,11 +67,11 @@ namespace CapaProceso.Consultas
         }
 
         //INSERTAR DETALLE FACTURA SIN LISTA
-        public string InsertarDetalleFacturaSL(string nom_articulo, string nom_articulo2, decimal cantidad, decimal precio_unit, decimal base_imp, decimal porc_iva, string nro_trans, int linea, string cod_emp, string cod_articulo, string cod_concepret, decimal porc_descto, decimal valor_descto, string cod_cta_vtas, string cod_cta_cos, string cod_cta_inve, string usuario_mod, string nro_audit, DateTime fecha_mod, string tasa_iva, string cod_ccostos)
+        public string InsertarDetalleFacturaSL(string nom_articulo, string nom_articulo2, decimal cantidad, decimal precio_unit, decimal base_imp, decimal porc_iva, string nro_trans, int linea, string cod_emp, string cod_articulo, string cod_concepret, decimal porc_descto, decimal valor_descto, string cod_cta_vtas, string cod_cta_cos, string cod_cta_inve, string usuario_mod, string nro_audit, DateTime fecha_mod, string tasa_iva, string cod_ccostos, string cod_articulo2)
         {
             try
             {
-                string respuesta = detalleFacturas.InsertarDetalleSL(nom_articulo, nom_articulo2, cantidad, precio_unit, base_imp, porc_iva, nro_trans, linea, cod_emp, cod_articulo, cod_concepret, porc_descto, valor_descto, cod_cta_vtas, cod_cta_cos, cod_cta_inve, usuario_mod, nro_audit, fecha_mod, tasa_iva, cod_ccostos);
+                string respuesta = detalleFacturas.InsertarDetalleSL(nom_articulo, nom_articulo2, cantidad, precio_unit, base_imp, porc_iva, nro_trans, linea, cod_emp, cod_articulo, cod_concepret, porc_descto, valor_descto, cod_cta_vtas, cod_cta_cos, cod_cta_inve, usuario_mod, nro_audit, fecha_mod, tasa_iva, cod_ccostos, cod_articulo2);
                 return respuesta;
             }
             catch (Exception e)

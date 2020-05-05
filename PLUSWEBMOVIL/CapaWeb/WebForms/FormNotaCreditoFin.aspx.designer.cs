@@ -265,6 +265,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox txt_total_factura;
         
         /// <summary>
+        /// Control lbl_tiponc.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_tiponc;
+        
+        /// <summary>
         /// Control lbl_trans.
         /// </summary>
         /// <remarks>
