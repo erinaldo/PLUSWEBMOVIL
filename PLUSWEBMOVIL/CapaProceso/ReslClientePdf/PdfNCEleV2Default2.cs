@@ -973,7 +973,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 float[] total1s = { 0.55f };
                 cell = new PdfPCell();
 
-                cell = new PdfPCell(new Paragraph("IMPUESTOS Y RETENCIONES", titulo2));
+                cell = new PdfPCell(new Paragraph("IMPUESTOS, RETENCIONES Y DESCUENTOS", titulo2));
                 cell.BorderWidthBottom = 1;
                 cell.BorderWidthLeft = 1;
                 cell.BorderWidthTop = 1;
