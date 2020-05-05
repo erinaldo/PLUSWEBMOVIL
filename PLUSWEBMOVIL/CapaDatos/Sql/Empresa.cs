@@ -58,6 +58,9 @@ namespace CapaDatos.Sql
                         item.nom_tipo_emp_gan = Convert.ToString(dr["nom_tipo_emp_gan"]);
                         item.cod_tipo_emp_iva = Convert.ToString(dr["cod_tipo_emp_iva"]);
                         item.nom_tipo_emp_iva = Convert.ToString(dr["nom_tipo_emp_iva"]);
+                        item.personeria = Convert.ToString(dr["personeria"]);
+                        item.tributacion = Convert.ToString(dr["tributacion"]);
+                        item.tipo_ide= Convert.ToString(dr["tipo_ide"]);
 
                         lista.Add(item);
 

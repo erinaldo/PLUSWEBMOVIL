@@ -175,6 +175,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox porc_descto;
         
         /// <summary>
+        /// Control lbl_tipofac.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_tipofac;
+        
+        /// <summary>
         /// Control lbl_trans.
         /// </summary>
         /// <remarks>

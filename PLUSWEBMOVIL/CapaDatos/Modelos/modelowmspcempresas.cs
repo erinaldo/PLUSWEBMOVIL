@@ -28,5 +28,8 @@ namespace CapaDatos.Modelos
         public string nom_tipo_emp_gan { get; set; }
         public string cod_tipo_emp_iva { get; set; }
         public string nom_tipo_emp_iva { get; set; }
+        public string personeria { get; set; }
+        public string tributacion { get; set; }
+        public string tipo_ide { get; set; }
     }
 }

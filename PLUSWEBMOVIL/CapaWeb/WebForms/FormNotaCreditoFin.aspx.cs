@@ -897,11 +897,13 @@ namespace CapaWeb.WebForms
                 if (resolucion.tipo_fac == "S")
                 {
                     Session["Ccf_tipo2"] = "NCVE";
+                    lbl_tiponc.Text = "NCVE";
                     DateTime hoy = DateTime.Today;
                     fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
                     fecha.Enabled = false;
                 }
                 else { Session["Ccf_tipo2"] = "NCV";
+                    lbl_tiponc.Text = "NCV";
                     fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 }
 
@@ -1060,7 +1062,7 @@ namespace CapaWeb.WebForms
                 string Ccf_nro_trans = lbl_trans.Text;
                 conscabceraTipo = Trans_Padre(Ccf_nro_trans);
                 Session["Ccf_tipo2"] = conscabceraTipo.tipo_nce.Trim();
-
+                lbl_tiponc.Text = conscabceraTipo.tipo_nce.Trim();
                 listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 conscabcera = null;
                 foreach (modelowmtfacturascab item in listaConsCab)
@@ -1647,6 +1649,7 @@ namespace CapaWeb.WebForms
                         detallefactura.linea = contarLinea;
                         detallefactura.cod_emp = ComPwm;
                         detallefactura.cod_articulo = item.cod_articulo;
+                        detallefactura.cod_articulo2 = item.cod_articulo2;
                         detallefactura.cod_concepret = item.cod_concepret;
                         detallefactura.porc_descto = item.porc_descto;
                         detallefactura.valor_descto = item.detadescuento;
@@ -1813,6 +1816,8 @@ namespace CapaWeb.WebForms
                 int contador = 0;
                 contador++;
                 lbl_error.Text = "";
+                lbl_validacion.Text = "";
+                lbl_validacion.Visible = false;
                 //Consultar si el vendedor tiene asignada una sucursal
 
                 ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
@@ -1856,7 +1861,23 @@ namespace CapaWeb.WebForms
                                 string respuestaConfirmacionNC = "";
                                 //Boton Coonfirmar hace lo mismo que el salvar solo aumenta la insercion a la tabla wmt_facturas_ins
                                 conscabcera = null;
-                                conscabcera = GuardarDetalle();
+                                if(lbl_tiponc.Text == "NCVE")
+                                {
+                                    if(txtcorreo.Text ==null || txtcorreo.Text =="")
+                                    {
+                                        lbl_validacion.Text = "Ingrese correo por favor";
+                                        lbl_validacion.Visible = true;
+                                    }
+                                    else
+                                    {
+                                        conscabcera = GuardarDetalle();
+                                    }
+                                }
+                                else
+                                {
+                                    conscabcera = GuardarDetalle();
+                                }
+                                
 
                                 confirmarinsertar.nro_trans = conscabcera.nro_trans;
                                 confirmarinsertar.cod_emp = conscabcera.cod_emp;

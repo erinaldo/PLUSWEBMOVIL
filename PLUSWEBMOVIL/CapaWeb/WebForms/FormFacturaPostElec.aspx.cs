@@ -9,6 +9,7 @@ using CapaDatos.Modelos;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using System.IO;
 using CapaProceso.ReslClientePdf;
+using CapaDatos.Sql;
 
 namespace CapaWeb.WebForms
 {
@@ -478,7 +479,7 @@ namespace CapaWeb.WebForms
                 string Ccf_nro_trans = lbl_trans.Text;
                 conscabceraTipo = buscarTipoFac(Ccf_nro_trans);
                 Session["Ccf_tipo2"] = conscabceraTipo.tipo_nce.Trim();
-
+                lbl_tipofac.Text = conscabceraTipo.tipo_nce.Trim(); 
                 listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 int count = 0;
                 conscabcera = null;
@@ -625,6 +626,7 @@ namespace CapaWeb.WebForms
                 if (resolucion.tipo_fac == "S")
                 {
                     Session["Ccf_tipo2"]  = "POSE";
+                    lbl_tipofac.Text = "POSE";
                     DateTime hoy = DateTime.Today;
                     fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
                     fecha.Enabled = false;
@@ -632,6 +634,7 @@ namespace CapaWeb.WebForms
                 else
                 {
                     Session["Ccf_tipo2"] = "POS";
+                    lbl_tipofac.Text = "POS";
                     fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 }
 
@@ -912,7 +915,10 @@ namespace CapaWeb.WebForms
                 string dia = string.Format("{0:00}", hoy.Day);
                 string mes = string.Format("{0:00}", hoy.Month);
                 string anio = hoy.Year.ToString();
+                //Consultar la referencia cruzada
+                Articulos referencia_C = new Articulos();
 
+                string cod_articulo2 = referencia_C.ReferenciaCArticulo(AmUsrLog, ComPwm, lbl_trans.Text);
                 string linea_nueva = null; //ultimalinea
                 //CONSULTAR Y VERIFICAR SI EXISTE O NO EL DETALLE
                 //verificar si es insert, update
@@ -924,14 +930,15 @@ namespace CapaWeb.WebForms
                     {
                         int linea_detalle = Convert.ToInt32(linea_nueva) + 1;
                         GuardarDetalles.InsertarDetalleFacturaSL(txt_Descripcion.Text, txt_Descripcion2.Text, Convert.ToDecimal(txt_Cantidad.Text), Convert.ToDecimal(txt_Precio.Text), Convert.ToDecimal(articulo.porc_aiu), Convert.ToDecimal(txt_Iva.Text), lbl_trans.Text.Trim(), linea_detalle, ComPwm, txt_Codigo.Text, articulo.cod_concepret, Convert.ToDecimal(txt_Desc.Text), 0, articulo.cod_cta_vtas,
-                        articulo.cod_cta_cos, articulo.cod_cta_inve, AmUsrLog, conscabcera.nro_audit, DateTime.Now, articulo.cod_tasa_impu, cod_costos.SelectedValue);
+                        articulo.cod_cta_cos, articulo.cod_cta_inve, AmUsrLog, conscabcera.nro_audit, DateTime.Now, articulo.cod_tasa_impu, cod_costos.SelectedValue, cod_articulo2);
+                        referencia_C.EliminarArticuloTem(AmUsrLog, ComPwm, lbl_trans.Text); //eliminar de tabla temporal
                     }
                     else
                     { //si ya existen registros
                         int linea_detalle = Convert.ToInt32(linea_nueva) + 1;
                         GuardarDetalles.InsertarDetalleFacturaSL(txt_Descripcion.Text, txt_Descripcion2.Text, Convert.ToDecimal(txt_Cantidad.Text), Convert.ToDecimal(txt_Precio.Text), Convert.ToDecimal(articulo.porc_aiu), Convert.ToDecimal(txt_Iva.Text), lbl_trans.Text.Trim(), linea_detalle, ComPwm,txt_Codigo.Text, articulo.cod_concepret, Convert.ToDecimal(txt_Desc.Text), 0, articulo.cod_cta_vtas,
-                        articulo.cod_cta_cos, articulo.cod_cta_inve, AmUsrLog, conscabcera.nro_audit, DateTime.Now, articulo.cod_tasa_impu, cod_costos.SelectedValue);
-
+                        articulo.cod_cta_cos, articulo.cod_cta_inve, AmUsrLog, conscabcera.nro_audit, DateTime.Now, articulo.cod_tasa_impu, cod_costos.SelectedValue, cod_articulo2);
+                        referencia_C.EliminarArticuloTem(AmUsrLog, ComPwm, lbl_trans.Text); //eliminar de tabla temporal
                     }
                 }
                 else
@@ -1424,6 +1431,7 @@ namespace CapaWeb.WebForms
                 else
                 {
                     articulo = (modelowmspcarticulos)Session["articulo"];
+                    
                 }
 
 
@@ -1442,6 +1450,13 @@ namespace CapaWeb.WebForms
                     }
                     else
                     {
+                        //Elimino cualquier registro anterior
+                        Articulos referencia_C = new Articulos();
+                        referencia_C.EliminarArticuloTem(AmUsrLog, ComPwm, lbl_trans.Text);
+                        //Insertar el producto seleccionado
+                        FacturaDetalle insertar_art = new FacturaDetalle();
+                        insertar_art.InsertarArticuloTemp(lbl_trans.Text, articulo.cod_articulo, lbl_trans.Text, 0, ComPwm, AmUsrLog);
+
                         lblCan.Visible = true;
                         txt_Cantidad.Visible = true;
                         Session.Remove("articulo");
@@ -1543,10 +1558,28 @@ namespace CapaWeb.WebForms
                 {
                     if (articulo.negativo == "S")
                     {
+                        if (lbl_tipofac.Text.Trim() == "POSE")
+                        {
+                            if (txtcorreo.Text == null || txtcorreo.Text == "")
+                            {
+                                lbl_validacion.Text = "Ingrese correo por favor";
+                                lbl_validacion.Visible = true;
+                            }
+                            else
+                            {
 
-                        InsertarCabeceraSL();
-                        InsertarDetalleSL();
-                        TraeDetalleFactura();
+                                InsertarCabeceraSL();
+                                InsertarDetalleSL();
+                                TraeDetalleFactura();
+                            }
+                        }
+                            else
+                            {
+
+                            InsertarCabeceraSL();
+                            InsertarDetalleSL();
+                            TraeDetalleFactura();
+                        }
 
                     }
                     else
@@ -1557,9 +1590,27 @@ namespace CapaWeb.WebForms
                 }
                 else
                 {
-                    InsertarCabeceraSL();
-                    InsertarDetalleSL();
-                    TraeDetalleFactura();
+                    if (lbl_tipofac.Text.Trim() == "POSE")
+                    {
+                        if (txtcorreo.Text == null || txtcorreo.Text == "")
+                        {
+                            lbl_validacion.Text = "Ingrese correo por favor";
+                            lbl_validacion.Visible = true;
+                        }
+                        else
+                        {
+                            InsertarCabeceraSL();
+                            InsertarDetalleSL();
+                            TraeDetalleFactura();
+                        }
+                    }
+                    else
+                    {
+                        InsertarCabeceraSL();
+                        InsertarDetalleSL();
+                        TraeDetalleFactura();
+                    }
+                   
                 }
             }
             catch (Exception ex)

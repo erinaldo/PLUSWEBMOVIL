@@ -163,7 +163,7 @@ return false;
                                 </td>
                                 <td>
                                     <label>
-                                         <asp:TextBox ID="txtcorreo"  type="email" required="required" title="correo@gmail.com"  Width="202" class="textos" runat="server"></asp:TextBox>
+                                         <asp:TextBox ID="txtcorreo"  type="email"  title="correo@gmail.com"  Width="202" class="textos" runat="server"></asp:TextBox>
 
                                     </label>
                                 </td>
@@ -321,7 +321,7 @@ return false;
                                 </td>
                                 <td valign="top">
                                     <label>
-                                       
+                                        <asp:Label ID="lbl_tiponc" class="textos" runat="server" Text=""></asp:Label>
                                         <asp:Label ID="lbl_trans" class="textos"   ReadOnly="true" runat="server"></asp:Label>
                                         </label>
                                     </td>

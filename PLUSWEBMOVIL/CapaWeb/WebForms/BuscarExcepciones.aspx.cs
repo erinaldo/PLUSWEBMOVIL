@@ -9,6 +9,8 @@ using CapaDatos.Modelos;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using System.IO;
 using System.Text;
+using CapaProceso.Comfiar;
+using CapaProceso.ConfiarPrueba;
 
 namespace CapaWeb.WebForms
 {
@@ -141,7 +143,7 @@ namespace CapaWeb.WebForms
             lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
 
         }
-      
+
 
 
 
@@ -172,13 +174,13 @@ namespace CapaWeb.WebForms
                 DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
                 DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
 
-                
-                        listaExcepciones = consultaExcepcion.ListaExcepcionPFecha(ComPwm,Fechainicio, Fechafin, AmUsrLog);
-                        Grid.DataSource = listaExcepciones;
-                        Grid.DataBind();
-                        Grid.Height = 100;
-                    
-                    
+
+                listaExcepciones = consultaExcepcion.ListaExcepcionPFecha(ComPwm, Fechainicio, Fechafin, AmUsrLog);
+                Grid.DataSource = listaExcepciones;
+                Grid.DataBind();
+                Grid.Height = 100;
+
+
 
             }
             catch (Exception ex)
@@ -201,18 +203,18 @@ namespace CapaWeb.WebForms
 
                 if (cbx_usuario.SelectedValue != "0")
                 {
-                    if(txtDocumento.Text != "0")
-                    { 
-                    if (txtDocumento.Text != "0" && txtmetodo.Text !="0")
+                    if (txtDocumento.Text != "0")
                     {
-                        listaExcepciones = consultaExcepcion.ListaExcepcionPC(ComPwm, cbx_usuario.SelectedValue.Trim(), txtDocumento.Text.Trim(), Fechainicio, Fechafin, AmUsrLog, txtmetodo.Text.Trim());
-                        Grid.DataSource = listaExcepciones;
-                        Grid.DataBind();
-                        Grid.Height = 100;
-                    }
-                    else
+                        if (txtDocumento.Text != "0" && txtmetodo.Text != "0")
+                        {
+                            listaExcepciones = consultaExcepcion.ListaExcepcionPC(ComPwm, cbx_usuario.SelectedValue.Trim(), txtDocumento.Text.Trim(), Fechainicio, Fechafin, AmUsrLog, txtmetodo.Text.Trim());
+                            Grid.DataSource = listaExcepciones;
+                            Grid.DataBind();
+                            Grid.Height = 100;
+                        }
+                        else
 
-                    {
+                        {
                             if (txtDocumento.Text != "0" && txtmetodo.Text == "0")
                             {
                                 //Busca por proceso, usuario, fecha
@@ -221,15 +223,15 @@ namespace CapaWeb.WebForms
                                 Grid.DataBind();
                                 Grid.Height = 100;
                             }
-                   
-                    }
+
+                        }
                     }
                     else
                     {
                         if (txtDocumento.Text == "0" && txtmetodo.Text != "0")
                         {
                             //Busca por metodo, usuario, fecha
-                            listaExcepciones = consultaExcepcion.ListaExcepcionMetUsuFec(ComPwm, cbx_usuario.SelectedValue.Trim(),  Fechainicio, Fechafin, AmUsrLog, txtmetodo.Text.Trim());
+                            listaExcepciones = consultaExcepcion.ListaExcepcionMetUsuFec(ComPwm, cbx_usuario.SelectedValue.Trim(), Fechainicio, Fechafin, AmUsrLog, txtmetodo.Text.Trim());
                             Grid.DataSource = listaExcepciones;
                             Grid.DataBind();
                             Grid.Height = 100;
@@ -246,7 +248,7 @@ namespace CapaWeb.WebForms
                     }
                 }
                 else
-                    if (txtDocumento.Text == "0" && txtmetodo.Text =="0")
+                    if (txtDocumento.Text == "0" && txtmetodo.Text == "0")
                 {
                     //Busca solo por fechas
                     listaExcepciones = consultaExcepcion.ListaExcepcionPFecha(ComPwm, Fechainicio, Fechafin, AmUsrLog);
@@ -257,7 +259,7 @@ namespace CapaWeb.WebForms
                 }
                 else
                 {
-                    if (txtDocumento.Text != "0" && txtmetodo.Text =="0")
+                    if (txtDocumento.Text != "0" && txtmetodo.Text == "0")
                     {
                         //Busca por documento(proceso) y fecha
                         listaExcepciones = consultaExcepcion.ListaExcepcionProcesoFecha(ComPwm, txtDocumento.Text.Trim(), Fechainicio, Fechafin, AmUsrLog);
@@ -268,7 +270,7 @@ namespace CapaWeb.WebForms
                     else
                     {
                         //Busca por metodo, fechas y todos los usuarios
-                        listaExcepciones = consultaExcepcion.ListaExcepcionMetodoFecha(ComPwm,  Fechainicio, Fechafin, AmUsrLog,txtmetodo.Text.Trim());
+                        listaExcepciones = consultaExcepcion.ListaExcepcionMetodoFecha(ComPwm, Fechainicio, Fechafin, AmUsrLog, txtmetodo.Text.Trim());
                         Grid.DataSource = listaExcepciones;
                         Grid.DataBind();
                         Grid.Height = 100;
@@ -298,7 +300,7 @@ namespace CapaWeb.WebForms
                 //Escoger opcion
 
                 int Id;
-                
+
                 switch (e.CommandName) //ultilizo la variable para la opcion
                 {
 
@@ -311,7 +313,7 @@ namespace CapaWeb.WebForms
                             qs.Add("TRN", "VER");
                             qs.Add("Id", Id.ToString());
 
-                          
+
 
                             Response.Redirect("FormExcepciones.aspx" + Encryption.EncryptQueryString(qs).ToString());
 
@@ -372,6 +374,15 @@ namespace CapaWeb.WebForms
 
             }
 
+
+        }
+  
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+           /* LLenarModelo prueba = new LLenarModelo();
+            prueba.LlenarResolucionFactura(AmUsrLog, ComPwm, "991");*/
+            XmlFacturaV1 nuevo = new XmlFacturaV1();
+            nuevo.LlenarResolucionFactura( ComPwm, AmUsrLog);
 
         }
     }

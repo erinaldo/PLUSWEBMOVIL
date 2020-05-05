@@ -176,7 +176,7 @@ namespace CapaProceso.Consultas
                     }
                     else
                     {
-                        return false;
+                        
                     }
 
 
@@ -209,23 +209,23 @@ namespace CapaProceso.Consultas
                 //--------TRAER DATOS DE LA TABLA wmm_correos, wmm_correos_emisor--------//
                 modelowmm_correos = FormatoEmail( Ccf_cod_emp, "RCOMFELECT", "DocElecCli", Ccf_usuario);
                 
-                    if (conscabcera.email_tit != null)
+                    if (conscabcera.email_tit == null || conscabcera.email_tit =="")
                     {
-                        EnviarCorreo correo = new EnviarCorreo();
-                          
-                        string mensaje = "<strong>  </strong>" + modelowmm_correos.texto + "<br/>" + modelowmm_correos.firma;
-
-                            List<string> listaPath = new List<string>();// lista de archivos adjuntos
-                            listaPath.Add(pathPdf);
-                            listaPath.Add(pathXml);
-                            correo.enviarcorreo(modelowmm_correos.titulo, mensaje, email, listaPath, Ccf_cod_emp);
-                            return true;
-
-                        }
+                      
+                    return false;
+                }
                     else
                     {
-                        return false;
-                    }
+                    EnviarCorreo correo = new EnviarCorreo();
+
+                    string mensaje = "<strong>  </strong>" + modelowmm_correos.texto + "<br/>" + modelowmm_correos.firma;
+
+                    List<string> listaPath = new List<string>();// lista de archivos adjuntos
+                    listaPath.Add(pathPdf);
+                    listaPath.Add(pathXml);
+                    correo.enviarcorreo(modelowmm_correos.titulo, mensaje, email, listaPath, Ccf_cod_emp);
+                    return true;
+                }
             }
             catch (Exception e)
             {
