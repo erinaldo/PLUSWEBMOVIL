@@ -1,0 +1,120 @@
+﻿using CapaDatos.Modelos;
+using CapaProceso.Consultas;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace CapaWeb.WebForms
+{
+    public partial class BuscarCuentasPagar : System.Web.UI.Page
+    {
+        public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
+        public ConsultaLogo consultaLogo = new ConsultaLogo();
+        public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
+        ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
+        modeloExepciones ModeloExcepcion = new modeloExepciones();
+        public string ComPwm;
+        public string socio;
+        public string empresa_codigo;
+        public string AmUsrLog;
+        public string cod_proceso;
+        public string UsuarioId;
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                //lbl_error.Text = "";
+                RecuperarCokie();
+                ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
+                foreach (var item in ListaModelowmspclogo)
+                {
+                    Modelowmspclogo = item;
+                    break;
+                }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("Page_Load", ex.ToString());
+            }
+        }
+        public void RecuperarCokie()
+        {
+            try
+            {
+                // lbl_error.Text = "";
+
+                if (Request.Cookies["ComPwm"] != null)
+                {
+                    ComPwm = Request.Cookies["ComPwm"].Value;
+                }
+                else
+                {
+                    Response.Redirect("../Inicio.asp");
+                }
+
+                if (Request.Cookies["AmScNCod"] != null)
+                {
+                    socio = Request.Cookies["AmScNCod"].Value;
+                }
+
+
+
+                if (Request.Cookies["AmUsrLog"] != null)
+                {
+                    AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+
+                }
+                if (Request.Cookies["ProcAud"] != null)
+                {
+                    cod_proceso = Request.Cookies["ProcAud"].Value;
+                }
+                else
+                {
+                    cod_proceso = Convert.ToString(Request.QueryString["cod_proceso"]);
+                    if (cod_proceso != null)
+                    {
+                        //Crear cookie de cod_proceso
+                        Response.Cookies["ProcAud"].Value = cod_proceso;
+                    }
+                }
+                //Codigo empresa
+
+
+                if (Request.Cookies["AmComCod"] != null)
+                {
+                    empresa_codigo = Request.Cookies["AmComcod"].Value;
+                }
+
+                Response.Cookies["empresa_codigo"].Value = empresa_codigo;
+                //socio negocio
+                // string socio_codigo = "100";
+                Response.Cookies["socio_codigo"].Value = socio;
+                Response.Cookies["usuario"].Value = AmUsrLog;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("RecuperarCokie", ex.ToString());
+
+            }
+
+        }
+        public void GuardarExcepciones(string metodo, string error)
+        {
+
+            ModeloExcepcion.cod_emp = ComPwm;
+            ModeloExcepcion.proceso = "BuscarCuentasPagar.aspx";
+            ModeloExcepcion.metodo = metodo;
+            ModeloExcepcion.error = error;
+            ModeloExcepcion.fecha_hora = DateTime.Now;
+            ModeloExcepcion.usuario_mod = AmUsrLog;
+
+            consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
+            //mandar mensaje de error a label
+            // lbl_error.Text = "No se pudo completar la acción" + metodo + "." + " Por favor notificar al administrador.";
+
+        }
+    }
+}

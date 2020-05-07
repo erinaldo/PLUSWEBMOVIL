@@ -116,6 +116,8 @@
     <Content Include="WebForms\BuscarCentroCosto.aspx" />
     <Content Include="WebForms\BuscarCierreCaja.aspx" />
     <Content Include="WebForms\BuscarClaseArticulo.aspx" />
+    <Content Include="WebForms\BuscarCuentasCobrar.aspx" />
+    <Content Include="WebForms\BuscarCuentasPagar.aspx" />
     <Content Include="WebForms\BuscarExcepciones.aspx" />
     <Content Include="WebForms\BuscarFacturaPos.aspx" />
     <Content Include="WebForms\BuscarFacturasNC.aspx" />
@@ -268,6 +270,20 @@
     </Compile>
     <Compile Include="WebForms\BuscarClaseArticulo.aspx.designer.cs">
       <DependentUpon>BuscarClaseArticulo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarCuentasCobrar.aspx.cs">
+      <DependentUpon>BuscarCuentasCobrar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarCuentasCobrar.aspx.designer.cs">
+      <DependentUpon>BuscarCuentasCobrar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarCuentasPagar.aspx.cs">
+      <DependentUpon>BuscarCuentasPagar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarCuentasPagar.aspx.designer.cs">
+      <DependentUpon>BuscarCuentasPagar.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\BuscarExcepciones.aspx.cs">
       <DependentUpon>BuscarExcepciones.aspx</DependentUpon>
