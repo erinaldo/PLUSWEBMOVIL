@@ -9,6 +9,7 @@ using CapaDatos.Modelos;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using System.IO;
 using System.Text;
+using CapaDatos.Sql;
 
 namespace CapaWeb.WebForms
 {
@@ -329,15 +330,22 @@ namespace CapaWeb.WebForms
                                     {
                                         //Tipo NCE siempre trae lleno cuando es nc
                                         Ccf_tipo2 = "NC";
-                                          if (Modelowmspclogo.pdf_nc.Trim() =="DEFECTO2")
-                                            {
-                                                    PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
-                                                    pathPdf = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                                           }
+                                        cod_proceso = "RCOMNCELEC";
+                                        ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
+                                        string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
+
+                                        if (tipo_doc.Trim() == "DEFECTO2")
+                                        {
+                                            PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
+                                            pathPdf = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                                        }
                                         else
                                         {
-                                            PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
-                                             pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                                            if (tipo_doc.Trim() == "DEFECTO3")
+                                            {
+                                                PdfNCEleV3Default3 pdf = new PdfNCEleV3Default3();
+                                                pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                                            }
 
                                         }
 
@@ -345,7 +353,10 @@ namespace CapaWeb.WebForms
                                     }
                                     else
                                     {
-                                        if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+                                        cod_proceso = "RCOMFELECT";
+                                        ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
+                                        string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
+                                        if (tipo_doc.Trim() == "DEFECTO2")
                                         {
 
                                             PdfFacEleV2Default2 pdf = new PdfFacEleV2Default2();
@@ -353,8 +364,11 @@ namespace CapaWeb.WebForms
                                         }
                                         else
                                         {
-                                            PdfFacturaElectronica pdf = new PdfFacturaElectronica();
-                                             pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                                            if (tipo_doc.Trim() == "DEFECTO3")
+                                            {
+                                                PdfFacEleV3Default3 pdf = new PdfFacEleV3Default3();
+                                                pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                                            }
 
                                         }
 

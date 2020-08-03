@@ -130,5 +130,39 @@ namespace CapaDatos.Sql
                 return null;
             }
         }
+
+        public string TipoDocImprimir(string cod_emp, string cod_proceso, string usuario)
+        {
+            try
+            {
+
+                using (cn = conexion.genearConexion())
+                {
+                    string tipo_doc = null;
+
+                    string consulta = ("SELECT * FROM wmv_impresion where wmv_impresion.cod_emp =@cod_emp and wmv_impresion.cod_proceso = @cod_proceso");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    //conmand.CommandType = CommandType.StoredProcedure;
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("@cod_proceso", SqlDbType.VarChar).Value = cod_proceso;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        tipo_doc = Convert.ToString(dr["pagina"]);
+                    }
+                    return tipo_doc;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "ConsultaLogoSql.cs", "TipoDocImprimir", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ using CapaProceso.RestCliente;
 using CapaDatos.Modelos;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using System.IO;
+using CapaDatos.Sql;
 
 namespace CapaWeb.WebForms
 {
@@ -162,8 +163,8 @@ namespace CapaWeb.WebForms
                 string respuesta = "";
                 if (Modelowmspclogo.version_fe == "2")
                 {
-                    ConsumoRestNDFinV2 consumoRest = new ConsumoRestNDFinV2();
-                    respuesta = consumoRest.EnviarNotaDebito(ComPwm, AmUsrLog, "C", "NC", lbl_nro_trans.Text, conscabcera.nro_trans_padre);
+                    ConsumoRestNDV3 consumoRest = new ConsumoRestNDV3();
+                    respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C",conscabcera.tipo_nce, lbl_nro_trans.Text, conscabcera.nro_trans_padre);
                 }
          
                 if (respuesta == "")
@@ -229,11 +230,16 @@ namespace CapaWeb.WebForms
                 string nombreXml = ModeloResQr.cufe.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + ".xml";
                 string pathXml = pathTemporal + nombreXml;
                 File.WriteAllText(pathXml, StringXml);
+                string  cod_proceso = "RCOMFELECT";
+                // cod_proceso = "RCOMNDEB";
+                ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
+                string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
+                conscabcera = null;
                 //-------------OBTENER EL XML Y PDF PARA EL ENVIO-------------------//
-                if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+                if (tipo_doc.Trim() == "DEFECTO3")
                 {
 
-                    PdfNDEleV2Default2 pdf1 = new PdfNDEleV2Default2();
+                    PdfNDEleV3Default3 pdf1 = new PdfNDEleV3Default3();
                     pathPdf = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                 }
 
@@ -269,8 +275,8 @@ namespace CapaWeb.WebForms
                 if (Modelowmspclogo.version_fe == "2")
                 {
              
-                    ConsumoRestNDFinV2 consumoRest = new ConsumoRestNDFinV2();
-                    respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", "NC", lbl_nro_trans.Text);
+                    ConsumoRestNDV3 consumoRest = new ConsumoRestNDV3();
+                    respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
                 }
 
 

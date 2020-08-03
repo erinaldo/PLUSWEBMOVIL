@@ -16,11 +16,11 @@ namespace CapaProceso.Consultas
         string metodo = "DetalleFactura.cs";
 
         //actualizar detalle factura sin lista
-        public string ActualizarDetalleFacturaNCSL(string nom_articulo2, decimal cantidad, decimal precio_unit, string nro_trans, int linea, string cod_emp, decimal porc_descto, string usuario_mod, string cod_ccostos)
+        public string ActualizarDetalleFacturaNCSL(string nom_articulo2, decimal cantidad, decimal precio_unit, string nro_trans, int linea, string cod_emp, decimal porc_descto, string usuario_mod, string cod_ccostos, decimal valor_desc)
         {
             try
             {
-                string respuesta = detalleFacturas.ActualizarDetalleSL(nom_articulo2, cantidad, precio_unit, nro_trans, linea, cod_emp, porc_descto, usuario_mod, cod_ccostos);
+                string respuesta = detalleFacturas.ActualizarDetalleSL(nom_articulo2, cantidad, precio_unit, nro_trans, linea, cod_emp, porc_descto, usuario_mod, cod_ccostos, valor_desc);
                 return respuesta;
             }
             catch (Exception e)
@@ -33,11 +33,11 @@ namespace CapaProceso.Consultas
         }
 
         //actualizar detalle factura sin lista
-        public string ActualizarDetalleFacturaSL(string nom_articulo2, decimal cantidad, decimal precio_unit, string nro_trans, int linea, string cod_emp, decimal porc_descto, string usuario_mod, string cod_ccostos)
+        public string ActualizarDetalleFacturaSL(string nom_articulo2, decimal cantidad, decimal precio_unit, string nro_trans, int linea, string cod_emp, decimal porc_descto, string usuario_mod, string cod_ccostos, decimal valor_dsc)
         {
             try
             {
-                string respuesta = detalleFacturas.ActualizarDetalleSL(nom_articulo2,  cantidad,  precio_unit,  nro_trans, linea,  cod_emp,  porc_descto, usuario_mod, cod_ccostos);
+                string respuesta = detalleFacturas.ActualizarDetalleSL(nom_articulo2,  cantidad,  precio_unit,  nro_trans, linea,  cod_emp,  porc_descto, usuario_mod, cod_ccostos, valor_dsc);
                 return respuesta;
             }
             catch (Exception e)
@@ -123,7 +123,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(detalleFactura.cod_emp, metodo, "InsertarDetalleFactura", e.ToString(), DateTime.Today, detalleFactura.usuario_mod);
+                guardarExcepcion.ClaseInsertarExcepcion(detalleFactura.cod_emp, metodo, "InsertarDetalleFactura", e.ToString(), DateTime.Now, detalleFactura.usuario_mod);
                 return "No se pudo completar la acción." + "InsertarDetalleFactura." + " Por favor notificar al administrador.";
             }
 

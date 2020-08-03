@@ -155,7 +155,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "BuscarUsuarioLogo", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "BuscarUsuarioLogo", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }

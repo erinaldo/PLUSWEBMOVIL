@@ -131,7 +131,7 @@ namespace CapaDatos.Sql
                 using (cn = conexion.genearConexionERP(stringConexionERP))
                 {
 
-                    string consulta = ("SELECT * FROM AdSer WHERE AdSer.AmComCod=@cod_emp AND AdSer.AdSerEst=@estado AND AdSer.AcSerCod=@serie AND @fecha BETWEEN AdSer.AdSerFHR AND AdSer.AdSerFCd");
+                    string consulta = ("SELECT * FROM AdSer WHERE AdSer.AmComCod=@cod_emp AND AdSer.AdSerEst=@estado AND AdSer.AcSerCod=@serie AND @fecha BETWEEN AdSer.AdSerFRs AND AdSer.AdSerFCd");
                     SqlCommand conmand = new SqlCommand(consulta, cn);
                     conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = emp_erp;
                     conmand.Parameters.Add("@estado", SqlDbType.VarChar).Value = estado;

@@ -1029,8 +1029,10 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
                     total1.DefaultCell.HorizontalAlignment = 0; total1.AddCell(new Paragraph(item.nom_impuesto, fontText3));
                     total1.DefaultCell.HorizontalAlignment = 2; total1.AddCell(new Paragraph(item.porc_impu1, fontText3));
-                    total1.DefaultCell.HorizontalAlignment = 2; total1.AddCell(new Paragraph(item.base_impu1, fontText3));
-                    total1.DefaultCell.HorizontalAlignment = 2; total1.AddCell(new Paragraph(item.valor_impu1, fontText3));
+                    decimal base_imp = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(item.base_impu));
+                    total1.DefaultCell.HorizontalAlignment = 2; total1.AddCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, base_imp), fontText3));
+                    decimal valor_imp = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(item.valor_impu));
+                    total1.DefaultCell.HorizontalAlignment = 2; total1.AddCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, valor_imp), fontText3));
 
                 }
 

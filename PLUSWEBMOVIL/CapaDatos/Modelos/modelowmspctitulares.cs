@@ -48,7 +48,7 @@ namespace CapaDatos.Modelos
         public string cod_sucursal { get; set; }
         public string nom_sucursal { get; set; }
         public string codnom_suc { get; set; }
-      
+        public string obligacion_fiscal { get; set; }
 
     }
 }

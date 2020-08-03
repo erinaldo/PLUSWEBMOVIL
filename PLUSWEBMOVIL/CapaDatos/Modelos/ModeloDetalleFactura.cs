@@ -66,6 +66,9 @@ namespace CapaProceso.Modelos
         //Campos para NC DEOLUCION
         public string  nc_pvp { get; set; }
         public string nc_iva { get; set; }
+        //campos 682
+        public string valor_ant { get; set; }
+        public string porc_ant { get; set; }
 
 
     }

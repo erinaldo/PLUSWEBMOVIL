@@ -13,6 +13,9 @@ namespace CapaWeb.WebForms
     {
         Consultaestadosfactura Consultaestados = new Consultaestadosfactura();
         List<modeloestadosfactura> Listaestados = null;
+        Consultawmspcresfact ConsultaResolucion = new Consultawmspcresfact();
+        modelowmspcresfact resolucion = new modelowmspcresfact();
+        List<modelowmspcresfact> listaRes = null;
 
         public ConsultaRolesFactura ConsultaRoles = new ConsultaRolesFactura();
         public modeloRolesFacturacion ModeloRoles = new modeloRolesFacturacion();
@@ -48,7 +51,7 @@ namespace CapaWeb.WebForms
         public string ComPwm;
         public string AmUsrLog;
         public string Ccf_tipo1 = "C";
-        public string Ccf_tipo2 = "NC";
+        public string Ccf_tipo2 = "NDV";
         public string Ccf_nro_trans = "0";
         public string Ccf_estado = "0";
         public string Ccf_cliente = "0";
@@ -64,9 +67,11 @@ namespace CapaWeb.WebForms
         public string Ven__cod_tipotit = "clientes";
         public string Ven__cod_tit = " ";
         public string cod_proceso;
+        public string ResF_estado = "v";
+        public string ResF_serie = "0";
+        public string ResF_tipo = "D";
 
-
-        public string EstF_proceso = "RCOMNCRED";
+        public string EstF_proceso = "RCOMNDEB";
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -119,7 +124,7 @@ namespace CapaWeb.WebForms
             {
                 lbl_error.Text = "";
                 //Rol crear factura nueva
-                ListaModelosRoles = ConsultaRoles.BuscarRolNuevo(AmUsrLog);
+                ListaModelosRoles = ConsultaRoles.BuscarRolNuevoND(AmUsrLog);
                 int count1 = 0;
                 foreach (var item in ListaModelosRoles)
                 {
@@ -133,7 +138,7 @@ namespace CapaWeb.WebForms
                     btn_FinancieraND.Visible = true;
                  }
                 //Rol acceso a la pantalla de Buscar facturas
-                ListaModelosRoles = ConsultaRoles.BuscarAccesoFactura(AmUsrLog);
+                ListaModelosRoles = ConsultaRoles.BuscarRolAccesoND(AmUsrLog);
                 int count2 = 0;
                 foreach (var item in ListaModelosRoles)
                 {
@@ -146,7 +151,7 @@ namespace CapaWeb.WebForms
                 }
 
                 //Rol editar factura
-                ListaModelosRoles = ConsultaRoles.BuscarRolEditar(AmUsrLog);
+                ListaModelosRoles = ConsultaRoles.BuscarRolEditarND(AmUsrLog);
                 int count3 = 0;
                 foreach (var item in ListaModelosRoles)
                 {
@@ -159,7 +164,7 @@ namespace CapaWeb.WebForms
                 }
 
                 //Rol eliminar factura
-                ListaModelosRoles = ConsultaRoles.BuscarRolEditar(AmUsrLog);
+                ListaModelosRoles = ConsultaRoles.BuscarRolEliminarND(AmUsrLog);
                 int count4 = 0;
                 foreach (var item in ListaModelosRoles)
                 {
@@ -171,24 +176,7 @@ namespace CapaWeb.WebForms
                     Grid.Columns[7].Visible = false;
                 }
 
-                //Rol imprimir factura
-                ListaModelosRoles = ConsultaRoles.BuscarRolEditar(AmUsrLog);
-                int count5 = 0;
-                foreach (var item in ListaModelosRoles)
-                {
-                    count5++;
-                }
-
-                if (count5 == 0)
-                {
-                    Grid.Columns[8].Visible = false;
-                }
-                //Rol reactivar NC USA LAS MISMAS DE FACTURA NORMAL
-                ListaModelosRoles = ConsultaRoles.BuscarRolReactivar(AmUsrLog);
-                if (ListaModelosRoles.Count == 0)
-                {
-                    Grid.Columns[13].Visible = false;
-                }
+              
             }
             catch (Exception ex)
             {
@@ -202,6 +190,31 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
+                //LIsta Resolucion facturas
+                listaRes = ConsultaResolucion.ConsultaResolusiones(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo);
+                resolucion = null;
+                string lbl_tipofac = null;
+                foreach (modelowmspcresfact item in listaRes)
+                {
+                    resolucion = item;
+                }
+                if (resolucion.tipo_fac == "S")
+                {
+                    lbl_tipofac = "NDVE";
+                    cbx_tipo_factura.SelectedValue = lbl_tipofac;
+                }
+                else
+                {
+                    if (listaRes.Count == 0)
+                    {
+                        lbl_error.Text = "No se existe resolución activa";
+                    }
+                    else
+                    {
+                        lbl_tipofac = "NDV";
+                        cbx_tipo_factura.SelectedValue = lbl_tipofac;
+                    }
+                }
                 DateTime Fechainicio = DateTime.Today;
                 DateTime Fechafin = DateTime.Today;
 
@@ -211,6 +224,7 @@ namespace CapaWeb.WebForms
                 string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
                 string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
                 string Ccf_aniof = Fechafin.Year.ToString();
+                Ccf_tipo2 = lbl_tipofac;
 
 
                 listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
@@ -283,6 +297,7 @@ namespace CapaWeb.WebForms
                 string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
                 string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
                 string Ccf_aniof = Fechafin.Year.ToString();
+                Ccf_tipo2 = cbx_tipo_factura.SelectedValue;
 
 
                 listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
@@ -441,7 +456,7 @@ namespace CapaWeb.WebForms
                                 conscabcera = item;
                             }
 
-                            if (conscabcera.tipo_nce.Trim() == "NCV" || conscabcera.tipo_nce.Trim() == "NCM")
+                            if (conscabcera.tipo_nce.Trim() == "NDV")
                             {
                                 qs.Add("Id", Id.ToString());
                                 Response.Write("<script>window.open('" + "ReporteNotaDebito.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
@@ -496,7 +511,7 @@ namespace CapaWeb.WebForms
 
                                     conscabcera = null;
                                     conscabcera = buscarCabezeraFactura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Convert.ToString(Id));
-                                    Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans=" + Convert.ToString(Id) + "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo=NC");
+                                    Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans=" + Convert.ToString(Id) + "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo="+conscabcera.tipo);
                                     break;
                             }
 
@@ -557,7 +572,7 @@ namespace CapaWeb.WebForms
                             {
                                 conscabcera = item;
                             }
-                            if (conscabcera.tipo_nce.Trim() == "NCV" || conscabcera.tipo_nce.Trim() == "NCM")
+                            if (conscabcera.tipo_nce.Trim() == "NDV")
                             {
 
                                 this.Page.Response.Write("<script language='JavaScript'>window.alert('SU NOTA DÉBITO NO TIENE HABILITADA ESTA OPCION')+ error;</script>");
@@ -589,7 +604,7 @@ namespace CapaWeb.WebForms
                             {
                                 conscabcera = item;
                             }
-                            if (conscabcera.tipo_nce.Trim() == "NCV" || conscabcera.tipo_nce.Trim() == "NCM")
+                            if (conscabcera.tipo_nce.Trim() == "NDV")
                             {
 
                                 this.Page.Response.Write("<script language='JavaScript'>window.alert('SU NOTA DÉBITO NO TIENE HABILITADA ESTA OPCION')+ error;</script>");

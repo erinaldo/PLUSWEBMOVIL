@@ -203,12 +203,12 @@ namespace CapaProceso.RestCliente
         {
             try
             {
-
-                listaConsDet = ConsultaDeta.ConsultaDetalleFacura(Ccf_nro_trans);
+                //nuevos campos detalle
+                listaConsDet = ConsultaDeta.ConsultaDetalleFacturaExcento(Ccf_nro_trans);
                 List<DetalleFEV2> detalle = new List<DetalleFEV2>();
                 ModeloCotizacion = null;
                 ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
-
+;
                 foreach (var item in listaConsDet)
                 {
                     DetalleFEV2 itemDetalle = new DetalleFEV2();
@@ -216,23 +216,49 @@ namespace CapaProceso.RestCliente
                     itemDetalle.cantidad = Convert.ToInt32(item.cantidad);
                     itemDetalle.idproducto = item.cod_articulo.Trim();
                     itemDetalle.idunidad = "EA";//Por defecto
-                    if (conscabcera.cod_moneda.Trim() != "COP")
+                    if(item.valor_ant =="")
                     {
-                        itemDetalle.iva = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.valor_iva;
+                        item.valor_ant = "0";
                     }
-                    else { itemDetalle.iva = item.valor_iva; }
-                   
-                    if (conscabcera.cod_moneda.Trim() != "COP")
+                    if (item.valor_ant == null || Convert.ToDecimal(item.valor_ant) == 0)
                     {
-                        itemDetalle.ivausd = item.valor_iva;
+                        if (conscabcera.cod_moneda.Trim() != "COP")
+                        {
+                            itemDetalle.iva = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.valor_iva;
+                        }
+                        else { itemDetalle.iva = item.valor_iva; }
+
+                        if (conscabcera.cod_moneda.Trim() != "COP")
+                        {
+                            itemDetalle.ivausd = item.valor_iva;
+                        }
+                        else
+                        { itemDetalle.ivausd = 0; }
                     }
                     else
-                    { itemDetalle.ivausd = 0; }
+                    {
+                        if (conscabcera.cod_moneda.Trim() != "COP")
+                        {
+                            itemDetalle.iva = 0;
+                        }
+                        else { itemDetalle.iva = 0; }
+
+                        if (conscabcera.cod_moneda.Trim() != "COP")
+                        {
+                            itemDetalle.ivausd = 0;
+                        }
+                        else
+                        { itemDetalle.ivausd = 0; }
+                    }
 
                     itemDetalle.nombreproducto = item.nom_articulo.Trim()+ " "+item.nom_articulo2.Trim();
                     itemDetalle.operacion = "SA"; //Factura en venta
                     itemDetalle.porcdcto = Convert.ToInt32(item.porc_descto);
-                    itemDetalle.porciva = Convert.ToInt32(item.porc_iva);
+                    if (item.valor_ant == null || Convert.ToDecimal(item.valor_ant) == 0)
+                    {
+                        itemDetalle.porciva = Convert.ToInt32(item.porc_iva);
+                    }
+                    else { itemDetalle.porciva = 0; }
                     itemDetalle.pos = item.linea;
                     if (conscabcera.cod_moneda.Trim() != "COP")
                     {
@@ -261,6 +287,9 @@ namespace CapaProceso.RestCliente
                     {                        
                         itemDetalle.subtotalusd = 0;
                     }
+                    if (Convert.ToDecimal(item.valor_ant) > 0)
+                    { itemDetalle.ivaexencion = item.valor_iva; }
+                    else { itemDetalle.ivaexencion = 0; }
                     detalle.Add(itemDetalle);
 
                 }
@@ -330,9 +359,6 @@ namespace CapaProceso.RestCliente
 
                 ModeloUsuSucursal = BuscarUsuarioSucursal(Ccf_cod_emp, Ccf_usuario);
 
-                vendedor = null;
-                vendedor = buscarCliente(Ccf_usuario, Ccf_cod_emp, "vendedores", conscabcera.cod_vendedor, Ven__cod_dgi,"0");
-
                 sucursal.ciudad = cliente.ciudad_tit;
                 sucursal.codcliente = conscabcera.cod_cliente;
                 sucursal.codpostal = "000000"; //por defecto
@@ -372,7 +398,7 @@ namespace CapaProceso.RestCliente
 
                 string Ven__cod_tit = conscabcera.cod_cliente;
                 cliente = null;
-                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi,"0");
+                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, conscabcera.cod_suc_cli);
 
                 tercero.apli1 = cliente.primer_apellido;
                 tercero.apl2 = cliente.segundo_apellido;

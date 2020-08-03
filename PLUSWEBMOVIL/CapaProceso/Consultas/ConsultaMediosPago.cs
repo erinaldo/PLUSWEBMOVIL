@@ -58,7 +58,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "BuscarMediosPagoTemporal", e.ToString(), DateTime.Today, usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "BuscarMediosPagoTemporal", e.ToString(), DateTime.Now, usuario);
                 return null;
             }
         }
@@ -73,7 +73,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(facturasPagos.cod_emp, metodo, "InsertarPagosFactura", e.ToString(), DateTime.Today, "INS");
+                guardarExcepcion.ClaseInsertarExcepcion(facturasPagos.cod_emp, metodo, "InsertarPagosFactura", e.ToString(), DateTime.Now, "INS");
                 return "No se pudo completar la acción." + "InsertarPagosFactura." + " Por favor notificar al administrador.";
             }
 

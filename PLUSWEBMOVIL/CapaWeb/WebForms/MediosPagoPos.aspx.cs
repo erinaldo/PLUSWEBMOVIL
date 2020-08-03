@@ -88,13 +88,17 @@ namespace CapaWeb.WebForms
                         string ComPwm = Request.Cookies["ComPwm"].Value;
 
                     }
-                    if (Session["TotalFactura"] != null)
-                    {
-                        txt_total_factura.Text = Session["TotalFactura"].ToString();
-                    }
+  
                     if (Session["valor_asignado1"] != null)
                     {
                         txt_nro_trans.Text = Session["valor_asignado1"].ToString();
+                        //Buscar monto imponible de factura
+                        conscabcera = null;
+                        conscabcera = BuscarCabecera();
+                        DecimalesMoneda = null;
+                        DecimalesMoneda = BuscarDecimales(conscabcera.cod_moneda);
+                        
+                        txt_total_factura.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), conscabcera.total);
                     }
                     if (Session["Tipo"] != null)
                     {
@@ -107,6 +111,8 @@ namespace CapaWeb.WebForms
                         if (transaccion.Trim() == "VER")
                         {
                             BuscarPagosPrevios();
+                            gv_Producto.Columns[5].Visible = false;
+                            gv_Producto.Columns[6].Visible = false;
                             Agregar_MedioPago.Visible = false;
                         }
                     }

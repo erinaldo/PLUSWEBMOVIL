@@ -50,6 +50,7 @@ namespace CapaDatos.Modelos
         public string tipo_nce { get; set; }
         public string mot_nce { get; set; }
         public string cod_suc_cli { get; set; }
+        public decimal desctos_rcgos { get; set; }
 
     }
 }

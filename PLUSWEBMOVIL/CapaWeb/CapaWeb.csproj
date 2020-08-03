@@ -116,8 +116,10 @@
     <Content Include="WebForms\BuscarCentroCosto.aspx" />
     <Content Include="WebForms\BuscarCierreCaja.aspx" />
     <Content Include="WebForms\BuscarClaseArticulo.aspx" />
+    <Content Include="WebForms\BuscarConceptoFiscal.aspx" />
     <Content Include="WebForms\BuscarCuentasCobrar.aspx" />
     <Content Include="WebForms\BuscarCuentasPagar.aspx" />
+    <Content Include="WebForms\BuscarDatosFacturacion.aspx" />
     <Content Include="WebForms\BuscarExcepciones.aspx" />
     <Content Include="WebForms\BuscarFacturaPos.aspx" />
     <Content Include="WebForms\BuscarFacturasNC.aspx" />
@@ -127,6 +129,7 @@
     <Content Include="WebForms\BuscarIngresoFacturasPgs.aspx" />
     <Content Include="WebForms\BuscarMoneda.aspx" />
     <Content Include="WebForms\BuscarNotaDebito.aspx" />
+    <Content Include="WebForms\BuscarNotaDebitoNCAnu.aspx" />
     <Content Include="WebForms\BuscarNotasVenta.aspx" />
     <Content Include="WebForms\BuscarPais.aspx" />
     <Content Include="WebForms\BuscarParametros.aspx" />
@@ -142,9 +145,12 @@
     <Content Include="WebForms\CargaMasivaCliente.aspx" />
     <Content Include="WebForms\CargaMasivaFactura.aspx" />
     <Content Include="WebForms\CargaMasivaRecurso.aspx" />
+    <Content Include="WebForms\DescuentosCargosFac.aspx" />
     <Content Include="WebForms\DetalleCierreCaja.aspx" />
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
     <Content Include="WebForms\FormCierreCaja.aspx" />
+    <Content Include="WebForms\FormConceptoFiscal.aspx" />
+    <Content Include="WebForms\FormDatosFacturacion.aspx" />
     <Content Include="WebForms\FormDenominaciones.aspx" />
     <Content Include="WebForms\FormDetalleImpuestos.aspx" />
     <Content Include="WebForms\FormDocumentosElectronicos.aspx" />
@@ -230,8 +236,10 @@
     <Content Include="WebForms\ReenviarNotaDebitoJson.aspx" />
     <Content Include="WebForms\ReporteCierreC.aspx" />
     <Content Include="WebForms\ReporteCierreCaja.aspx" />
+    <Content Include="WebForms\ReporteDocumentosPWM.aspx" />
     <Content Include="WebForms\ReporteNCAnuFac.aspx" />
     <Content Include="WebForms\ReporteFactura.aspx" />
+    <Content Include="WebForms\ReporteNotaCreditoPWM.aspx" />
     <Content Include="WebForms\ReporteNotaDebito.aspx" />
     <Content Include="WebForms\VerDetalleFacturas.aspx" />
   </ItemGroup>
@@ -271,6 +279,13 @@
     <Compile Include="WebForms\BuscarClaseArticulo.aspx.designer.cs">
       <DependentUpon>BuscarClaseArticulo.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\BuscarConceptoFiscal.aspx.cs">
+      <DependentUpon>BuscarConceptoFiscal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarConceptoFiscal.aspx.designer.cs">
+      <DependentUpon>BuscarConceptoFiscal.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\BuscarCuentasCobrar.aspx.cs">
       <DependentUpon>BuscarCuentasCobrar.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -284,6 +299,13 @@
     </Compile>
     <Compile Include="WebForms\BuscarCuentasPagar.aspx.designer.cs">
       <DependentUpon>BuscarCuentasPagar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarDatosFacturacion.aspx.cs">
+      <DependentUpon>BuscarDatosFacturacion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarDatosFacturacion.aspx.designer.cs">
+      <DependentUpon>BuscarDatosFacturacion.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\BuscarExcepciones.aspx.cs">
       <DependentUpon>BuscarExcepciones.aspx</DependentUpon>
@@ -347,6 +369,13 @@
     </Compile>
     <Compile Include="WebForms\BuscarNotaDebito.aspx.designer.cs">
       <DependentUpon>BuscarNotaDebito.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarNotaDebitoNCAnu.aspx.cs">
+      <DependentUpon>BuscarNotaDebitoNCAnu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarNotaDebitoNCAnu.aspx.designer.cs">
+      <DependentUpon>BuscarNotaDebitoNCAnu.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\BuscarNotasVenta.aspx.cs">
       <DependentUpon>BuscarNotasVenta.aspx</DependentUpon>
@@ -453,6 +482,13 @@
     <Compile Include="WebForms\CargaMasivaRecurso.aspx.designer.cs">
       <DependentUpon>CargaMasivaRecurso.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\DescuentosCargosFac.aspx.cs">
+      <DependentUpon>DescuentosCargosFac.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\DescuentosCargosFac.aspx.designer.cs">
+      <DependentUpon>DescuentosCargosFac.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\DetalleCierreCaja.aspx.cs">
       <DependentUpon>DetalleCierreCaja.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -473,6 +509,20 @@
     </Compile>
     <Compile Include="WebForms\FormCierreCaja.aspx.designer.cs">
       <DependentUpon>FormCierreCaja.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormConceptoFiscal.aspx.cs">
+      <DependentUpon>FormConceptoFiscal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormConceptoFiscal.aspx.designer.cs">
+      <DependentUpon>FormConceptoFiscal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormDatosFacturacion.aspx.cs">
+      <DependentUpon>FormDatosFacturacion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormDatosFacturacion.aspx.designer.cs">
+      <DependentUpon>FormDatosFacturacion.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormDenominaciones.aspx.cs">
       <DependentUpon>FormDenominaciones.aspx</DependentUpon>
@@ -708,6 +758,13 @@
     <Compile Include="WebForms\ReporteCierreCaja.aspx.designer.cs">
       <DependentUpon>ReporteCierreCaja.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\ReporteDocumentosPWM.aspx.cs">
+      <DependentUpon>ReporteDocumentosPWM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\ReporteDocumentosPWM.aspx.designer.cs">
+      <DependentUpon>ReporteDocumentosPWM.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\ReporteNCAnuFac.aspx.cs">
       <DependentUpon>ReporteNCAnuFac.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -721,6 +778,13 @@
     </Compile>
     <Compile Include="WebForms\ReporteNotaCredito.aspx.designer.cs">
       <DependentUpon>ReporteNotaCredito.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\ReporteNotaCreditoPWM.aspx.cs">
+      <DependentUpon>ReporteNotaCreditoPWM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\ReporteNotaCreditoPWM.aspx.designer.cs">
+      <DependentUpon>ReporteNotaCreditoPWM.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\ReporteNotaDebito.aspx.cs">
       <DependentUpon>ReporteNotaDebito.aspx</DependentUpon>
@@ -778,6 +842,13 @@
     <Compile Include="WebForms\ReporteFactura.aspx.designer.cs">
       <DependentUpon>ReporteFactura.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\Site1.Master.cs">
+      <DependentUpon>Site1.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\Site1.Master.designer.cs">
+      <DependentUpon>Site1.Master</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\VerDetalleFacturas.aspx.cs">
       <DependentUpon>VerDetalleFacturas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -799,6 +870,7 @@
     </None>
     <Content Include="WebForms\ReporteNotaCredito.aspx" />
     <Content Include="WebForms\Site.Master" />
+    <Content Include="WebForms\Site1.Master" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tema\js\" />

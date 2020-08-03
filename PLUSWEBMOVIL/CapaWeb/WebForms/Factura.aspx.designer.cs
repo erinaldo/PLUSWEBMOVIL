@@ -33,6 +33,8 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label lbl_error;
         protected global::System.Web.UI.WebControls.Label lbl_validacion;
         protected global::System.Web.UI.WebControls.Label lbl_tipofac;
+        protected global::System.Web.UI.WebControls.Label lbl_prc_dsc;
+        protected global::System.Web.UI.WebControls.Label lbl_valor_dsc;
         /// <summary>
         /// Control dniCliente.
         /// </summary>
@@ -41,7 +43,9 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox dniCliente;
-        
+        protected global::System.Web.UI.WebControls.TextBox txt_descuento_apli;
+        protected global::System.Web.UI.WebControls.TextBox txt_cargos;
+        protected global::System.Web.UI.WebControls.TextBox txt_valor_dscl;
         /// <summary>
         /// Control cod_tit.
         /// </summary>
@@ -79,9 +83,7 @@ namespace CapaWeb.WebForms {
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox fecha;
         protected global::System.Web.UI.WebControls.TextBox txtBaseIva19;
-        protected global::System.Web.UI.WebControls.TextBox txtBase15;
-        protected global::System.Web.UI.WebControls.TextBox txtIva19;
-        protected global::System.Web.UI.WebControls.TextBox txtIva15;
+       
         protected global::System.Web.UI.WebControls.TextBox txt_trx;
 
         /// <summary>
@@ -110,7 +112,7 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList cod_vendedor;
-        
+        protected global::System.Web.UI.WebControls.DropDownList cbx_tipo_dsc;
         /// <summary>
         /// Control cod_moneda.
         /// </summary>
@@ -277,6 +279,7 @@ namespace CapaWeb.WebForms {
         /// </remarks>
         
         protected global::System.Web.UI.WebControls.DataGrid gv_Producto;
+        protected global::System.Web.UI.WebControls.DataGrid gv_descuentos;
         protected global::System.Web.UI.WebControls.TextBox iva;
         protected global::System.Web.UI.WebControls.TextBox porcdescto;
         protected global::System.Web.UI.WebControls.TextBox txtSumaDesc;

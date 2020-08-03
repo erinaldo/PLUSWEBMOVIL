@@ -203,9 +203,6 @@ namespace CapaWeb.WebForms
                                 Session.Remove("ListaFacturas");
                                 Session.Remove("valor_asignado");
                                 Session["Tipo"] = "Anular";
-                                DateTime hoy1 = DateTime.Today;
-                                fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
-
                                 ConsultarTasaCambioCanorus();
 
                                 break;
@@ -753,8 +750,7 @@ namespace CapaWeb.WebForms
                     lbl_tiponc.Text = "NCME";
                     DateTime hoy = DateTime.Today;
                     fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
-                    fecha.Enabled = false;
-                }
+                   }
                 else { Session["Ccf_tipo2"] = "NCM";
                     lbl_tiponc.Text = "NCM";
                     fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
@@ -1243,11 +1239,6 @@ namespace CapaWeb.WebForms
 
                 lbl_error.Text = "";
                 DateTime Fecha = Convert.ToDateTime(fecha.Text);
-                if (Session["Ccf_tipo2"].ToString() == "NCME")
-                {
-                    Fecha = DateTime.Today;
-                    fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
-                }
                 //Obtener n° sucursal
                 ListaUsuSucursal = consultaUsuarioSucursal.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
                 ModeloUsuSucursal = null;
@@ -1311,6 +1302,7 @@ namespace CapaWeb.WebForms
                     cabecerafactura.nro_trans_padre = txt_nro_trans_padre.Text;
                     cabecerafactura.mot_nce = cbx_motivo_nc.SelectedValue;
                     cabecerafactura.cod_suc_cli = suc_cliente.Text;
+
                     error = GuardarCabezera.ActualizarCabeceraNC(cabecerafactura);
                     if (string.IsNullOrEmpty(error))
                     {
@@ -1363,6 +1355,7 @@ namespace CapaWeb.WebForms
                     cabecerafactura.nro_trans_padre = txt_nro_trans_padre.Text;
                     cabecerafactura.mot_nce = cbx_motivo_nc.SelectedValue;
                     cabecerafactura.cod_suc_cli = suc_cliente.Text;
+                    cabecerafactura.desctos_rcgos = 0; //Enviar siempre 0 al insetar
                     error = GuardarCabezera.InsertarCabezeraNotaCredito(cabecerafactura);
                     if (string.IsNullOrEmpty(error))
                     {
@@ -1418,7 +1411,7 @@ namespace CapaWeb.WebForms
                     else
                     {
                         //Actualizacion de producto
-                        GuardarDetalles.ActualizarDetalleFacturaNCSL(txt_Descripcion2.Text, Convert.ToDecimal(txt_Cantidad.Text), Convert.ToDecimal(txt_Precio.Text), lbl_trans.Text.Trim(), Convert.ToInt32(txt_linea.Text), ComPwm, Convert.ToDecimal(txt_Desc.Text), AmUsrLog, cod_costos.SelectedValue);
+                        GuardarDetalles.ActualizarDetalleFacturaNCSL(txt_Descripcion2.Text, Convert.ToDecimal(txt_Cantidad.Text), Convert.ToDecimal(txt_Precio.Text), lbl_trans.Text.Trim(), Convert.ToInt32(txt_linea.Text), ComPwm, Convert.ToDecimal(txt_Desc.Text), AmUsrLog, cod_costos.SelectedValue, 0);
 
                     }
                 txt_linea.Text = "";
@@ -1942,12 +1935,12 @@ namespace CapaWeb.WebForms
                         string respuesta = "";
                         if (Modelowmspclogo.version_fe == "1")
                         {
-                            ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
+                            ConsumoRestNCFinV2 consumoRest = new ConsumoRestNCFinV2();
                             respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", conscabcera.nro_trans, txt_nro_trans_padre.Text);
                         }
                         else
                         {
-                            ConsumoRestNCFinV2 consumoRest = new ConsumoRestNCFinV2();
+                            ConsumoRestNCFinV3 consumoRest = new ConsumoRestNCFinV3();
                             respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", conscabcera.nro_trans, txt_nro_trans_padre.Text);
                         }
 
@@ -2014,8 +2007,11 @@ namespace CapaWeb.WebForms
                 string pathPdf = "";
                 string pathXml = "";
 
+                cod_proceso = "RCOMNCELEC";
+                ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
+                string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
                 //-------------OBTENER PDF PARA EL ENVIO-------------------//
-                if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+                if (tipo_doc.Trim() == "DEFECTO2")
                 {
 
                     PdfNCV2Default2 pdf = new PdfNCV2Default2();
@@ -2023,8 +2019,11 @@ namespace CapaWeb.WebForms
                 }
                 else
                 {
-                    PdfNotaCredito pdf = new PdfNotaCredito();
-                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    if (tipo_doc.Trim() == "DEFECTO3")
+                    {
+                        PdfNCV3Default3 pdf = new PdfNCV3Default3();
+                        pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    }
 
                 }
                 Boolean error = enviarcorreocliente.EnviarCorreoCliente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, pathXml);
@@ -2060,17 +2059,23 @@ namespace CapaWeb.WebForms
                 string nombreXml = ModeloResQr.cufe.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + ".xml";
                 string pathXml = pathTemporal + nombreXml;
                 File.WriteAllText(pathXml, StringXml);
-                //-------------OBTENER EL XML Y PDF PARA EL ENVIO-------------------//
-                if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+                cod_proceso = "RCOMNCELEC";
+                ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
+                string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
+                //-------------OBTENER PDF PARA EL ENVIO-------------------//
+                if (tipo_doc.Trim() == "DEFECTO2")
                 {
 
-                    PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
-                     pathPdf = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    PdfNCV2Default2 pdf = new PdfNCV2Default2();
+                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                 }
                 else
                 {
-                    PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
-                     pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans); ;
+                    if (tipo_doc.Trim() == "DEFECTO3")
+                    {
+                        PdfNCV3Default3 pdf = new PdfNCV3Default3();
+                        pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    }
 
                 }
                 Boolean error = enviarcorreocliente.EnviarCorreoRemitente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, pathXml);
@@ -2288,6 +2293,40 @@ namespace CapaWeb.WebForms
             catch (Exception ex)
             {
                 GuardarExcepciones("area_TextChanged", ex.ToString());
+
+            }
+        }
+
+        protected void fecha_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                lbl_validacion.Text = "";
+                lbl_validacion.Visible = false;
+                DateTime Fecha_seleccion = Convert.ToDateTime(fecha.Text);
+                if (Session["Ccf_tipo2"].ToString() == "NCME")
+                {
+
+                    DateTime Fecha_actual = DateTime.Today;
+                    DateTime Fecha_minima = DateTime.Today.AddDays(-5);
+                    int Actual = DateTime.Today.Day;
+                    if (Fecha_seleccion < Fecha_minima)
+                    {
+                        lbl_validacion.Text = "La fecha de la nota de crédito no puede ser menor a cinco días de la fecha actual";
+                        lbl_validacion.Visible = true;
+                    }
+                    if (Fecha_seleccion > Fecha_actual)
+                    {
+
+                        lbl_validacion.Text = "La fecha de la nota de crédito no puede ser mayor a  la fecha actual";
+                        lbl_validacion.Visible = true;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("fecha_TextChanged", ex.ToString());
 
             }
         }

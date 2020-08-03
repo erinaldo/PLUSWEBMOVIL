@@ -194,7 +194,15 @@ namespace CapaProceso.RestCliente
                 encabezado.fvence = conscabceraNC.fec_venc.ToString("yyyy-MM-dd");
                 encabezado.idsuc = 1;
                 encabezado.idvendedor = Convert.ToInt32(conscabceraNC.cod_vendedor);
-                encabezado.iva = Convert.ToDecimal(conscabceraNC.iva);
+                if (conscabceraNC.cod_moneda.Trim() != "COP")
+                {
+                    encabezado.iva = Convert.ToDecimal(conscabceraNC.iva) * Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
+                }
+                else
+                {
+                    encabezado.iva = Convert.ToDecimal(conscabceraNC.iva);
+                }
+                
                 encabezado.mediopago = "ZZZ";//POR DEFECTO ZZZ
                 if (conscabceraNC.cod_fpago.Trim() == "00") //1 = contado, 2= credito
                 { encabezado.metodopago = 1; }

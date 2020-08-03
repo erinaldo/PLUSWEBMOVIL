@@ -517,22 +517,22 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.DataGrid gv_Producto;
         
         /// <summary>
-        /// Control Label5.
+        /// Control Panel2.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label5;
+        protected global::System.Web.UI.WebControls.Panel Panel2;
         
         /// <summary>
-        /// Control txtSumaDesc.
+        /// Control gv_descuentos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSumaDesc;
+        protected global::System.Web.UI.WebControls.DataGrid gv_descuentos;
         
         /// <summary>
         /// Control Label7.
@@ -553,24 +553,6 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.ImageButton btnImpuestos;
         
         /// <summary>
-        /// Control Label6.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label6;
-        
-        /// <summary>
-        /// Control txtSumaIva.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSumaIva;
-        
-        /// <summary>
         /// Control Label4.
         /// </summary>
         /// <remarks>
@@ -587,6 +569,24 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSumaSubTo;
+        
+        /// <summary>
+        /// Control Label5.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label5;
+        
+        /// <summary>
+        /// Control txtSumaDesc.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSumaDesc;
         
         /// <summary>
         /// Control Label8.
@@ -607,6 +607,24 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.TextBox txtBaseIva19;
         
         /// <summary>
+        /// Control Label6.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label6;
+        
+        /// <summary>
+        /// Control txtSumaIva.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSumaIva;
+        
+        /// <summary>
         /// Control Label9.
         /// </summary>
         /// <remarks>
@@ -616,49 +634,49 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label Label9;
         
         /// <summary>
-        /// Control txtBase15.
+        /// Control btn_desc.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBase15;
+        protected global::System.Web.UI.WebControls.ImageButton btn_desc;
         
         /// <summary>
-        /// Control Label10.
+        /// Control Label13.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label10;
+        protected global::System.Web.UI.WebControls.Label Label13;
         
         /// <summary>
-        /// Control txtIva19.
+        /// Control txt_descuento_apli.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtIva19;
+        protected global::System.Web.UI.WebControls.TextBox txt_descuento_apli;
         
         /// <summary>
-        /// Control Label11.
+        /// Control Label14.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label11;
+        protected global::System.Web.UI.WebControls.Label Label14;
         
         /// <summary>
-        /// Control txtIva15.
+        /// Control txt_cargos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtIva15;
+        protected global::System.Web.UI.WebControls.TextBox txt_cargos;
         
         /// <summary>
         /// Control Label3.

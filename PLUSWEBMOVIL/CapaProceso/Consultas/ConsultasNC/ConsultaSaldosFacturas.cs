@@ -15,7 +15,37 @@ namespace CapaProceso.Consultas
         
         SaldosFacturas consultaSaldoa = new SaldosFacturas();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo = "ConsultaSaldosFacturas";
+        //Consulta NC NORMALES PARA NOTAS DÉBITO POR ANULACION 
+        public List<modeloSaldosFacturas> ConsultaNCNormalesSaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo)
+        {
+            try
+            {
+                modeloFacturasElecSaldos modeloFacturasElecSaldos = new modeloFacturasElecSaldos();
+                List<modeloSaldosFacturas> lista = new List<modeloSaldosFacturas>();
+                List<modeloSaldosFacturas> listaAux = new List<modeloSaldosFacturas>();
+                lista = consultaSaldoa.ConsultaFacturasSaldos(Ccf_usuario, Ccf_cod_emp, Ccf_tipo1, Ccf_tipo2, solo_saldo);
 
+                foreach (var item in lista)
+                {
+                    modeloFacturasElecSaldos = consultaSaldoa.ConsultaNCNormalesSaldos(item.cod_cliente, Ccf_cod_emp, item.nro_docum, Ccf_usuario, item.serie_docum.Trim());
+                    if (modeloFacturasElecSaldos.cufe == null && modeloFacturasElecSaldos.nro_trans != null)
+                    {
+                        item.nro_trans = modeloFacturasElecSaldos.nro_trans;
+                        listaAux.Add(item);
+                    }
+
+                }
+
+                return listaAux;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "ConsultaNCNormalesSaldos", e.ToString(), DateTime.Now, Ccf_usuario);
+                return null;
+            }
+        }
         //Saldos FACTURAS NORMALES VTA
         public List<modeloSaldosFacturas> ConsultaFacturasVTASaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo)
         {
@@ -42,7 +72,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, "ConsultaSaldosFacturas.cs", "ConsultaFacturasVTASaldos", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, "ConsultaSaldosFacturas.cs", "ConsultaFacturasVTASaldos", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -64,8 +94,39 @@ namespace CapaProceso.Consultas
             }
         }
 
-     
+        //SALDO DE NOTAS DE CREDITO ELECTRONICAS
+        //Saldos sin restricciones
+        public List<modeloSaldosFacturas> BuscarNCElecSaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo)
+        {
+            try
+            {
+                modeloFacturasElecSaldos modeloFacturasElecSaldos = new modeloFacturasElecSaldos();
+                List<modeloSaldosFacturas> lista = new List<modeloSaldosFacturas>();
+                List<modeloSaldosFacturas> listaNroTrans = new List<modeloSaldosFacturas>();
+                List<modeloSaldosFacturas> listaAux = new List<modeloSaldosFacturas>();
+                lista = consultaSaldoa.ConsultaFacturasSaldos(Ccf_usuario, Ccf_cod_emp, Ccf_tipo1, Ccf_tipo2, solo_saldo);
 
+                foreach (var item in lista)
+                {
+                    modeloFacturasElecSaldos = BuscaNCEleSaldos(Ccf_tipo1, Ccf_cod_emp, item.serie_docum, item.nro_docum, Ccf_usuario);
+                    if (modeloFacturasElecSaldos.cufe != null)
+                    {
+                        item.nro_trans = modeloFacturasElecSaldos.nro_trans;
+                        listaAux.Add(item);
+                    }
+
+                }
+
+                return listaAux;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "BuscarNCElecSaldos", e.ToString(), DateTime.Now, Ccf_usuario);
+                return null;
+            }
+        }
+       
         //Saldos sin restricciones
         public List<modeloSaldosFacturas> BuscartaFacturaSaldos( string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo)
         {
@@ -93,7 +154,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, "ConsultaSaldosFacturas.cs", "BuscartaFacturaSaldos", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "BuscartaFacturaSaldos", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -110,11 +171,28 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "ConsultaSaldosFacturas.cs", "BuscartaFacEleSaldos", e.ToString(), DateTime.Today,"consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "BuscartaFacEleSaldos", e.ToString(), DateTime.Now,"consulta");
                 return null;
             }
         }
 
-        
+        //sql saldos de NC ELECTRONICA nuevo 
+        public modeloFacturasElecSaldos BuscaNCEleSaldos(string cod_cliente, string cod_emp, string serie, string nro_docum, string usuario)
+        {
+            try
+            {
+                modeloFacturasElecSaldos item = new modeloFacturasElecSaldos();
+                item = consultaSaldoa.ConsultaNCEleSaldos(cod_cliente, cod_emp, serie, nro_docum, usuario);
+                return item;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "BuscaNCEleSaldos", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
+
+
     }
 }

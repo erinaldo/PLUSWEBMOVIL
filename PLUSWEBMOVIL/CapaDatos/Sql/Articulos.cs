@@ -17,6 +17,245 @@ namespace CapaDatos.Sql
             modelowmspcarticulos modeloarticulos = new modelowmspcarticulos();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         ValidarParametrizacionFactura conexion_erp = new ValidarParametrizacionFactura();
+        string metodo = "Articulos.cs";
+        //Concepto Fiscal
+        public List<ModeloConcFiscal> ListaConceptoFiscal(string ArtB__usuario, string ArtB__cod_emp)
+        {
+            try
+            {
+
+                using (cn = conexion.genearConexion())
+                {
+                    List<ModeloConcFiscal> lista = new List<ModeloConcFiscal>();
+
+                    string consulta = ("SELECT *FROM wmm_conceptos_fiscal");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        ModeloConcFiscal item = new ModeloConcFiscal();
+                        item.cod_concepto_fis = Convert.ToString(dr["cod_concepto_fis"]);
+                        item.nom_concepto_fis = Convert.ToString(dr["nom_concepto_fis"]);
+                        item.signo = Convert.ToString(dr["signo"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        item.fecha_mod= Convert.ToString(dr["fecha_mod"]);
+                        item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                        item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
+                        if (item.signo == "D")
+                        {
+                            item.concepto = "DESCUENTO";
+                            item.concepto_1 = item.signo + "-" + item.concepto;
+                        }
+                        else
+                        {
+                            item.concepto = "CARGO";
+                            item.concepto_1 = item.signo + "-" + item.concepto;
+                        }
+                        item.nomcon = item.cod_concepto_fis + "-" + item.nom_concepto_fis;
+
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(ArtB__cod_emp, metodo, "ListaConceptoFiscal", e.ToString(), DateTime.Now, ArtB__usuario);
+                return null;
+            }
+        }
+        //Buscar por codigo cod_concepto  a signo concepto fiscal
+        //Buscar por codigo
+        public ModeloConcFiscal BuscarConFisCon(string ArtB__usuario, string ArtB__cod_emp, string cod_concepto)
+        {
+            try
+            {
+
+                using (cn = conexion.genearConexion())
+                {
+                    // ModeloConcFiscal lista = new ModeloConcFiscal();
+                    ModeloConcFiscal item = new ModeloConcFiscal();
+                    string consulta = ("SELECT c.cod_concepto_fis,c.nom_concepto_fis,c.signo,c.usuario_mod,c.fecha_mod,c.nro_audit,c.cod_proc_aud,D.cod_concepto FROM wmm_conceptos_fiscal AS c ,wmm_facturas_descto AS D WHERE c.cod_concepto_fis = D.cod_concepto_fis AND D.cod_concepto =@cod_concepto");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+                    conmand.Parameters.Add("@cod_concepto", SqlDbType.VarChar).Value = cod_concepto;
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+
+                        item.cod_concepto_fis = Convert.ToString(dr["cod_concepto_fis"]);
+                        item.nom_concepto_fis = Convert.ToString(dr["nom_concepto_fis"]);
+                        item.signo = Convert.ToString(dr["signo"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        item.fecha_mod = Convert.ToString(dr["fecha_mod"]);
+                        item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                        item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
+                        if (item.signo == "D")
+                        {
+                            item.concepto = "DESCUENTO";
+                            item.concepto_1 = item.signo + "-" + item.concepto;
+                        }
+                        else
+                        {
+                            item.concepto = "CARGO";
+                            item.concepto_1 = item.signo + "-" + item.concepto;
+                        }
+
+                    }
+
+                    return item;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(ArtB__cod_emp, metodo, "BuscarConceptoFiscal", e.ToString(), DateTime.Now, ArtB__usuario);
+                return null;
+            }
+        }
+        //Buscar por codigo
+        public ModeloConcFiscal BuscarConceptoFiscal(string ArtB__usuario, string ArtB__cod_emp, string cod_concepto_fis)
+        {
+            try
+            {
+
+                using (cn = conexion.genearConexion())
+                {
+                   // ModeloConcFiscal lista = new ModeloConcFiscal();
+                    ModeloConcFiscal item = new ModeloConcFiscal();
+                    string consulta = ("SELECT *FROM wmm_conceptos_fiscal where cod_concepto_fis = @cod_concepto_fis");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+                    conmand.Parameters.Add("@cod_concepto_fis", SqlDbType.VarChar).Value = cod_concepto_fis;
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                      
+                        item.cod_concepto_fis = Convert.ToString(dr["cod_concepto_fis"]);
+                        item.nom_concepto_fis = Convert.ToString(dr["nom_concepto_fis"]);
+                        item.signo = Convert.ToString(dr["signo"]);
+                        item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
+                        item.fecha_mod = Convert.ToString(dr["fecha_mod"]);
+                        item.nro_audit = Convert.ToString(dr["nro_audit"]);
+                        item.cod_proc_aud = Convert.ToString(dr["cod_proc_aud"]);
+                        if(item.signo =="D")
+                        {
+                            item.concepto = "DESCUENTO";
+                            item.concepto_1 = item.signo + "-" + item.concepto;
+                        }
+                        else { item.concepto = "CARGO";
+                            item.concepto_1 = item.signo + "-" + item.concepto;
+                        }
+
+                    }
+
+                    return item;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(ArtB__cod_emp, metodo, "BuscarConceptoFiscal", e.ToString(), DateTime.Now, ArtB__usuario);
+                return null;
+            }
+        }
+        //INSERTAR CONCEPTO FISCAL
+        public string InsertConceptoFiscal(string usuario, string cod_emp, string codigo, string nombre, string signo, DateTime fecha_mod,string nro_audit, string cod_proc_aud)
+        {
+            try
+            {
+
+                using (cn = conexion.genearConexion())
+                {
+
+
+                    string insert = "INSERT INTO wmm_conceptos_fiscal (cod_concepto_fis,nom_concepto_fis,signo,usuario_mod,fecha_mod,nro_audit,cod_proc_aud ) values(@codigo,@nombre,@signo,@usuario,@fecha_mod,@nro_audit,@cod_proc_aud)";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+                    conmand.Parameters.Add("@codigo", SqlDbType.VarChar).Value = codigo;
+                    conmand.Parameters.Add("@nombre", SqlDbType.VarChar).Value = nombre;
+                    conmand.Parameters.Add("@signo", SqlDbType.VarChar).Value = signo;
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+                    conmand.Parameters.Add("@fecha_mod", SqlDbType.VarChar).Value = fecha_mod;
+                    conmand.Parameters.Add("@nro_audit", SqlDbType.VarChar).Value = nro_audit;
+                    conmand.Parameters.Add("@cod_proc_aud", SqlDbType.VarChar).Value = cod_proc_aud;
+
+                    int dr = conmand.ExecuteNonQuery();
+                    cn.Close();
+                    return "Concepto fiscal guadrdado correctamente";
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "InsertConceptoFiscal", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
+
+        //Actualizar concepto fiscal
+        public string ActualizarConceptoFiscal(string usuario, string cod_emp, string codigo, string nombre, string signo, DateTime fecha_mod)
+        {
+            try
+            {
+
+                using (cn = conexion.genearConexion())
+                {
+
+
+                    string insert = "UPDATE wmm_conceptos_fiscal SET nom_concepto_fis =@nombre,signo=@signo, fecha_mod=@fecha_mod where cod_concepto_fis =@codigo";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+                    conmand.Parameters.Add("@codigo", SqlDbType.VarChar).Value = codigo;
+                    conmand.Parameters.Add("@nombre", SqlDbType.VarChar).Value = nombre;
+                    conmand.Parameters.Add("@signo", SqlDbType.VarChar).Value = signo;
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+                    conmand.Parameters.Add("@fecha_mod", SqlDbType.VarChar).Value = fecha_mod;
+
+                    int dr = conmand.ExecuteNonQuery();
+                    cn.Close();
+                    return "Concepto fiscal guadrdado correctamente";
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ActualizarConceptoFiscal", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
+        //Eliminar concepto fiscal
+        public string EliminarConceptoFiscal(string usuario, string cod_emp, string codigo)
+        {
+            try
+            {
+
+                using (cn = conexion.genearConexion())
+                {
+
+
+                    string insert = "DELETE FROM wmm_conceptos_fiscal  where cod_concepto_fis =@codigo";
+                    SqlCommand conmand = new SqlCommand(insert, cn);
+                    conmand.Parameters.Add("@codigo", SqlDbType.VarChar).Value = codigo;
+
+                    int dr = conmand.ExecuteNonQuery();
+                    cn.Close();
+                    return "Concepto fiscal eliminado correctamente";
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ActualizarConceptoFiscal", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
         //eliminar Articulos referencia cruzada
         public string EliminarArticuloTem(string usuario, string cod_emp, string nro_trans)
         {

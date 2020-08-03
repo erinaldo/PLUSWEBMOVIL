@@ -15,6 +15,7 @@ using CapaProceso.Modelos;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using CapaDatos.Modelos;
 using CapaProceso.ReslClientePdf;
+using CapaDatos.Sql;
 
 namespace CapaWeb.WebForms
 {
@@ -49,6 +50,7 @@ namespace CapaWeb.WebForms
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
+        string cod_proceso = "RCOMNCELEC";
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -57,6 +59,9 @@ namespace CapaWeb.WebForms
 
                 RecuperarCokie();
                 ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
+                cod_proceso = "RCOMNCELEC";
+                ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
+                string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
                 foreach (var item in ListaModelowmspclogo)
                 {
                     Modelowmspclogo = item;
@@ -77,7 +82,7 @@ namespace CapaWeb.WebForms
                         GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
                     }
                       //Clase para pdf de cada empresa 
-                    switch (Modelowmspclogo.pdf_nc.Trim())
+                    switch (tipo_doc.Trim())
                     {
                         case "DEFECTO2":
 
@@ -94,14 +99,42 @@ namespace CapaWeb.WebForms
                             Response.WriteFile(pathPdf);
                             Response.End();
                             break;
+                        case "DEFECTO3":
+                            PdfNCV3Default3 pdf2 = new PdfNCV3Default3();
+                            string pathPdf2 = pdf2.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                            Response.ContentType = "application/pdf";
+                            Response.WriteFile(pathPdf2);
+                            Response.End();
+                            break;
                     }
 
 
                     }
                 else
                 {
-                    switch (Modelowmspclogo.pdf_nc.Trim())
+                    switch (tipo_doc.Trim())
                     {
+                        case "DEFECTO3":
+                            if (conscabcera.estado.Trim() == "C")
+                            {
+
+                                PdfNCV3Default3 pdf1 = new PdfNCV3Default3();
+                                string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                                Response.ContentType = "application/pdf";
+                                Response.WriteFile(pathPdf1);
+                                Response.End();
+                                break;
+
+                            }
+                            else
+                            {
+                                PdfNCEleV3Default3 pdf1 = new PdfNCEleV3Default3();
+                                string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                                Response.ContentType = "application/pdf";
+                                Response.WriteFile(pathPdf1);
+                                Response.End();
+                                break;
+                            }
                         case "DEFECTO2":
                             if (conscabcera.estado.Trim() == "C")
                             {

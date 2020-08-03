@@ -162,5 +162,70 @@ namespace CapaProceso.Consultas
                 return null;
             }
         }
+        //.............nota debito
+        //Rol nuevo
+        public List<modeloRolesFacturacion> BuscarRolNuevoND(string usuario)
+        {
+            try
+            {
+                List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
+                lista = consultaRolesFacturacion.NDebitoRolNuevo(usuario);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "BuscarRolNuevoND", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
+        //Rol editar
+        public List<modeloRolesFacturacion> BuscarRolEditarND(string usuario)
+        {
+            try
+            {
+                List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
+                lista = consultaRolesFacturacion.NDebitoRolEditar(usuario);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "BuscarRolEditarND", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
+        //Rol Acceso
+        public List<modeloRolesFacturacion> BuscarRolAccesoND(string usuario)
+        {
+            try
+            {
+                List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
+                lista = consultaRolesFacturacion.NDebitoAcceso(usuario);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "BuscarRolPrint", e.ToString(), DateTime.Today, usuario);
+                return null;
+            }
+        }
+        //Rol eliminar
+        public List<modeloRolesFacturacion> BuscarRolEliminarND(string usuario)
+        {
+            try
+            {
+                List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
+                lista = consultaRolesFacturacion.NDebitoRolEliminar(usuario);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "BuscarRolEliminar", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
     }
 }

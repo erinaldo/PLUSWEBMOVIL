@@ -8,6 +8,7 @@ using CapaProceso.RestCliente;
 using CapaDatos.Modelos;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using System.IO;
+using CapaDatos.Sql;
 
 namespace CapaWeb.WebForms
 {
@@ -149,7 +150,6 @@ namespace CapaWeb.WebForms
 
                 //Consulta nro_trans factura 
                 listaConsCab = ConsultaCabe.ConsultaNCTransPadre(lbl_nro_trans.Text);
-                
                 conscabcera = null;
                 foreach (modelowmtfacturascab item in listaConsCab)
                 {
@@ -162,9 +162,9 @@ namespace CapaWeb.WebForms
 
                 //AVERIGUAR LA VERSION DE NC QUE USA
                 string respuesta = "";
-                if (Modelowmspclogo.version_fe == "1")
+                if (Modelowmspclogo.version_fe == "2")
                 {
-                    ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
+                    ConsumoRestNCFinV3 consumoRest = new ConsumoRestNCFinV3();
                     respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", lbl_nro_trans.Text, conscabcera.nro_trans_padre);
                 }
                 else
@@ -240,16 +240,19 @@ namespace CapaWeb.WebForms
                 string pathXml = pathTemporal + nombreXml;
                 File.WriteAllText(pathXml, StringXml);
                 //-------------OBTENER EL XML Y PDF PARA EL ENVIO-------------------//
-                if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+               string cod_proceso = "RCOMNCELEC";
+                ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
+                string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
+                if (tipo_doc.Trim() == "DEFECTO3")
                 {
 
-                    PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
+                    PdfNCEleV3Default3 pdf1 = new PdfNCEleV3Default3();
                     pathPdf = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                 }
                 else
                 {
-                    PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
-                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans); ;
+                    PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
+                    pathPdf = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
                 }
                 Boolean error = enviarcorreocliente.EnviarCorreoRemitente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, pathXml);
@@ -281,9 +284,9 @@ namespace CapaWeb.WebForms
 
                 //AVERIGUAR LA VERSION DE NC QUE USA
                 string respuesta = "";
-                if (Modelowmspclogo.version_fe == "1")
+                if (Modelowmspclogo.version_fe == "2")
                 {
-                    ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
+                    ConsumoRestNCFinV3 consumoRest = new ConsumoRestNCFinV3();
                     respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", "NC", lbl_nro_trans.Text);
                 }
                 else

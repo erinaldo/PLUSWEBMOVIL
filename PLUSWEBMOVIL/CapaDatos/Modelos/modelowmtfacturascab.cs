@@ -41,6 +41,8 @@ namespace CapaDatos.Modelos
         public decimal impuesto3 { get; set; }
         public decimal impuesto4 { get; set; }
         public decimal impuesto5 { get; set; }
+        public decimal ret { get; set; }
+        public decimal neto { get; set; }
         public decimal total { get; set; }
         public decimal monto_imponible { get; set; }
         public decimal porc_descto { get; set; }
@@ -81,5 +83,9 @@ namespace CapaDatos.Modelos
         public string cod_suc_cli { get; set; }
         public string nom_suc { get; set; }
         public string codnom_suc { get; set; }
+        //recargos-descuento--tipo
+        public string tipo { get; set; }
+        public decimal desctos_rcgos { get; set; }
+        public string des_rec_str { get; set; }
     }
 }

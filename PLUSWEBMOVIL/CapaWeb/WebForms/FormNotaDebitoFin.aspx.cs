@@ -113,18 +113,18 @@ namespace CapaWeb.WebForms
         public string Ven__cod_tipotit = "clientes";
         public string ResF_estado = "v";
         public string ResF_serie = "0";
-        public string ResF_tipo = "C";
+        public string ResF_tipo = "D";
         public string CC__cod_dpto = "0";
         public string MonB__moneda = "0";
         public string Vend__cod_tipotit = "vendedores";
         public string Vend__cod_tit = "0";
         public string FP__cod_fpago = "0";
         public string ArtB__articulo = "tubo";
-        public string ArtB__tipo = "NCRED";
+        public string ArtB__tipo = "NDEB";
         public string ArtB__compras = "0";
         public string ArtB__ventas = "0";
         public string Ccf_tipo1 = "C";
-        public string Ccf_tipo2 = "NCME";
+        public string Ccf_tipo2 = "NDBV";
         public string Ccf_nro_trans = "0";
         public string Ccf_estado = null;
         public string Ccf_cliente = null;
@@ -198,9 +198,6 @@ namespace CapaWeb.WebForms
                                 Session.Remove("ListaFacturas");
                                 Session.Remove("valor_asignado");
                                 Session["Tipo"] = "Anular";
-                                DateTime hoy1 = DateTime.Today;
-                                fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
-
                                 ConsultarTasaCambioCanorus();
 
                                 break;
@@ -740,9 +737,16 @@ namespace CapaWeb.WebForms
                 //Aqui se va a traer que tipo de facturacion es
                 if (resolucion.tipo_fac == "S")
                 {
-                    Session["Ccf_tipo2"] = "NCME";
+                    Session["Ccf_tipo2"] = "NDVE";
+                    lbl_tipo_nd.Text = "NDVE";
+                    DateTime hoy = DateTime.Today;
+                    fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 }
-                else { Session["Ccf_tipo2"] = "NCM"; }
+                else {
+                    Session["Ccf_tipo2"] = "NDV";
+                    fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                    lbl_tipo_nd.Text = "NDV";
+                }
 
                 //lista ccostos
                 listaCostos = ConsultaCCostos.ConsultaCCostos(AmUsrLog, ComPwm, CC__cod_dpto);
@@ -1335,7 +1339,7 @@ namespace CapaWeb.WebForms
                     cabecerafactura.diar = "0";
                     cabecerafactura.mesr = "0";
                     cabecerafactura.anior = "0";
-                    cabecerafactura.cod_proc_aud = "RCOMNCRED";
+                    cabecerafactura.cod_proc_aud = "RCOMNDEB";
                     cabecerafactura.cod_sucursal = ModeloUsuSucursal.cod_sucursal;
                     cabecerafactura.nro_pedido = nro_pedido.Text;
                     cabecerafactura.nro_trans_padre = txt_nro_trans_padre.Text;
@@ -1395,7 +1399,7 @@ namespace CapaWeb.WebForms
                 else
                 {
                     //Actualizacion de producto
-                    GuardarDetalles.ActualizarDetalleFacturaNCSL(txt_Descripcion2.Text, Convert.ToDecimal(txt_Cantidad.Text), Convert.ToDecimal(txt_Precio.Text), lbl_trans.Text.Trim(), Convert.ToInt32(txt_linea.Text), ComPwm, Convert.ToDecimal(txt_Desc.Text), AmUsrLog, cod_costos.SelectedValue);
+                    GuardarDetalles.ActualizarDetalleFacturaNCSL(txt_Descripcion2.Text, Convert.ToDecimal(txt_Cantidad.Text), Convert.ToDecimal(txt_Precio.Text), lbl_trans.Text.Trim(), Convert.ToInt32(txt_linea.Text), ComPwm, Convert.ToDecimal(txt_Desc.Text), AmUsrLog, cod_costos.SelectedValue,0);
 
                 }
                 txt_linea.Text = "";
@@ -1429,10 +1433,28 @@ namespace CapaWeb.WebForms
                     if (articulo.negativo == "S")
                     {
 
-                        InsertarCabeceraSL(); //Calcula totales y agrega a grilla
-                        InsertarDetalleSL();
-                        BloquearCabeceraNC();
-                        TraeDetalleFactura();
+                        if (lbl_tipo_nd.Text.Trim() == "NDVE")
+                        {
+                            if (txtcorreo.Text == null || txtcorreo.Text == "")
+                            {
+                                lbl_validacion.Text = "Ingrese correo por favor";
+                                lbl_validacion.Visible = true;
+                            }
+                            else
+                            {
+                                InsertarCabeceraSL(); //Calcula totales y agrega a grilla
+                                InsertarDetalleSL();
+                                BloquearCabeceraNC();
+                                TraeDetalleFactura();
+                            }
+                        }
+                        else
+                        {
+                            InsertarCabeceraSL(); //Calcula totales y agrega a grilla
+                            InsertarDetalleSL();
+                            BloquearCabeceraNC();
+                            TraeDetalleFactura();
+                        }
 
                     }
                     else
@@ -1443,10 +1465,29 @@ namespace CapaWeb.WebForms
                 }
                 else
                 {
-                    InsertarCabeceraSL(); //Calcula totales y agrega a grilla
-                    InsertarDetalleSL();
-                    BloquearCabeceraNC();
-                    TraeDetalleFactura();
+                    if (lbl_tipo_nd.Text.Trim() == "NDVE")
+                    {
+                        if (txtcorreo.Text == null || txtcorreo.Text == "")
+                        {
+                            lbl_validacion.Text = "Ingrese correo por favor";
+                            lbl_validacion.Visible = true;
+                        }
+                        else
+                        {
+                            InsertarCabeceraSL(); //Calcula totales y agrega a grilla
+                            InsertarDetalleSL();
+                            BloquearCabeceraNC();
+                            TraeDetalleFactura();
+                        }
+                    }
+
+                    else
+                    {
+                        InsertarCabeceraSL(); //Calcula totales y agrega a grilla
+                        InsertarDetalleSL();
+                        BloquearCabeceraNC();
+                        TraeDetalleFactura();
+                    }
                 }
             }
             catch (Exception ex)
@@ -1774,7 +1815,7 @@ namespace CapaWeb.WebForms
                     cliente = item;
                     break;
                 }
-                if (Session["Ccf_tipo2"].ToString() == "NCM")
+                if (Session["Ccf_tipo2"].ToString() == "NDV")
                 {
 
                     ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "N");
@@ -1876,7 +1917,7 @@ namespace CapaWeb.WebForms
                 //cOSNULTA BUSCAR TIPO DE FACTURA
                 conscabceraTipo = null;
                 conscabceraTipo = buscarTipoFac(conscabcera.nro_trans.Trim());
-                if (conscabceraTipo.tipo_nce.Trim() == "NCME")
+                if (conscabceraTipo.tipo_nce.Trim() == "NDVE")
                 {
                     if (respuestaConfirmacionNC == "")
                     {
@@ -1884,8 +1925,8 @@ namespace CapaWeb.WebForms
                         string respuesta = "";
                         if (Modelowmspclogo.version_fe == "2")
                         {
-                            ConsumoRestNDFinV2 consumoRest = new ConsumoRestNDFinV2();
-                            respuesta = consumoRest.EnviarNotaDebito(ComPwm, AmUsrLog, "C", "NC", conscabcera.nro_trans, txt_nro_trans_padre.Text);
+                            ConsumoRestNDV3 consumoRest = new ConsumoRestNDV3();
+                            respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", Session["Ccf_tipo2"].ToString(), conscabcera.nro_trans, txt_nro_trans_padre.Text);
                         }
 
                         if (respuesta == "")
@@ -1916,8 +1957,16 @@ namespace CapaWeb.WebForms
                 }
                 else
                 {
-                    Session.Remove("listaFacturas");
-                    Response.Redirect("BuscarNotaDebito.aspx");
+                    if (respuestaConfirmacionNC == "")
+                    {
+                        Session.Remove("listaFacturas");
+                        Response.Redirect("BuscarNotaDebito.aspx");
+                    }
+                    else
+                    {
+                        lbl_trx.Visible = true;
+                        lbl_trx.Text = respuestaConfirmacionNC;
+                    }
                 }
             }
 
@@ -1978,11 +2027,7 @@ namespace CapaWeb.WebForms
             try
             {
 
-
                 lbl_error.Text = "";
-                //Confirmar.Visible = false;
-                //Consultar si el vendedor tiene asignada una sucursal
-
                 ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
                 int count = 0;
                 foreach (var item in ListaModeloUsuarioSucursal)
@@ -1991,11 +2036,6 @@ namespace CapaWeb.WebForms
                     count++;
                     break;
                 }
-                /*Validar  el saldo de la factura SI ES POSE/ VTAE*/
-                decimal valorSaldo = Convert.ToDecimal(txt_saldo_factura.Text);
-                decimal valorFactura = Convert.ToDecimal(txt_total_factura.Text);
-                decimal valorTotal = Convert.ToDecimal(txtSumaTotal.Text); //TOTAL NOTA CREDITO
-                                                                           //-----POSE O VTAE-------------
 
                 if (count == 0)
                 {
@@ -2107,6 +2147,14 @@ namespace CapaWeb.WebForms
                     }
                     else
                     {
+                        //Elimino cualquier registro anterior
+                        Articulos referencia_C = new Articulos();
+                        referencia_C.EliminarArticuloTem(AmUsrLog, ComPwm, lbl_trans.Text);
+                        //Insertar el producto seleccionado
+                        FacturaDetalle insertar_art = new FacturaDetalle();
+                        insertar_art.InsertarArticuloTemp(lbl_trans.Text, articulo.cod_articulo, lbl_trans.Text, 0, ComPwm, AmUsrLog);
+                        lblCan.Visible = true;
+                        txt_Cantidad.Visible = true;                    
 
                         txt_Codigo.Text = articulo.cod_articulo;
                         txt_Descripcion.Text = articulo.nom_articulo;
@@ -2149,5 +2197,40 @@ namespace CapaWeb.WebForms
 
             }
         }
+
+        protected void fecha_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                lbl_validacion.Text = "";
+                lbl_validacion.Visible = false;
+                DateTime Fecha_seleccion = Convert.ToDateTime(fecha.Text);
+                if (Session["Ccf_tipo2"].ToString() == "NDVE")
+                {
+
+                    DateTime Fecha_actual = DateTime.Today;
+                    DateTime Fecha_minima = DateTime.Today.AddDays(-5);
+                    int Actual = DateTime.Today.Day;
+                    if (Fecha_seleccion < Fecha_minima)
+                    {
+                        lbl_validacion.Text = "La fecha de la nota de débito no puede ser menor a cinco días de la fecha actual";
+                        lbl_validacion.Visible = true;
+                    }
+                    if (Fecha_seleccion > Fecha_actual)
+                    {
+
+                        lbl_validacion.Text = "La fecha de la nota de débito no puede ser mayor a  la fecha actual";
+                        lbl_validacion.Visible = true;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("fecha_TextChanged", ex.ToString());
+
+            }
+        }
+    
     }
 }

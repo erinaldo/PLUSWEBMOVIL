@@ -24,6 +24,7 @@ namespace CapaWeb.WebForms
         public string cod_proceso;
         public string UsuarioId;
         public string empresa_codigo;
+        public string AmComCod;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -63,8 +64,10 @@ namespace CapaWeb.WebForms
                     socio = Request.Cookies["AmScNCod"].Value;
                 }
 
-
-
+                if (Request.Cookies["AmComCod"] != null)
+                {
+                    AmComCod = Request.Cookies["AmComCod"].Value;
+                }
                 if (Request.Cookies["AmUsrLog"] != null)
                 {
                     AmUsrLog = Request.Cookies["AmUsrLog"].Value;
@@ -84,18 +87,13 @@ namespace CapaWeb.WebForms
                     }
                 }
                 //Codigo empresa
-
-
-                if (Request.Cookies["AmComCod"] != null)
-                {
-                    empresa_codigo = Request.Cookies["AmComcod"].Value;
-                }
-
+                string empresa_codigo = ComPwm;
+                string empresa_canorus = AmComCod;
                 Response.Cookies["empresa_codigo"].Value = empresa_codigo;
-                //socio negocio
-                // string socio_codigo = "100";
+                Response.Cookies["empresa_canorus"].Value = empresa_canorus;
                 Response.Cookies["socio_codigo"].Value = socio;
                 Response.Cookies["usuario"].Value = AmUsrLog;
+
             }
             catch (Exception ex)
             {
@@ -116,7 +114,7 @@ namespace CapaWeb.WebForms
 
             consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
             //mandar mensaje de error a label
-           // lbl_error.Text = "No se pudo completar la acción" + metodo + "." + " Por favor notificar al administrador.";
+            // lbl_error.Text = "No se pudo completar la acción" + metodo + "." + " Por favor notificar al administrador.";
 
         }
     }

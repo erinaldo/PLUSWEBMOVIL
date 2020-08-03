@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="FormNotaDebitoFin.aspx.cs" Inherits="CapaWeb.WebForms.FormNotaDebitoFin" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site1.Master" AutoEventWireup="true" CodeBehind="FormNotaDebitoFin.aspx.cs" Inherits="CapaWeb.WebForms.FormNotaDebitoFin" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script LANGUAGE="JavaScript">
 
@@ -172,7 +172,7 @@ return false;
                                 </td>
                                 <td>
                                    
-                                    <asp:TextBox ID="fecha" type="date" onkeyup="FechaActual();" Width="248" required="required" value="today" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="fecha" type="date"  Width="248" required="required"  runat="server" OnTextChanged="fecha_TextChanged" AutoPostBack="true" ></asp:TextBox>
 
                                 </td>
 
@@ -320,8 +320,9 @@ return false;
                                 </td>
                                 <td valign="top">
                                     <label>
-                                       
+                                        <asp:Label ID="lbl_tipo_nd" class="textos"   ReadOnly="true" runat="server"></asp:Label>
                                         <asp:Label ID="lbl_trans" class="textos"   ReadOnly="true" runat="server"></asp:Label>
+                                       
                                         </label>
                                     </td>
 

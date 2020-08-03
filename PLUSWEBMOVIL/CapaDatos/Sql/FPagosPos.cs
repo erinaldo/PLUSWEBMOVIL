@@ -66,7 +66,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cabezeraFactura.cod_emp, metodo, "InsertarFacturaPagos", e.ToString(), DateTime.Today, "INS");
+                guardarExcepcion.ClaseInsertarExcepcion(cabezeraFactura.cod_emp, metodo, "InsertarFacturaPagos", e.ToString(), DateTime.Now, "INS");
                 return "No se pudo completar la acción." + "InsertarFacturaPagos." + " Por favor notificar al administrador.";
             }
 

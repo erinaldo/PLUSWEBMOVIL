@@ -321,5 +321,141 @@ namespace CapaDatos.Sql
                 return null;
             }
         }
+        //ROLES NOTA DE DEBITO--------------------------------
+        //Consulta acceso rol para visualizar buscar factura una nueva factura
+        public List<modeloRolesFacturacion> NDebitoAcceso(string usuario)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
+                    string consulta = ("SELECT cod_rol FROM wm_userroles WHERE usuario = @usuario AND cod_rol IN ('3123')");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloRolesFacturacion item = new modeloRolesFacturacion();
+                        item.cod_rol = Convert.ToString("cod_rol");
+
+                        lista.Add(item);
+                    }
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "RespuestaAccesoFacturacion", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
+
+        //Consulta prar crear una nueva factura
+        public List<modeloRolesFacturacion>NDebitoRolNuevo(string usuario)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
+                    string consulta = ("SELECT cod_rol FROM wm_userroles WHERE usuario = @usuario AND cod_rol IN ('3123','31231')");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloRolesFacturacion item = new modeloRolesFacturacion();
+                        item.cod_rol = Convert.ToString(dr["cod_rol"]);
+
+                        lista.Add(item);
+                    }
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "NDebitoRolNuevo", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
+
+        //Consulat rol editar
+        public List<modeloRolesFacturacion> NDebitoRolEditar(string usuario)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
+                    string consulta = ("SELECT cod_rol FROM wm_userroles WHERE usuario = @usuario AND cod_rol IN ('3123','31232')");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloRolesFacturacion item = new modeloRolesFacturacion();
+                        item.cod_rol = Convert.ToString(dr["cod_rol"]);
+
+                        lista.Add(item);
+                    }
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "NDebitoRolEditar", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
+
+        //Consulatr rol eliminar
+        public List<modeloRolesFacturacion> NDebitoRolEliminar(string usuario)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<modeloRolesFacturacion> lista = new List<modeloRolesFacturacion>();
+                    string consulta = ("SELECT cod_rol FROM wm_userroles WHERE usuario = @usuario AND cod_rol IN ('3123','31233')");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modeloRolesFacturacion item = new modeloRolesFacturacion();
+                        item.cod_rol = Convert.ToString(dr["cod_rol"]);
+
+                        lista.Add(item);
+                    }
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "NDebitoRolEliminar", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
     }
 }

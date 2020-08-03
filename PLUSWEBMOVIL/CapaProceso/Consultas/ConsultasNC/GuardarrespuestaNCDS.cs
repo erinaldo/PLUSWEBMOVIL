@@ -49,7 +49,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(jsonRespuestaNC.nro_trans, "GuardarrespuestaNCDS.cs", "InsertarRespuestaJson", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(jsonRespuestaNC.nro_trans, "GuardarrespuestaNCDS.cs", "InsertarRespuestaJson", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }
@@ -72,7 +72,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_nro_trans, "GuardarrespuestaNCDS.cs", "BuscarRespuestaD", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_nro_trans, "GuardarrespuestaNCDS.cs", "BuscarRespuestaD", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }
@@ -107,9 +107,45 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(jsonRespuestaDE.nro_trans, metodo, "InsertarRespuestaJsonDIANDS", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(jsonRespuestaDE.nro_trans, metodo, "InsertarRespuestaJsonDIANDS", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }
+
+        //INSERTAR RESPUESTA DIAN-DA NOTA CREDITO
+        public string InsertarRespuestaJsonDIANDSND(JsonRespuestaNDV2 jsonRespuestaDE)
+        {
+            try
+            {
+                //consultar datos en la tabla wmt_respuestaDS secuencial para insertar linea
+                ModeloResQr = null;
+                ModeloResQr = BuscarRespuestaDS(jsonRespuestaDE.nro_trans);
+                if (ModeloResQr == null)
+                {
+                    if (jsonRespuestaDE.linea <= 0)
+                    {
+                        jsonRespuestaDE.linea = 1;
+                    }
+
+                }
+                else
+                {
+                    jsonRespuestaDE.linea = ModeloResQr.linea + 1;
+
+                }
+
+                string respuesta = guardar.InsertarRespuestaDS_DIANNDV2(jsonRespuestaDE);
+
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(jsonRespuestaDE.nro_trans, metodo, "InsertarRespuestaJsonDIANDS", e.ToString(), DateTime.Now, "consulta");
+                return null;
+            }
+        }
+
+
     }
 }

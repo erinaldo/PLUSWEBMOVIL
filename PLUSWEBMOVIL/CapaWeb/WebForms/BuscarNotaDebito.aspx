@@ -97,7 +97,15 @@
                         </tr>
                         <tr valign="top">
                           
-                            
+                         
+                            <td width="20%" class="busqueda">Tipo:</td>
+                          <td>
+                              <asp:DropDownList ID="cbx_tipo_factura" class="textos" runat="server" Height="16px" Width="204px">
+                                  <asp:ListItem Value="NDVE">NOTA DÉBITO ELECTRÓNICA</asp:ListItem>
+                                  <asp:ListItem Value="NDV">POR COMPUTADOR</asp:ListItem>
+                              </asp:DropDownList>
+                          </td>
+  
                             <td> </td>
                             <td aling="rigth"><asp:Button ID="Buscar" runat="server" OnClick="Buscar_Click" class="botones" Text="Buscar" /></td>
                         </tr>

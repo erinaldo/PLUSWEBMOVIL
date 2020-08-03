@@ -140,7 +140,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "EnviarFactura", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "EnviarFactura", e.ToString(), DateTime.Now, Ccf_usuario);
                 return "Se produjo un error al enviar " + e.ToString();
             }
 
@@ -243,7 +243,7 @@ namespace CapaProceso.RestCliente
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "enviarPDF", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "enviarPDF", e.ToString(), DateTime.Now, Ccf_usuario);
                 return "No se pudo completar la acción." + "enviarPDF." + " Por favor notificar al administrador.";
             }
 

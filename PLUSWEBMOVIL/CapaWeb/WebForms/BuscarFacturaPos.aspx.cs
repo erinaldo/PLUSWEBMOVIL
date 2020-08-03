@@ -45,8 +45,14 @@ namespace CapaWeb.WebForms
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
         modelowmtfacturascab conscabceraTipo = new modelowmtfacturascab();
-        public string numerador = "trans";
 
+        Consultawmspcresfact ConsultaResolucion = new Consultawmspcresfact();
+        modelowmspcresfact resolucion = new modelowmspcresfact();
+        List<modelowmspcresfact> listaRes = null;
+        public string numerador = "trans";
+        public string ResF_estado = "S";
+        public string ResF_serie = "0";
+        public string ResF_tipo = "F";
         public string ComPwm;
         public string AmUsrLog;
         public string cod_proceso;
@@ -205,16 +211,41 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
+                //Buscar si es electronica o por computador
+                //LIsta Resolucion facturas
+                listaRes = ConsultaResolucion.ConsultaResolusiones(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo);
+                resolucion = null;
+                string lbl_tipofac = null;
+                foreach (modelowmspcresfact item in listaRes)
+                {
+                    resolucion = item;
+                }
+                if (resolucion.tipo_fac == "S")
+                {
+                    lbl_tipofac = "POSE";
+                    cbx_tipo_factura.SelectedValue = lbl_tipofac;
+                }
+                else
+                {
+                    if (listaRes.Count == 0)
+                    {
+                        lbl_error.Text = "No se existe resolución activa";
+                    }
+                    else
+                    {
+                        lbl_tipofac = "POS";
+                        cbx_tipo_factura.SelectedValue = lbl_tipofac;
+                    }
+                }
                 DateTime Fechainicio = DateTime.Today;
-                DateTime Fechafin = DateTime.Today;
-                Ccf_tipo2 = cbx_tipo_factura.SelectedValue.Trim();
+                DateTime Fechafin = DateTime.Today;  
                 string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);
                 string Ccf_mesi = string.Format("{0:00}", Fechainicio.Month);
                 string Ccf_anioi = Fechainicio.Year.ToString();
                 string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
                 string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
                 string Ccf_aniof = Fechafin.Year.ToString();
-
+                string Ccf_tipo2 = cbx_tipo_factura.SelectedValue.Trim();
 
                 listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
 
@@ -466,7 +497,7 @@ namespace CapaWeb.WebForms
                                     Encabezado encabezado = new Encabezado();
                                     conscabcera = null;
                                     conscabcera = buscarCabezeraFactura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Convert.ToString(Id));
-                                    Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans=" + Convert.ToString(Id) + "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo=POSE");
+                                    Response.Redirect(Modelowmspclogo.sitio_app + conscabcera.pagina_elimina + "?nro_trans=" + Convert.ToString(Id) + "&cod_docum=" + conscabcera.cod_docum.Trim() + "&serie_docum=" + conscabcera.serie_docum.Trim() + "&nro_docum=" + conscabcera.nro_docum.Trim() + "&tipo=" + conscabceraTipo.tipo_nce.Trim());
                                     break;
 
                             }

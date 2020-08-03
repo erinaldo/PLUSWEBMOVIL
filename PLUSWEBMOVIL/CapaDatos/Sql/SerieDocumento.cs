@@ -31,6 +31,7 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@estado", SqlDbType.VarChar).Value = ResF_estado;
                     conmand.Parameters.Add("@serie", SqlDbType.VarChar).Value = ResF_serie;
                     conmand.Parameters.Add("@tipo", SqlDbType.VarChar).Value = ResF_tipo;
+                    conmand.Parameters.Add("@sucursal", SqlDbType.VarChar).Value = "0";
 
                     SqlDataReader dr = conmand.ExecuteReader();
 

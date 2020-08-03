@@ -124,7 +124,7 @@ namespace CapaDatos.Sql
             {
                 cn = conexion.genearConexion();
 
-                string insert = "INSERT INTO  wmt_facturas_det (nom_articulo, nom_articulo2, cantidad, precio_unit, base_imp, porc_iva, nro_trans, linea, cod_emp, cod_articulo, cod_concepret, porc_descto, valor_descto, cod_cta_vtas, cod_cta_cos, cod_cta_inve, usuario_mod, nro_audit, fecha_mod, tasa_iva, cod_ccostos) VALUES (@nom_articulo, @nom_articulo2, @cantidad, @precio_unit, @base_imp, @porc_iva, @nro_trans, @linea, @cod_emp, @cod_articulo, @cod_concepret, @porc_descto, @valor_descto, @cod_cta_vtas, @cod_cta_cos, @cod_cta_inve, @usuario_mod, @nro_audit, @fecha_mod, @tasa_iva, @cod_ccostos)";
+                string insert = "INSERT INTO  wmt_facturas_det (nom_articulo, nom_articulo2, cantidad, precio_unit, base_imp, porc_iva, nro_trans, linea, cod_emp, cod_articulo, cod_concepret, porc_descto, valor_descto, cod_cta_vtas, cod_cta_cos, cod_cta_inve, usuario_mod, nro_audit, fecha_mod, tasa_iva, cod_ccostos,cod_articulo2) VALUES (@nom_articulo, @nom_articulo2, @cantidad, @precio_unit, @base_imp, @porc_iva, @nro_trans, @linea, @cod_emp, @cod_articulo, @cod_concepret, @porc_descto, @valor_descto, @cod_cta_vtas, @cod_cta_cos, @cod_cta_inve, @usuario_mod, @nro_audit, @fecha_mod, @tasa_iva, @cod_ccostos,@cod_articulo2)";
                 SqlCommand conmand = new SqlCommand(insert, cn);
                 conmand.Parameters.Add("@nom_articulo", SqlDbType.VarChar).Value = detalleFactura.nom_articulo;
                 conmand.Parameters.Add("@nom_articulo2", SqlDbType.VarChar).Value = detalleFactura.nom_articulo2;
@@ -147,6 +147,7 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@fecha_mod", SqlDbType.DateTime).Value = detalleFactura.fecha_mod;
                 conmand.Parameters.Add("@tasa_iva", SqlDbType.VarChar).Value = detalleFactura.tasa_iva;
                 conmand.Parameters.Add("@cod_ccostos", SqlDbType.VarChar).Value = detalleFactura.cod_ccostos;
+                conmand.Parameters.Add("@cod_articulo2", SqlDbType.VarChar).Value =detalleFactura.cod_articulo2;
                 int dr = conmand.ExecuteNonQuery();
                 cn.Close();
                 return "Factura salvada correctamente";
@@ -280,13 +281,13 @@ namespace CapaDatos.Sql
         }
 
         //ACTUALIZAR DETALLE SIN LISTAS
-        public string ActualizarDetalleSL( string nom_articulo2, decimal cantidad, decimal precio_unit,  string nro_trans, int linea, string cod_emp, decimal porc_descto,  string usuario_mod, string cod_ccostos)
+        public string ActualizarDetalleSL( string nom_articulo2, decimal cantidad, decimal precio_unit,  string nro_trans, int linea, string cod_emp, decimal porc_descto,  string usuario_mod, string cod_ccostos, decimal valor_descto)
         {
             try
             {
                 cn = conexion.genearConexion();
 
-                string insert = "UPDATE wmt_facturas_det  SET nom_articulo2 = @nom_articulo2, cantidad = @cantidad, precio_unit = @precio_unit,porc_descto = @porc_descto, cod_ccostos = @cod_ccostos WHERE nro_trans = @nro_trans and linea = @linea";
+                string insert = "UPDATE wmt_facturas_det  SET nom_articulo2 = @nom_articulo2, cantidad = @cantidad, precio_unit = @precio_unit,porc_descto = @porc_descto, cod_ccostos = @cod_ccostos, valor_descto =@valor_descto WHERE nro_trans = @nro_trans and linea = @linea";
                 SqlCommand conmand = new SqlCommand(insert, cn);
                 conmand.Parameters.Add("@nom_articulo2", SqlDbType.VarChar).Value = nom_articulo2;
                 conmand.Parameters.Add("@cantidad", SqlDbType.Decimal).Value = cantidad;
@@ -295,6 +296,7 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@linea", SqlDbType.Int).Value = linea;
                 conmand.Parameters.Add("@porc_descto", SqlDbType.Decimal).Value = porc_descto;
                 conmand.Parameters.Add("@cod_ccostos", SqlDbType.VarChar).Value = cod_ccostos;
+                conmand.Parameters.Add("@valor_descto", SqlDbType.VarChar).Value = valor_descto;
                 int dr = conmand.ExecuteNonQuery();
                 cn.Close();
                 return "Factura salvada correctamente";

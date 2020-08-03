@@ -292,6 +292,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.DropDownList cbx_motivo_nc;
         
         /// <summary>
+        /// Control lbl_tipo_nd.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_tipo_nd;
+        
+        /// <summary>
         /// Control lbl_trans.
         /// </summary>
         /// <remarks>

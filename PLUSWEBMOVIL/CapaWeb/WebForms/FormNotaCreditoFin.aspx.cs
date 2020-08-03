@@ -10,6 +10,7 @@ using CapaDatos.Modelos.ModelosNC;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using System.IO;
 using CapaProceso.ReslClientePdf;
+using CapaDatos.Sql;
 
 namespace CapaWeb.WebForms
 {
@@ -105,6 +106,10 @@ namespace CapaWeb.WebForms
         public List<JsonRespuestaDE> ListaModelorespuestaDs = null;
         public JsonRespuestaDE ModeloResQr = new JsonRespuestaDE();
         public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
+        
+        FacturaDescuento consultaDesc = new FacturaDescuento();
+        List<ModeloDescCargoFac> ListaDesc = new List<ModeloDescCargoFac>();
+        ModeloDescCargoFac modelodescuento = new ModeloDescCargoFac();
         public string ComPwm;
         public string AmUsrLog;
         public string valor_asignado = null;
@@ -196,9 +201,7 @@ namespace CapaWeb.WebForms
                                 SetearCampos();
                                 DesbloquearFactura();
                                 Session["Tipo"] = "Anular";
-
                                 ConsultarTasaCambioCanorus();
-
                                 break;
                             }
                             catch (Exception ex)
@@ -295,12 +298,14 @@ namespace CapaWeb.WebForms
                     decimal SumDesc = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.descuento);
                     txtSumaDesc.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), SumDesc);
                     txt_descuento_factura.Text = txtSumaDesc.Text;
-  
+                    decimal BaseIva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.monto_imponible);
+                    txtBaseIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), BaseIva19);
+
                     Session["sumaSubtotal"] = Convert.ToString(conscabcera.subtotal);
                     Session["sumaDescuento"] = Convert.ToString(conscabcera.descuento);
                     Session["sumaIva"] = Convert.ToString(conscabcera.iva);
                     Session["sumaTotal"] = Convert.ToString(conscabcera.total);
-
+                    BuscarTotales(txt_nro_trans_padre.Text);
                     BloquearDatosFactura();
 
                     lbl_trx.Text = null;
@@ -312,39 +317,6 @@ namespace CapaWeb.WebForms
                     listaConsDetalle = ConsultaDeta.ConsultaDetalleFacura(nro_trans);
                     Session["detalle"] = listaConsDetalle;
 
-                    //Consulta de bases e ivas
-                    decimal baseiva19 = 0;
-                    decimal iva19 = 0;
-                    decimal baseiva15 = 0;
-                    decimal iva15 = 0;
-                    foreach (ModeloDetalleFactura item in listaConsDetalle)
-                    {
-                        if (item.porc_iva == 19)
-                        {
-                            baseiva19 += item.base_iva;
-                            iva19 += item.valor_iva;
-                        }
-                        if (item.porc_iva == 5)
-                        {
-                            baseiva15 += item.base_iva;
-                            iva15 += item.valor_iva;
-                        }
-                    }
-                    decimal BaseIva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), baseiva19);
-                    txtBaseIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), BaseIva19);
-                    decimal Base15 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), baseiva15);
-                    txtBase15.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Base15);
-                    decimal Iva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), iva19);
-                    txtIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Iva19);
-                    decimal Iva15 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), iva15);
-                    txtIva15.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Iva15);
-
-                    //Llenar variables de seccion de bae e ivas
-
-                    Session["sumaBase19"] = baseiva19;
-                    Session["sumaBase15"] = baseiva15;
-                    Session["sumaIva19"] = iva19;
-                    Session["sumaIva15"] = iva15;
                     gv_Producto.DataSource = listaConsDetalle;
                     gv_Producto.DataBind();
                     gv_Producto.Height = 100;
@@ -363,6 +335,42 @@ namespace CapaWeb.WebForms
             }
 
 
+        }
+        protected void BuscarTotales(string nro_docum)
+        {
+            try
+            {
+                decimal cargo = 0;
+                decimal descuento = 0;
+                ListaDesc = consultaDesc.ConsultaDescCargTrans(ComPwm, AmUsrLog, nro_docum);
+                if (ListaDesc.Count > 0)
+                {
+                    gv_descuentos.DataSource = ListaDesc;
+                    gv_descuentos.DataBind();
+                    gv_descuentos.Height = 100;
+                    foreach (ModeloDescCargoFac item in ListaDesc)
+                    {
+                        if (item.signo.Trim() == "D")
+                        {
+                            descuento += item.total;
+
+                        }
+                        if (item.signo.Trim() == "C")
+                        {
+                            cargo += item.total;
+                        }
+
+                    }
+                    txt_cargos.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), cargo);
+                    txt_descuento_apli.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), descuento);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                GuardarExcepciones("BuscarTotales", ex.ToString());
+
+            }
         }
         public void GuardarExcepciones(string metodo, string error)
         {
@@ -417,15 +425,15 @@ namespace CapaWeb.WebForms
             txtSumaIva.Enabled = true;
             txtSumaDesc.Enabled = true;
             gv_Producto.Enabled = true;
-            txtBase15.Enabled = true;
             txtBaseIva19.Enabled = true;
-            txtIva15.Enabled = true;
-            txtIva19.Enabled = true;
+            txt_cargos.Enabled = true;
+            txt_descuento_apli.Enabled = true;
             //botones
             AgregarNC.Enabled = true;
             Confirmar.Visible = true;
             btnGuardarDetalle.Visible = false;
             btn_Fac.Enabled = true;
+            btn_desc.Enabled = true;
             //detalle producto
             txt_Codigo.Enabled = true;
             txt_Cantidad.Enabled = true;
@@ -502,15 +510,15 @@ namespace CapaWeb.WebForms
             txtSumaIva.Enabled = false;
             txtSumaDesc.Enabled = false;
             gv_Producto.Enabled = false;
-            txtBase15.Enabled = false;
+            txt_cargos.Enabled = false;
             txtBaseIva19.Enabled = false;
-            txtIva15.Enabled = false;
-            txtIva19.Enabled = false;
+            txt_descuento_apli.Enabled = false;
             //botones
             AgregarNC.Enabled = false;
             Confirmar.Visible = true;
             btnGuardarDetalle.Visible = false;
             btn_Fac.Enabled = false;
+            btn_desc.Enabled = true;
             //detalle producto
             txt_Codigo.Enabled = false;
             txt_Cantidad.Enabled = false;
@@ -541,17 +549,16 @@ namespace CapaWeb.WebForms
             txtSumaIva.Enabled = false;
             txtSumaDesc.Enabled = false;
             gv_Producto.Enabled = false;
-            txtBase15.Enabled = false;
+            txt_descuento_apli.Enabled = false;
             txtBaseIva19.Enabled = false;
-            txtIva15.Enabled = false;
-            txtIva19.Enabled = false;
+            txt_cargos.Enabled = false;
             //botones
             AgregarNC.Enabled = false;
             Confirmar.Visible = false;
             //btnImpuestos.Enabled = false;
             btnGuardarDetalle.Visible = false;
             btn_Fac.Enabled = false;
-
+            btn_desc.Enabled = false;
             //detalle producto
             txt_Codigo.Enabled = false;
             txt_Cantidad.Enabled = false;
@@ -800,7 +807,7 @@ namespace CapaWeb.WebForms
                             {
                                 sumaBase15 -= detalle.subtotal;
                                 Session["sumaBase15"] = sumaBase15.ToString();
-                                txtBase15.Text = String.Format("{0:N}", sumaBase15).ToString();
+                             
                             }
                             //iva 19% totales
 
@@ -812,7 +819,7 @@ namespace CapaWeb.WebForms
                             {
                                 sumaIva19 -= detalle.detaiva;
                                 Session["sumaIva19"] = sumaIva19.ToString();
-                                txtIva19.Text = String.Format("{0:N}", sumaIva19).ToString();
+                               
                             }
                             //iva 15% totales
 
@@ -824,7 +831,7 @@ namespace CapaWeb.WebForms
                             {
                                 sumaIva15 -= detalle.detaiva;
                                 Session["sumaIva15"] = sumaIva15.ToString();
-                                txtIva15.Text = String.Format("{0:N}", sumaIva15).ToString();
+                            
                             }
                             //Eliminar Subtotal
                             if (Session["sumaSubtotal"] != null)
@@ -900,7 +907,6 @@ namespace CapaWeb.WebForms
                     lbl_tiponc.Text = "NCVE";
                     DateTime hoy = DateTime.Today;
                     fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
-                    fecha.Enabled = false;
                 }
                 else { Session["Ccf_tipo2"] = "NCV";
                     lbl_tiponc.Text = "NCV";
@@ -943,18 +949,19 @@ namespace CapaWeb.WebForms
             }
         }
         //validar parametrizacion de nc para poder 
-        public void ValidarParametrosFactura()
+        public void ValidarParametrosNC()
         {
             try
             {
                 lbl_error.Text = "";
+                Confirmar.Enabled = true;
                 string perido_contable = "";
                 perido_contable = consultaValidarFactura.ConsultaValidarPeriodoContable(ComPwm, AmUsrLog, fecha.Text);
                 if (perido_contable == "")
                 {
                     lbl_validacion.Text = "El Periodo Contable correspondiente a la fecha del documento se encuentra cerrado o no existe. Por favor registrar Periodo Contable y actualizar la página";
                     lbl_validacion.Visible = true;
-                    AgregarNC.Enabled = false;
+                    Confirmar.Enabled = false;
                 }
                 else
                 {
@@ -962,9 +969,9 @@ namespace CapaWeb.WebForms
                     empresa = consultaValidarFactura.ConsultaValidarMonCiudEmpresaERP(ComPwm, AmUsrLog);
                     if (empresa == false)
                     {
-                        lbl_validacion.Text = " No existe moneda o ciudad de la empresa registrado para la factura. Por favor registrar información y actualizar la página";
+                        lbl_validacion.Text = " No existe moneda o ciudad de la empresa registrado para la nota de crédito. Por favor registrar información y actualizar la página";
                         lbl_validacion.Visible = true;
-                        AgregarNC.Enabled = false;
+                        Confirmar.Enabled = false;
                     }
                     else
                     {
@@ -972,9 +979,9 @@ namespace CapaWeb.WebForms
                         resolucion = consultaValidarFactura.ConsultaValidarResolucionERP(ComPwm, AmUsrLog, "V", serie_docum.SelectedValue.Trim(), fecha.Text, Modelowmspclogo.cod_emp_erp.Trim());
                         if (resolucion == false)
                         {
-                            lbl_validacion.Text = " No existe resolución de factura. Por favor registrar información y actualizar la página";
+                            lbl_validacion.Text = " No existe resolución de la nota de crédito. Por favor registrar información y actualizar la página";
                             lbl_validacion.Visible = true;
-                            AgregarNC.Enabled = false;
+                            Confirmar.Enabled = false;
                         }
                         else {
                             //Consultar si el vendedor tiene asignada una sucursal
@@ -1100,18 +1107,17 @@ namespace CapaWeb.WebForms
                 txtSumaIva.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), SumIva);
                 decimal SumDesc = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.descuento);
                 txtSumaDesc.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), SumDesc);
-
                 decimal BaseIva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.monto_imponible);
                 txtBaseIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), BaseIva19);
-                decimal Iva19 = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.iva);
-                txtIva19.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), Iva19);
+
 
                 Session["sumaSubtotal"] = Convert.ToString(conscabcera.subtotal);
                 Session["sumaDescuento"] = Convert.ToString(conscabcera.descuento);
                 Session["sumaIva"] = Convert.ToString(conscabcera.iva);
                 Session["sumaTotal"] = Convert.ToString(conscabcera.total);
-
+                
                 CargarCamposFactura(conscabceraTipo.nro_trans_padre);
+                BuscarTotales(lbl_trans.Text);
                 //Carga detalle factura
                 string nro_trans = Ccf_nro_trans;
 
@@ -1360,7 +1366,7 @@ namespace CapaWeb.WebForms
                     {
                         sumaBase15 += item.subtotal;
                         Session["sumaBase15"] = sumaBase15.ToString();
-                        txtBase15.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, sumaBase15);
+                        
                     }
                     //Iva 19 totales
 
@@ -1372,7 +1378,7 @@ namespace CapaWeb.WebForms
                     {
                         sumaIva19 += item.detaiva;
                         Session["sumaIva19"] = sumaIva19.ToString();
-                        txtIva19.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, sumaIva19);
+                       
                     }
 
                     //Iva 15 totales
@@ -1385,7 +1391,7 @@ namespace CapaWeb.WebForms
                     {
                         sumaIva15 += item.detaiva;
                         Session["sumaIva15"] = sumaIva15.ToString();
-                        txtIva15.Text = ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, sumaIva15);
+                       
                     }
                     item.cod_cta_cos = articulo.cod_cta_cos;
                     item.cod_cta_inve = articulo.cod_cta_inve;
@@ -1557,7 +1563,7 @@ namespace CapaWeb.WebForms
                 // cabecerafactura.tipo_nce = "NCAE"; //NC por anulacion electronica
                 cabecerafactura.mot_nce = "2"; //Motivo DS  1 por anulación
                 cabecerafactura.cod_suc_cli = suc_cliente.Text;
-
+                cabecerafactura.desctos_rcgos = 0; //Enviar siempre 0 al insetar
                 error = GuardarCabezera.InsertarCabezeraNotaCredito(cabecerafactura);
                 if (string.IsNullOrEmpty(error))
                 {
@@ -1658,7 +1664,7 @@ namespace CapaWeb.WebForms
                         detallefactura.cod_cta_inve = item.cod_cta_inve;
                         detallefactura.usuario_mod = AmUsrLog;
                         detallefactura.nro_audit = conscabcera.nro_audit;
-                        detallefactura.fecha_mod = DateTime.Today;
+                        detallefactura.fecha_mod = DateTime.Now;
                         detallefactura.tasa_iva = item.tasa_iva;
                         detallefactura.cod_ccostos = item.cod_ccostos;
 
@@ -1676,7 +1682,10 @@ namespace CapaWeb.WebForms
 
                     }
                 }
+                //INSERTAR DESCUENTOS Y CARGOS GLOBALES DE LA FACTURA
+                InsertarCDscGlobales();
                 return conscabcera;
+                
             }
             catch (Exception ex)
             {
@@ -1684,9 +1693,48 @@ namespace CapaWeb.WebForms
                 return null;
             }
         }
-       
 
-        
+        public void InsertarCDscGlobales()
+        {
+            try
+            {
+  
+                //INSERTAR DESCUENTOS Y CARGOS GLOBALES DE LA FACTURA
+                ListaDesc = null;
+                ListaDesc = consultaDesc.ConsultaDescCargTrans(ComPwm, AmUsrLog, txt_nro_trans_padre.Text);
+                if (ListaDesc.Count > 0)
+                {
+                    ModeloDescCargoFac modeloDesCargo = new ModeloDescCargoFac();
+                    ModeloDescCargoFac modeloCarDscG = new ModeloDescCargoFac();
+                    foreach (var desc in ListaDesc)
+                    {
+                        modeloCarDscG = desc;
+                        modeloDesCargo.nro_trans = lbl_trans.Text;
+                        modeloDesCargo.linea = modeloCarDscG.linea.ToString();
+                        modeloDesCargo.cod_emp = ComPwm;
+                        modeloDesCargo.cod_concepto = modeloCarDscG.cod_concepto;
+                        modeloDesCargo.nom_concepto = modeloCarDscG.nom_concepto;
+                        modeloDesCargo.signo = modeloCarDscG.signo;
+                        modeloDesCargo.porc_descto = modeloCarDscG.porc_descto;
+                        modeloDesCargo.valor_descto =modeloCarDscG.valor_descto;
+                        modeloDesCargo.monto_imponible = modeloCarDscG.monto_imponible;
+                        modeloDesCargo.total = modeloCarDscG.total;
+                        modeloDesCargo.cod_ccostos = modeloCarDscG.cod_ccostos;
+                        modeloDesCargo.cod_cta = modeloCarDscG.cod_cta;
+                        modeloDesCargo.usuario_mod = AmUsrLog;
+                        modeloDesCargo.fecha_mod = DateTime.Now.ToString();
+                        consultaDesc.InsertarDescCargTrans(modeloDesCargo);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("InsertarCDscGlobales", ex.ToString());
+
+            }
+        }
+
 
         protected void btn_Fac_Click(object sender, EventArgs e)
         {
@@ -1789,16 +1837,23 @@ namespace CapaWeb.WebForms
                 string pathXml = pathTemporal + nombreXml;
                 File.WriteAllText(pathXml, StringXml);
                 //-------------OBTENER EL XML Y PDF PARA EL ENVIO-------------------//
-                if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+                cod_proceso = "RCOMNCELEC";
+                ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
+                string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
+                //-------------OBTENER PDF PARA EL ENVIO-------------------//
+                if (tipo_doc.Trim() == "DEFECTO2")
                 {
 
-                    PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
-                    pathPdf = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    PdfNCV2Default2 pdf = new PdfNCV2Default2();
+                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                 }
                 else
                 {
-                    PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
-                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans); ;
+                    if (tipo_doc.Trim() == "DEFECTO3")
+                    {
+                        PdfNCV3Default3 pdf = new PdfNCV3Default3();
+                        pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    }
 
                 }
                 Boolean error = enviarcorreocliente.EnviarCorreoRemitente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, pathXml);
@@ -1855,7 +1910,7 @@ namespace CapaWeb.WebForms
                             }
                             else
                             {
-                              
+                                ValidarParametrosNC();
 
                                 Confirmar.Enabled = false;
                                 string respuestaConfirmacionNC = "";
@@ -1899,12 +1954,12 @@ namespace CapaWeb.WebForms
                                         string respuesta = "";
                                         if (Modelowmspclogo.version_fe == "1")
                                         {
-                                            ConsumoRestNCFin consumoRest = new ConsumoRestNCFin();
+                                            ConsumoRestNCFinV2 consumoRest = new ConsumoRestNCFinV2();
                                             respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", conscabcera.nro_trans, txt_nro_trans_padre.Text);
                                         }
                                         else
                                         {
-                                            ConsumoRestNCFinV2 consumoRest = new ConsumoRestNCFinV2();
+                                            ConsumoRestNCFinV3 consumoRest = new ConsumoRestNCFinV3();
                                             respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "NC", conscabcera.nro_trans, txt_nro_trans_padre.Text);
                                         }
                                    
@@ -1937,13 +1992,19 @@ namespace CapaWeb.WebForms
                                 }
                             }
                             
-                                else {
+                                else
+                                {
                                     if (respuestaConfirmacionNC == "")
                                     {
                                         GuardarCabezera.ActualizarEstadoFactura(txt_nro_trans_padre.Text, "N");//Actualiza factura a Anulada
                                         EnviarCorreoCliente(conscabcera.nro_trans, conscabceraTipo.tipo_nce.Trim());
                                         Session.Remove("listaFacturas");
                                         Response.Redirect("FormBuscarNotaCredito.aspx");
+                                    }
+                                    else
+                                    {
+                                        lbl_trx.Visible = true;
+                                        lbl_trx.Text = respuestaConfirmacionNC;
                                     }
                                 }
 
@@ -1971,8 +2032,11 @@ namespace CapaWeb.WebForms
                 string pathPdf = "";
                 string pathXml = "";
 
+                cod_proceso = "RCOMNCELEC";
+                ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
+                string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
                 //-------------OBTENER PDF PARA EL ENVIO-------------------//
-                if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+                if (tipo_doc.Trim() == "DEFECTO2")
                 {
 
                     PdfNCV2Default2 pdf = new PdfNCV2Default2();
@@ -1980,8 +2044,11 @@ namespace CapaWeb.WebForms
                 }
                 else
                 {
-                    PdfNotaCredito pdf = new PdfNotaCredito();
-                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    if (tipo_doc.Trim() == "DEFECTO3")
+                    {
+                        PdfNCV3Default3 pdf = new PdfNCV3Default3();
+                        pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    }
 
                 }
                 Boolean error = enviarcorreocliente.EnviarCorreoCliente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, pathXml);
@@ -1989,6 +2056,24 @@ namespace CapaWeb.WebForms
             catch (Exception ex)
             {
                 GuardarExcepciones("EnviarCorreoCliente", ex.ToString());
+
+            }
+        }
+        protected void btn_desc_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            try
+            {
+                lbl_error.Text = "";
+                Session.Remove("Tipo");
+                Session.Remove("desc_carg");
+                Session["Tipo"] = "VER";
+                Session["valor_asignado1"] = txt_nro_trans_padre.Text;
+                this.Page.Response.Write("<script language='JavaScript'>window.open('./DescuentosCargosFac.aspx', 'Descuentos y Cargos', 'top=100,width=900 ,height=500, left=500');</script>");
+
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("btn_desc_Click", ex.ToString());
 
             }
         }
@@ -2017,6 +2102,40 @@ namespace CapaWeb.WebForms
             catch (Exception ex)
             {
                 GuardarExcepciones("btnImpuestos_Click", ex.ToString());
+
+            }
+        }
+
+        protected void fecha_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                lbl_validacion.Text = "";
+                lbl_validacion.Visible = false;
+                DateTime Fecha_seleccion = Convert.ToDateTime(fecha.Text);
+                if (Session["Ccf_tipo2"].ToString() == "NCVE")
+                {
+
+                    DateTime Fecha_actual = DateTime.Today;
+                    DateTime Fecha_minima = DateTime.Today.AddDays(-5);
+                    int Actual = DateTime.Today.Day;
+                    if (Fecha_seleccion < Fecha_minima)
+                    {
+                        lbl_validacion.Text = "La fecha de la nota de crédito no puede ser menor a cinco días de la fecha actual";
+                        lbl_validacion.Visible = true;
+                    }
+                    if (Fecha_seleccion > Fecha_actual)
+                    {
+
+                        lbl_validacion.Text = "La fecha de la nota de crédito no puede ser mayor a  la fecha actual";
+                        lbl_validacion.Visible = true;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("fecha_TextChanged", ex.ToString());
 
             }
         }

@@ -8,6 +8,7 @@ using CapaProceso.RestCliente;
 using CapaDatos.Modelos;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using System.IO;
+using CapaDatos.Sql;
 
 namespace CapaWeb.WebForms
 {
@@ -175,19 +176,20 @@ namespace CapaWeb.WebForms
 
                 string respuesta = "";
 
-                if (Modelowmspclogo.version_fe == "1")
+                switch (Modelowmspclogo.version_fe.Trim())  //AVERIGUAR QUE VERSION  DE FACTURACION USA
                 {
+                    case "2":
 
-                    ConsumoRest consumoRest = new ConsumoRest();
-                    respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
+                        ConsumoRestFEV3 consumoRest1 = new ConsumoRestFEV3();
+                        respuesta = consumoRest1.EnviarFactura(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
+                        break;
+                    case "1":
+                        ConsumoRestFEV2 consumoRest = new ConsumoRestFEV2();
+                        respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
+                        break;
                 }
-                else
-                {
-                    ConsumoRestFEV2 consumoRest = new ConsumoRestFEV2();                    
-                    respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
-                }
-               
-                
+
+
                 if (respuesta == "")
                 {
                     mensaje.Text = "Su factura fue enviada exitosamente";
@@ -234,15 +236,18 @@ namespace CapaWeb.WebForms
                 string pathXml = pathTemporal + nombreXml;
                 File.WriteAllText(pathXml, StringXml);
                 //-------------OBTENER EL XML Y PDF PARA EL ENVIO-------------------//
-                if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+                ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
+               string cod_proceso = "RCOMFELECT";
+                string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
+                if (tipo_doc.Trim() == "DEFECTO3")
                 {
 
-                    PdfFacEleV2Default2 pdf = new PdfFacEleV2Default2();
+                    PdfFacEleV3Default3 pdf = new PdfFacEleV3Default3();
                     pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                 }
                 else
                 {
-                    PdfFacturaElectronica pdf = new PdfFacturaElectronica();
+                    PdfFacEleV2Default2 pdf = new PdfFacEleV2Default2();
                     pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
                 }
@@ -290,19 +295,19 @@ namespace CapaWeb.WebForms
                 conscabcera = buscarTipoFac(lbl_nro_trans.Text);
                 
                 string respuesta = "";
-                if (Modelowmspclogo.version_fe == "1")
+                switch (Modelowmspclogo.version_fe.Trim())  //AVERIGUAR QUE VERSION  DE FACTURACION USA
                 {
-
-                    ConsumoRest consumoRest = new ConsumoRest();
-               
-                    respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
+                    case "2":
+                        
+                        ConsumoRestFEV3 consumoRest1 = new ConsumoRestFEV3();
+                        respuesta = consumoRest1.enviarPDF(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
+                        break;
+                    case "2.1":
+                        ConsumoRestFEV2 consumoRest = new ConsumoRestFEV2();
+                        respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
+                        break;
                 }
-                else
-                {
-                    ConsumoRestFEV2 consumoRest = new ConsumoRestFEV2();
-                    respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
-                }
-               
+                
                 if (respuesta == "")
                 {
                     mensaje.Text = "Su factura fue enviada exitosamente"; ;

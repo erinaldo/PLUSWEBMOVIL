@@ -15,6 +15,7 @@ using CapaProceso.Modelos;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using CapaDatos.Modelos;
 using CapaProceso.ReslClientePdf;
+using CapaDatos.Sql;
 
 namespace CapaWeb.WebForms
 {
@@ -48,6 +49,7 @@ namespace CapaWeb.WebForms
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
+        string cod_proceso = "";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -57,6 +59,9 @@ namespace CapaWeb.WebForms
 
                 RecuperarCokie();
                 ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
+                ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
+                cod_proceso = "RCOMFELECT";
+                string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
                 foreach (var item in ListaModelowmspclogo)
                 {
                     Modelowmspclogo = item;
@@ -78,13 +83,20 @@ namespace CapaWeb.WebForms
                     }
                    
                     //Clase para pdf de cada empresa 
-                    switch (Modelowmspclogo.pdf_fe.Trim())
+                    switch (tipo_doc.Trim())
                     {
                         case "DEFECTO2":
                             PdfFacVTAV2 pdf1 = new PdfFacVTAV2();
                             string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
                             Response.ContentType = "application/pdf";
                             Response.WriteFile(pathPdf1);
+                            Response.End();
+                            break;
+                        case "DEFECTO3":
+                            PdfFacVTAV3 pdf2 = new PdfFacVTAV3();
+                            string pathPdf2 = pdf2.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                            Response.ContentType = "application/pdf";
+                            Response.WriteFile(pathPdf2);
                             Response.End();
                             break;
                         case "DEFECTO":
@@ -110,8 +122,29 @@ namespace CapaWeb.WebForms
                     }
 
                     //Clase para pdf de cada empresa 
-                    switch (Modelowmspclogo.pdf_fe.Trim())
+                    switch (tipo_doc.Trim())
                     {
+                        case "DEFECTO3":
+                            if (conscabcera.estado.Trim() == "C")
+                            {
+                                PdfFacVTAV3 pdf1 = new PdfFacVTAV3();
+                                string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                                Response.ContentType = "application/pdf";
+                                Response.WriteFile(pathPdf1);
+                                Response.End();
+
+                            }
+                            else
+                            {
+                                PdfFacEleV3Default3 pdf1 = new PdfFacEleV3Default3();
+                                string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                                Response.ContentType = "application/pdf";
+                                Response.WriteFile(pathPdf1);
+                                Response.End();
+
+                            }
+
+                            break;
                         case "DEFECTO2":
                             if(conscabcera.estado.Trim() == "C")
                             {
@@ -231,6 +264,19 @@ namespace CapaWeb.WebForms
                 {
                     AmUsrLog = Request.Cookies["AmUsrLog"].Value;
 
+                }
+                if (Request.Cookies["ProcAud"] != null)
+                {
+                    cod_proceso = Request.Cookies["ProcAud"].Value;
+                }
+                else
+                {
+                    cod_proceso = Convert.ToString(Request.QueryString["cod_proceso"]);
+                    if (cod_proceso != null)
+                    {
+                        //Crear cookie de cod_proceso
+                        Response.Cookies["ProcAud"].Value = cod_proceso;
+                    }
                 }
             }
             catch (Exception ex)

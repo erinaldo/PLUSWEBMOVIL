@@ -27,6 +27,7 @@ namespace CapaWeb.WebForms
         public string AmUsrLog;
         public string cod_proceso;
         public string sesion;
+        public string AmComCod;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -69,7 +70,10 @@ namespace CapaWeb.WebForms
                     sesion = Request.Cookies["AmSesId"].Value;
                 }
 
-
+                if (Request.Cookies["AmComCod"] != null)
+                {
+                    AmComCod = Request.Cookies["AmComCod"].Value;
+                }
                 if (Request.Cookies["AmUsrLog"] != null)
                 {
                     AmUsrLog = Request.Cookies["AmUsrLog"].Value;
@@ -90,9 +94,9 @@ namespace CapaWeb.WebForms
                 }
                 //Codigo empresa
                 string empresa_codigo = ComPwm;
+                string empresa_canorus = AmComCod;
                 Response.Cookies["empresa_codigo"].Value = empresa_codigo;
-                //socio negocio
-                // string socio_codigo = "100";
+                Response.Cookies["empresa_canorus"].Value = empresa_canorus;
                 Response.Cookies["socio_codigo"].Value = socio;
                 Response.Cookies["usuario"].Value = AmUsrLog;
                 Response.Cookies["sesion"].Value = sesion;

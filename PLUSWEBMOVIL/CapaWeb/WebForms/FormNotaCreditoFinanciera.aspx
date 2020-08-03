@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="FormNotaCreditoFinanciera.aspx.cs" Inherits="CapaWeb.WebForms.FormNotaCreditoFinanciera" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site1.Master" AutoEventWireup="true" CodeBehind="FormNotaCreditoFinanciera.aspx.cs" Inherits="CapaWeb.WebForms.FormNotaCreditoFinanciera" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
   
 <script LANGUAGE="JavaScript">
@@ -173,7 +173,7 @@ return false;
                                 </td>
                                 <td>
                                    
-                                    <asp:TextBox ID="fecha" type="date"  Width="248" required="required"  runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="fecha" type="date"  Width="248" required="required"  runat="server" OnTextChanged="fecha_TextChanged" AutoPostBack="true" ></asp:TextBox>
 
                                 </td>
 

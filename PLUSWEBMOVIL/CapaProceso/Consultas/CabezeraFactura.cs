@@ -12,9 +12,103 @@ namespace CapaProceso.Consultas
     public class CabezeraFactura
     {
         FacturACab factura = new FacturACab();
+        ModificarPrecioFactura descuento = new ModificarPrecioFactura();
         modelocabecerafactura modelocabfactura = new modelocabecerafactura();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         string metodo = "CabezeaFactura.cs";
+        //Buscar concepto especifico por codigo de concepto
+        public ModeloFacturaDescuento ConceptoUnico(string usuario, string cod_emp, string codigo)
+        {
+            try
+            {
+                ModeloFacturaDescuento respuesta = new ModeloFacturaDescuento();
+                respuesta = descuento.ConceptoUnicoEmp(usuario, cod_emp, codigo);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ConceptoUnico", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
+        //Lista recargos/descuentos de factura por empresa
+        public List<ModeloFacturaDescuento> ListaRecDesFacturaxconcepto(string usuario, string cod_emp, string codigo)
+        {
+            try
+            {
+                List<ModeloFacturaDescuento> respuesta = new List<ModeloFacturaDescuento>();
+                respuesta = descuento.ListaDesRecFacturaxEmp(usuario, cod_emp, codigo);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaRecDesFacturaxconcepto", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
+        //Lista recargos/descuentos de factura por empresa
+        public List<ModeloFacturaDescuento>ListaRecDesFactura(string usuario, string cod_emp)
+        {
+            try
+            {
+                List<ModeloFacturaDescuento> respuesta = new List<ModeloFacturaDescuento>();
+                respuesta = descuento.ListaDesRecFactura(usuario, cod_emp);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaRecDesFactura", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
+        //eliminar  recargos/descuentos de factura por empresa
+        public string EliminarRecDesFactura(ModeloFacturaDescuento descuentoFactura)
+        {
+            try
+            {
+                string respuesta = descuento.EliminarDescRecFactura(descuentoFactura);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(descuentoFactura.cod_emp, metodo, "EliminarRecDesFactura", e.ToString(), DateTime.Now, descuentoFactura.usuario_mod);
+                return "No se pudo completar la acción." + "EliminarRecDesFactura." + " Por favor notificar al administrador.";
+            }
+        }
+        //Actuaizar    recargos/descuentos de factura por empresa
+        public string ActualizarRecDesFactura(ModeloFacturaDescuento descuentoFactura)
+        {
+            try
+            {
+                string respuesta = descuento.ActualizarDescRecFactura(descuentoFactura);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(descuentoFactura.cod_emp, metodo, "ActualizarRecDesFactura", e.ToString(), DateTime.Now, descuentoFactura.usuario_mod);
+                return "No se pudo completar la acción." + "ActualizarRecDesFactura." + " Por favor notificar al administrador.";
+            }
+        }
+        //Insertar    recargos/descuentos de factura por empresa
+        public string InsertarRecDesFactura(ModeloFacturaDescuento descuentoFactura)
+        {
+            try
+            {
+                string respuesta = descuento.InsertarDescRecFactura(descuentoFactura);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(descuentoFactura.cod_emp, metodo, "InsertarRecDesFactura", e.ToString(), DateTime.Now, descuentoFactura.usuario_mod);
+                return "No se pudo completar la acción." + "InsertarRecDesFactura." + " Por favor notificar al administrador.";
+            }
+        }
         //Actualizar cabecera nota de crédito
         public string ActualizarCabeceraNC(modelocabecerafactura cabezeraFactura)
         {

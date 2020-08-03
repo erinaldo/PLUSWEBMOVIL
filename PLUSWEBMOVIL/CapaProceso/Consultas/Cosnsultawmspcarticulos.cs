@@ -25,7 +25,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(ArtB__cod_emp, "Consultawmspcarticulos.cs", "ConsultaArticulos", e.ToString(), DateTime.Today, ArtB__usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(ArtB__cod_emp, "Consultawmspcarticulos.cs", "ConsultaArticulos", e.ToString(), DateTime.Now, ArtB__usuario);
                 return null;
             }
         }

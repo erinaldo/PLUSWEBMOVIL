@@ -24,6 +24,7 @@ namespace CapaProceso.RestCliente
         public string subpartidaarancelaria { get; set; }
         public decimal subtotal { get; set; }
         public Decimal subtotalusd { get; set; }
+        public decimal ivaexencion { get; set; }
     }
 
     public class EncabezadoFEV2

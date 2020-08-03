@@ -74,7 +74,8 @@ namespace CapaDatos.Sql
                         item.cod_sucursal = Convert.ToString(dr["cod_suc"]);
                         item.nom_sucursal = Convert.ToString(dr["nom_suc"]);
                         item.codnom_suc = Convert.ToString(dr["sucurcli"]);
-                      
+                        item.obligacion_fiscal = Convert.ToString(dr["obligacion_fiscal"]);
+
                         lista.Add(item);
 
                     }

@@ -45,5 +45,6 @@ namespace CapaDatos.Modelos
         public string cod_ciudad { get; set; }
         public string cod_moneda { get; set; }
         public string cod_vendedor { get; set; }
+        public string cod_suc_cli { get; set; }
     }
 }

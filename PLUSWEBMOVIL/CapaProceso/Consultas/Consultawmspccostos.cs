@@ -14,6 +14,7 @@ namespace CapaProceso.Consultas
         CCostos ccostos = new CCostos();
         modelowmspcccostos moedlocostos = new modelowmspcccostos();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo = "Consultawmspccostos.cs";
         public List<modelowmspcccostos> ConsultaCCostos(string CC__usuario, string CC__cod_emp, string CC__cod_dpto)
         {
             try
@@ -26,7 +27,24 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(CC__cod_emp, "Consultawmspccostos.cs", "ConsultaCCostos", e.ToString(), DateTime.Today, CC__usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(CC__cod_emp,metodo , "ConsultaCCostos", e.ToString(), DateTime.Now, CC__usuario);
+                return null;
+            }
+        }
+
+        public List<ModeloCtasContables> ConsultaCContable(string CC__usuario, string CC__cod_emp, string libro)
+        {
+            try
+            {
+                List<ModeloCtasContables> lista = new List<ModeloCtasContables>();
+                lista = ccostos.ListaBuscaCContable(CC__usuario, CC__cod_emp, libro);
+
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(CC__cod_emp, metodo, "ConsultaCContable", e.ToString(), DateTime.Now, CC__usuario);
                 return null;
             }
         }

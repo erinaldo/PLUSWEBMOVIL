@@ -13,6 +13,59 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo = "CCostos.cs";
+
+        public List<ModeloCtasContables> ListaBuscaCContable(string CC__usuario, string CC__cod_emp, string libro)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    List<ModeloCtasContables> lista = new List<ModeloCtasContables>();
+                    string consulta = ("wmspc_cuentas");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.CommandType = CommandType.StoredProcedure;
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = CC__usuario;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = CC__cod_emp;
+                    conmand.Parameters.Add("@libro", SqlDbType.VarChar).Value = libro;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        ModeloCtasContables item = new ModeloCtasContables();
+                        item.cod_cta = Convert.ToString(dr["cod_cta"]);
+                        item.nom_cta = Convert.ToString(dr["nom_cta"]);
+                        item.cod_tipocta = Convert.ToString(dr["cod_tipocta"]);
+                        item.negocio_cta = Convert.ToString(dr["negocio_cta"]);
+                        item.ccostos_cta = Convert.ToString(dr["ccosto_cta"]);
+                        item.analisis_tit = Convert.ToString(dr["analisis_tit"]);
+                        item.actividad_cta = Convert.ToString(dr["actividad_cta"]);
+                        item.cuenta = Convert.ToString(dr["cuenta"]);
+                        item.cod_tipotit = Convert.ToString(dr["cod_tipotit"]);
+                        item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
+                        item.mayor = Convert.ToString(dr["mayor"]);
+                        item.subgrupo = Convert.ToString(dr["subgrupo"]);
+                        item.niif = Convert.ToString(dr["niif"]);
+                        item.grupo = Convert.ToString(dr["grupo"]);
+                        item.capitulo = Convert.ToString(dr["capitulo"]);
+                        item.sec = Convert.ToString(dr["sec"]);
+
+                        lista.Add(item);
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(CC__cod_emp, metodo, "ListaBuscaCContable", e.ToString(), DateTime.Now, CC__usuario);
+                return null;
+            }
+        }
         public List<modelowmspcccostos> ListaBuscaCCostos(string CC__usuario, string CC__cod_emp, string CC__cod_dpto)
         {
             try
@@ -49,7 +102,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(CC__cod_emp, "CCostos.cs", "ListaBuscaCCostos", e.ToString(), DateTime.Today, CC__usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(CC__cod_emp, metodo, "ListaBuscaCCostos", e.ToString(), DateTime.Now, CC__usuario);
                 return null;
             }
 

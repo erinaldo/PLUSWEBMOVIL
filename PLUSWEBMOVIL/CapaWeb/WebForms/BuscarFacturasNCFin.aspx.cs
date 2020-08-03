@@ -313,19 +313,23 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-                if (Session["tipo_nc"].ToString() == "NCM")
+                string tipo_doc = Session["tipo_nc"].ToString();
+                switch (tipo_doc)
                 {
+                    case "NCM":
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N");
+                        break;
+                    case "NCME":
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N");
+                        break;
+                    case "NDV":
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N");
+                        break;
+                    case "NDVE":
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N");
+                        break;
 
-                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C","N");
                 }
-
-                else
-
-                {
-
-                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C","N");
-                }
-
 
                 Session["listaConsCab"] = ListaSaldoFacturas;
                 Grid.DataSource = ListaSaldoFacturas;
