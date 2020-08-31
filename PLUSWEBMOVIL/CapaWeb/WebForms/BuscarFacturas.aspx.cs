@@ -49,6 +49,11 @@ namespace CapaWeb.WebForms
         Consultawmspcresfact ConsultaResolucion = new Consultawmspcresfact();
         modelowmspcresfact resolucion = new modelowmspcresfact();
         List<modelowmspcresfact> listaRes = null;
+
+        public modeloUsuariosucursal ModelousuarioSucursal = new modeloUsuariosucursal();
+        public List<modeloUsuariosucursal> ListaModeloUsuarioSucursal = new List<modeloUsuariosucursal>();
+        public ConsultawmusuarioSucursal ConsultaUsuxSuc = new ConsultawmusuarioSucursal();
+        public ConsultausuarioSucursal consultaUsuarioSucursal = new ConsultausuarioSucursal();
         public string numerador = "trans";
         public string ComPwm;
         public string AmUsrLog;
@@ -72,6 +77,7 @@ namespace CapaWeb.WebForms
         public string ResF_estado = "S";
         public string ResF_serie = "0";
         public string ResF_tipo = "F";
+        public string cod_sucursal = null;
 
 
         public string EstF_proceso = "RCOMFACT";
@@ -233,32 +239,36 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
+                lbl_mensaje.Text = "";
                 //Buscar si es electronica o por computador
                 //LIsta Resolucion facturas
-                listaRes = ConsultaResolucion.ConsultaResolusiones(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo);
+                listaRes = ConsultaResolucion.ConsultaResolusionXSucursal(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, lbl_cod_suc.Text.Trim());
                 resolucion = null;
                string  lbl_tipofac = null;
                 foreach (modelowmspcresfact item in listaRes)
                 {
                     resolucion = item;
                 }
-                if (resolucion.tipo_fac == "S")
+
+                if (listaRes.Count == 0)
                 {
-                    lbl_tipofac = "VTAE";
-                    cbx_tipo_factura.SelectedValue = lbl_tipofac;
-                 }
+                    lbl_mensaje.Text = "No se existe resolución activa para Facturar";
+                    
+                }
                 else
                 {
-                    if (listaRes.Count == 0)
+                    if (resolucion.tipo_fac == "S")
                     {
-                        lbl_error.Text = "No se existe resolución activa";
+                        lbl_tipofac = "VTAE";
+                        cbx_tipo_factura.SelectedValue = lbl_tipofac;
                     }
                     else
-                    { 
-                         lbl_tipofac = "VTA";
+                    {
+                        lbl_tipofac = "VTA";
                         cbx_tipo_factura.SelectedValue = lbl_tipofac;
                     }
                 }
+               
 
                 DateTime Fechainicio = DateTime.Today;
                 DateTime Fechafin = DateTime.Today;
@@ -269,10 +279,10 @@ namespace CapaWeb.WebForms
                 string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
                 string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
                 string Ccf_aniof = Fechafin.Year.ToString();
-                string Ccf_tipo2 = lbl_tipofac;
+                string Ccf_tipo2 = cbx_tipo_factura.SelectedValue;
 
 
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                listaConsCab = ConsultaCabe.ConsultaFacturaXSucursal(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof,lbl_cod_suc.Text);
 
                 Grid.DataSource = listaConsCab;
                 Grid.DataBind();
@@ -290,6 +300,7 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
+                lbl_mensaje.Text = "";
                 //Lista Estados facturas
                 Listaestados = Consultaestados.ConsultaEstadosFac(EstF_proceso);
                 estados.DataSource = Listaestados;
@@ -300,6 +311,24 @@ namespace CapaWeb.WebForms
 
                 estados.Items.Insert(0, new ListItem("TODOS", "0"));
                 estados.SelectedIndex = 0;
+                //Cargar la sucursal del usuario logeado
+                ListaModeloUsuarioSucursal = ConsultaUsuxSuc.UnicoUsuarioSucursal(ComPwm,AmUsrLog,""); //Solo se envia empresa y usuario
+                if(ListaModeloUsuarioSucursal.Count ==0)
+                {
+                    lbl_mensaje.Text = "Usuario no tiene sucursal asignada, por favor asignar sucursarl para continuar.";
+                }
+                else
+                {
+                    foreach (var item in ListaModeloUsuarioSucursal)
+                    {
+                        ModelousuarioSucursal = item;
+                        break;
+                    }
+                    lbl_cod_suc.Text = ModelousuarioSucursal.cod_sucursal.Trim();
+                    lbl_sucursal.Text = "-" + ModelousuarioSucursal.nom_sucursal.Trim();
+                }
+                
+        
             }
             catch (Exception ex)
             {
@@ -330,13 +359,43 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-                //1 primero creo un objeto Clave/Valor de QueryString 
-                QueryString qs = new QueryString();
+                lbl_mensaje.Text = "";
+                NuevaFactura.Enabled = true;
+                //vALIDAR QUE SOLO EXISTA UNA RESOLUCION ACTIVA-
+                listaRes = null;
+                listaRes = ConsultaResolucion.ConsultaResolusionXSucursal(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, lbl_cod_suc.Text.Trim());
+                resolucion = null;
+                foreach (modelowmspcresfact item in listaRes)
+                {
+                    resolucion = item;
+                }
+                if(listaRes.Count ==0)
+                {
+                    NuevaFactura.Enabled = false;
+                    lbl_mensaje.Text = "No existe una resolución activa para poder Facturar.";
+                }
+                else
+                {
+                    if(listaRes.Count ==1)
+                    {
+                        //1 primero creo un objeto Clave/Valor de QueryString 
+                        QueryString qs = new QueryString();
 
-                //2 voy a agregando los valores que deseo
-                qs.Add("TRN", "INS");
-                qs.Add("Id", "");
-                Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                        //2 voy a agregando los valores que deseo
+                        qs.Add("TRN", "INS");
+                        qs.Add("Id", "");
+                        Response.Redirect("Factura.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    }
+                    else
+                    {
+                        if (listaRes.Count > 1)
+                        {
+                            NuevaFactura.Enabled = false;
+                            lbl_mensaje.Text = "Existe más de una resolución activa, para poder Facturar habilite una solamente.";
+                        }
+                    }
+                }
+               
             }
             catch (Exception ex)
             {
@@ -363,7 +422,7 @@ namespace CapaWeb.WebForms
                 string Ccf_aniof = Fechafin.Year.ToString();
 
 
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                listaConsCab = ConsultaCabe.ConsultaFacturaXSucursal(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof, lbl_cod_suc.Text.Trim());
                 Grid.DataSource = listaConsCab;
                 Grid.DataBind();
                 Grid.Height = 100;
@@ -380,27 +439,29 @@ namespace CapaWeb.WebForms
         {
             try
             {
+                lbl_mensaje.Text = "";
                 lbl_error.Text = "";
-            DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
-            DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
+                DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
+                DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
                 Ccf_tipo2 = cbx_tipo_factura.SelectedValue.Trim();
-            string Ccf_estado = estados.SelectedValue;
-            string Ccf_cliente = txtCliente.Text;
-            string Ccf_serie_docum = txtSerie.Text;
-            string Ccf_nro_docum = txtDocumento.Text;
-            string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);
-            string Ccf_mesi = string.Format("{0:00}", Fechainicio.Month);
-            string Ccf_anioi = Fechainicio.Year.ToString();
-            string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
-            string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
-            string Ccf_aniof = Fechafin.Year.ToString();
-      
+                string Ccf_estado = estados.SelectedValue;
+                string Ccf_cliente = txtCliente.Text;
+                string Ccf_serie_docum = txtSerie.Text;
+                string Ccf_nro_docum = txtDocumento.Text;
+                string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);
+                string Ccf_mesi = string.Format("{0:00}", Fechainicio.Month);
+                string Ccf_anioi = Fechainicio.Year.ToString();
+                string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
+                string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
+                string Ccf_aniof = Fechafin.Year.ToString();
 
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-            Grid.DataSource = listaConsCab;
-            Grid.DataBind();
-            Grid.Height = 100;
+
+                listaConsCab = ConsultaCabe.ConsultaFacturaXSucursal(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof, lbl_cod_suc.Text);
+                Grid.DataSource = listaConsCab;
+                Grid.DataBind();
+                Grid.Height = 100;
             }
+
             catch (Exception ex)
             {
                 GuardarExcepciones("Buscar_Click", ex.ToString());

@@ -183,7 +183,7 @@ namespace CapaProceso.RestCliente
                 encabezado.factortrm = Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
                 encabezado.fecha = conscabceraNC.fec_doc.ToString("yyyy-MM-dd");
                 encabezado.fvence = conscabceraNC.fec_venc.ToString("yyyy-MM-dd");
-                encabezado.idsuc = 1;
+                encabezado.idsuc = Convert.ToInt16(conscabceraNC.cod_sucursal); //Va a traer sucursal de la empresa con la que se factura
                 encabezado.idvendedor = Convert.ToInt32(conscabceraNC.cod_vendedor);
                 if (conscabceraNC.cod_moneda.Trim() != "COP")
                 {
@@ -223,7 +223,7 @@ namespace CapaProceso.RestCliente
                 }
                 else
                 {
-                    encabezado.subtotal = Convert.ToInt32(conscabceraNC.subtotal); 
+                    encabezado.subtotal = conscabceraNC.subtotal; 
                 }
                
                 encabezado.sucursal = Convert.ToInt16(conscabceraNC.cod_sucursal);
@@ -236,7 +236,7 @@ namespace CapaProceso.RestCliente
                 }
                 else
                 {
-                    encabezado.total = Convert.ToInt32(conscabceraNC.total);
+                    encabezado.total = conscabceraNC.total;
                 }
                 //OTROA CONCEPTOS
                 if (conscabcera.cod_moneda.Trim() != "COP")
@@ -245,7 +245,7 @@ namespace CapaProceso.RestCliente
                 }
                 else
                 {
-                    encabezado.otrosconceptos = Convert.ToInt32(conscabceraNC.desctos_rcgos);
+                    encabezado.otrosconceptos = conscabceraNC.desctos_rcgos;
                 }
                
                 encabezado.totalDet = listaConsDet.Count; //la cantidad de lineas del detalle de la factura
@@ -442,7 +442,7 @@ namespace CapaProceso.RestCliente
                 sucursal.dpto = cliente.cod_provincia;
                 sucursal.email = cliente.email_tit;
                 sucursal.emailfe = cliente.email_tit;
-                sucursal.idsuc = 1;
+                sucursal.idsuc = Convert.ToInt16(conscabceraNC.cod_sucursal); //Va a traer sucursal de la empresa con la que se factura
                 sucursal.idvendedor = Convert.ToInt64(conscabceraNC.cod_vendedor);
                 sucursal.movil = "";
                 sucursal.mun = cliente.ciudad_tit;

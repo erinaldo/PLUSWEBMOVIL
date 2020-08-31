@@ -60,7 +60,7 @@ namespace CapaDatos.Sql
                         item.pdf_nc = Convert.ToString(dr["pdf_nc"]);
                         item.cantidad_decimal = Convert.ToInt32(dr["cantidad_decimal"]);
                         item.pvp_decimal = Convert.ToInt32(dr["pvp_decimal"]);
-
+                        item.path_adjunto = Convert.ToString(dr["adjunto"]);
                         lista.Add(item);
 
 

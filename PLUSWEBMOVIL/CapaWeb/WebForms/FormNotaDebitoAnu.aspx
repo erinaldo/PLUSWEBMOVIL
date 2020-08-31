@@ -107,6 +107,13 @@ return false;
                         <p class="Subtitulo2" >Nota de Débito por: Anulación de Nota de Crédito</p>
                     </td>
                 </tr>
+                   <tr>
+                    <td>
+                         <asp:Label ID="Label10" runat="server"  CssClass="Subtitulo2" Text="Sucursal: "></asp:Label>
+                        <asp:Label ID="lbl_cod_suc_emp" runat="server"  CssClass="Subtitulo2" Text=""></asp:Label>
+                        <asp:Label ID="lbl_suc_emp" runat="server"  CssClass="Subtitulo2" Text=""></asp:Label>
+                     </td>
+                </tr>
                  <tr>
                     <td>
                         <asp:Label ID="lbl_error" CssClass="textos_error" runat="server" Text=""></asp:Label>
@@ -242,7 +249,7 @@ return false;
                                 </td>
                                 <td>
                                     <label>
-                                        <asp:DropDownList class="textos" name="serie_docum" Width="210" ID="serie_docum" runat="server">
+                                        <asp:DropDownList class="textos" name="serie_docum" AutoPostBack="true" Width="210" ID="serie_docum" runat="server" OnSelectedIndexChanged="serie_docum_SelectedIndexChanged">
                                         </asp:DropDownList>
 
                                     </label>

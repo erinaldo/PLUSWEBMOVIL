@@ -44,7 +44,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ConsultaConexionERP", e.ToString(), DateTime.Today, usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ConsultaConexionERP", e.ToString(), DateTime.Now, usuario);
                 return "No se pudo completar la acción." + "ConsultaConexionERP." + " Por favor notificar al administrador.";
             }
         }
@@ -154,7 +154,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ValidarResolucionERP", e.ToString(), DateTime.Today, usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ValidarResolucionERP", e.ToString(), DateTime.Now, usuario);
                 return false;
             }
         }
@@ -194,7 +194,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ValidarNroDocumERP", e.ToString(), DateTime.Today, usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ValidarNroDocumERP", e.ToString(), DateTime.Now, usuario);
                 return false;
             }
         }

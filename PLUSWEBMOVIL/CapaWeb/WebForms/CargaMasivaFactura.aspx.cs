@@ -23,12 +23,24 @@ namespace CapaWeb.WebForms
         List<modeloFacturaEMasiva> lista = new List<modeloFacturaEMasiva>();
         modeloFacturaEMasiva modeloFacturas = new modeloFacturaEMasiva();
 
+        Consultawmspcresfact ConsultaResolucion = new Consultawmspcresfact();
+        modelowmspcresfact resolucion = new modelowmspcresfact();
+        List<modelowmspcresfact> listaRes = null;
+
+        public modeloUsuariosucursal ModelousuarioSucursal = new modeloUsuariosucursal();
+        public List<modeloUsuariosucursal> ListaModeloUsuarioSucursal = new List<modeloUsuariosucursal>();
+        public ConsultawmusuarioSucursal ConsultaUsuxSuc = new ConsultawmusuarioSucursal();
+        public ConsultausuarioSucursal consultaUsuarioSucursal = new ConsultausuarioSucursal();
+
         public string ComPwm;
         public string socio;
         public string AmUsrLog;
         public string cod_proceso;
         public string sesion;
         public string AmComCod;
+        public string ResF_estado = "S";
+        public string ResF_serie = "0";
+        public string ResF_tipo = "F";
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -41,6 +53,23 @@ namespace CapaWeb.WebForms
                     Modelowmspclogo = item;
                     break;
                 }
+                //Cargar sucursal del usuario
+                //Cargar la sucursal del usuario logeado
+                ListaModeloUsuarioSucursal = ConsultaUsuxSuc.UnicoUsuarioSucursal(ComPwm, AmUsrLog, ""); //Solo se envia empresa y usuario
+                if (ListaModeloUsuarioSucursal.Count == 0)
+                {
+                    lbl_mensaje.Text = "Usuario no tiene sucursal asignada, por favor asignar sucursarl para continuar.";
+                }
+                else
+                {
+                    foreach (var item in ListaModeloUsuarioSucursal)
+                    {
+                        ModelousuarioSucursal = item;
+                        break;
+                    }
+                    lbl_cod_suc.Text = ModelousuarioSucursal.cod_sucursal.Trim();
+                    lbl_sucursal.Text = "-" + ModelousuarioSucursal.nom_sucursal.Trim();
+                }
             }
             catch (Exception ex)
             {
@@ -50,31 +79,57 @@ namespace CapaWeb.WebForms
 
         protected void btn_verificar_Click(object sender, EventArgs e)
         {
-            
-            lista = carga.TotalFacturas(AmUsrLog, ComPwm);
-
-
-            int count = 0;
-            modeloFacturas = null;
-            foreach (modeloFacturaEMasiva item in lista)
+            //Analizamos antes de procesar--resolucion por sucursal usuario
+            //vALIDAR QUE SOLO EXISTA UNA RESOLUCION ACTIVA-
+            listaRes = null;
+            listaRes = ConsultaResolucion.ConsultaResolusionXSucursal(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, lbl_cod_suc.Text.Trim());
+            resolucion = null;
+            foreach (modelowmspcresfact item in listaRes)
             {
-
-                modeloFacturas = item;
-                count++;
+                resolucion = item;
             }
-
-
-            lbl_facturas.Text =Convert.ToString(count);
-            btn_verificar.Visible = false;
-            btn_procesar.Visible = true;
+            if (listaRes.Count == 0)
+            {
                 
+                lbl_mensaje.Text = "No existe una resolución activa para Facturar.";
+            }
+            else
+               {
+                if (listaRes.Count > 1)
+                {
+
+                    lbl_mensaje.Text = "Existe más de una resolución activa, para Facturar habilite una solamente.";
+                }
+                else
+                {
+                    lbl_prefijo.Text = resolucion.prefijo;
+                    lbl_prefijo.Visible = true;
+                    lbl_pre.Visible = true;
+                    lista = carga.TotalFacturas(AmUsrLog, ComPwm);
+                    int count = 0;
+                    modeloFacturas = null;
+                    foreach (modeloFacturaEMasiva item in lista)
+                    {
+
+                        modeloFacturas = item;
+                        count++;
+                    }
+                    if (lista.Count > 0)
+                    {
+                        btn_verificar.Visible = false;
+                        btn_procesar.Visible = true;
+                    }
+                    lbl_facturas.Text = Convert.ToString(count);
+                   
+                }
+            }   
         }
 
         protected void btn_procesar_Click(object sender, EventArgs e)
         {
             //Proceso de insercion de las facturas
            
-            mensaje.Text = carga.BuscartaDatosFacturasMasivas(AmUsrLog, ComPwm);
+            mensaje.Text = carga.BuscartaDatosFacturasMasivas(AmUsrLog, ComPwm, lbl_cod_suc.Text.Trim());
             btn_procesar.Enabled = false;
         }
         public void RecuperarCokie()

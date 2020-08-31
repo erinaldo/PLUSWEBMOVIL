@@ -387,6 +387,71 @@ namespace CapaDatos.Sql
             }
         }
 
+        //Artiuclo unico wmspc_artiucolounico busca por codigo
+        public List<modelowmspcarticulos> ArticuloUnico(string ArtB__usuario, string ArtB__cod_emp, string ArtB__articulo)
+        {
+            try
+            {
+
+                using (cn = conexion.genearConexion())
+                {
+                    List<modelowmspcarticulos> lista = new List<modelowmspcarticulos>();
+
+                    string consulta = ("wmspc_articulounico");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.CommandType = CommandType.StoredProcedure;
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = ArtB__usuario;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = ArtB__cod_emp;
+                    conmand.Parameters.Add("@articulo", SqlDbType.VarChar).Value = ArtB__articulo;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        modelowmspcarticulos item = new modelowmspcarticulos();
+                        item.cod_articulo = Convert.ToString(dr["cod_articulo"]);
+                        item.nom_articulo = Convert.ToString(dr["nom_articulo"]);
+                        item.nom_det_art = Convert.ToString(dr["nom_det_art"]);
+                        item.cod_grpunidad = Convert.ToString(dr["cod_grpunidad"]);
+                        item.activo_stk = Convert.ToString(dr["activo_stk"]);
+                        item.activo_com = Convert.ToString(dr["activo_com"]);
+                        item.cod_tipoart = Convert.ToString(dr["cod_tipoart"]);
+                        item.volumen_art = Convert.ToDecimal(dr["volumen_art"]);
+                        item.activo_cmp = Convert.ToString(dr["activo_cmp"]);
+                        item.cod_concepret = Convert.ToString(dr["cod_concepret"]);
+                        item.cod_cta_vtas = Convert.ToString(dr["cod_cta_vtas"]);
+                        item.cod_cta_inve = Convert.ToString(dr["cod_cta_inve"]);
+                        item.cod_cta_cos = Convert.ToString(dr["cod_cta_cos"]);
+                        item.cod_tipo_impu = Convert.ToString(dr["cod_tipo_impu"]);
+                        item.cod_tasa_impu = Convert.ToString(dr["cod_tasa_impu"]);
+                        decimal fomImpu = Convert.ToDecimal(dr["porc_impuesto"]);
+                        item.porc_impuesto = String.Format("{0:N2}", fomImpu).ToString();
+                       // decimal por_aui_str = Convert.ToDecimal(dr["porc_aiu"]);
+                       // item.porc_aiu = String.Format("{0:N2}", por_aui_str).ToString();
+                        item.nom_impuesto = Convert.ToString(dr["nom_impuesto"]);
+                        item.precio = Convert.ToString(dr["precio"]);
+                        item.valor_impu = Convert.ToString(dr["valor_impu"]);
+                        decimal formPrecio = Convert.ToDecimal(dr["precio_total"]);
+                        item.precio_total = String.Format("{0:N2}", formPrecio).ToString();
+                       // item.negativo = Convert.ToString(dr["negativo"]);
+
+                        lista.Add(item);
+
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(ArtB__cod_emp, metodo, "ArticuloUnico", e.ToString(), DateTime.Now, ArtB__usuario);
+                return null;
+            }
+        }
+
         //Consulta ERP , periodo contable tabla(CmPrC)
         public string UnidadMedida(string cod_emp, string usuario, string articulo)
         {

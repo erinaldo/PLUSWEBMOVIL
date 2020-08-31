@@ -17,6 +17,13 @@ namespace CapaDatos.Modelos
         public string cod_proc_aud { get; set; }
         public string nom_sucursal { get; set; }
         public string usu_ante { get; set; }
+        public string serie_nc { get; set; }
+        public string serie_nd { get; set; }
+        public string serie_ncn { get; set; }
+        public string serie_ndn { get; set; }
+        public string serie_factura { get; set; }
+        public string serie_facturan { get; set; }
+ 
 
     }
 }

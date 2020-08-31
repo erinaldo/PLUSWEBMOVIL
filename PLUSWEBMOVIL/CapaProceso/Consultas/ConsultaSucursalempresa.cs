@@ -25,7 +25,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(ModelosucEmpresa.cod_emp, metodo, "InsertarSucursalEmpresa", e.ToString(), DateTime.Today, ModelosucEmpresa.usuario_mod);
+                guardarExcepcion.ClaseInsertarExcepcion(ModelosucEmpresa.cod_emp, metodo, "InsertarSucursalEmpresa", e.ToString(), DateTime.Now, ModelosucEmpresa.usuario_mod);
                 return "No se pudo completar la acción." + "InsertarSucursalEmpresa." + " Por favor notificar al administrador.";
             }
         }
@@ -43,7 +43,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(ModelosucEmpresa.cod_emp, metodo, "ActualizarSucursalEmpresa", e.ToString(), DateTime.Today, ModelosucEmpresa.usuario_mod);
+                guardarExcepcion.ClaseInsertarExcepcion(ModelosucEmpresa.cod_emp, metodo, "ActualizarSucursalEmpresa", e.ToString(), DateTime.Now, ModelosucEmpresa.usuario_mod);
                 return "No se pudo completar la acción." + "ActualizarSucursalEmpresa." + " Por favor notificar al administrador.";
             }
         }
@@ -60,11 +60,24 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(ModelosucEmpresa.cod_emp, metodo, "EliminarSucursalEmpresa", e.ToString(), DateTime.Today, ModelosucEmpresa.usuario_mod);
+                guardarExcepcion.ClaseInsertarExcepcion(ModelosucEmpresa.cod_emp, metodo, "EliminarSucursalEmpresa", e.ToString(), DateTime.Now, ModelosucEmpresa.usuario_mod);
                 return "No se pudo completar la acción." + "EliminarSucursalEmpresa." + " Por favor notificar al administrador.";
             }
         }
+        public string UsuariosSucursal(string cod_emp,string cod_sucursal, string usuario)
+        {
+            try
+            {
+                string respuesta = deleteSucursal.ConsultaUsuarioSucursal(cod_emp, cod_sucursal, usuario);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
 
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "UsuariosSucursal", e.ToString(), DateTime.Now, usuario);
+                return "No se pudo completar la acción." + "EliminarSucursalEmpresa." + " Por favor notificar al administrador.";
+            }
+        }
 
 
     }

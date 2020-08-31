@@ -9,6 +9,7 @@ using CapaDatos.Modelos;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using System.IO;
 using CapaDatos.Sql;
+using CapaProceso.FacturaMasiva;
 
 namespace CapaWeb.WebForms
 {
@@ -29,6 +30,9 @@ namespace CapaWeb.WebForms
         public List<JsonRespuestaDE> ListaModelorespuestaDs = null;
         public JsonRespuestaDE ModeloResQr = new JsonRespuestaDE();
         public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
+
+        GenerarPDFDocumentos generer_pdfElectronico = new GenerarPDFDocumentos();
+        Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
         public string ComPwm;
         public string AmUsrLog;
         public string nro_trans = null;
@@ -232,29 +236,14 @@ namespace CapaWeb.WebForms
                     }
 
                 }
-                Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
-                string pathPdf = "";
-                string StringXml = ModeloResQr.xml;
+                 string StringXml = ModeloResQr.xml;
                 string pathTemporal = Modelowmspclogo.pathtmpfac;
                 string nombreXml = ModeloResQr.cufe.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + ".xml";
                 string pathXml = pathTemporal + nombreXml;
                 File.WriteAllText(pathXml, StringXml);
                 //-------------OBTENER EL XML Y PDF PARA EL ENVIO-------------------//
-               string cod_proceso = "RCOMNCELEC";
-                ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
-                string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
-                if (tipo_doc.Trim() == "DEFECTO3")
-                {
-
-                    PdfNCEleV3Default3 pdf1 = new PdfNCEleV3Default3();
-                    pathPdf = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                }
-                else
-                {
-                    PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
-                    pathPdf = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-
-                }
+                string cod_proceso = "RCOMNCELEC";
+                string pathPdf = generer_pdfElectronico.GenerarPDFNotaCreditoElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                 Boolean error = enviarcorreocliente.EnviarCorreoRemitente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, pathXml);
             }
             catch (Exception ex)

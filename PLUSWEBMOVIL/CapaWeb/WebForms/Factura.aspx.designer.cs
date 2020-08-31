@@ -20,7 +20,11 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
+        protected global::System.Web.UI.WebControls.Label LblNombreArchivo;
+        protected global::System.Web.UI.WebControls.FileUpload FileUpload1;
+        protected global::System.Web.UI.WebControls.Label lbl_adjunto;
+        protected global::System.Web.UI.WebControls.Button btn_cargar_doc;
+
         /// <summary>
         /// Control mensaje.
         /// </summary>
@@ -35,6 +39,8 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label lbl_tipofac;
         protected global::System.Web.UI.WebControls.Label lbl_prc_dsc;
         protected global::System.Web.UI.WebControls.Label lbl_valor_dsc;
+        protected global::System.Web.UI.WebControls.Label lbl_suc_emp;
+        protected global::System.Web.UI.WebControls.Label lbl_cod_suc_emp;
         /// <summary>
         /// Control dniCliente.
         /// </summary>

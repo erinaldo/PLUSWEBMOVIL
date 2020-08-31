@@ -22,8 +22,8 @@ namespace CapaDatos.Modelos
         public string tipo_fac { get; set; }
         public string meses { get; set; }
         public string prefijo { get; set; }
-
-
+        public string cod_sucursal { get; set; }
+        public string nom_sucursal { get; set; }
 
 
     }

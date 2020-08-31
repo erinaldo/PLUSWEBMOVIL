@@ -72,16 +72,18 @@ namespace CapaWeb.WebForms
 
                         case "UDP":
                             string ide = (qs["Id"].ToString());
+                            string cod_sucursal = (qs["suc"].ToString());
                             string usuario = ide.ToString();
                             cargarListaDesplegables();
-                            CargarFormularioSucursal(usuario);
+                            CargarFormularioSucursal(usuario, cod_sucursal);
                             break;
 
                         case "DLT":
                             cargarListaDesplegables();
                             string id = (qs["Id"].ToString());
                             usuario = id.ToString();
-                            CargarFormularioSucursal(usuario);
+                            string cod_suc = (qs["suc"].ToString());
+                            CargarFormularioSucursal(usuario,cod_suc);
                             BloquearFormularioSucursal();
                             break;
                     }
@@ -118,13 +120,13 @@ namespace CapaWeb.WebForms
             mensaje.Text = "Confirme la eliminacion de datos";
 
         }
-        private void CargarFormularioSucursal(string usuario)
+        private void CargarFormularioSucursal(string usuario, string cod_sucursal)
         {
             try
             {
                 lbl_error.Text = "";
 
-                ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, usuario);
+                ListaModeloUsuarioSucursal = ConsultaUsuxSuc.UnicoUsuarioSucursal(ComPwm, usuario, cod_sucursal);
                 int count = 0;
                 foreach (var item in ListaModeloUsuarioSucursal)
                 {
@@ -134,6 +136,7 @@ namespace CapaWeb.WebForms
                 }
                 cbx_sucursal.SelectedValue = ModelousuarioSucursal.cod_sucursal;
                 cbx_usuarios.SelectedValue = ModelousuarioSucursal.usuario;
+                cbx_sucursal.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -246,8 +249,8 @@ namespace CapaWeb.WebForms
                     case "INS":
                         try
                         {
-                            //verificar si es unico
-                            ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, cbx_usuarios.SelectedValue);
+                            //verificar UN USUARIO SOLO PUEDE TENER UNA SUCURSAL ASIGNADA
+                            ListaModeloUsuarioSucursal = ConsultaUsuxSuc.UnicoUsuarioSucursal(ComPwm, cbx_usuarios.SelectedValue, cbx_sucursal.SelectedValue.Trim());
                             int count = 0;
                             foreach (var item in ListaModeloUsuarioSucursal)
                             {
@@ -257,18 +260,18 @@ namespace CapaWeb.WebForms
                             }
                             if (count > 0)
                             {
-                                this.Page.Response.Write("<script language='JavaScript'>window.alert('Usuario ya existe')+ error;</script>");
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('Usuario ya tiene una sucursal asignada')+ error;</script>");
                             }
                             else
                             {
                                 //obtener numero de auditoria
                                 nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
                                 string nro_audit = nrotrans.valor_asignado;
-                                DateTime hoy = DateTime.Today;
+                                
                                 ModelousuarioSucursal.cod_emp = ComPwm;
                                 ModelousuarioSucursal.cod_sucursal = cbx_sucursal.SelectedValue.Trim();
                                 ModelousuarioSucursal.usuario = cbx_usuarios.SelectedValue.Trim();
-                                ModelousuarioSucursal.fecha_mod = hoy;
+                                ModelousuarioSucursal.fecha_mod = DateTime.Now;
                                 ModelousuarioSucursal.usuario_mod = AmUsrLog;
                                 ModelousuarioSucursal.nro_audit = nro_audit;
                                 ModelousuarioSucursal.cod_proc_aud = "AUSRXSUC";
@@ -299,11 +302,11 @@ namespace CapaWeb.WebForms
                         {
                             string ide = (qs["Id"].ToString());
                             string usuario = ide.ToString();
-                            DateTime hoy1 = DateTime.Today;
+                           
                             ModelousuarioSucursal.cod_emp = ComPwm;
                             ModelousuarioSucursal.cod_sucursal = cbx_sucursal.SelectedValue.Trim();
                             ModelousuarioSucursal.usuario = cbx_usuarios.SelectedValue.Trim();
-                            ModelousuarioSucursal.fecha_mod = hoy1;
+                            ModelousuarioSucursal.fecha_mod = DateTime.Now;
                             ModelousuarioSucursal.usuario_mod = AmUsrLog;
                             ModelousuarioSucursal.usu_ante = usuario;
                             error = consultaUsuarioSucursal.ActualizarUsuarioSucursal(ModelousuarioSucursal);

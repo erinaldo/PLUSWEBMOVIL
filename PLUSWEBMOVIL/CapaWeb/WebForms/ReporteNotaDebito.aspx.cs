@@ -16,6 +16,7 @@ using CapaProceso.GenerarPDF.FacturaElectronica;
 using CapaDatos.Modelos;
 using CapaProceso.ReslClientePdf;
 using CapaDatos.Sql;
+using CapaProceso.FacturaMasiva;
 
 namespace CapaWeb.WebForms
 {
@@ -24,7 +25,7 @@ namespace CapaWeb.WebForms
         public string ComPwm;
         public string AmUsrLog;
         public string Ccf_tipo1 = "C";
-        public string Ccf_tipo2 = "NC";
+        public string Ccf_tipo2 = "ND";
         public string Ccf_nro_trans = null;
         public string Ccf_estado = null;
         public string Ccf_cliente = null;
@@ -50,6 +51,7 @@ namespace CapaWeb.WebForms
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
+        GenerarPDFDocumentos generer_pdfElectronico = new GenerarPDFDocumentos();
         string cod_proceso;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -68,9 +70,6 @@ namespace CapaWeb.WebForms
                 Ccf_nro_trans = id.ToString();
                 //cOSNULTA BUSCAR TIPO DE FACTURA
                 cod_proceso = "RCOMFELECT";
-               // cod_proceso = "RCOMNDEB";
-                ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
-                string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
                 conscabcera = null;
                 conscabcera = buscarTipoFac(Ccf_nro_trans);
                 if (conscabcera.tipo_nce.Trim() == "NDV" )
@@ -80,52 +79,29 @@ namespace CapaWeb.WebForms
                         GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
                     }
                     //Clase para pdf de cada empresa 
-                    switch (tipo_doc.Trim())
-                    {
-                        case "DEFECTO2":
-
-                            PdfNDV2Default2 pdf1 = new PdfNDV2Default2();
-                            string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
-                            Response.ContentType = "application/pdf";
-                            Response.WriteFile(pathPdf1);
-                            Response.End();
-                            break;
-                        case "DEFECTO3":
-
-                            PdfNDV3Default3 pdf2 = new PdfNDV3Default3();
-                            string pathPdf2 = pdf2.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
-                            Response.ContentType = "application/pdf";
-                            Response.WriteFile(pathPdf2);
-                            Response.End();
-                            break;
-                    }
+                    string pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                    Response.ContentType = "application/pdf";
+                    Response.WriteFile(pathPdf1);
+                    Response.End();
                 }
                 else
                 {
-                    switch (tipo_doc.Trim())
+
+                    if (conscabcera.estado.Trim() == "C")
                     {
-                        case "DEFECTO3":
-                            if (conscabcera.estado.Trim() == "C")
-                            {
 
-                                PdfNDV3Default3 pdf1 = new PdfNDV3Default3();
-                                string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
-                                Response.ContentType = "application/pdf";
-                                Response.WriteFile(pathPdf1);
-                                Response.End();
-                                break;
+                        string pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                        Response.ContentType = "application/pdf";
+                        Response.WriteFile(pathPdf1);
+                        Response.End();
+                    }
 
-                            }
-                            else
-                            {
-                                PdfNDEleV3Default3 pdf1 = new PdfNDEleV3Default3();
-                                string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                                Response.ContentType = "application/pdf";
-                                Response.WriteFile(pathPdf1);
-                                Response.End();
-                                break;
-                            }
-                            
+                    else
+                    {
+                        string pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+                        Response.ContentType = "application/pdf";
+                        Response.WriteFile(pathPdf1);
+                        Response.End();
                     }
                 }
 

@@ -44,6 +44,15 @@ namespace CapaWeb.WebForms
         modelonumerador nrotrans = new modelonumerador();
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
+
+        Consultawmspcresfact ConsultaResolucion = new Consultawmspcresfact();
+        modelowmspcresfact resolucion = new modelowmspcresfact();
+        List<modelowmspcresfact> listaRes = null;
+
+        public modeloUsuariosucursal ModelousuarioSucursal = new modeloUsuariosucursal();
+        public List<modeloUsuariosucursal> ListaModeloUsuarioSucursal = new List<modeloUsuariosucursal>();
+        public ConsultawmusuarioSucursal ConsultaUsuxSuc = new ConsultawmusuarioSucursal();
+        public ConsultausuarioSucursal consultaUsuarioSucursal = new ConsultausuarioSucursal();
         public string numerador = "trans";
         public string ComPwm;
         public string AmUsrLog;
@@ -64,6 +73,9 @@ namespace CapaWeb.WebForms
         public string Ven__cod_tipotit = "clientes";
         public string Ven__cod_tit = " ";
         public string cod_proceso;
+        public string ResF_estado = "S";
+        public string ResF_serie = "0";
+        public string ResF_tipo = "C";
 
 
         public string EstF_proceso = "RCOMNCRED";
@@ -203,6 +215,19 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
+                //LIsta Resolucion nc
+                listaRes = ConsultaResolucion.ConsultaResolusionXSucursalNC(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, lbl_cod_suc.Text.Trim());
+                resolucion = null;
+    
+                foreach (modelowmspcresfact item in listaRes)
+                {
+                    resolucion = item;
+                }
+
+                if (listaRes.Count == 0)
+                {
+                    lbl_mensaje.Text = "No se existe resolución activa para emitir Nota de Crédito. ";
+                }
                 DateTime Fechainicio = DateTime.Today;
                 DateTime Fechafin = DateTime.Today;
 
@@ -213,8 +238,7 @@ namespace CapaWeb.WebForms
                 string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
                 string Ccf_aniof = Fechafin.Year.ToString();
 
-
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                listaConsCab = ConsultaCabe.ConsultaFacturaXSucursal(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof, lbl_cod_suc.Text.Trim());
 
                 Grid.DataSource = listaConsCab;
                 Grid.DataBind();
@@ -232,6 +256,7 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
+                lbl_mensaje.Text = "";
                 //Lista Estados facturas
                 Listaestados = Consultaestados.ConsultaEstadosFac(EstF_proceso);
                 estados.DataSource = Listaestados;
@@ -242,6 +267,22 @@ namespace CapaWeb.WebForms
 
                 estados.Items.Insert(0, new ListItem("TODOS", "0"));
                 estados.SelectedIndex = 0;
+                //Cargar la sucursal del usuario logeado
+                ListaModeloUsuarioSucursal = ConsultaUsuxSuc.UnicoUsuarioSucursal(ComPwm, AmUsrLog, ""); //Solo se envia empresa y usuario
+                if (ListaModeloUsuarioSucursal.Count == 0)
+                {
+                    lbl_mensaje.Text = "Usuario no tiene sucursal asignada, por favor asignar sucursarl para continuar.";
+                }
+                else
+                {
+                    foreach (var item in ListaModeloUsuarioSucursal)
+                    {
+                        ModelousuarioSucursal = item;
+                        break;
+                    }
+                    lbl_cod_suc.Text = ModelousuarioSucursal.cod_sucursal.Trim();
+                    lbl_sucursal.Text = "-" + ModelousuarioSucursal.nom_sucursal.Trim();
+                }
             }
             catch (Exception ex)
             {
@@ -286,7 +327,7 @@ namespace CapaWeb.WebForms
                 string Ccf_aniof = Fechafin.Year.ToString();
 
 
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                listaConsCab = ConsultaCabe.ConsultaFacturaXSucursal(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof, lbl_cod_suc.Text.Trim());
                 Grid.DataSource = listaConsCab;
                 Grid.DataBind();
                 Grid.Height = 100;
@@ -318,7 +359,7 @@ namespace CapaWeb.WebForms
                 string Ccf_aniof = Fechafin.Year.ToString();
 
 
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                listaConsCab = ConsultaCabe.ConsultaFacturaXSucursal(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof, lbl_cod_suc.Text.Trim());
                 Grid.DataSource = listaConsCab;
                 Grid.DataBind();
                 Grid.Height = 100;
@@ -790,15 +831,45 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
+                lbl_mensaje.Text = "";
+                NuevaNC.Enabled = true;
+                //vALIDAR QUE SOLO EXISTA UNA RESOLUCION ACTIVA-
+                listaRes = null;
+                listaRes = ConsultaResolucion.ConsultaResolusionXSucursalNC(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, lbl_cod_suc.Text.Trim());
+                resolucion = null;
+                foreach (modelowmspcresfact item in listaRes)
+                {
+                    resolucion = item;
+                }
+                if (listaRes.Count == 0)
+                {
+                    NuevaNC.Enabled = false;
+                    lbl_mensaje.Text = "No existe una resolución activa para emitir Nota de Crédito.";
+                }
+                else
+                {
+                    if (listaRes.Count == 1)
+                    {
 
-                //1 primero creo un objeto Clave/Valor de QueryString 
-                QueryString qs = new QueryString();
+                        //1 primero creo un objeto Clave/Valor de QueryString 
+                        QueryString qs = new QueryString();
 
-                //2 voy a agregando los valores que deseo
-                qs.Add("TRN", "INS");
-                qs.Add("Id", "");
-                Response.Redirect("FormNotaCreditoDevolucion.aspx" + Encryption.EncryptQueryString(qs).ToString());
-            }
+                        //2 voy a agregando los valores que deseo
+                        qs.Add("TRN", "INS");
+                        qs.Add("Id", "");
+                        Response.Redirect("FormNotaCreditoDevolucion.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    }
+                    else
+                    {
+                        if (listaRes.Count > 1)
+                        {
+                            NuevaNC.Enabled = false;
+                            lbl_mensaje.Text = "Existe más de una resolución activa, para emitir Nota de Crédito habilite una solamente.";
+
+                        }
+                    }
+                }
+                }
             catch (Exception ex)
             {
                 GuardarExcepciones("NuevaNC_Click", ex.ToString());
@@ -811,15 +882,45 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
+                lbl_mensaje.Text = "";
+                notaCreditoFinan.Enabled = true;
+                //vALIDAR QUE SOLO EXISTA UNA RESOLUCION ACTIVA-
+                listaRes = null;
+                listaRes = ConsultaResolucion.ConsultaResolusionXSucursalNC(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, lbl_cod_suc.Text.Trim());
+                resolucion = null;
+                foreach (modelowmspcresfact item in listaRes)
+                {
+                    resolucion = item;
+                }
+                if (listaRes.Count == 0)
+                {
+                    notaCreditoFinan.Enabled = false;
+                    lbl_mensaje.Text = "No existe una resolución activa para emitir Nota de Crédito.";
+                }
+                else
+                {
+                    if (listaRes.Count == 1)
+                    {
 
-                //1 primero creo un objeto Clave/Valor de QueryString 
-                QueryString qs = new QueryString();
+                        //1 primero creo un objeto Clave/Valor de QueryString 
+                        QueryString qs = new QueryString();
 
-                //2 voy a agregando los valores que deseo
-                qs.Add("TRN", "AFA");
-                qs.Add("Id", "");
-                Response.Redirect("FormNotaCreditoFinanciera.aspx" + Encryption.EncryptQueryString(qs).ToString());
-            }
+                        //2 voy a agregando los valores que deseo
+                        qs.Add("TRN", "AFA");
+                        qs.Add("Id", "");
+                        Response.Redirect("FormNotaCreditoFinanciera.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    }
+                    else
+                    {
+                        if (listaRes.Count > 1)
+                        {
+                            notaCreditoFinan.Enabled = false;
+                            lbl_mensaje.Text = "Existe más de una resolución activa, para emitir Nota de Crédito habilite una solamente.";
+
+                        }
+                    }
+                }
+                }
             catch (Exception ex)
             {
                 GuardarExcepciones("notaCreditoFinan_Click", ex.ToString());
@@ -833,14 +934,43 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
+                lbl_mensaje.Text = "";
+                btn_AnularFactura.Enabled = true;
+                //vALIDAR QUE SOLO EXISTA UNA RESOLUCION ACTIVA-
+                listaRes = null;
+                listaRes = ConsultaResolucion.ConsultaResolusionXSucursalNC(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, lbl_cod_suc.Text.Trim());
+                resolucion = null;
+                foreach (modelowmspcresfact item in listaRes)
+                {
+                    resolucion = item;
+                }
+                if (listaRes.Count == 0)
+                {
+                    btn_AnularFactura.Enabled = false;
+                    lbl_mensaje.Text = "No existe una resolución activa para emitir Nota de Crédito.";
+                }
+                else
+                {
+                    if (listaRes.Count == 1)
+                    {
+                        //Anular Factura
+                        QueryString qs = new QueryString();
 
-                //Anular Factura
-                QueryString qs = new QueryString();
+                        //2 voy a agregando los valores que deseo
+                        qs.Add("TRN", "AFA");
+                        qs.Add("Id", "");
+                        Response.Redirect("FormNotaCreditoFin.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    }
+                    else
+                    {
+                        if (listaRes.Count > 1)
+                        {
+                            btn_AnularFactura.Enabled = false;
+                            lbl_mensaje.Text = "Existe más de una resolución activa, para emitir Nota de Crédito habilite una solamente.";
 
-                //2 voy a agregando los valores que deseo
-                qs.Add("TRN", "AFA");
-                qs.Add("Id", "");
-                Response.Redirect("FormNotaCreditoFin.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {

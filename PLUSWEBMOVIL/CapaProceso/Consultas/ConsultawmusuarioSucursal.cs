@@ -27,7 +27,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "UnicoUsuarioSucursal", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "UnicoUsuarioSucursal", e.ToString(), DateTime.Now, usuario);
                 return null;
             }
         }
@@ -45,7 +45,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "ConsultaUsuarioSucursal", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "ConsultaUsuarioSucursal", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }
@@ -64,7 +64,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "ListaUsuarioSucursal", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "ListaUsuarioSucursal", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }

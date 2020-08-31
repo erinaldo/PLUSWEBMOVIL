@@ -10,6 +10,7 @@ using CapaProceso.GenerarPDF.FacturaElectronica;
 using System.IO;
 using CapaProceso.ReslClientePdf;
 using CapaDatos.Sql;
+using CapaProceso.FacturaMasiva;
 
 namespace CapaWeb.WebForms
 {
@@ -53,6 +54,7 @@ namespace CapaWeb.WebForms
         Consultawmspcresfact ConsultaResolucion = new Consultawmspcresfact();
         modelowmspcresfact resolucion = new modelowmspcresfact();
         List<modelowmspcresfact> listaRes = null;
+        List<modelowmspcresfact> listaRes1 = null;
 
         ConsultaDetalleProforma ConsultaDetallePro = new ConsultaDetalleProforma();
         modeloDetalleProforma ModeloDetallePro = new modeloDetalleProforma();
@@ -127,7 +129,10 @@ namespace CapaWeb.WebForms
         FacturaDescuento consultaDesc = new FacturaDescuento();
         List<ModeloDescCargoFac> ListaDesc = new List<ModeloDescCargoFac>();
         ModeloDescCargoFac modelodescuento = new ModeloDescCargoFac();
+        UsuarioSucursal BuscarSucursal = new UsuarioSucursal();
 
+        Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
+        GenerarPDFDocumentos generer_pdfElectronico = new GenerarPDFDocumentos();
         public string ComPwm;
         public string AmUsrLog;
         public string valor_asignado = null;
@@ -283,7 +288,7 @@ namespace CapaWeb.WebForms
                                 Session["Tipo_Trans"] = "UDP";
                                 cargarListaDesplegables();
                                 LlenarFactura();
-
+                                HabilitarAdjunto();
                                 break;
                             }
                             catch (Exception ex)
@@ -582,33 +587,45 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-                //LIsta Resolucion facturas
-                listaRes = ConsultaResolucion.ConsultaResolusiones(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo);
-                resolucion = null;
-                foreach (modelowmspcresfact item in listaRes)
-                {
-                    resolucion = item;
-
-                }
-              
+                //LIsta Resolucion facturas por sucursal
+                listaRes = ConsultaResolucion.ConsultaResolusionXSucursal(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, "0");
                 serie_docum.DataSource = listaRes;
                 serie_docum.DataTextField = "serie_docum";
                 serie_docum.DataValueField = "serie_docum";
                 serie_docum.DataBind();
-                //Aqui se va a traer que tipo de facturacion es
-                if (resolucion.tipo_fac == "S")
+                if (listaRes.Count > 1)
                 {
-                    Session["Ccf_tipo2"]  = "POSE";
-                    lbl_tipofac.Text = "POSE";
-                    DateTime hoy = DateTime.Today;
+                    serie_docum.Items.Insert(0, new ListItem("Seleccione...", "serie"));
+                    serie_docum.SelectedIndex = 0;
                     fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 }
                 else
                 {
-                    Session["Ccf_tipo2"] = "POS";
-                    lbl_tipofac.Text = "POS";
-                    fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                    resolucion = null;
+                    foreach (modelowmspcresfact item in listaRes)
+                    {
+                        resolucion = item;
+                    }
+                    //Aqui se va a traer que tipo de facturacion es
+                    if (resolucion.tipo_fac == "S")
+                    {
+                        Session["Ccf_tipo2"] = "POSE";
+                        lbl_tipofac.Text = "POSE";
+                        fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                        lbl_cod_suc_emp.Text = resolucion.cod_sucursal.Trim();
+                        lbl_suc_emp.Text = "-" + resolucion.nom_sucursal.Trim();
+                    }
+                    else
+                    {
+                        Session["Ccf_tipo2"] = "POS";
+                        lbl_tipofac.Text = "POS";
+                        fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                        lbl_cod_suc_emp.Text = resolucion.cod_sucursal.Trim();
+                        lbl_suc_emp.Text = "-" + resolucion.nom_sucursal.Trim();
+                    }
                 }
+                
+               
                 cbx_tipo_dsc.Items.Insert(0, new ListItem("Seleccione...", "0"));
                 cbx_tipo_dsc.SelectedIndex = 0;
                 lbl_prc_dsc.Visible = false;
@@ -697,16 +714,6 @@ namespace CapaWeb.WebForms
 
                 lbl_error.Text = "";
                 DateTime Fecha = Convert.ToDateTime(fecha.Text);
-  
-                //Obtener n° sucursal
-                ListaUsuSucursal = consultaUsuarioSucursal.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
-                ModeloUsuSucursal = null;
-                foreach (modeloUsuariosucursal items in ListaUsuSucursal)
-                {
-                    ModeloUsuSucursal = items;
-                    break;
-                }
-
                 //obtener cliente
                 string error = "";
                 string Ven__cod_tit = dniCliente.Text;
@@ -756,7 +763,7 @@ namespace CapaWeb.WebForms
                     cabecerafactura.diar = "0";
                     cabecerafactura.mesr = "0";
                     cabecerafactura.anior = "0";
-                    cabecerafactura.cod_sucursal = ModeloUsuSucursal.cod_sucursal;
+                    cabecerafactura.cod_sucursal = lbl_cod_suc_emp.Text.Trim();
                     cabecerafactura.nro_pedido = nro_pedido.Text;
                     cabecerafactura.cod_suc_cli = suc_cliente.Text; //sucursal cliente
 
@@ -807,7 +814,7 @@ namespace CapaWeb.WebForms
                     cabecerafactura.mesr = "0";
                     cabecerafactura.anior = "0";
                     cabecerafactura.cod_proc_aud = "RCOMFACT";
-                    cabecerafactura.cod_sucursal = ModeloUsuSucursal.cod_sucursal;
+                    cabecerafactura.cod_sucursal = lbl_cod_suc_emp.Text.Trim();
                     cabecerafactura.nro_pedido = nro_pedido.Text;
                     cabecerafactura.cod_suc_cli = suc_cliente.Text; //sucursal cliente
                     cabecerafactura.desctos_rcgos = 0; //Enviar siempre 0 al insetar
@@ -1483,6 +1490,12 @@ namespace CapaWeb.WebForms
             }
         }
 
+        public void HabilitarAdjunto()
+        {
+            lbl_adjunto.Visible = true;
+            btn_cargar_doc.Visible = true;
+            FileUpload1.Visible = true;
+        }
         protected void AgregarProducto_Click(object sender, EventArgs e)
         {
             try
@@ -1511,6 +1524,7 @@ namespace CapaWeb.WebForms
                                 InsertarCabeceraSL();
                                 InsertarDetalleSL();
                                 TraeDetalleFactura();
+                                HabilitarAdjunto();
                             }
                         }
                             else
@@ -1519,6 +1533,7 @@ namespace CapaWeb.WebForms
                             InsertarCabeceraSL();
                             InsertarDetalleSL();
                             TraeDetalleFactura();
+                            HabilitarAdjunto();
                         }
 
                     }
@@ -1542,6 +1557,7 @@ namespace CapaWeb.WebForms
                             InsertarCabeceraSL();
                             InsertarDetalleSL();
                             TraeDetalleFactura();
+                            HabilitarAdjunto();
                         }
                     }
                     else
@@ -1549,6 +1565,7 @@ namespace CapaWeb.WebForms
                         InsertarCabeceraSL();
                         InsertarDetalleSL();
                         TraeDetalleFactura();
+                        HabilitarAdjunto();
                     }
                 }
                 //Validar  que los precios no sean cero
@@ -1795,30 +1812,9 @@ namespace CapaWeb.WebForms
 
                 Ccf_tipo2 = tipo;
                 Ccf_nro_trans = nro_trans;
-
-                Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
-                string pathPdf = "";
                 string pathXml = "";
-
-                ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
                 string cod_proceso = "RCOMFELECT";
-                string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
-                //-------------OBTENER PDF PARA EL ENVIO-------------------//
-                if (tipo_doc.Trim() == "DEFECTO2")
-                {
-
-                    PdfFacVTAV2 pdf = new PdfFacVTAV2();
-                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                }
-                else
-                {
-                    if (tipo_doc.Trim() == "DEFECTO3")
-                    {
-                        PdfFacVTAV3 pdf = new PdfFacVTAV3();
-                        pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                    }
-
-                }
+                string pathPdf = generer_pdfElectronico.GenerarPDFFacturaNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                 Boolean error = enviarcorreocliente.EnviarCorreoCliente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, pathXml);
             }
             catch (Exception ex)
@@ -1844,33 +1840,15 @@ namespace CapaWeb.WebForms
                     }
 
                 }
-                Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
-                string pathPdf = "";
                 string StringXml = ModeloResQr.xml;
                 string pathTemporal = Modelowmspclogo.pathtmpfac;
                 string nombreXml = ModeloResQr.cufe.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + ".xml";
                 string pathXml = pathTemporal + nombreXml;
                 File.WriteAllText(pathXml, StringXml);
                 //-------------OBTENER EL XML Y PDF PARA EL ENVIO-------------------//
-                ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
+
                 string cod_proceso = "RCOMFELECT";
-                string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
-                //-------------OBTENER PDF PARA EL ENVIO-------------------//
-                if (tipo_doc.Trim() == "DEFECTO2")
-                {
-
-                    PdfFacVTAV2 pdf = new PdfFacVTAV2();
-                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                }
-                else
-                {
-                    if (tipo_doc.Trim() == "DEFECTO3")
-                    {
-                        PdfFacVTAV3 pdf = new PdfFacVTAV3();
-                        pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                    }
-
-                }
+                string pathPdf = generer_pdfElectronico.GenerarPDFFacturaElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                 Boolean error = enviarcorreocliente.EnviarCorreoRemitente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, pathXml);
             }
             catch (Exception ex)
@@ -2460,6 +2438,93 @@ namespace CapaWeb.WebForms
             catch (Exception ex)
             {
                 GuardarExcepciones("cbx_tipo_dsc_SelectedIndexChanged", ex.ToString());
+
+            }
+        }
+
+        protected void serie_docum_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                mensaje.Text = "";
+                if (serie_docum.SelectedValue.Trim() == "serie")
+                {
+                    mensaje.Text = "Seleccione una Serie Documento para poder Facturar";
+                    Session.Remove("Ccf_tipo2");
+                    lbl_tipofac.Text = "";
+                }
+                else
+                {
+                    //Buscar los datos cuando selecciona un prefijo
+                    listaRes1 = null;
+                    listaRes1 = ConsultaResolucion.ConsultaResolusiones(AmUsrLog, ComPwm, ResF_estado, serie_docum.SelectedValue.Trim(), ResF_tipo);
+                    resolucion = null;
+                    foreach (modelowmspcresfact item in listaRes1)
+                    {
+                        resolucion = item;
+
+                    }
+                    if (resolucion.tipo_fac == "S")
+                    {
+                        Session["Ccf_tipo2"] = "POSE";
+                        lbl_tipofac.Text = "POSE";
+                    }
+                    else
+                    {
+                        Session["Ccf_tipo2"] = "POS";
+                        lbl_tipofac.Text = "POS";
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                GuardarExcepciones("serie_docum_SelectedIndexChanged", ex.ToString());
+
+            }
+        }
+        protected void btn_cargar_doc_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //Consultar si ya existe la cabecera con lbl_trans
+                Boolean Cabecera = false;
+                Cabecera = GuardarCabezera.ConsultaSNCabFactura(lbl_trans.Text, ComPwm, AmUsrLog);
+                if (Cabecera == true)
+                {
+                    if (FileUpload1.HasFile)
+                    {
+
+                        // Se verifica que la extensión sea de un formato válido
+
+                        string ext = FileUpload1.PostedFile.FileName;
+
+                        string rutas = FileUpload1.FileName;
+
+                        ext = ext.Substring(ext.LastIndexOf(".") + 1).ToLower();
+
+                        string pathtmpfac = Modelowmspclogo.path_adjunto;  //Traemos el path, la ruta 
+                        string pathDocGenerado = pathtmpfac + lbl_trans.Text.Trim() + rutas;
+                        FileUpload1.SaveAs(pathDocGenerado);
+                        //Guardar nombre del archivo y ruta en cabcera factura
+                        GuardarCabezera.ActualizarDocAdjuntoFactura(lbl_trans.Text, pathDocGenerado, AmUsrLog);
+                        LblNombreArchivo.Text = lbl_trans.Text.Trim() + rutas;
+                        Response.Write("<script language=javascript>alert('Archivo cargado correctamente');</script>");
+
+                    }
+
+                    else
+                    { Response.Write("<script language=javascript>alert('Seleccione un archivo.');</script>"); }
+                }
+                else { Response.Write("<script language=javascript>alert('Primero debe seleccionar cliente');</script>"); }
+
+
+            }
+
+            catch (Exception ex)
+            {
+
+                Response.Write("<script language=javascript>alert('" + ex.Message + "');</script>");
 
             }
         }

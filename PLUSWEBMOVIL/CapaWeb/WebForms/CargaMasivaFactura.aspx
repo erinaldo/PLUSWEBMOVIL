@@ -9,6 +9,22 @@
                         
                         </td>
                 </tr>
+            <tr>
+                    <td colspan="4" >
+                        <asp:Label ID="lbl_mensaje" runat="server"  CssClass="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
+                <tr>
+                    <td  aling="center">
+                        <asp:Label ID="Label2" runat="server"  CssClass="Subtitulo2" Text="Sucursal: "></asp:Label>
+                        <asp:Label ID="lbl_cod_suc" runat="server"  CssClass="Subtitulo2" Text=""></asp:Label>
+                        <asp:Label ID="lbl_sucursal" runat="server"  CssClass="Subtitulo2" Text=""></asp:Label>&nbsp;&nbsp;
+                        <asp:Label ID="lbl_pre" runat="server"  CssClass="Subtitulo2" Text="Prefijo:" Visible="false"></asp:Label>
+                        <asp:Label ID="lbl_prefijo" runat="server" CssClass="Subtitulo2" Text="" Visible="false"></asp:Label>
+                        </td>
+                    
+                    </tr>
          </table>
      <iframe src="<%Response.Write(Modelowmspclogo.sitio_erp + "/CargaMasivaFEPWM.aspx"); %>" frameborder="0" allowfullscreen align="center" style="width: 821px; height: 135px; margin-left: 0px;"></iframe>
          <form id="form1" runat="server">

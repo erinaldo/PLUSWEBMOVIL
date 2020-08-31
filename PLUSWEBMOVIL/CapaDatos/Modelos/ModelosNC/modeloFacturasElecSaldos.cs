@@ -10,7 +10,8 @@ namespace CapaDatos.Modelos.ModelosNC
         //Consultar saldos de factura para NC por sql
         public string cod_emp { get; set; }
         public string nro_trans { get; set; }
-       
+        public string cod_suc_emp { get; set; }
+        public string cod_suc_cli { get; set; }
         public string cufe{ get; set; }
         public string nro_docum { get; set; }
         public string serie_docum { get; set; }

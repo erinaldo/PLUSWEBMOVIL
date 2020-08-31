@@ -34,7 +34,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ConsultaNCTransPadre", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ConsultaNCTransPadre", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
 
@@ -51,7 +51,34 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "ConsultaCabFacura", e.ToString(), DateTime.Today, Ccf_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "ConsultaCabFacura", e.ToString(), DateTime.Now, Ccf_usuario);
+                return null;
+            }
+        }
+
+        //Busqueda de facturas por sucursal
+        public List<modelowmtfacturascab> ConsultaFacturaXSucursal(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string Ccf_estado, string Ccf_cliente, string Ccf_cod_docum, string Ccf_serie_docum, string Ccf_nro_docum, string Ccf_diai, string Ccf_mesi, string Ccf_anioi, string Ccf_diaf, string Ccf_mesf, string Ccf_aniof, string cod_sucursal)
+        {
+            try
+            {
+                List<modelowmtfacturascab> lista = new List<modelowmtfacturascab>();
+                List<modelowmtfacturascab> listaAux = new List<modelowmtfacturascab>();
+                modelowmtfacturascab ModeloFactura = new modelowmtfacturascab();
+                //Traer todas las facturas con los filtros necesarios de esa empresa
+                lista = consulta.ConsultaFacturaNroTran(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                foreach(var item in lista)
+                {
+                    if(item.cod_sucursal.Trim() == cod_sucursal.Trim())//Filtrar por sucursal.
+                    {
+                        listaAux.Add(item);
+                    }
+                }
+                return listaAux;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "ConsultaFacturaXSucursal", e.ToString(), DateTime.Now, Ccf_usuario);
                 return null;
             }
         }
@@ -68,7 +95,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ConsultaTipoFactura", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ConsultaTipoFactura", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }

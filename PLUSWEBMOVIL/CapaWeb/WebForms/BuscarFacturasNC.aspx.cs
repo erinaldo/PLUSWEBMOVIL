@@ -91,7 +91,7 @@ namespace CapaWeb.WebForms
 
                     Session.Remove("listaFacturas");
                     Session.Remove("usuario");
-                   // Session.Remove("tipo_nc");
+                    Session.Remove("suc_emp");
 
                     if (Request.Cookies["ComPwm"] != null)
                     {
@@ -101,6 +101,10 @@ namespace CapaWeb.WebForms
                     if (Session["Tipo"] != null)
                     {
                         Session["tipo_nc"] = Session["Tipo"].ToString();
+                    }
+                    if (Session["Sucursal"] != null)
+                    {
+                        Session["suc_emp"] = Session["Sucursal"].ToString();
                     }
 
                     if (Session["listaClienteFac"] != null)
@@ -112,7 +116,6 @@ namespace CapaWeb.WebForms
                         foreach (var item in ListaSaldoFacturas)
                         {
                             Session["usuario"] = item.cod_cliente;
-
                         }
 
                         Grid.DataSource = ListaSaldoFacturas;
@@ -322,14 +325,14 @@ namespace CapaWeb.WebForms
                 if (Session["tipo_nc"].ToString() == "NCV")
                 {
 
-                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C","N");
+                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C","N", Session["suc_emp"].ToString());
                 }
 
                 else
 
                 {
 
-                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C","N");
+                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C","N", Session["suc_emp"].ToString());
                 }
                
 

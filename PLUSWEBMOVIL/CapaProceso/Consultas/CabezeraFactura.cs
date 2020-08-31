@@ -201,6 +201,21 @@ namespace CapaProceso.Consultas
                 return "No se pudo completar la acción." + "ActualizarEstadoFactura." + " Por favor notificar al administrador.";
             }
         }
+        //Actualizar guardar doc_adjunto factura cabeera
+        public string ActualizarDocAdjuntoFactura(string nro_trans, string adjunto, string usuario)
+        {
+            try
+            {
+                string respuesta = factura.ActualizarAdjuntoFactura(nro_trans, adjunto, usuario);
+                return respuesta;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ActualizarDocAdjuntoFactura", e.ToString(), DateTime.Now, usuario);
+                return "No se pudo completar la acción." + "ActualizarObserFactur." + " Por favor notificar al administrador.";
+            }
+        }
         //Actualizar o guardar la observacion de la factura
         public string ActualizarObserFactura(string nro_trans,string observacion)
         {

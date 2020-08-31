@@ -13,6 +13,7 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo = "SerieDocumento.cs";
         public List<modelowmspcresfact> ListaBuscaSerieDocumento(string ResF_usuario, string ResF_cod_emp, string ResF_estado, string ResF_serie, string ResF_tipo)
         {
 
@@ -63,7 +64,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(ResF_cod_emp, "SerieDocumento.cs", "ListaBuscaSerieDocumento", e.ToString(), DateTime.Today, ResF_usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(ResF_cod_emp, metodo, "ListaBuscaSerieDocumento", e.ToString(), DateTime.Now, ResF_usuario);
                 return null;
             }
 

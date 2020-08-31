@@ -425,7 +425,7 @@ namespace CapaProceso.FacturaMasiva
         }
         //Enviar nro factura para consultar datos d facturas
         //Saldos sin restricciones
-        public string BuscartaDatosFacturasMasivas(string Ccf_usuario, string Ccf_cod_emp)
+        public string BuscartaDatosFacturasMasivas(string Ccf_usuario, string Ccf_cod_emp, string cod_sucursal)
         {
             try
             {
@@ -440,7 +440,7 @@ namespace CapaProceso.FacturaMasiva
                     //Llenar datos de la factura
                    listaAux= ListaFacturas(Ccf_usuario, Ccf_cod_emp, item.nro_docum);
                     //Insertar en la cabecera de la factura
-                    InsertarCabecera(Ccf_usuario, Ccf_cod_emp, listaAux);
+                    InsertarCabecera(Ccf_usuario, Ccf_cod_emp, listaAux, cod_sucursal);
                     //Referencia cruzada ---insertar detallle factura
                     InsertarDetalle(Ccf_usuario, Ccf_cod_emp, listaAux);
                     //Insertar Formas de pago si es POS /POSE
@@ -582,22 +582,14 @@ namespace CapaProceso.FacturaMasiva
         }
         //Insertar cabecera----------------------------FACTURACION MASIVA--------------------------------
 
-        public void InsertarCabecera( string AmUsrLog, string ComPwm, List<modeloFacturaEMasiva> lista)
+        public void InsertarCabecera( string AmUsrLog, string ComPwm, List<modeloFacturaEMasiva> lista, string cod_sucursal)
         {
             try
             {
                     //obtener numero de transaccion
                    nrotrans = ConsultaNroTran.ConsultaNumeradores(numerador);
                    valor_asignado = nrotrans.valor_asignado;
-   
-                //Obtener n° sucursal
-                ListaUsuSucursal = consultaUsuarioSucursal.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
-                ModeloUsuSucursal = null;
-                foreach (modeloUsuariosucursal items in ListaUsuSucursal)
-                {
-                    ModeloUsuSucursal = items;
-                    break;
-                }
+
                 //OBTENER DATOS DE LA FACTURA
                 modeloFacturaEMasiva factura = new modeloFacturaEMasiva();
                 factura = null;
@@ -609,7 +601,7 @@ namespace CapaProceso.FacturaMasiva
                 //Traer resolución
                 
                 //LIsta Resolucion facturas(serie documento)
-                listaRes = ConsultaResolucion.ConsultaResolusiones(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo);
+                listaRes = ConsultaResolucion.ConsultaResolusionXSucursal(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, cod_sucursal);
                 resolucion = null;
                 foreach (modelowmspcresfact item in listaRes)
                 {
@@ -703,7 +695,7 @@ namespace CapaProceso.FacturaMasiva
                 cabecerafactura.mesr = "0";
                 cabecerafactura.anior = "0";
                 cabecerafactura.cod_proc_aud = "RCOMFACT";
-                cabecerafactura.cod_sucursal = ModeloUsuSucursal.cod_sucursal;
+                cabecerafactura.cod_sucursal = cod_sucursal;
                 cabecerafactura.nro_pedido = "";
                 cabecerafactura.cod_suc_cli = clientes.cod_sucursal;
                 cabecerafactura.desctos_rcgos = 0;
@@ -1005,7 +997,7 @@ namespace CapaProceso.FacturaMasiva
         {
             try
             {
-                listaArticulos = ConsultaArticulo.ConsultaArticulos(AmUsrLog, ComPwm, ArtB__articulo, "0", "0", "S");
+                listaArticulos = ConsultaArticulo.ConsultaArticuloUnico(AmUsrLog, ComPwm, ArtB__articulo);
 
                 articulo = null;
                 foreach (modelowmspcarticulos item in listaArticulos)

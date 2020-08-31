@@ -33,6 +33,20 @@
                         
                         </td>
                     </tr>
+                 <tr>
+                    <td >
+                        <asp:Label ID="lbl_mensaje" runat="server"  CssClass="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
+                <tr>
+                    <td>
+                        <asp:Label ID="Label1" runat="server"  CssClass="Subtitulo2" Text="Sucursal: "></asp:Label>
+                        <asp:Label ID="lbl_cod_suc" runat="server"  CssClass="Subtitulo2" Text=""></asp:Label>
+                        <asp:Label ID="lbl_sucursal" runat="server"  CssClass="Subtitulo2" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
                 <tr>
                     <td>
                          <p class="Subtitulo1">Busque el registro deseado por:</p>
@@ -76,6 +90,7 @@
                                   <asp:ListItem Value="VTAE">Factura</asp:ListItem>
                                   <asp:ListItem Value="POSE">Factura POS</asp:ListItem>
                                   <asp:ListItem Value="NC">Nota Crédito</asp:ListItem>
+                                  <asp:ListItem Value="NDVE">Nota Débito</asp:ListItem>
                               </asp:DropDownList>
                           </td>
                         </tr>

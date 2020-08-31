@@ -9,6 +9,7 @@ using CapaDatos.Modelos;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using System.IO;
 using CapaDatos.Sql;
+using CapaProceso.FacturaMasiva;
 
 namespace CapaWeb.WebForms
 {
@@ -29,6 +30,9 @@ namespace CapaWeb.WebForms
         public List<JsonRespuestaDE> ListaModelorespuestaDs = null;
         public JsonRespuestaDE ModeloResQr = new JsonRespuestaDE();
         public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
+
+        GenerarPDFDocumentos generer_pdfElectronico = new GenerarPDFDocumentos();
+        Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
         public string ComPwm;
         public string AmUsrLog;
         public string nro_trans = null;
@@ -223,25 +227,14 @@ namespace CapaWeb.WebForms
                     }
 
                 }
-                Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
-                string pathPdf = "";
+
                 string StringXml = ModeloResQr.xml;
                 string pathTemporal = Modelowmspclogo.pathtmpfac;
                 string nombreXml = ModeloResQr.cufe.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + ".xml";
                 string pathXml = pathTemporal + nombreXml;
                 File.WriteAllText(pathXml, StringXml);
-                string  cod_proceso = "RCOMFELECT";
-                // cod_proceso = "RCOMNDEB";
-                ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
-                string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
-                conscabcera = null;
-                //-------------OBTENER EL XML Y PDF PARA EL ENVIO-------------------//
-                if (tipo_doc.Trim() == "DEFECTO3")
-                {
-
-                    PdfNDEleV3Default3 pdf1 = new PdfNDEleV3Default3();
-                    pathPdf = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                }
+                string cod_proceso = "RCOMFELECT"; //van a usuar la misma de la factura 27-08-20
+                string pathPdf = generer_pdfElectronico.GenerarPDFNotaDebitoElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
                 Boolean error = enviarcorreocliente.EnviarCorreoRemitente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, pathXml);
             }

@@ -164,6 +164,7 @@ namespace CapaWeb
                 //Escoger opcion
 
                 string Id;
+                string cod_sucursal;
 
                 switch (e.CommandName) //ultilizo la variable para la opcion
                 {
@@ -172,10 +173,11 @@ namespace CapaWeb
                         try
                         {
                             Id = Convert.ToString(((Label)e.Item.Cells[1].FindControl("usuario")).Text);
-
+                            cod_sucursal = Convert.ToString(((Label)e.Item.Cells[1].FindControl("cod_sucursal")).Text);
                             //2 voy a agregando los valores que deseo
                             qs.Add("TRN", "UDP");
                             qs.Add("Id", Id.ToString());
+                            qs.Add("suc", cod_sucursal.ToString());
 
                             Response.Redirect("FormUsuariosucursal.aspx" + Encryption.EncryptQueryString(qs).ToString());
                             break;//termina la ejecucion del programa despues de ejecutar el codigo       
@@ -193,10 +195,10 @@ namespace CapaWeb
                         try
                         {
                             Id = Convert.ToString(((Label)e.Item.Cells[1].FindControl("usuario")).Text);
-
+                            cod_sucursal = Convert.ToString(((Label)e.Item.Cells[1].FindControl("cod_sucursal")).Text);
                             qs.Add("TRN", "DLT");
                             qs.Add("Id", Id.ToString());
-
+                            qs.Add("suc", cod_sucursal.ToString());
                             Response.Redirect("FormUsuariosucursal.aspx" + Encryption.EncryptQueryString(qs).ToString());
                             break;
                         }

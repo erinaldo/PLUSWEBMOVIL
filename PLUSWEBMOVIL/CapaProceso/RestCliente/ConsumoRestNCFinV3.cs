@@ -15,6 +15,7 @@ using CapaProceso.GenerarPDF.FacturaElectronica;
 using CapaProceso.ReslClientePdf;
 using CapaDatos.Modelos;
 using CapaDatos.Modelos.ModelosNC;
+using CapaProceso.FacturaMasiva;
 
 namespace CapaProceso.RestCliente
 {
@@ -30,7 +31,7 @@ namespace CapaProceso.RestCliente
         public ProcesoRestNCV2 procesoRest = new ProcesoRestNCV2();
         public JsonNCPDFV2 jsonFacturapdf = new JsonNCPDFV2();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
-        ConsultaLogoSql tipo_factura = new ConsultaLogoSql();//Trae que version de pdf usa la empresa
+        GenerarPDFDocumentos generer_pdfElectronico = new GenerarPDFDocumentos();
         string metodo = "ConsumoRestNCFinV3.cs";
         string cod_proceso = "RCOMNCELEC"; //Con este codigo busca pdf de cada empresa ya sea  pose,vtae, pos, vta
         string tipo_doc = null;//Aqui se llena el tipo o version de pdf que usa para la facturacion cada empresa
@@ -75,24 +76,8 @@ namespace CapaProceso.RestCliente
                     //sr.Close();
 
                     string linkgenpdf = Modelowmspclogo.linkgenpdf;//Obtengo link para enviara pdf
-                    string pathPdf = null;
-                    tipo_doc = tipo_factura.TipoDocImprimir(Ccf_cod_emp, cod_proceso, Ccf_usuario);
-                    switch (tipo_doc.Trim())
-                    {
-                        case "DEFECTO2":
-                            PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
-                            pathPdf = pdf1.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                            break;
-                        case "DEFECTO":
-                            PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
-                            pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                            break;
-                        case "DEFECTO3":
-                            PdfNCEleV3Default3 pdf2 = new PdfNCEleV3Default3();
-                            pathPdf = pdf2.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                            break;
-                    }
-                  
+                    string pathPdf = generer_pdfElectronico.GenerarPDFNotaCreditoElectronica(Ccf_cod_emp, cod_proceso, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                                  
 
                     byte[] pdfBytes = File.ReadAllBytes(pathPdf);
                     string pdfBase64 = Convert.ToBase64String(pdfBytes);//Convierto el pdf en base 64
@@ -190,24 +175,7 @@ namespace CapaProceso.RestCliente
 
                 string linkgenpdf = Modelowmspclogo.linkgenpdf;//Obtengo link para enviara pdf
 
-                string pathPdf = null;
-                tipo_doc = tipo_factura.TipoDocImprimir(Ccf_cod_emp, cod_proceso, Ccf_usuario);
-                switch (tipo_doc.Trim())
-                {
-                    case "DEFECTO2":
-                        PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
-                        pathPdf = pdf1.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                        break;
-                    case "DEFECTO":
-                        PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
-                        pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                        break;
-                    case "DEFECTO3":
-                        PdfNCEleV3Default3 pdf2 = new PdfNCEleV3Default3();
-                        pathPdf = pdf2.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                        break;
-                }
-
+                string pathPdf = generer_pdfElectronico.GenerarPDFNotaCreditoElectronica(Ccf_cod_emp, cod_proceso, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
                 byte[] pdfBytes = File.ReadAllBytes(pathPdf);
                 string pdfBase64 = Convert.ToBase64String(pdfBytes);//Convierto el pdf en base 64

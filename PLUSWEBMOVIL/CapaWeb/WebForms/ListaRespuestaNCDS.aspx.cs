@@ -117,8 +117,6 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-
-
                 ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
                 Grid.DataSource = ListaModelorespuestaDs;
                 Grid.DataBind();

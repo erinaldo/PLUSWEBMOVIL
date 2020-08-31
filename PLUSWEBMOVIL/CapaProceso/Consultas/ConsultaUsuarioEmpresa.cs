@@ -28,7 +28,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, "UsuarioxEmpresa.cs", "ConsultaUsuarioEmpresa", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, "UsuarioxEmpresa.cs", "ConsultaUsuarioEmpresa", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }

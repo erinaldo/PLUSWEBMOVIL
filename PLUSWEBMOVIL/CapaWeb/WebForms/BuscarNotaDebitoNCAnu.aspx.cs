@@ -91,7 +91,7 @@ namespace CapaWeb.WebForms
 
                     Session.Remove("listaFacturas");
                     Session.Remove("usuario");
-                    //Session.Remove("TipoFactura");
+                    Session.Remove("suc_emp");
 
                     if (Request.Cookies["ComPwm"] != null)
                     {
@@ -102,7 +102,10 @@ namespace CapaWeb.WebForms
                     {
                         tipo_nc = Session["TipoFactura"].ToString();
                     }
-
+                    if (Session["Sucursal"] != null)
+                    {
+                        Session["suc_emp"] = Session["Sucursal"].ToString();
+                    }
                     if (Session["listaClienteFac"] != null)
                     {
                         // recupera la variable de secion con el objeto persona 
@@ -345,11 +348,11 @@ namespace CapaWeb.WebForms
 
                 if (tipo_nc == "NDVE")
                 {
-                    ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S");
+                    ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", Session["suc_emp"].ToString());
                 }
                 else
                 {
-                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S");
+                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", Session["suc_emp"].ToString());
                 }
 
 

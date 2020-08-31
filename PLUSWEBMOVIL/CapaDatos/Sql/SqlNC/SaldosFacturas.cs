@@ -84,7 +84,7 @@ namespace CapaDatos.Sql.SqlNC
                 {
                     
 
-                    string consulta = ("SELECT	TOP 1 F.nro_trans,	F.cod_emp,	F.serie_docum,	F.nro_docum,	D.cufe FROM 	wmt_facturas_cab AS F INNER JOIN wmt_respuestaDS AS D ON F.nro_trans = D.nro_trans WHERE D.cufe <> '' AND F.tipo IN( 'VTAE', 'POSE') AND F.cod_cliente = @cod_cliente AND F.cod_emp = @cod_emp AND F.estado IN ('F') AND F.serie_docum = @serie AND F.nro_docum =@nro_docum GROUP BY 	F.nro_trans,	F.cod_emp,F.serie_docum,	F.nro_docum,	D.cufe");
+                    string consulta = ("SELECT	TOP 1 F.nro_trans,	F.cod_emp,	F.serie_docum,	F.nro_docum, F.cod_sucursal, F.cod_suc_cli ,D.cufe FROM 	wmt_facturas_cab AS F INNER JOIN wmt_respuestaDS AS D ON F.nro_trans = D.nro_trans WHERE D.cufe <> '' AND F.tipo IN( 'VTAE', 'POSE') AND F.cod_cliente = @cod_cliente AND F.cod_emp = @cod_emp AND F.estado IN ('F') AND F.serie_docum = @serie AND F.nro_docum =@nro_docum GROUP BY 	F.nro_trans,	F.cod_emp,F.serie_docum,	F.nro_docum,F.cod_suc_cli, F.cod_sucursal,D.cufe");
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = cod_cliente.Trim();
@@ -102,7 +102,9 @@ namespace CapaDatos.Sql.SqlNC
                         items.cufe = Convert.ToString(dr["cufe"]);
                         items.serie_docum = Convert.ToString(dr["serie_docum"]);
                         items.nro_docum = Convert.ToString(dr["nro_docum"]);
-                      
+                        items.cod_suc_emp = Convert.ToString(dr["cod_sucursal"]);
+                        items.cod_suc_cli = Convert.ToString(dr["cod_suc_cli"]);
+
                     }
 
                     return items;
@@ -127,7 +129,7 @@ namespace CapaDatos.Sql.SqlNC
                 using (cn = conexion.genearConexion())
                 {
 
-                    string consulta = ("SELECT	TOP 1 F.nro_trans,	F.cod_emp,	F.serie_docum,	F.nro_docum,	D.cufe FROM 	wmt_facturas_cab AS F INNER JOIN wmt_respuestaDS AS D ON F.nro_trans = D.nro_trans WHERE D.cufe <> '' AND F.tipo IN( 'NCVE', 'NCME') AND F.cod_cliente = @cod_cliente AND F.cod_emp = @cod_emp AND F.estado IN ('F') AND F.serie_docum = @serie AND F.nro_docum =@nro_docum GROUP BY 	F.nro_trans,	F.cod_emp,F.serie_docum,	F.nro_docum,	D.cufe");
+                    string consulta = ("SELECT	TOP 1 F.nro_trans,	F.cod_emp,	F.serie_docum,	F.nro_docum, F.cod_sucursal, F.cod_suc_cli, D.cufe FROM 	wmt_facturas_cab AS F INNER JOIN wmt_respuestaDS AS D ON F.nro_trans = D.nro_trans WHERE D.cufe <> '' AND F.tipo IN( 'NCVE', 'NCME') AND F.cod_cliente = @cod_cliente AND F.cod_emp = @cod_emp AND F.estado IN ('F') AND F.serie_docum = @serie AND F.nro_docum =@nro_docum GROUP BY 	F.nro_trans,	F.cod_emp,F.serie_docum,	F.nro_docum,F.cod_sucursal, F.cod_suc_cli, 	D.cufe");
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = cod_cliente.Trim();
@@ -145,6 +147,8 @@ namespace CapaDatos.Sql.SqlNC
                         items.cufe = Convert.ToString(dr["cufe"]);
                         items.serie_docum = Convert.ToString(dr["serie_docum"]);
                         items.nro_docum = Convert.ToString(dr["nro_docum"]);
+                        items.cod_suc_emp = Convert.ToString(dr["cod_sucursal"]);
+                        items.cod_suc_cli = Convert.ToString(dr["cod_suc_cli"]);
                     }
 
                     return items;
@@ -186,6 +190,8 @@ namespace CapaDatos.Sql.SqlNC
                         items.cod_emp = Convert.ToString(dr["cod_emp"]);
                         items.serie_docum = Convert.ToString(dr["serie_docum"]);
                         items.nro_docum = Convert.ToString(dr["nro_docum"]);
+                        items.cod_suc_emp = Convert.ToString(dr["cod_suc_emp"]);
+                        items.cod_suc_cli = Convert.ToString(dr["cod_suc_cli"]);
 
                     }
 
@@ -202,7 +208,7 @@ namespace CapaDatos.Sql.SqlNC
 
         }
         //cONSULTA PARA FACTURAS ELECTRONICAS CON CUFE SE USA EN NC PARA SALDOS Y TOTALES
-        public modeloFacturasElecSaldos ConsultaFacturasVTASaldos(string cod_cliente, string cod_emp, string nro_trans)
+        public modeloFacturasElecSaldos ConsultaFacturasVTASaldos(string cod_cliente, string cod_emp, string nro_docum, string serie_docum)
         {
             try
             {
@@ -212,12 +218,13 @@ namespace CapaDatos.Sql.SqlNC
                 {
 
 
-                    string consulta = ("SELECT * FROM wmt_facturas_cab WHERE estado IN ('C', 'F')  AND tipo IN ('VTA', 'POS') AND nro_docum=@nro_trans and cod_emp = @cod_emp and cod_cliente= @cod_cliente");
+                    string consulta = ("SELECT * FROM wmt_facturas_cab WHERE estado IN ('C', 'F')  AND tipo IN ('VTA', 'POS') AND nro_docum=@nro_docum AND serie_docum =@serie_docum and cod_emp = @cod_emp and cod_cliente= @cod_cliente");
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = cod_cliente;
                     conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
-                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                    conmand.Parameters.Add("@nro_docum", SqlDbType.VarChar).Value = nro_docum;
+                    conmand.Parameters.Add("@serie_docum", SqlDbType.VarChar).Value = serie_docum;
 
                     SqlDataReader dr = conmand.ExecuteReader();
 
@@ -226,7 +233,8 @@ namespace CapaDatos.Sql.SqlNC
 
                         items.nro_trans = Convert.ToString(dr["nro_trans"]);
                         items.cod_emp = Convert.ToString(dr["cod_emp"]);
-                        //items.cufe = Convert.ToString(dr["cufe"]);
+                        items.cod_suc_emp = Convert.ToString(dr["cod_sucursal"]);
+                        items.cod_suc_cli = Convert.ToString(dr["cod_suc_cli"]);
                         items.serie_docum = Convert.ToString(dr["serie_docum"]);
                         items.nro_docum = Convert.ToString(dr["nro_docum"]);
 

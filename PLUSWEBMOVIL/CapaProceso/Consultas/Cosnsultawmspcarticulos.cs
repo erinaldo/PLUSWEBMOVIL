@@ -29,6 +29,22 @@ namespace CapaProceso.Consultas
                 return null;
             }
         }
+        //consulta articulo unico busca por codigo 
+        public List<modelowmspcarticulos> ConsultaArticuloUnico(string ArtB__usuario, string ArtB__cod_emp, string ArtB__articulo)
+        {
+            try
+            {
+                List<modelowmspcarticulos> lista = new List<modelowmspcarticulos>();
+                lista = articulos.ArticuloUnico(ArtB__usuario, ArtB__cod_emp, ArtB__articulo);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(ArtB__cod_emp, "Consultawmspcarticulos.cs", "ConsultaArticuloUnico", e.ToString(), DateTime.Now, ArtB__usuario);
+                return null;
+            }
+        }
     }
 }
     

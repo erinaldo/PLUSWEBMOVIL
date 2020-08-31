@@ -87,5 +87,9 @@ namespace CapaDatos.Modelos
         public string tipo { get; set; }
         public decimal desctos_rcgos { get; set; }
         public string des_rec_str { get; set; }
+
+        //ICN
+        public decimal icn{ get; set; }
+        public string doc_adjunto { get; set; }
     }
 }

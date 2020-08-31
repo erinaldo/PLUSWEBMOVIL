@@ -83,6 +83,7 @@ namespace CapaWeb.WebForms
 
                     Session.Remove("listaFacturas");
                     Session.Remove("usuario");
+                    Session.Remove("suc_emp");
 
                     if (Request.Cookies["ComPwm"] != null)
                     {
@@ -92,6 +93,10 @@ namespace CapaWeb.WebForms
                     if (Session["Tipo"] != null)
                     {
                         Session["tipo_nc"] = Session["Tipo"].ToString();
+                    }
+                    if (Session["Sucursal"] != null)
+                    {
+                        Session["suc_emp"] = Session["Sucursal"].ToString();
                     }
 
                     if (Session["listaClienteFac"] != null)
@@ -317,16 +322,16 @@ namespace CapaWeb.WebForms
                 switch (tipo_doc)
                 {
                     case "NCM":
-                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N");
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString());
                         break;
                     case "NCME":
-                        ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N");
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString());
                         break;
                     case "NDV":
-                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N");
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString());
                         break;
                     case "NDVE":
-                        ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N");
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString());
                         break;
 
                 }

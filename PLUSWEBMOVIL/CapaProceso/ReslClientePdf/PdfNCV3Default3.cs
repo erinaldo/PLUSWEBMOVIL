@@ -67,6 +67,12 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
         public modelowmspcfacturasWMimpuRest ModeloImpuesto = new modelowmspcfacturasWMimpuRest();
         public ConsultawmspcfacturasWMimpuRest consultaImpuesto = new ConsultawmspcfacturasWMimpuRest();
 
+        public modeloSucuralempresa ModelosucursalEmpresa = new modeloSucuralempresa();
+        public modeloSucuralempresa PrefijosucursalEmpresa = new modeloSucuralempresa();
+        public List<modeloSucuralempresa> ListaModeloSucursalEmpresa = new List<modeloSucuralempresa>();
+        public ConsultaSucursalempresa ConsultaSucEmpresa = new ConsultaSucursalempresa();
+        public Consultawmsucempresa ConsultaSucursal = new Consultawmsucempresa();
+
         public string Ccf_estado = null;
         public string Ccf_cliente = null;
         public string Ccf_cod_docum = null;
@@ -274,6 +280,14 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
                 Modeloempresa = null;
                 Modeloempresa = BuscarCabEmpresa(Ccf_usuario, Ccf_cod_emp);
+                //Datos de la sucursal de la empresa
+
+                ListaModeloSucursalEmpresa = ConsultaSucursal.ConsultaSucursalCiudad(Ccf_cod_emp, conscabcera.cod_sucursal, Ccf_usuario);
+                foreach (var item in ListaModeloSucursalEmpresa)
+                {
+                    ModelosucursalEmpresa = item;
+                    break;
+                }
 
                 Modelocomercial = null;
                 Modelocomercial = BuscarParametro(Ccf_cod_emp);
@@ -381,27 +395,29 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase(Modeloempresa.dir_tit, tipo3));
-                cell.Border = 0;
-                cell.HorizontalAlignment = 0;
-                tabladetaEmpresa.AddCell(cell);
-
-                cell = new PdfPCell(new Phrase(Modeloempresa.nom_ciudad, tipo3));
+                cell = new PdfPCell(new Phrase(ModelosucursalEmpresa.dir_sucursal, tipo3));
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa.AddCell(cell);
 
 
-                cell = new PdfPCell(new Phrase(Modeloempresa.tel_tit + "-" + Modeloempresa.fax_tit, tipo3));
+                cell = new PdfPCell(new Phrase(ModelosucursalEmpresa.nom_ciudad, tipo3));
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa.AddCell(cell);
 
 
-                cell = new PdfPCell(new Phrase(Modeloempresa.email_tit, tipo3));
+                cell = new PdfPCell(new Phrase(ModelosucursalEmpresa.tel_sucursal + "-" + Modeloempresa.fax_tit, tipo3));
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa.AddCell(cell);
+
+
+                cell = new PdfPCell(new Phrase(ModelosucursalEmpresa.email_sucursal, tipo3));
+                cell.Border = 0;
+                cell.HorizontalAlignment = 0;
+                tabladetaEmpresa.AddCell(cell);
+
                 cell = new PdfPCell(new Phrase("Resolución Nota Crédito N°." + resolucion.cod_atrib1, fontText3)); //7 tamaño
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;

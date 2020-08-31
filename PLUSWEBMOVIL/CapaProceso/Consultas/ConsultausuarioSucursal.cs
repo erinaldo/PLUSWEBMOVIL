@@ -27,7 +27,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(ModeloUsuSucursal.cod_emp, metodo, "InsertarUsuarioSucursal", e.ToString(), DateTime.Today, ModeloUsuSucursal.usuario_mod);
+                guardarExcepcion.ClaseInsertarExcepcion(ModeloUsuSucursal.cod_emp, metodo, "InsertarUsuarioSucursal", e.ToString(), DateTime.Now, ModeloUsuSucursal.usuario_mod);
                 return "No se pudo completar la acción." + "InsertarUsuarioSucursal." + " Por favor notificar al administrador.";
             }
 

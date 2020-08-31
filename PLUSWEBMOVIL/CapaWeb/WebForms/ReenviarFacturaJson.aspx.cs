@@ -9,6 +9,7 @@ using CapaDatos.Modelos;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using System.IO;
 using CapaDatos.Sql;
+using CapaProceso.FacturaMasiva;
 
 namespace CapaWeb.WebForms
 {
@@ -38,6 +39,10 @@ namespace CapaWeb.WebForms
         public List<JsonRespuestaDE> ListaModelorespuestaDs = null;
         public JsonRespuestaDE ModeloResQr = new JsonRespuestaDE();
         public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
+
+        GenerarPDFDocumentos generer_pdfElectronico = new GenerarPDFDocumentos();
+        Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
+
         public string ComPwm;
         public string AmUsrLog;
         public string nro_trans = null;
@@ -180,8 +185,17 @@ namespace CapaWeb.WebForms
                 {
                     case "2":
 
-                        ConsumoRestFEV3 consumoRest1 = new ConsumoRestFEV3();
-                        respuesta = consumoRest1.EnviarFactura(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
+                        if (conscabcera.doc_adjunto == null || conscabcera.doc_adjunto == "")
+                        {
+                            ConsumoRestFEV3 consumoRest1 = new ConsumoRestFEV3();
+
+                            respuesta = consumoRest1.EnviarFactura(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
+                        }
+                        else
+                        {
+                            ConsumoRestFEV3_PDF consumoRest1 = new ConsumoRestFEV3_PDF();
+                            respuesta = consumoRest1.EnviarFactura(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
+                        }
                         break;
                     case "1":
                         ConsumoRestFEV2 consumoRest = new ConsumoRestFEV2();
@@ -228,29 +242,16 @@ namespace CapaWeb.WebForms
                     }
 
                 }
-                Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
-                string pathPdf = "";
+                
+                
                 string StringXml = ModeloResQr.xml;
                 string pathTemporal = Modelowmspclogo.pathtmpfac;
                 string nombreXml = ModeloResQr.cufe.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + ".xml";
                 string pathXml = pathTemporal + nombreXml;
                 File.WriteAllText(pathXml, StringXml);
                 //-------------OBTENER EL XML Y PDF PARA EL ENVIO-------------------//
-                ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
-               string cod_proceso = "RCOMFELECT";
-                string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
-                if (tipo_doc.Trim() == "DEFECTO3")
-                {
-
-                    PdfFacEleV3Default3 pdf = new PdfFacEleV3Default3();
-                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                }
-                else
-                {
-                    PdfFacEleV2Default2 pdf = new PdfFacEleV2Default2();
-                    pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-
-                }
+                string cod_proceso = "RCOMFELECT";
+                string pathPdf = generer_pdfElectronico.GenerarPDFFacturaElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                 Boolean error = enviarcorreocliente.EnviarCorreoRemitente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, pathPdf, pathXml);
             }
             catch (Exception ex)
@@ -298,11 +299,20 @@ namespace CapaWeb.WebForms
                 switch (Modelowmspclogo.version_fe.Trim())  //AVERIGUAR QUE VERSION  DE FACTURACION USA
                 {
                     case "2":
-                        
-                        ConsumoRestFEV3 consumoRest1 = new ConsumoRestFEV3();
-                        respuesta = consumoRest1.enviarPDF(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
+
+                        if (conscabcera.doc_adjunto == null || conscabcera.doc_adjunto == "")
+                        {
+                            ConsumoRestFEV3 consumoRest1 = new ConsumoRestFEV3();
+
+                            respuesta = consumoRest1.EnviarFactura(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
+                        }
+                        else
+                        {
+                            ConsumoRestFEV3_PDF consumoRest1 = new ConsumoRestFEV3_PDF();
+                            respuesta = consumoRest1.EnviarFactura(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
+                        }
                         break;
-                    case "2.1":
+                    case "1":
                         ConsumoRestFEV2 consumoRest = new ConsumoRestFEV2();
                         respuesta = consumoRest.enviarPDF(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
                         break;

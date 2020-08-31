@@ -31,6 +31,7 @@ namespace CapaDatos.Modelos
         public string pdf_nc { get; set; }
         public int cantidad_decimal { get; set; }
         public int pvp_decimal { get; set; }
+        public string path_adjunto { get; set; }
 
     }
 }

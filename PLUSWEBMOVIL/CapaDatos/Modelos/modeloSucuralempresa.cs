@@ -19,5 +19,15 @@ namespace CapaDatos.Modelos
         public string nro_audit { get; set; }
         public string cod_proc_aud { get; set; }
         public string sucursales { get; set; }
+        public string serie_factura { get; set; }
+        public string serie_facn { get; set; }
+        public string serie_nc { get; set; }
+        public string serie_nd { get; set; }
+        public string serie_ncn { get; set; }
+        public string serie_ndn { get; set; }
+        public string cod_ciudad { get; set; }
+        public string cod_provincia { get; set; }
+        public string cod_pais { get; set; }
+        public string nom_ciudad { get; set; }
     }
 }

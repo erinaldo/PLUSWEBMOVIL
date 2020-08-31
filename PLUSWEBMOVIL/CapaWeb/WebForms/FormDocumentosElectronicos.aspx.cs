@@ -10,6 +10,7 @@ using CapaProceso.GenerarPDF.FacturaElectronica;
 using System.IO;
 using System.Text;
 using CapaDatos.Sql;
+using CapaProceso.FacturaMasiva;
 
 namespace CapaWeb.WebForms
 {
@@ -52,6 +53,14 @@ namespace CapaWeb.WebForms
         modelonumerador nrotrans = new modelonumerador();
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
+
+        public modeloUsuariosucursal ModelousuarioSucursal = new modeloUsuariosucursal();
+        public List<modeloUsuariosucursal> ListaModeloUsuarioSucursal = new List<modeloUsuariosucursal>();
+        public ConsultawmusuarioSucursal ConsultaUsuxSuc = new ConsultawmusuarioSucursal();
+        public ConsultausuarioSucursal consultaUsuarioSucursal = new ConsultausuarioSucursal();
+
+        Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
+        GenerarPDFDocumentos generer_pdfElectronico = new GenerarPDFDocumentos();
         public string numerador = "trans";
         public string ComPwm;
         public string AmUsrLog;
@@ -99,6 +108,22 @@ namespace CapaWeb.WebForms
                     fechafin.Text = DateTime.Today.ToString("yyyy-MM-dd");
 
                     CargarRolesUsuario();
+                    //Cargar la sucursal del usuario logeado
+                    ListaModeloUsuarioSucursal = ConsultaUsuxSuc.UnicoUsuarioSucursal(ComPwm, AmUsrLog, ""); //Solo se envia empresa y usuario
+                    if (ListaModeloUsuarioSucursal.Count == 0)
+                    {
+                        lbl_mensaje.Text = "Usuario no tiene sucursal asignada, por favor asignar sucursarl para continuar.";
+                    }
+                    else
+                    {
+                        foreach (var item in ListaModeloUsuarioSucursal)
+                        {
+                            ModelousuarioSucursal = item;
+                            break;
+                        }
+                        lbl_cod_suc.Text = ModelousuarioSucursal.cod_sucursal.Trim();
+                        lbl_sucursal.Text = "-" + ModelousuarioSucursal.nom_sucursal.Trim();
+                    }
 
                 }
             }
@@ -223,7 +248,7 @@ namespace CapaWeb.WebForms
                 string Ccf_aniof = Fechafin.Year.ToString();
 
 
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                listaConsCab = ConsultaCabe.ConsultaFacturaXSucursal(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof, lbl_cod_suc.Text.Trim());
                 Grid.DataSource = listaConsCab;
                 Grid.DataBind();
                 Grid.Height = 100;
@@ -259,7 +284,7 @@ namespace CapaWeb.WebForms
                 string Ccf_aniof = Fechafin.Year.ToString();
 
 
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                listaConsCab = ConsultaCabe.ConsultaFacturaXSucursal(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof,lbl_cod_suc.Text.Trim());
                 Grid.DataSource = listaConsCab;
                 Grid.DataBind();
                 Grid.Height = 100;
@@ -318,7 +343,7 @@ namespace CapaWeb.WebForms
                             switch (estadoM)
                             {
                                 case "FINALIZADO":
-                                    Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
+                                
                                     string pathPdf = "";
                                     string StringXml = ModeloResQr.xml;
                                     string pathTemporal = Modelowmspclogo.pathtmpfac;
@@ -329,49 +354,26 @@ namespace CapaWeb.WebForms
                                     if (conscabcera.tipo_nce =="NCVE" || conscabcera.tipo_nce == "NCME")
                                     {
                                         //Tipo NCE siempre trae lleno cuando es nc
-                                        Ccf_tipo2 = "NC";
                                         cod_proceso = "RCOMNCELEC";
-                                        ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
-                                        string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
-
-                                        if (tipo_doc.Trim() == "DEFECTO2")
-                                        {
-                                            PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
-                                            pathPdf = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                                        }
-                                        else
-                                        {
-                                            if (tipo_doc.Trim() == "DEFECTO3")
-                                            {
-                                                PdfNCEleV3Default3 pdf = new PdfNCEleV3Default3();
-                                                pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                                            }
-
-                                        }
-
-
+                                        pathPdf = generer_pdfElectronico.GenerarPDFNotaCreditoElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
                                     }
                                     else
                                     {
-                                        cod_proceso = "RCOMFELECT";
-                                        ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
-                                        string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
-                                        if (tipo_doc.Trim() == "DEFECTO2")
+                                        if (conscabcera.tipo_nce == "VTAE" || conscabcera.tipo_nce == "POSE")
                                         {
+                                            cod_proceso = "RCOMFELECT";
+                                            pathPdf = generer_pdfElectronico.GenerarPDFFacturaElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
 
-                                            PdfFacEleV2Default2 pdf = new PdfFacEleV2Default2();
-                                             pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                                         }
                                         else
                                         {
-                                            if (tipo_doc.Trim() == "DEFECTO3")
+                                            if (conscabcera.tipo_nce == "NDVE")
                                             {
-                                                PdfFacEleV3Default3 pdf = new PdfFacEleV3Default3();
-                                                pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                                                cod_proceso = "RCOMFELECT";
+                                                pathPdf = generer_pdfElectronico.GenerarPDFNotaDebitoElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
+
                                             }
-
                                         }
-
                                     }
 
 
@@ -405,7 +407,7 @@ namespace CapaWeb.WebForms
                             switch (estadoM)
                             {
                                 case "FINALIZADO":
-                                    Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
+                                    
                                     string pathPdf = "";
                                     string StringXml = ModeloResQr.xml;
                                     string pathTemporal = Modelowmspclogo.pathtmpfac;
@@ -416,37 +418,30 @@ namespace CapaWeb.WebForms
                                     if (conscabcera.tipo_nce == "NCVE" || conscabcera.tipo_nce == "NCME")
                                     {
                                         //Tipo NCE siempre trae lleno cuando es nc
-                                        Ccf_tipo2 = "NC";
-                                        if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
-                                        {
-                                            PdfNCEleV2Default2 pdf1 = new PdfNCEleV2Default2();
-                                            pathPdf = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                                        }
-                                        else
-                                        {
-                                            PdfNotaCreditoElectronica pdf = new PdfNotaCreditoElectronica();
-                                            pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-
-                                        }
-
-
+                                        cod_proceso = "RCOMNCELEC";
+                                        pathPdf = generer_pdfElectronico.GenerarPDFNotaCreditoElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
                                     }
                                     else
                                     {
-                                        if (Modelowmspclogo.pdf_nc.Trim() == "DEFECTO2")
+                                        if (conscabcera.tipo_nce == "VTAE" || conscabcera.tipo_nce == "POSE")
                                         {
+                                            cod_proceso = "RCOMFELECT";
+                                            pathPdf = generer_pdfElectronico.GenerarPDFFacturaElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
 
-                                            PdfFacEleV2Default2 pdf = new PdfFacEleV2Default2();
-                                            pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                                         }
                                         else
                                         {
-                                            PdfFacturaElectronica pdf = new PdfFacturaElectronica();
-                                            pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                                            if (conscabcera.tipo_nce == "NDVE")
+                                            {
+                                                cod_proceso = "RCOMFELECT";
+                                                pathPdf = generer_pdfElectronico.GenerarPDFNotaDebitoElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
 
+                                            }
                                         }
-
                                     }
+
+
+
 
 
                                     Boolean error = enviarcorreocliente.EnviarCorreoCliente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Id.ToString(), pathPdf, pathXml);

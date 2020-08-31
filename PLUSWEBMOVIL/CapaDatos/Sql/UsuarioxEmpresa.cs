@@ -47,7 +47,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "UsuarioxEmpresa.cs", "ConsultaUsuarioEmpresa", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "UsuarioxEmpresa.cs", "ConsultaUsuarioEmpresa", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
 

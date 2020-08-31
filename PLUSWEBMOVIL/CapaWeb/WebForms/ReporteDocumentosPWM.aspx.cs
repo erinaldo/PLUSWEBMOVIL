@@ -15,6 +15,7 @@ using CapaProceso.GenerarPDF.FacturaElectronica;
 using CapaDatos.Modelos;
 using CapaProceso.ReslClientePdf;
 using CapaDatos.Sql;
+using CapaProceso.FacturaMasiva;
 
 namespace CapaWeb.WebForms
 {
@@ -32,6 +33,7 @@ namespace CapaWeb.WebForms
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
+        GenerarPDFDocumentos generer_pdfElectronico = new GenerarPDFDocumentos();
         public string ComPwm;
         public string AmUsrLog;
         public string Ccf_tipo1 = "C";
@@ -67,116 +69,45 @@ namespace CapaWeb.WebForms
                     break;
                 }
 
-                 ConsultaLogoSql tipo_factura = new ConsultaLogoSql();
+                 
                  cod_proceso = "RCOMFELECT";
                  listaConsCab = null;
                  listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, cod_docum, serie,numero, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 foreach (var item1 in listaConsCab)
                 {
-                    conscabcera1 = item1;
+                    conscabcera = item1;
                     break;
                 }
-                string tipo_doc = tipo_factura.TipoDocImprimir(ComPwm, cod_proceso, AmUsrLog);
-          
-                conscabcera = null;
-                 conscabcera = buscarTipoFac(conscabcera1.nro_trans);
+
                 Ccf_nro_trans = conscabcera1.nro_trans;
 
-                if (conscabcera.tipo_nce.Trim() == "VTA" || conscabcera.tipo_nce.Trim() == "POS")
+                if (conscabcera.tipo.Trim() == "VTA" || conscabcera.tipo.Trim() == "POS")
                 {
-                    switch (tipo_doc.Trim())
-                    {
-                        case "DEFECTO2":
-                            PdfFacVTAV2 pdf1 = new PdfFacVTAV2();
-                            string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), conscabcera1.nro_trans);
-                            Response.ContentType = "application/pdf";
-                            Response.WriteFile(pathPdf1);
-                            Response.End();
-                            break;
-                        case "DEFECTO3":
-                            PdfFacVTAV3 pdf2 = new PdfFacVTAV3();
-                            string pathPdf2 = pdf2.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
-                            Response.ContentType = "application/pdf";
-                            Response.WriteFile(pathPdf2);
-                            Response.End();
-                            break;
-                        case "DEFECTO":
-                            PdfFacturaVTA pdf = new PdfFacturaVTA();
-                            string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
-                            Response.ContentType = "application/pdf";
-                            Response.WriteFile(pathPdf);
-                            Response.End();
-                            break;
-                    }
+                    string pathPdf1 = generer_pdfElectronico.GenerarPDFFacturaNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo.Trim(), Ccf_nro_trans);
+                    Response.ContentType = "application/pdf";
+                    Response.WriteFile(pathPdf1);
+                    Response.End();
                 }
                 else
                 {
 
-                    if (conscabcera.tipo_nce.Trim() == "VTAE")
+
+                    if (conscabcera.estado.Trim() == "C")
                     {
-                        Ccf_tipo2 = "VTAE";
+
+                        string pathPdf1 = generer_pdfElectronico.GenerarPDFFacturaNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo.Trim(), Ccf_nro_trans);
+                        Response.ContentType = "application/pdf";
+                        Response.WriteFile(pathPdf1);
+                        Response.End();
                     }
+
                     else
                     {
-                        Ccf_tipo2 = "POSE";
+                        string pathPdf1 = generer_pdfElectronico.GenerarPDFFacturaElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo.Trim(), Ccf_nro_trans);
+                        Response.ContentType = "application/pdf";
+                        Response.WriteFile(pathPdf1);
+                        Response.End();
                     }
-
-                    //Clase para pdf de cada empresa 
-                    switch (tipo_doc.Trim())
-                    {
-                        case "DEFECTO3":
-                            if (conscabcera.estado.Trim() == "C")
-                            {
-                                PdfFacVTAV3 pdf1 = new PdfFacVTAV3();
-                                string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
-                                Response.ContentType = "application/pdf";
-                                Response.WriteFile(pathPdf1);
-                                Response.End();
-
-                            }
-                            else
-                            {
-                                PdfFacEleV3Default3 pdf1 = new PdfFacEleV3Default3();
-                                string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                                Response.ContentType = "application/pdf";
-                                Response.WriteFile(pathPdf1);
-                                Response.End();
-
-                            }
-
-                            break;
-                        case "DEFECTO2":
-                            if (conscabcera.estado.Trim() == "C")
-                            {
-                                PdfFacVTAV2 pdf1 = new PdfFacVTAV2();
-                                string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, conscabcera.tipo_nce.Trim(), Ccf_nro_trans);
-                                Response.ContentType = "application/pdf";
-                                Response.WriteFile(pathPdf1);
-                                Response.End();
-
-                            }
-                            else
-                            {
-                                PdfFacEleV2Default2 pdf1 = new PdfFacEleV2Default2();
-                                string pathPdf1 = pdf1.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                                Response.ContentType = "application/pdf";
-                                Response.WriteFile(pathPdf1);
-                                Response.End();
-
-                            }
-
-                            break;
-                        case "DEFECTO":
-                            PdfFacturaElectronica pdf = new PdfFacturaElectronica();
-                            string pathPdf = pdf.generarPdf(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                            Response.ContentType = "application/pdf";
-                            Response.WriteFile(pathPdf);
-                            Response.End();
-                            break;
-
-
-                    }
-
 
                 }
                     

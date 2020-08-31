@@ -146,7 +146,7 @@ namespace CapaProceso.RestCliente
                 encabezado.factortrm = Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
                 encabezado.fecha = conscabcera.fec_doc.ToString("yyyy-MM-dd");
                 encabezado.fvence = conscabcera.fec_venc.ToString("yyyy-MM-dd");
-                encabezado.idsuc = 1;
+                encabezado.idsuc = Convert.ToInt16(conscabcera.cod_sucursal); //Va a traer sucursal de la empresa con la que se factura
                 encabezado.idvendedor = Convert.ToInt32(conscabcera.cod_vendedor);
                 if (conscabcera.cod_moneda.Trim() != "COP")
                 {
@@ -182,9 +182,9 @@ namespace CapaProceso.RestCliente
                 }
                 else
                 {
-                    encabezado.subtotal = Convert.ToInt32(conscabcera.subtotal);
+                    encabezado.subtotal = conscabcera.subtotal;
                 }
-                encabezado.sucursal = Convert.ToInt16(conscabcera.cod_sucursal);
+                encabezado.sucursal = Convert.ToInt16(conscabcera.cod_sucursal); //Va a traer sucursal de la empresa con la que se factura
                 encabezado.terminospago = "30"; //por defecto 30
                 if (conscabcera.cod_moneda.Trim() != "COP")
                 {
@@ -192,7 +192,7 @@ namespace CapaProceso.RestCliente
                 }
                 else
                 {
-                    encabezado.total = Convert.ToInt32(conscabcera.total);
+                    encabezado.total = conscabcera.total;
                 }
                 //Valida total otrosconceptos dependiendo de la moneda en la que se factura
                 //Traer el total de la diferencia entre total Cargo -Total Descuento
@@ -202,7 +202,7 @@ namespace CapaProceso.RestCliente
                 }
                 else
                 {
-                    encabezado.otrosconceptos = Convert.ToInt32(conscabcera.desctos_rcgos);
+                    encabezado.otrosconceptos = conscabcera.desctos_rcgos;
                 }
                 //encabezado.otrosconceptos = //Traer el total de la diferencia entre total Cargo -Total Descuento
                 encabezado.totalDet = listaConsDet.Count; //la cantidad de lineas del detalle de la factura
@@ -393,7 +393,7 @@ namespace CapaProceso.RestCliente
                 sucursal.dpto = cliente.cod_provincia;
                 sucursal.email = cliente.email_tit;
                 sucursal.emailfe = cliente.email_tit;
-                sucursal.idsuc = 1;
+                sucursal.idsuc = Convert.ToInt16(conscabcera.cod_sucursal); //Va a traer sucursal de la empresa con la que se factura
                 sucursal.idvendedor = Convert.ToInt64(conscabcera.cod_vendedor);
                 sucursal.movil = "";
                 sucursal.mun = cliente.ciudad_tit;

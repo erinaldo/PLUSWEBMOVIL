@@ -14,6 +14,7 @@ using CapaProceso.Consultas;
 using CapaProceso.GenerarPDF.FacturaElectronica;
 using CapaProceso.ReslClientePdf;
 using CapaDatos.Modelos;
+using CapaProceso.FacturaMasiva;
 
 namespace CapaProceso.RestCliente
 {
@@ -29,7 +30,7 @@ namespace CapaProceso.RestCliente
         public ProcesoRestFEV2 procesoRest = new ProcesoRestFEV2();
         public JsonFacElecVer2PDF jsonFacturapdf = new JsonFacElecVer2PDF();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
-        ConsultaLogoSql tipo_factura = new ConsultaLogoSql();//Trae que version de pdf usa la empresa
+        GenerarPDFDocumentos generer_pdfElectronico = new GenerarPDFDocumentos();
         string metodo = "ConsumoRestFEV3.cs";
         string cod_proceso = "RCOMFELECT"; //Con este codigo busca pdf de cada empresa ya sea  pose,vtae, pos, vta
         string tipo_doc = null;//Aqui se llena el tipo o version de pdf que usa para la facturacion cada empresa
@@ -68,26 +69,8 @@ namespace CapaProceso.RestCliente
  
                     string jsonResPdf = "";
                     string linkgenpdf = Modelowmspclogo.linkgenpdf;//Obtengo link para enviara pdf
-                    //Clase para pdf de cada empresa 
-                    string pathPdf=null;
- 
-                     tipo_doc = tipo_factura.TipoDocImprimir(Ccf_cod_emp, cod_proceso, Ccf_usuario);
-                    switch (tipo_doc.Trim())
-                    {
-                        case "DEFECTO":
-                            PdfFacturaElectronica pdf = new PdfFacturaElectronica();
-                            pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                            break;
-                        case "DEFECTO2":
-                            PdfFacEleV2Default2 pdf1 = new PdfFacEleV2Default2();
-                            pathPdf = pdf1.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                            break;
-                        case "DEFECTO3":
-                            PdfFacEleV3Default3 pdf2 = new PdfFacEleV3Default3();
-                            pathPdf = pdf2.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                            break;
-                    }
-
+                                                                   //Clase para pdf de cada empresa 
+                    string pathPdf = generer_pdfElectronico.GenerarPDFFacturaElectronica(Ccf_cod_emp, cod_proceso, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                     byte[] pdfBytes = File.ReadAllBytes(pathPdf);
                     string pdfBase64 = Convert.ToBase64String(pdfBytes);//Convierto el pdf en base 64
 
@@ -179,23 +162,7 @@ namespace CapaProceso.RestCliente
 
                 string linkgenpdf = Modelowmspclogo.linkgenpdf;//Obtengo link para enviara pdf
                                                                //Clase para pdf de cada empresa 
-                string pathPdf = null;
-                tipo_doc = tipo_factura.TipoDocImprimir(Ccf_cod_emp, cod_proceso, Ccf_usuario);//busca  version o tipo de pdf para la dian o para imprimir
-                switch (tipo_doc.Trim())
-                {
-                    case "DEFECTO":
-                        PdfFacturaElectronica pdf = new PdfFacturaElectronica();
-                        pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                        break;
-                    case "DEFECTO2":
-                        PdfFacEleV2Default2 pdf1 = new PdfFacEleV2Default2();
-                        pathPdf = pdf1.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                        break;
-                    case "DEFECTO3":
-                        PdfFacEleV3Default3 pdf2 = new PdfFacEleV3Default3();
-                        pathPdf = pdf2.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
-                        break;
-                }
+                string pathPdf = generer_pdfElectronico.GenerarPDFFacturaElectronica(Ccf_cod_emp, cod_proceso, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
 
                 byte[] pdfBytes = File.ReadAllBytes(pathPdf);
                 string pdfBase64 = Convert.ToBase64String(pdfBytes);//Convierto el pdf en base 64

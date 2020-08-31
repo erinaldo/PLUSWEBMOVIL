@@ -237,7 +237,6 @@
     <Content Include="WebForms\ReporteCierreC.aspx" />
     <Content Include="WebForms\ReporteCierreCaja.aspx" />
     <Content Include="WebForms\ReporteDocumentosPWM.aspx" />
-    <Content Include="WebForms\ReporteNCAnuFac.aspx" />
     <Content Include="WebForms\ReporteFactura.aspx" />
     <Content Include="WebForms\ReporteNotaCreditoPWM.aspx" />
     <Content Include="WebForms\ReporteNotaDebito.aspx" />
@@ -764,13 +763,6 @@
     </Compile>
     <Compile Include="WebForms\ReporteDocumentosPWM.aspx.designer.cs">
       <DependentUpon>ReporteDocumentosPWM.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WebForms\ReporteNCAnuFac.aspx.cs">
-      <DependentUpon>ReporteNCAnuFac.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebForms\ReporteNCAnuFac.aspx.designer.cs">
-      <DependentUpon>ReporteNCAnuFac.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\ReporteNotaCredito.aspx.cs">
       <DependentUpon>ReporteNotaCredito.aspx</DependentUpon>

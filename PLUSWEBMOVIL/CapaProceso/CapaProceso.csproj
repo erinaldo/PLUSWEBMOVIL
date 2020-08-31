@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetZip, Version=1.13.8.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.13.8\lib\net40\DotNetZip.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Gma.QrCodeNet.Encoding, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\QrCode.Net.0.4.0.0\lib\net40\Gma.QrCodeNet.Encoding.dll</HintPath>
       <Private>True</Private>
@@ -147,19 +151,28 @@
     <Compile Include="Consultas\Enviarcorreocliente.cs" />
     <Compile Include="Consultas\GuardarrespuestaDS.cs" />
     <Compile Include="FacturaMasiva\CargaFacturaMasiva.cs" />
+    <Compile Include="FacturaMasiva\GenerarPDFDocumentos.cs" />
+    <Compile Include="GenerarPDF\FacturaElectronica\JsonFacturaElecVer3.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonPdfNCV2.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonPdfNCElectronica.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonFacturaElecVer2.cs" />
+    <Compile Include="ReslClientePdf\JsonFacElecVer3PDF.cs" />
     <Compile Include="ReslClientePdf\JsonFacElecVer2PDF.cs" />
     <Compile Include="ReslClientePdf\JsonNCPDF V2.cs" />
     <Compile Include="ReslClientePdf\JsonNCPDF.cs" />
     <Compile Include="ReslClientePdf\JsonFacturaPDF.cs" />
     <Compile Include="ReslClientePdf\JsonNDPDF.cs" />
     <Compile Include="ReslClientePdf\PdfCierreCaja.cs" />
+    <Compile Include="ReslClientePdf\PdfFacEleV3Default4.cs" />
     <Compile Include="ReslClientePdf\PdfFacEleV3Default3.cs" />
+    <Compile Include="ReslClientePdf\PdfFacVTAV4.cs" />
     <Compile Include="ReslClientePdf\PdfFacVTAV3.cs" />
+    <Compile Include="ReslClientePdf\PdfNCEleV3Default4.cs" />
+    <Compile Include="ReslClientePdf\PdfNCV3Default4.cs" />
+    <Compile Include="ReslClientePdf\PdfNDEleV3Default4.cs" />
     <Compile Include="ReslClientePdf\PdfNDEleV3Default3.cs" />
     <Compile Include="ReslClientePdf\PdfNCEleV3Default3.cs" />
+    <Compile Include="ReslClientePdf\PdfNDV3Default4.cs" />
     <Compile Include="ReslClientePdf\PdfNDV3Default3.cs" />
     <Compile Include="ReslClientePdf\PdfNCV3Default3.cs" />
     <Compile Include="ReslClientePdf\PdfNDV2Default2.cs" />
@@ -184,6 +197,7 @@
     <Compile Include="RestCliente\ComprobanteNCJSON.cs" />
     <Compile Include="RestCliente\ComprobanteFacturaJSON.cs" />
     <Compile Include="RestCliente\ComprobanteNDJSON.cs" />
+    <Compile Include="RestCliente\ConsumoRestFEV3_PDF.cs" />
     <Compile Include="RestCliente\ConsumoRestFEV3.cs" />
     <Compile Include="RestCliente\ConsumoRestFEV2.cs" />
     <Compile Include="RestCliente\ConsumoRestNDV3.cs" />
@@ -201,6 +215,7 @@
     <Compile Include="RestCliente\JsonNCFinancieraElectronica.cs" />
     <Compile Include="RestCliente\JsonFacturacionElectronica.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonFdfFacturaElectronica.cs" />
+    <Compile Include="RestCliente\ProcesoRestFEV3.cs" />
     <Compile Include="RestCliente\ProcesoRestFEV2.cs" />
     <Compile Include="RestCliente\ProcesoRestNDV2.cs" />
     <Compile Include="RestCliente\ProcesoRestNCV2.cs" />

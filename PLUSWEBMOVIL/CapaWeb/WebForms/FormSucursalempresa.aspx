@@ -55,10 +55,46 @@
                             </tr>
                             <tr valign="top">
                                 <td align="right" nowrap="nowrap" class="busqueda">
-                                    <div align="left">Sucursal:</div>
+                                    <div align="left">Nombre:</div>
                                 </td>
                                 <td class="textos">
-                                    <asp:TextBox required="required" pattern="^[a-zA-Z\sñÑÁÉÍÓÚáéíóú'´]*$" title="Ingrese solo letras" ID="txt_nom_sucursal" Width="200" class="textos" size="27" runat="server"></asp:TextBox>
+                                    <asp:TextBox required="required"  ID="txt_nom_sucursal" Width="200" class="textos" size="27" runat="server"></asp:TextBox>
+                                </td>
+                            </tr>
+                             <tr>
+                                 <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Pais:</div>
+                                </td>
+                                <td>
+                                    <label>
+                                        <asp:DropDownList class="textos"  required="required" AutoPostBack="true" Width="210" ID="cbx_pais" runat="server" OnSelectedIndexChanged="cbx_pais_SelectedIndexChanged">
+                                        </asp:DropDownList>
+
+                                    </label>
+                                </td>
+                            </tr>
+                             <tr>
+                                 <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Provincia:</div>
+                                </td>
+                                <td>
+                                    <label>
+                                        <asp:DropDownList class="textos" AutoPostBack="true"  required="required" Width="210" ID="cbx_provincia" runat="server" OnSelectedIndexChanged="cbx_provincia_SelectedIndexChanged">
+                                        </asp:DropDownList>
+
+                                    </label>
+                                </td>
+                            </tr>
+                              <tr>
+                                 <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Ciudad:</div>
+                                </td>
+                                <td>
+                                    <label>
+                                        <asp:DropDownList class="textos"  Width="210"  required="required" ID="cbx_ciudad" runat="server">
+                                        </asp:DropDownList>
+
+                                    </label>
                                 </td>
                             </tr>
                             <tr valign="top">
@@ -77,7 +113,7 @@
                                     <div align="left">Teléfono:</div>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txt_tel_sucursal" class="textos" pattern="^([0-9])*$" maxlength="13" minlength="7" title="Ingrese solo números"  required="required" Width="200" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="txt_tel_sucursal" class="textos" pattern="^([0-9])*$"  title="Ingrese solo números"  required="required" Width="200" runat="server"></asp:TextBox>
 
                                 </td>
                             </tr>
@@ -88,6 +124,78 @@
                                 <td>
                                     <asp:TextBox ID="txt_email_sucursal" type="email" title="email@hotmail.com"  required="required"  class="textos" Width="200" runat="server"></asp:TextBox>
 
+                                </td>
+                            </tr>
+                            <tr>
+                                 <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Prefijo Factura:</div>
+                                </td>
+                                <td>
+                                    <label>
+                                        <asp:DropDownList class="textos"  required="required"  Width="210" ID="cbx_serie_factura" runat="server">
+                                        </asp:DropDownList>
+
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                 <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Prefijo Factura por computador:</div>
+                                </td>
+                                <td>
+                                    <label>
+                                        <asp:DropDownList class="textos"  Width="210" ID="cbx_serie_facn" runat="server">
+                                        </asp:DropDownList>
+
+                                    </label>
+                                </td>
+                            </tr>
+                             <tr>
+                                 <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Prefijo Nota Crédito:</div>
+                                </td>
+                                <td>
+                                    <label>
+                                        <asp:DropDownList class="textos"  required="required" Width="210" ID="cbx_serie_nc" runat="server">
+                                        </asp:DropDownList>
+
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                 <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Prefijo Nota Crédito por computador:</div>
+                                </td>
+                                <td>
+                                    <label>
+                                        <asp:DropDownList class="textos"  Width="210" ID="cbx_serie_ncn" runat="server">
+                                        </asp:DropDownList>
+
+                                    </label>
+                                </td>
+                            </tr>
+                                <tr>
+                                 <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Prefijo Nota Débito:</div>
+                                </td>
+                                <td>
+                                    <label>
+                                        <asp:DropDownList class="textos" required="required" Width="210" ID="cbx_serie_nd" runat="server">
+                                        </asp:DropDownList>
+
+                                    </label>
+                                </td>
+                            </tr>
+                             <tr>
+                                 <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Prefijo Nota Débito por computador:</div>
+                                </td>
+                                <td>
+                                    <label>
+                                        <asp:DropDownList class="textos"  Width="210" ID="cbx_serie_ndn" runat="server">
+                                        </asp:DropDownList>
+
+                                    </label>
                                 </td>
                             </tr>
                         </table>
