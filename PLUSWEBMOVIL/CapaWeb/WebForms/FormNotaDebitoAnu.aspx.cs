@@ -181,6 +181,7 @@ namespace CapaWeb.WebForms
                     Session.Remove("sumaIva");
                     Session.Remove("sumaDescuento");
                     Session.Remove("cliente");
+                    Session.Remove("cod_Cliente");
                     Session.Remove("detalle");
                     Session.Remove("sumaBase19");
                     Session.Remove("sumaBase15");
@@ -1761,34 +1762,22 @@ namespace CapaWeb.WebForms
                 string tipo = Session["Ccf_tipo2"].ToString();
                 if (tipo == "NDVE")
                 {
-                    ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", lbl_cod_suc_emp.Text.Trim());
+                    ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", lbl_cod_suc_emp.Text.Trim(), fecha.Text, fecha.Text, "0");
                 }
                 else
                 {
-                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", lbl_cod_suc_emp.Text.Trim());
+                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", lbl_cod_suc_emp.Text.Trim(), fecha.Text, fecha.Text, "0");
                 }
-                ModeloSaldoFactura = null;
-                foreach (modeloSaldosFacturas item in ListaSaldoFacturas)
-                {
-                    ModeloSaldoFactura = item;
-                    break;
-                }
-                if (ListaSaldoFacturas.Count == 0)
-                {
-                    mensaje.Text = "El cliente no tiene notas de crédito disponibles";
-                }
-                else
-                {
-
+  
                     if (Session["listaFacturas"] == null)
                     {
                         Session["listaClienteFac"] = ListaSaldoFacturas;
                         Session["TipoFactura"] = tipo;
                         Session["Sucursal"] = lbl_cod_suc_emp.Text.Trim();
+                        Session["cod_Cliente"] = cliente.cod_tit.Trim();
                         this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarNotaDebitoNCAnu.aspx', 'Buscar Nota Crédito', 'top=100,width=800 ,height=400, left=400');</script>");
 
                     }
-                }
             }
             catch (Exception ex)
             {

@@ -17,7 +17,7 @@ namespace CapaDatos.Sql.SqlNC
         string metodo = "SaldosFacturas.cs";
         //saldos y totales de notas de crédito 
         //Saldos y totales de facturas en general sin restricciones
-        public List<modeloSaldosFacturas> ConsultaFacturasSaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo)
+        public List<modeloSaldosFacturas> ConsultaFacturasSaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo,string fecha_ini, string fecha_fin, string nro_docum)
         {
             try
             {
@@ -32,7 +32,10 @@ namespace CapaDatos.Sql.SqlNC
                     conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = Ccf_tipo1;
                     conmand.Parameters.Add("@tipo", SqlDbType.VarChar).Value = Ccf_tipo2;
                     conmand.Parameters.Add("@solo_saldo", SqlDbType.VarChar).Value = solo_saldo;
-                   
+                    conmand.Parameters.Add("@nro_docum", SqlDbType.VarChar).Value = nro_docum.Trim();
+                    conmand.Parameters.Add("@fecha_ini", SqlDbType.VarChar).Value = fecha_ini;
+                    conmand.Parameters.Add("@fecha_fin", SqlDbType.VarChar).Value = fecha_fin;
+
 
                     SqlDataReader dr = conmand.ExecuteReader();
 

@@ -17,14 +17,14 @@ namespace CapaProceso.Consultas
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         string metodo = "ConsultaSaldosFacturas";
         //Consulta NC NORMALES PARA NOTAS DÉBITO POR ANULACION 
-        public List<modeloSaldosFacturas> ConsultaNCNormalesSaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo, string cod_suc_emp)
+        public List<modeloSaldosFacturas> ConsultaNCNormalesSaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo, string cod_suc_emp, string fecha_ini, string fecha_fin, string nro_docum)
         {
             try
             {
                 modeloFacturasElecSaldos modeloFacturasElecSaldos = new modeloFacturasElecSaldos();
                 List<modeloSaldosFacturas> lista = new List<modeloSaldosFacturas>();
                 List<modeloSaldosFacturas> listaAux = new List<modeloSaldosFacturas>();
-                lista = consultaSaldoa.ConsultaFacturasSaldos(Ccf_usuario, Ccf_cod_emp, Ccf_tipo1, Ccf_tipo2, solo_saldo);
+                lista = consultaSaldoa.ConsultaFacturasSaldos(Ccf_usuario, Ccf_cod_emp, Ccf_tipo1, Ccf_tipo2, solo_saldo, fecha_ini, fecha_fin, nro_docum);
 
                 foreach (var item in lista)
                 {
@@ -47,14 +47,14 @@ namespace CapaProceso.Consultas
             }
         }
         //Saldos FACTURAS NORMALES VTA
-        public List<modeloSaldosFacturas> ConsultaFacturasVTASaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo, string cod_suc_emp)
+        public List<modeloSaldosFacturas> ConsultaFacturasVTASaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo, string cod_suc_emp, string fecha_ini, string fecha_fin, string nro_docum)
         {
             try
             {
                 modeloFacturasElecSaldos modeloFacturasElecSaldos = new modeloFacturasElecSaldos();
                 List<modeloSaldosFacturas> lista = new List<modeloSaldosFacturas>();
                 List<modeloSaldosFacturas> listaAux = new List<modeloSaldosFacturas>();
-                lista = consultaSaldoa.ConsultaFacturasSaldos(Ccf_usuario, Ccf_cod_emp, Ccf_tipo1, Ccf_tipo2, solo_saldo);
+                lista = consultaSaldoa.ConsultaFacturasSaldos(Ccf_usuario, Ccf_cod_emp, Ccf_tipo1, Ccf_tipo2, solo_saldo, fecha_ini, fecha_fin, nro_docum);
 
                 foreach (var item in lista)
                 {
@@ -96,7 +96,7 @@ namespace CapaProceso.Consultas
 
         //SALDO DE NOTAS DE CREDITO ELECTRONICAS
         //Saldos sin restricciones
-        public List<modeloSaldosFacturas> BuscarNCElecSaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo, string cod_suc_emp)
+        public List<modeloSaldosFacturas> BuscarNCElecSaldos(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo, string cod_suc_emp, string fecha_ini, string fecha_fin, string nro_docum)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace CapaProceso.Consultas
                 List<modeloSaldosFacturas> lista = new List<modeloSaldosFacturas>();
                 List<modeloSaldosFacturas> listaNroTrans = new List<modeloSaldosFacturas>();
                 List<modeloSaldosFacturas> listaAux = new List<modeloSaldosFacturas>();
-                lista = consultaSaldoa.ConsultaFacturasSaldos(Ccf_usuario, Ccf_cod_emp, Ccf_tipo1, Ccf_tipo2, solo_saldo);
+                lista = consultaSaldoa.ConsultaFacturasSaldos(Ccf_usuario, Ccf_cod_emp, Ccf_tipo1, Ccf_tipo2, solo_saldo, fecha_ini, fecha_fin, nro_docum);
 
                 foreach (var item in lista)
                 {
@@ -128,7 +128,7 @@ namespace CapaProceso.Consultas
         }
        
         //Saldos sin restricciones
-        public List<modeloSaldosFacturas> BuscartaFacturaSaldos( string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo, string cod_suc_emp)
+        public List<modeloSaldosFacturas> BuscartaFacturaSaldos( string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo, string cod_suc_emp, string fecha_ini, string fecha_fin, string nro_docum)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace CapaProceso.Consultas
                 List<modeloSaldosFacturas> lista = new List<modeloSaldosFacturas>();
                 List<modeloSaldosFacturas> listaNroTrans = new List<modeloSaldosFacturas>();
                 List<modeloSaldosFacturas> listaAux = new List<modeloSaldosFacturas>();
-                lista = consultaSaldoa.ConsultaFacturasSaldos(Ccf_usuario, Ccf_cod_emp, Ccf_tipo1, Ccf_tipo2, solo_saldo);
+                lista = consultaSaldoa.ConsultaFacturasSaldos(Ccf_usuario, Ccf_cod_emp, Ccf_tipo1, Ccf_tipo2, solo_saldo, fecha_ini, fecha_fin, nro_docum);
                 
                 foreach (var item in lista)
                 {

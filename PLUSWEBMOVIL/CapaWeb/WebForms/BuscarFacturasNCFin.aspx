@@ -14,11 +14,38 @@
        <tr>
                     
                    
-                      <tr>
-                    <td>
+                   <tr>
+                    <td colspan="4">
 
                          <hr />
                     </td>
+                </tr>
+        
+                 <tr>
+                     <td colspan="4">
+                        <asp:Label ID="lbl_error" runat="server"  class="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
+     
+                <tr>
+                    <td  class="busqueda">  Fecha inicio:</td>
+                          <td>
+                             <asp:TextBox ID="fechainicio" type="date"  Width="220px"   runat="server"></asp:TextBox>
+                              </td>
+                             <td class="busqueda">Fecha fin:</td>
+                          <td>
+                              <asp:TextBox ID="fechafin" type="date"  Width="202"  runat="server"></asp:TextBox>
+                          </td>
+                </tr>
+                <tr>
+                     <td class="busqueda">Documento:</td>
+                             <td>
+                            <asp:TextBox ID="txtDocumento" class="textos" width="215" value="0" runat="server"></asp:TextBox>
+                          <div class="textos_sm">0 = Todos</div></td> 
+                     <td> </td>
+                            <td aling="rigth"><asp:Button ID="btn_buscar" runat="server" onclick="btn_buscar_Click" class="botones" Text="Buscar" /></td>
+
                 </tr>
                         <tr>
                     <td>
@@ -26,14 +53,9 @@
                         <div class="Subtitulo1">Listado de Facturas</div>
                     </td>
                 </tr>
-                 <tr>
-                    <td>
-                        <asp:Label ID="lbl_error" runat="server"  class="textos_error" Text=""></asp:Label>
-                        
-                        </td>
-                    </tr>
+               
                         <tr>
-                    <td>
+                    <td colspan="4">
                         <table border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#0E748A">
                             <tr>
                                 <td>
@@ -42,7 +64,7 @@
                                         onrowcommand="GriTipoUsuario_RowCommand"
                                         AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
                                         OnItemCommand="Grid_ItemCommand" AllowSorting="True" ShowFooter="True"
-                                        OnPageIndexChanged="Grid_PageIndexChanged" PageSize="10" CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1">
+                                        OnPageIndexChanged="Grid_PageIndexChanged" PageSize="100" CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1">
 
 
                                         <Columns>

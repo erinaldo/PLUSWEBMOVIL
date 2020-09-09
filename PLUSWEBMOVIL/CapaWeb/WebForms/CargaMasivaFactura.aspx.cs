@@ -120,7 +120,7 @@ namespace CapaWeb.WebForms
                         btn_procesar.Visible = true;
                     }
                     lbl_facturas.Text = Convert.ToString(count);
-                   
+                    
                 }
             }   
         }
@@ -128,9 +128,9 @@ namespace CapaWeb.WebForms
         protected void btn_procesar_Click(object sender, EventArgs e)
         {
             //Proceso de insercion de las facturas
-           
             mensaje.Text = carga.BuscartaDatosFacturasMasivas(AmUsrLog, ComPwm, lbl_cod_suc.Text.Trim());
             btn_procesar.Enabled = false;
+            
         }
         public void RecuperarCokie()
         {
@@ -252,5 +252,7 @@ namespace CapaWeb.WebForms
 
             }
         }
+
+     
     }
 }

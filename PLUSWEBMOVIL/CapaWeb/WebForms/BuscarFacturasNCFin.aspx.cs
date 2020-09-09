@@ -84,6 +84,7 @@ namespace CapaWeb.WebForms
                     Session.Remove("listaFacturas");
                     Session.Remove("usuario");
                     Session.Remove("suc_emp");
+                    Session.Remove("tipo_nc");
 
                     if (Request.Cookies["ComPwm"] != null)
                     {
@@ -98,6 +99,10 @@ namespace CapaWeb.WebForms
                     {
                         Session["suc_emp"] = Session["Sucursal"].ToString();
                     }
+                    if (Session["cod_Cliente"] != null)
+                    {
+                        Session["usuario"] = Session["cod_Cliente"].ToString();
+                    }
 
                     if (Session["listaClienteFac"] != null)
                     {
@@ -105,14 +110,10 @@ namespace CapaWeb.WebForms
 
                         ListaSaldoFacturas = (List<modeloSaldosFacturas>)Session["listaClienteFac"];
                         Session["listaConsCab"] = ListaSaldoFacturas;
-                        foreach (var item in ListaSaldoFacturas)
-                        {
-                            Session["usuario"] = item.cod_cliente;
-
-                        }
-
                         Grid.DataSource = ListaSaldoFacturas;
                         Grid.DataBind();
+                        fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                        fechafin.Text = DateTime.Today.ToString("yyyy-MM-dd");
                     }
 
                 }
@@ -322,16 +323,16 @@ namespace CapaWeb.WebForms
                 switch (tipo_doc)
                 {
                     case "NCM":
-                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString());
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, txtDocumento.Text.Trim());
                         break;
                     case "NCME":
-                        ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString());
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, txtDocumento.Text.Trim());
                         break;
                     case "NDV":
-                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString());
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, txtDocumento.Text.Trim());
                         break;
                     case "NDVE":
-                        ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString());
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, txtDocumento.Text.Trim());
                         break;
 
                 }
@@ -348,6 +349,42 @@ namespace CapaWeb.WebForms
             }
 
 
+        }
+
+        protected void btn_buscar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                lbl_error.Text = "";
+                string tipo_doc = Session["tipo_nc"].ToString();
+                switch (tipo_doc)
+                {
+                    case "NCM":
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, txtDocumento.Text.Trim());
+                        break;
+                    case "NCME":
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, txtDocumento.Text.Trim());
+                        break;
+                    case "NDV":
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, txtDocumento.Text.Trim());
+                        break;
+                    case "NDVE":
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, txtDocumento.Text.Trim());
+                        break;
+
+                }
+
+                Session["listaConsCab"] = ListaSaldoFacturas;
+                Grid.DataSource = ListaSaldoFacturas;
+                Grid.DataBind();
+                Grid.Height = 100;
+            }
+
+            catch (Exception ex)
+            {
+                GuardarExcepciones("btn_buscar_Click", ex.ToString());
+
+            }
         }
     }
 }

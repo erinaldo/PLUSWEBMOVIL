@@ -15,18 +15,39 @@
        <tr>
                     
                    
-                      <tr>
-                    <td>
+                  <tr>
+                    <td colspan="4">
 
                          <hr />
                     </td>
                 </tr>
-                <tr>
-                    <td>
+        
+                 <tr>
+                     <td colspan="4">
                         <asp:Label ID="lbl_error" runat="server"  class="textos_error" Text=""></asp:Label>
                         
                         </td>
                     </tr>
+     
+                <tr>
+                    <td  class="busqueda">  Fecha inicio:</td>
+                          <td>
+                             <asp:TextBox ID="fechainicio" type="date"  Width="220px"   runat="server"></asp:TextBox>
+                              </td>
+                             <td class="busqueda">Fecha fin:</td>
+                          <td>
+                              <asp:TextBox ID="fechafin" type="date"  Width="202"  runat="server"></asp:TextBox>
+                          </td>
+                </tr>
+                <tr>
+                     <td class="busqueda">Documento:</td>
+                             <td>
+                            <asp:TextBox ID="txtDocumento" class="textos" width="215" value="0" runat="server"></asp:TextBox>
+                          <div class="textos_sm">0 = Todos</div></td> 
+                     <td> </td>
+                            <td aling="rigth"><asp:Button ID="btn_buscar" runat="server" onclick="btn_buscar_Click" class="botones" Text="Buscar" /></td>
+
+                
                         <tr>
                     <td>
 
@@ -35,7 +56,7 @@
                 </tr>
                   
                         <tr>
-                    <td>
+                    <td colspan="4">
                         <table border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#0E748A">
                             <tr>
                                 <td>

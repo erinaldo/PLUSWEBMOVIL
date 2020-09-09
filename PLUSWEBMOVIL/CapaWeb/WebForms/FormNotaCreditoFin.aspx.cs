@@ -183,6 +183,7 @@ namespace CapaWeb.WebForms
                     Session.Remove("sumaIva");
                     Session.Remove("sumaDescuento");
                     Session.Remove("cliente");
+                    Session.Remove("cod_Cliente");
                     Session.Remove("detalle");
                     Session.Remove("sumaBase19");
                     Session.Remove("sumaBase15");
@@ -1767,35 +1768,19 @@ namespace CapaWeb.WebForms
                 string tipo = Session["Ccf_tipo2"].ToString();
                 if (tipo == "NCVE")
                 {
-                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", lbl_cod_suc_emp.Text.Trim());
+                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", lbl_cod_suc_emp.Text.Trim(),fecha.Text,fecha.Text,"0");//busca por fecha actual
                 }
                 else
                 {
-                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S",lbl_cod_suc_emp.Text.Trim());
+                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S",lbl_cod_suc_emp.Text.Trim(), fecha.Text, fecha.Text, "0");
                 }
-                ModeloSaldoFactura = null;
-                foreach (modeloSaldosFacturas item in ListaSaldoFacturas)
+                if (Session["listaFacturas"] == null)
                 {
-                    ModeloSaldoFactura = item;
-                    break;
-                }
-                if (ListaSaldoFacturas.Count == 0)
-                {
-                    mensaje.Text = "El cliente no tiene facturas disponibles";
-                }
-                else
-                {
-
-                    if (Session["listaFacturas"] == null)
-                    {
-                        Session["listaClienteFac"] = ListaSaldoFacturas;
-                        Session["TipoFactura"] = tipo;
-                        Session["Sucursal"] = lbl_cod_suc_emp.Text.Trim();
-                        this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscaFacturasNCAn.aspx', 'Buscar Facturas', 'top=100,width=800 ,height=400, left=400');</script>");
-
-                    }
-
-
+                    Session["listaClienteFac"] = ListaSaldoFacturas;
+                    Session["TipoFactura"] = tipo;
+                    Session["Sucursal"] = lbl_cod_suc_emp.Text.Trim();
+                    Session["cod_Cliente"] = cliente.cod_tit.Trim();
+                    this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscaFacturasNCAn.aspx', 'Buscar Facturas', 'top=100,width=800 ,height=400, left=400');</script>");
 
                 }
             }

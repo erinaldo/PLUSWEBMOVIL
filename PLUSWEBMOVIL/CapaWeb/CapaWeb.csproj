@@ -110,7 +110,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tema\css\StylePront.css" />
+    <Content Include="Tema\imagenes\cargando.gif" />
     <Content Include="Tema\imagenes\mail_send.png" />
+    <Content Include="Tema\imagenes\procesando.gif" />
+    <Content Include="Tema\imagenes\unnamed.gif" />
     <Content Include="WebForms\BuscaFacturasNCAn.aspx" />
     <Content Include="WebForms\BuscarArticuloNCDevolucion.aspx" />
     <Content Include="WebForms\BuscarCentroCosto.aspx" />
@@ -230,6 +233,7 @@
     <Content Include="WebForms\ListaRespuestaNCDS.aspx" />
     <Content Include="WebForms\ListaRespuestaND.aspx" />
     <Content Include="WebForms\MediosPagoPos.aspx" />
+    <Content Include="WebForms\NotaCreditoMasiva.aspx" />
     <Content Include="WebForms\PortalFacturas.aspx" />
     <Content Include="WebForms\ReenviarFacturaJson.aspx" />
     <Content Include="WebForms\ReenviarNCJson.aspx" />
@@ -728,6 +732,13 @@
     </Compile>
     <Compile Include="WebForms\MediosPagoPos.aspx.designer.cs">
       <DependentUpon>MediosPagoPos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\NotaCreditoMasiva.aspx.cs">
+      <DependentUpon>NotaCreditoMasiva.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\NotaCreditoMasiva.aspx.designer.cs">
+      <DependentUpon>NotaCreditoMasiva.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\ReenviarNCJson.aspx.cs">
       <DependentUpon>ReenviarNCJson.aspx</DependentUpon>
