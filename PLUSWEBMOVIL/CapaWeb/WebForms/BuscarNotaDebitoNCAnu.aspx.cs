@@ -326,19 +326,31 @@ namespace CapaWeb.WebForms
             }
         }
 
-        private void CargarGrilla()
+        public void BusquedasFiltradas(string tipo_busqueda)
         {
             try
             {
-                lbl_error.Text = "";
-         
-                if (Session["tipo_nc"].ToString() == "NDVE")
+                if (tipo_busqueda.Trim() == "FEC")
                 {
-                    ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, txtDocumento.Text.Trim());
+                    if (Session["tipo_nc"].ToString() == "NDVE")
+                    {
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, "0");
+                    }
+                    else
+                    {
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, "0");
+                    }
                 }
                 else
                 {
-                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, txtDocumento.Text.Trim());
+                    if (Session["tipo_nc"].ToString() == "NDVE")
+                    {
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldosXNroDoc(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", Session["suc_emp"].ToString(), txtDocumento.Text.Trim());
+                    }
+                    else
+                    {
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldosXNroDoc(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", Session["suc_emp"].ToString(),txtDocumento.Text.Trim());
+                    }
                 }
 
 
@@ -346,6 +358,31 @@ namespace CapaWeb.WebForms
                 Grid.DataSource = ListaSaldoFacturas;
                 Grid.DataBind();
                 Grid.Height = 100;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("BusquedasFiltradas", ex.ToString());
+
+            }
+        }
+        private void CargarGrilla()
+        {
+            try
+            {
+                lbl_error.Text = "";
+
+                if (txtDocumento.Text == null || txtDocumento.Text == "")
+                {
+                    BusquedasFiltradas("FEC");
+
+                }
+                else
+                {
+                    if (fechainicio.Text == null || fechainicio.Text == "")
+                    {
+                        BusquedasFiltradas("NRO");
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -360,24 +397,75 @@ namespace CapaWeb.WebForms
             {
                 lbl_error.Text = "";
 
-                if (Session["tipo_nc"].ToString() == "NDVE")
+                if (txtDocumento.Text == null || txtDocumento.Text == "")
                 {
-                    ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, txtDocumento.Text.Trim());
+                    BusquedasFiltradas("FEC");
+
                 }
                 else
                 {
-                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, txtDocumento.Text.Trim());
+                    if (fechainicio.Text == null || fechainicio.Text == "")
+                    {
+                        BusquedasFiltradas("NRO");
+                    }
                 }
-
-
-                Session["listaConsCab"] = ListaSaldoFacturas;
-                Grid.DataSource = ListaSaldoFacturas;
-                Grid.DataBind();
-                Grid.Height = 100;
             }
             catch (Exception ex)
             {
                 GuardarExcepciones("btn_buscar_Click", ex.ToString());
+
+            }
+        }
+
+        protected void cbx_tipo_filtro_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cbx_tipo_filtro.SelectedValue == "0")
+                {
+                    lbl_error.Text = "Seleccione un tipo de filtro";
+                    lbl_fecha_fin.Visible = false;
+                    lbl_fec_ini.Visible = false;
+                    fechainicio.Visible = false;
+                    fechafin.Visible = false;
+                    lbl_doc.Visible = false;
+                    txtDocumento.Visible = false;
+                    btn_buscar.Visible = false;
+                    txtDocumento.Text = null;
+                    fechafin.Text = null;
+
+                }
+                else
+                {
+                    if (cbx_tipo_filtro.SelectedValue == "FEC")
+                    {
+                        lbl_fecha_fin.Visible = true;
+                        lbl_fec_ini.Visible = true;
+                        fechainicio.Visible = true;
+                        fechafin.Visible = true;
+                        lbl_doc.Visible = false;
+                        txtDocumento.Visible = false;
+                        txtDocumento.Text = null;
+                        btn_buscar.Visible = true;
+                    }
+                    else
+                    {
+                        lbl_doc.Visible = true;
+                        txtDocumento.Visible = true;
+                        btn_buscar.Visible = true;
+                        lbl_fecha_fin.Visible = false;
+                        lbl_fec_ini.Visible = false;
+                        fechainicio.Visible = false;
+                        fechainicio.Text = null;
+                        fechafin.Visible = false;
+                        fechafin.Text = null;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("cbx_tipo_filtro_SelectedIndexChanged", ex.ToString());
 
             }
         }

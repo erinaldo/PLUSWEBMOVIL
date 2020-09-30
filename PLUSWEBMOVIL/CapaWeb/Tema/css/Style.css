@@ -20,6 +20,17 @@
 }
 
 
+        .estiloScroll {
+            width: 1%;
+            height: 20px;
+            border-style: solid;
+            border-color: #0E748A;
+            border-width: 1px;
+            background-color: #DD6D29;
+        }
+  
+
+
 
 .btnFactura1 {
   -webkit-border-radius: 5;

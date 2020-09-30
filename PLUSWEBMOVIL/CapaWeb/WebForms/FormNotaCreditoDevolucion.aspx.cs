@@ -1565,18 +1565,6 @@ namespace CapaWeb.WebForms
                     break;
                 }
                 string tipo_fac = Session["Ccf_tipo2"].ToString();
-                if (tipo_fac.Trim() == "NCV")
-                {
-
-                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C","N", lbl_cod_suc_emp.Text.Trim(), fecha.Text, fecha.Text, "0");
-                }
-
-                else
-
-                {
-
-                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "N", lbl_cod_suc_emp.Text.Trim(), fecha.Text, fecha.Text, "0"); //Electronicas
-                }
 
                     if (Session["listaFacturas"] == null)
                     {
@@ -1762,23 +1750,16 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-                //Consultar si el vendedor tiene asignada una sucursal
 
-                ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
-                int count = 0;
-                foreach (var item in ListaModeloUsuarioSucursal)
-                {
-                    ModelousuarioSucursal = item;
-                    count++;
-                    break;
-                }
                 /*Validar  el saldo de la factura SI ES POSE/ VTAE*/
                 decimal valorSaldo = Convert.ToDecimal(txt_saldo_factura.Text);
                 decimal valorFactura = Convert.ToDecimal(txt_total_factura.Text);
                 decimal valorTotal = Convert.ToDecimal(txtSumaTotal.Text);
-                if (count == 0)
+                bool fec_valida = ValidarFecha();
+
+                if (fec_valida == true)
                 {
-                    this.Page.Response.Write("<script language='JavaScript'>window.alert('Usuario no tiene asignada sucursal, por favor asignar para continuar con el proceso ')+ error;</script>");
+                    this.Page.Response.Write("<script language='JavaScript'>window.alert('Colocar fecha dentro del rango permitido, para poder emitir nota de crédito ')+ error;</script>");
                 }
                 else
                 {
@@ -2060,12 +2041,13 @@ namespace CapaWeb.WebForms
             }
         }
 
-        protected void fecha_TextChanged(object sender, EventArgs e)
+        public Boolean ValidarFecha()
         {
             try
             {
                 lbl_validacion.Text = "";
                 lbl_validacion.Visible = false;
+                bool fecha_validar = false;
                 DateTime Fecha_seleccion = Convert.ToDateTime(fecha.Text);
                 if (Session["Ccf_tipo2"].ToString() == "NCVE")
                 {
@@ -2077,14 +2059,38 @@ namespace CapaWeb.WebForms
                     {
                         lbl_validacion.Text = "La fecha de la nota de crédito no puede ser menor a cinco días de la fecha actual";
                         lbl_validacion.Visible = true;
+                        fecha_validar = true;
                     }
                     if (Fecha_seleccion > Fecha_actual)
                     {
 
                         lbl_validacion.Text = "La fecha de la nota de crédito no puede ser mayor a  la fecha actual";
                         lbl_validacion.Visible = true;
+                        fecha_validar = true;
 
                     }
+                }
+                return fecha_validar;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("ValidarFecha", ex.ToString());
+                return true;
+            }
+        }
+
+
+
+        protected void fecha_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+
+                bool fec_valida = ValidarFecha();
+
+                if (fec_valida == true)
+                {
+                    this.Page.Response.Write("<script language='JavaScript'>window.alert('Colocar fecha dentro del rango permitido, para poder emitir nota de crédito ')+ error;</script>");
                 }
             }
             catch (Exception ex)
@@ -2092,7 +2098,9 @@ namespace CapaWeb.WebForms
                 GuardarExcepciones("fecha_TextChanged", ex.ToString());
 
             }
+
         }
+
 
         protected void serie_docum_SelectedIndexChanged(object sender, EventArgs e)
         {

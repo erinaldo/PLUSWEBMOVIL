@@ -126,6 +126,7 @@ namespace CapaWeb.WebForms
         }
         protected void btn_verificar_Click(object sender, EventArgs e)
         {
+            btn_procesar.Enabled = true;
             //vALIDAR QUE SOLO EXISTA UNA RESOLUCION ACTIVA-
             listaRes = null;
             listaRes = ConsultaResolucion.ConsultaResolusionXSucursalNC(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, lbl_cod_suc.Text.Trim());

@@ -335,21 +335,19 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-
-                if (Session["tipo_nc"].ToString() == "NCVE")
+                if (txtDocumento.Text == null || txtDocumento.Text == "")
                 {
-                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, txtDocumento.Text.Trim());
+                    BusquedasFiltradas("FEC");
+
                 }
                 else
                 {
-                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, txtDocumento.Text.Trim());
+                    if (fechainicio.Text == null || fechainicio.Text == "")
+                    {
+                        BusquedasFiltradas("NRO");
+                    }
                 }
 
-
-                Session["listaConsCab"] = ListaSaldoFacturas;
-                Grid.DataSource = ListaSaldoFacturas;
-                Grid.DataBind();
-                Grid.Height = 100;
             }
             catch (Exception ex)
             {
@@ -359,19 +357,31 @@ namespace CapaWeb.WebForms
 
 
         }
-
-        protected void btn_buscar_Click(object sender, EventArgs e)
+        public void BusquedasFiltradas(string tipo_busqueda)
         {
             try
             {
-                lbl_error.Text = "";
-                if (Session["tipo_nc"].ToString() == "NCVE")
+                if (tipo_busqueda.Trim() == "FEC")
                 {
-                    ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, txtDocumento.Text.Trim());
+                    if (Session["tipo_nc"].ToString() == "NCVE") //Busqueda por fechas
+                    {
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscartaFacturaSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, "0");
+                    }
+                    else
+                    {
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, "0");
+                    }
                 }
                 else
                 {
-                    ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, txtDocumento.Text.Trim());
+                    if (Session["tipo_nc"].ToString() == "NCVE") //Busqueda por nro_docum
+                    {
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscarFacturaSaldosXNroDocumento(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "S", Session["suc_emp"].ToString(), txtDocumento.Text.Trim());
+                    }
+                    else
+                    {
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacturasVTASaldosXNroDoc(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "S", Session["suc_emp"].ToString(), txtDocumento.Text.Trim());
+                    }
                 }
 
 
@@ -380,12 +390,93 @@ namespace CapaWeb.WebForms
                 Grid.DataBind();
                 Grid.Height = 100;
             }
-            
+            catch (Exception ex)
+            {
+                GuardarExcepciones("BusquedasFiltradas", ex.ToString());
+
+            }
+        }
+
+        protected void btn_buscar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                lbl_error.Text = "";
+                if (txtDocumento.Text == null || txtDocumento.Text =="")
+                {
+                    BusquedasFiltradas("FEC");
+                    
+                }
+                else
+                {
+                    if (fechainicio.Text == null || fechainicio.Text =="")
+                    {
+                        BusquedasFiltradas("NRO");
+                    }
+                }
+              
+            }
+
             catch (Exception ex)
             {
                 GuardarExcepciones("btn_buscar_Click", ex.ToString());
 
             }
-}
+        }
+
+
+        protected void cbx_tipo_filtro_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if(cbx_tipo_filtro.SelectedValue=="0")
+                {
+                    lbl_error.Text = "Seleccione un tipo de filtro";
+                    lbl_fecha_fin.Visible = false;
+                    lbl_fec_ini.Visible = false;
+                    fechainicio.Visible = false;
+                    fechafin.Visible = false;
+                    lbl_doc.Visible = false;
+                    txtDocumento.Visible = false;
+                    btn_buscar.Visible = false;
+                    txtDocumento.Text = null;
+                    fechafin.Text = null;
+
+                }
+                else
+                {
+                    if(cbx_tipo_filtro.SelectedValue == "FEC")
+                    {
+                        lbl_fecha_fin.Visible = true;
+                        lbl_fec_ini.Visible = true;
+                        fechainicio.Visible = true;
+                        fechafin.Visible = true;
+                        lbl_doc.Visible = false;
+                        txtDocumento.Visible = false;
+                        txtDocumento.Text = null;
+                        btn_buscar.Visible = true;
+                    }
+                    else
+                    {
+                        lbl_doc.Visible = true;
+                        txtDocumento.Visible = true;
+                        btn_buscar.Visible = true;
+                        lbl_fecha_fin.Visible = false;
+                        lbl_fec_ini.Visible = false;
+                        fechainicio.Visible = false;
+                        fechainicio.Text = null;
+                        fechafin.Visible = false;
+                        fechafin.Text = null;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("cbx_tipo_filtro_SelectedIndexChanged", ex.ToString());
+
+            }
+        }
+
     }
 }

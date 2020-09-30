@@ -151,6 +151,7 @@
     <Compile Include="Consultas\Enviarcorreocliente.cs" />
     <Compile Include="Consultas\GuardarrespuestaDS.cs" />
     <Compile Include="FacturaMasiva\CargaFacturaMasiva.cs" />
+    <Compile Include="FacturaMasiva\FacturaMasivaProforma.cs" />
     <Compile Include="FacturaMasiva\GenerarPDFDocumentos.cs" />
     <Compile Include="FacturaMasiva\NotaCreditoMasivaE.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonFacturaElecVer3.cs" />

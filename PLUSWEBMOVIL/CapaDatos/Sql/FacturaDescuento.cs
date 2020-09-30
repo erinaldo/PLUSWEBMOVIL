@@ -235,7 +235,7 @@ namespace CapaDatos.Sql
 
                 int dr = conmand.ExecuteNonQuery();
                 cn.Close();
-                return "Descuento guardado correctamente";
+                return "";
             }
 
             catch (Exception e)

@@ -8,31 +8,39 @@ using CapaProceso.RestCliente;
 using CapaDatos.Modelos;
 using CapaProceso.FacturaMasiva;
 using System.IO;
-using System.Diagnostics.Eventing;
 
 
 namespace CapaWeb.WebForms
 {
-    public partial class CargaMasivaFactura : System.Web.UI.Page
+    public partial class CMasivaProformaE : System.Web.UI.Page
     {
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
-        CargaFacturaMasiva carga = new CargaFacturaMasiva();
-        List<modeloFacturaEMasiva> lista = new List<modeloFacturaEMasiva>();
-        modeloFacturaEMasiva modeloFacturas = new modeloFacturaEMasiva();
+        FacturaMasivaProforma carga = new FacturaMasivaProforma();
+        List<modeloClientesproforma> lista = null;
+        modeloClientesproforma modeloClientes = new modeloClientesproforma();
+     
 
         Consultawmspcresfact ConsultaResolucion = new Consultawmspcresfact();
         modelowmspcresfact resolucion = new modelowmspcresfact();
         List<modelowmspcresfact> listaRes = null;
+
+        ConsultaProformasFac ConsultaProformas = new ConsultaProformasFac();
+        modelowmtproformascab ModeloProformas = new modelowmtproformascab();
+        List<modelowmtproformascab> ListaProofrmas = null;
+        ConsultaProformaIns InsertarProIns = new ConsultaProformaIns();
 
         public modeloUsuariosucursal ModelousuarioSucursal = new modeloUsuariosucursal();
         public List<modeloUsuariosucursal> ListaModeloUsuarioSucursal = new List<modeloUsuariosucursal>();
         public ConsultawmusuarioSucursal ConsultaUsuxSuc = new ConsultawmusuarioSucursal();
         public ConsultausuarioSucursal consultaUsuarioSucursal = new ConsultausuarioSucursal();
         List<modeloFacturaEMasiva> listaFacturar = new List<modeloFacturaEMasiva>();
+
+        Consultawmspcmonedas ConsultaCMonedas = new Consultawmspcmonedas();
+        List<modelowmspcmonedas> listaMonedas = null;
 
         public string ComPwm;
         public string socio;
@@ -43,6 +51,7 @@ namespace CapaWeb.WebForms
         public string ResF_estado = "S";
         public string ResF_serie = "0";
         public string ResF_tipo = "F";
+        public string MonB__moneda = "0";
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -55,22 +64,34 @@ namespace CapaWeb.WebForms
                     Modelowmspclogo = item;
                     break;
                 }
-                //Cargar sucursal del usuario
-                //Cargar la sucursal del usuario logeado
-                ListaModeloUsuarioSucursal = ConsultaUsuxSuc.UnicoUsuarioSucursal(ComPwm, AmUsrLog, ""); //Solo se envia empresa y usuario
-                if (ListaModeloUsuarioSucursal.Count == 0)
+                if (Session["nro_trans_proforma"] != null)
                 {
-                    lbl_mensaje.Text = "Usuario no tiene sucursal asignada, por favor asignar sucursarl para continuar.";
+                    btn_verificar.Visible = true;
+                    nro_trans_pro_sele.Text = Session["nro_trans_proforma"].ToString();
+                    nro_trans_pro_sele.Visible = true;
+                    lbl_nro.Visible = true;
                 }
-                else
+                if (!IsPostBack)
                 {
-                    foreach (var item in ListaModeloUsuarioSucursal)
+                    Session.Remove("nro_trans_proforma");
+                    //Cargar sucursal del usuario
+                    //Cargar la sucursal del usuario logeado
+                    ListaModeloUsuarioSucursal = ConsultaUsuxSuc.UnicoUsuarioSucursal(ComPwm, AmUsrLog, ""); //Solo se envia empresa y usuario
+                    if (ListaModeloUsuarioSucursal.Count == 0)
                     {
-                        ModelousuarioSucursal = item;
-                        break;
+                        lbl_mensaje.Text = "Usuario no tiene sucursal asignada, por favor asignar sucursarl para continuar.";
                     }
-                    lbl_cod_suc.Text = ModelousuarioSucursal.cod_sucursal.Trim();
-                    lbl_sucursal.Text = "-" + ModelousuarioSucursal.nom_sucursal.Trim();
+                    else
+                    {
+                        foreach (var item in ListaModeloUsuarioSucursal)
+                        {
+                            ModelousuarioSucursal = item;
+                            break;
+                        }
+                        lbl_cod_suc.Text = ModelousuarioSucursal.cod_sucursal.Trim();
+                        lbl_sucursal.Text = "-" + ModelousuarioSucursal.nom_sucursal.Trim();
+
+                    }
                 }
             }
             catch (Exception ex)
@@ -78,6 +99,8 @@ namespace CapaWeb.WebForms
                 GuardarExcepciones("Page_Load", ex.ToString());
             }
         }
+
+       
 
         protected void btn_verificar_Click(object sender, EventArgs e)
         {
@@ -92,11 +115,11 @@ namespace CapaWeb.WebForms
             }
             if (listaRes.Count == 0)
             {
-                
+
                 lbl_mensaje.Text = "No existe una resolución activa para Facturar.";
             }
             else
-               {
+            {
                 if (listaRes.Count > 1)
                 {
 
@@ -107,34 +130,41 @@ namespace CapaWeb.WebForms
                     lbl_prefijo.Text = resolucion.prefijo;
                     lbl_prefijo.Visible = true;
                     lbl_pre.Visible = true;
-                    lista = carga.TotalFacturas(AmUsrLog, ComPwm);
+                    lista = ConsultaProformas.TotalProformasAFacturar(AmUsrLog, ComPwm, nro_trans_pro_sele.Text); //Buscar el total de clientes a facturar
                     int count = 0;
-                    modeloFacturas = null;
-                    foreach (modeloFacturaEMasiva item in lista)
+                    modeloClientes = null;
+                    foreach (modeloClientesproforma item in lista)
                     {
 
-                        modeloFacturas = item;
-                        lbl_carga_fec.Text = item.fecha_carga.ToString();
+                        modeloClientes = item;
                         count++;
                     }
                     if (lista.Count > 0)
                     {
                         btn_verificar.Visible = false;
+                        btn_cancelar.Visible = true;
                         BtnIniciar.Enabled = true;
                         BtnIniciar.Visible = true;
-                        btn_cancelar.Visible = true;
-                        lbl_carga_fec.Visible = true;
-                        lbl_fec_ca.Visible = true;
-
+                        //Cargar moneda para facturar
+                        listaMonedas = ConsultaCMonedas.ConsultaCMonedas(AmUsrLog, ComPwm, MonB__moneda);
+                        cbx_moneda.DataSource = listaMonedas;
+                        cbx_moneda.DataTextField = "descripcion";
+                        cbx_moneda.DataValueField = "cod_moneda";
+                        cbx_moneda.DataBind();
+                        cbx_moneda.Visible = true;
+                        lbl_moneda.Visible = true;
 
                     }
+                    if(lista.Count==0)
+                    {
+                        btn_proformas.Visible = true;
+                        btn_cancelar.Visible = true;
+                    }
                     lbl_facturas.Text = Convert.ToString(count);
-                    
-                }
-            }   
-        }
 
-       
+                }
+            }
+        }
         public void RecuperarCokie()
         {
             try
@@ -201,61 +231,17 @@ namespace CapaWeb.WebForms
         {
 
             ModeloExcepcion.cod_emp = ComPwm;
-            ModeloExcepcion.proceso = "CargaMasivaFactura.aspx";
+            ModeloExcepcion.proceso = "CMasivaProformaE.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Now;
             ModeloExcepcion.usuario_mod = AmUsrLog;
-
             consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
             //mandar mensaje de error a label
-            // lbl_error.Text = "No se pudo completar la acción" + metodo + "." + " Por favor notificar al administrador.";
+             lbl_error.Text = "No se pudo completar la acción" + metodo + "." + " Por favor notificar al administrador.";
 
         }
-
-        protected void btn_importar_Click(object sender, EventArgs e)
-        {
-            List<modeloFacturaEMasiva> listaFacturas = new List<modeloFacturaEMasiva>();
-            modeloFacturaEMasiva modeloFacturas1= new modeloFacturaEMasiva();
-            //Leer archivo excel
-         // if (FileUpload1.PostedFile.ContentType == "application/vnd.ms-excel" ||
-           //   FileUpload1.PostedFile.ContentType == "application/vnd.openxmlformats.officedocument.spreadsheetml.sheet")
-
-            {
-                try
-                {
-                    string pathtmpfac = Modelowmspclogo.pathtmpfac;  //Traemos el path, la ruta 
-                    string fileName = pathtmpfac + Path.GetFileName(FileUpload1.FileName);
-                    FileUpload1.PostedFile.SaveAs(fileName);
-                    string extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
-                  
-                    if (extension.ToLower() == ".xlsx")
-                    {
-                        string leerExcel = System.IO.File.ReadAllText(fileName);
-                       
-                        foreach (string row in leerExcel.Split('\n'))
-                        {
-                            if(!string.IsNullOrEmpty(row))
-                            {
-                                listaFacturas.Add(new modeloFacturaEMasiva
-                                {
-                                    nro_docum = Convert.ToString(row.Split(',')[0]),
-                                    tipo_docum = row.Split(',')[1],
-                                });
-                            }
-                        }
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    GuardarExcepciones("buscarTipoFac", ex.ToString());
-                    
-                }
-
-            }
-        }
-
+        //PROGRESS BAR
         private int Prop_CoTareas
         {
             get
@@ -274,7 +260,7 @@ namespace CapaWeb.WebForms
         }
 
         private int Prop_TotalTareas = 0;
-        
+
 
         private int f_PorcentajeAvance(int Par_TotalTareas, int Par_TareaActual)
         {
@@ -316,33 +302,31 @@ namespace CapaWeb.WebForms
 
                 //tareas a realizar poner todo el codigo para facturar electronicamente
                 string error_fac = null;
-
-                    string nro_docum = carga.FacturaOCompra(AmUsrLog, ComPwm);
-               
+                string cod_cliente_fac = ConsultaProformas.ClienteProformasAFacturar(AmUsrLog, ComPwm, nro_trans_pro_sele.Text.Trim());
 
                 try
                 {
-                    if (nro_docum != "")
+                    if (cod_cliente_fac != "")
                     {
-                       error_fac= carga.BuscartaDatosFacturasMasivas(AmUsrLog, ComPwm, lbl_cod_suc.Text.Trim(), nro_docum.Trim());
-                        if(! string.IsNullOrEmpty(error_fac))
+                       error_fac= carga.GenerarFactura(AmUsrLog, ComPwm, lbl_cod_suc.Text.Trim(), cod_cliente_fac.Trim(), nro_trans_pro_sele.Text.Trim(), cbx_moneda.SelectedValue.Trim());
+                       
+                        if (!string.IsNullOrEmpty(error_fac))
                         {
-                            carga.ActualizarEstadoLista(AmUsrLog, ComPwm, "E");//Estado E cuando ocurre un error 
-                            carga.ErrorFPagosActualizar(AmUsrLog, ComPwm, "E");//Estado E cuando ocurre un error
-                            carga.ErrorDscCargActualizar(AmUsrLog, ComPwm, "E");//Estado E cuando ocurre un error
-                            lbl_error_factura.Text = error_fac+ " Nro docum: "+nro_docum;
+                            carga.ActualizarErrorProformaTit(AmUsrLog, ComPwm, "E", nro_trans_pro_sele.Text.Trim());//Estado E cuando ocurre un error 
+
+                            lbl_error_factura.Text = error_fac + " Cliente: " + cod_cliente_fac;
                             lbl_error_factura.Visible = true;
                             return;
-                            
+
                         }
                     }
                 }
-                catch (Exception aee )
+                catch (Exception aee)
                 {
 
                     throw;
                 }
-               
+
                 //.....
             }
 
@@ -353,7 +337,12 @@ namespace CapaWeb.WebForms
                 LblAvance.Text = "Tarea finalizada";
                 BtnIniciar.Visible = false;
                 btn_verificar.Visible = true;
-                listaFacturar.Clear();
+                btn_proformas.Enabled = true;
+
+                //finalizar proforma
+                carga.ActualizarEstadoProformaCab(AmUsrLog, ComPwm, nro_trans_pro_sele.Text.Trim(), "F");
+                btn_limpiar.Visible = true;
+             
             }
         }
         protected void BtnIniciar_Click(object sender, EventArgs e)
@@ -361,19 +350,60 @@ namespace CapaWeb.WebForms
             Timer1.Enabled = true;
             BtnIniciar.Enabled = false;
             Prop_TotalTareas = 10;
+            
+        }
+
+        protected void btn_proformas_Click(object sender, EventArgs e)
+        {
+            try
+            {
+               
+                if (Session["nro_trans_proforma"] == null)
+                {
+                   
+                    this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarProformasM.aspx', 'Buscar Proformas', 'top=100,width=800 ,height=400, left=400');</script>");
+
+                }
+                else
+                {
+                    btn_proformas.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("btn_proformas_Click", ex.ToString());
+
+            }
+        }
+
+        protected void btn_limpiar_Click(object sender, EventArgs e)
+        {
+            //limpiar todas las pantallas
+            Session.Remove("nro_trans_proforma");
+             lbl_facturas.Text = "";
+             lbl_nro.Visible = false;
+             nro_trans_pro_sele.Text = "";
+             LblPorcentajeAvance.Text = "";
+             LblAvance.Text = "";
+            btn_limpiar.Visible = false;
+            LblProgressBar.Width = 0;
         }
 
         protected void btn_cancelar_Click(object sender, EventArgs e)
         {
-            btn_verificar.Visible = true;
-            BtnIniciar.Enabled = false;
-            BtnIniciar.Visible = false;
             btn_cancelar.Visible = false;
-            lbl_carga_fec.Visible = false;
-            lbl_fec_ca.Visible = false;
+            btn_proformas.Visible = true;
+             BtnIniciar.Visible = false;
+            cbx_moneda.Visible = false;
+            lbl_moneda.Visible = false;
+            btn_verificar.Visible = false;
+            //limpiar todas las pantallas
+            Session.Remove("nro_trans_proforma");
             lbl_facturas.Text = "";
-
+            lbl_nro.Visible = false;
+            nro_trans_pro_sele.Text = "";
+            btn_limpiar.Visible = false;
+            
         }
     }
-
 }

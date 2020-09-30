@@ -49,6 +49,10 @@
       <HintPath>..\packages\Common.Logging.Core.3.4.1\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Gma.QrCodeNet.Encoding, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\QrCode.Net.0.4.0.0\lib\net40\Gma.QrCodeNet.Encoding.dll</HintPath>
       <Private>True</Private>
@@ -63,6 +67,10 @@
     </Reference>
     <Reference Include="RestSharp, Version=100.0.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharpSigned.105.2.3\lib\net4\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SpreadsheetLight, Version=3.4.11.0, Culture=neutral, PublicKeyToken=32fbb46dc1730c57, processorArchitecture=MSIL">
+      <HintPath>..\packages\SpreadsheetLight.3.4.11\lib\net40\SpreadsheetLight.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -107,6 +115,7 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tema\css\StylePront.css" />
@@ -137,6 +146,7 @@
     <Content Include="WebForms\BuscarPais.aspx" />
     <Content Include="WebForms\BuscarParametros.aspx" />
     <Content Include="WebForms\BuscarPProveedores.aspx" />
+    <Content Include="WebForms\BuscarProformasM.aspx" />
     <Content Include="WebForms\BuscarRecurso.aspx" />
     <Content Include="WebForms\BuscarResolucion.aspx" />
     <Content Include="WebForms\BuscarSectorVenta.aspx" />
@@ -148,6 +158,8 @@
     <Content Include="WebForms\CargaMasivaCliente.aspx" />
     <Content Include="WebForms\CargaMasivaFactura.aspx" />
     <Content Include="WebForms\CargaMasivaRecurso.aspx" />
+    <Content Include="WebForms\ClientesProforma.aspx" />
+    <Content Include="WebForms\CMasivaProformaE.aspx" />
     <Content Include="WebForms\DescuentosCargosFac.aspx" />
     <Content Include="WebForms\DetalleCierreCaja.aspx" />
     <Content Include="WebForms\FormBuscarNotaCredito.aspx" />
@@ -408,6 +420,13 @@
     <Compile Include="WebForms\BuscarPProveedores.aspx.designer.cs">
       <DependentUpon>BuscarPProveedores.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\BuscarProformasM.aspx.cs">
+      <DependentUpon>BuscarProformasM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarProformasM.aspx.designer.cs">
+      <DependentUpon>BuscarProformasM.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\BuscarRecurso.aspx.cs">
       <DependentUpon>BuscarRecurso.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -484,6 +503,20 @@
     </Compile>
     <Compile Include="WebForms\CargaMasivaRecurso.aspx.designer.cs">
       <DependentUpon>CargaMasivaRecurso.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\ClientesProforma.aspx.cs">
+      <DependentUpon>ClientesProforma.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\ClientesProforma.aspx.designer.cs">
+      <DependentUpon>ClientesProforma.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\CMasivaProformaE.aspx.cs">
+      <DependentUpon>CMasivaProformaE.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\CMasivaProformaE.aspx.designer.cs">
+      <DependentUpon>CMasivaProformaE.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\DescuentosCargosFac.aspx.cs">
       <DependentUpon>DescuentosCargosFac.aspx</DependentUpon>

@@ -74,7 +74,6 @@
                             </td>
                              <td> </td>
                             <td aling="rigth"><asp:Button ID="Buscar" runat="server" OnClick="Buscar_Click" class="botones" Text="Buscar" />
-                                <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Button" />
                             </td>
                           
                         </tr>

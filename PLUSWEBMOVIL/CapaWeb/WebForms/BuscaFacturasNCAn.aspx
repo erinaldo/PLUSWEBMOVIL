@@ -11,10 +11,9 @@
     <form id="form1" name="form1" class="forms-sample" runat="server" method="post">
          <div style="align-items: left">
             <table  width="95%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="white">
-       <tr>
-                    
+                           
                    
-                      <tr>
+               <tr>
                      <td colspan="4">
 
                          <hr />
@@ -27,23 +26,52 @@
                         </td>
                     </tr>
                 <tr>
-                    <td  class="busqueda">  Fecha inicio:</td>
+                     <td >
+                        <asp:Label ID="Label1" runat="server"  class="busqueda" Text="Busqueda por: "></asp:Label>
+                        </td>
+                     <td>
+                              <asp:DropDownList ID="cbx_tipo_filtro" OnSelectedIndexChanged="cbx_tipo_filtro_SelectedIndexChanged" AutoPostBack="true" class="textos" runat="server" Height="16px" Width="204px">
+                                  <asp:ListItem Value="0">Seleccione...</asp:ListItem>
+                                  <asp:ListItem Value="FEC">FECHA</asp:ListItem>
+                                  <asp:ListItem Value="NRO">NRO DOCUMENTO</asp:ListItem>
+                              </asp:DropDownList>
+                          </td>
+
+                    </tr>
+               
+                      <tr>
+                    <td>
+                        <asp:Label ID="lbl_fec_ini" CssClass="busqueda" Visible="false" runat="server" Text="Fecha inicio:"></asp:Label>
+                    </td>
                           <td>
-                             <asp:TextBox ID="fechainicio" type="date"  Width="220px"   runat="server"></asp:TextBox>
+                             <asp:TextBox ID="fechainicio" type="date" Visible="false"  Width="220px" required="required"   runat="server"></asp:TextBox>
                               </td>
-                             <td class="busqueda">Fecha fin:</td>
+                             <td >
+                                 <asp:Label ID="lbl_fecha_fin" CssClass="busqueda" Visible="false" runat="server" Text="Fecha fin:"></asp:Label>
+                             </td>
                           <td>
-                              <asp:TextBox ID="fechafin" type="date"  Width="202"  runat="server"></asp:TextBox>
+                              <asp:TextBox ID="fechafin" type="date" Visible="false" Width="202" required="required"   runat="server"></asp:TextBox>
                           </td>
                 </tr>
+              
+              
                 <tr>
-                     <td class="busqueda">Documento:</td>
+                    <td>
+                        <asp:Label ID="lbl_doc" Visible="false" runat="server" CssClass="busqueda" Text="Documento:"></asp:Label>
+                    </td>
+                                        
                              <td>
-                            <asp:TextBox ID="txtDocumento" class="textos" width="215" value="0" runat="server"></asp:TextBox>
-                          <div class="textos_sm">0 = Todos</div></td> 
+                            <asp:TextBox ID="txtDocumento" class="textos" Visible="false" width="215" value="" required="required"  runat="server"></asp:TextBox>
+                           
                      <td> </td>
-                            <td aling="rigth"><asp:Button ID="btn_buscar" runat="server" onclick="btn_buscar_Click" class="botones" Text="Buscar" /></td>
+                            <td aling="rigth"><asp:Button ID="btn_buscar" runat="server" Visible="false" onclick="btn_buscar_Click" class="botones" Text="Buscar" /></td>
 
+                </tr>
+                <tr>
+                     <td colspan="4">
+
+                         <hr />
+                    </td>
                 </tr>
                 <tr>
                     <td>

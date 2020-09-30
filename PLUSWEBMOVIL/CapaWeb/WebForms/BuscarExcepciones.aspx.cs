@@ -377,13 +377,6 @@ namespace CapaWeb.WebForms
 
         }
   
-        protected void Button1_Click(object sender, EventArgs e)
-        {
-           /* LLenarModelo prueba = new LLenarModelo();
-            prueba.LlenarResolucionFactura(AmUsrLog, ComPwm, "991");*/
-            XmlFacturaV1 nuevo = new XmlFacturaV1();
-            nuevo.LlenarResolucionFactura( ComPwm, AmUsrLog);
-
-        }
+      
     }
 }

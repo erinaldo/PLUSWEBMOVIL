@@ -19,18 +19,37 @@ namespace CapaDatos.Modelos
         public string nro_docum { get; set; }
         public string tipo { get; set; }
          public string cod_cliente { get; set; }
-        public string cod_ccostos { get; set; }
-        public string cod_vendedor { get; set; }
+        public string nom_tit { get; set; }
+        public string dir_tit { get; set; }
+        public string tel_tit { get; set; }
+        public string nro_dgi { get; set; }
+        public string nro_dgi2 { get; set; }
+        public string nro_dgi1 { get; set; }
         public string cod_fpago { get; set; }
-        public string observaciones { get; set; }       
+        public string nom_fpago { get; set; }
+        public string plazo_libre { get; set; }
+        public string observaciones { get; set; }
+        public string fec_venc { get; set; }
+        public string cod_vendedor { get; set; }
+        public string nom_vend { get; set; }
+ 
+        public string estado { get; set; }
         public decimal subtotal { get; set; }
         public decimal iva { get; set; }
-        public decimal monto_imponible { get; set; }
         public decimal total { get; set; }
-        public string estado { get; set; }
+        public decimal monto_imponible { get; set; }
+        public string nro_audit { get; set; }
+        public string nom_ciudad { get; set; }
+        public string vlr_letras { get; set; }
+        public string pagina_edicion { get; set; }
+        public string nom_edicion { get; set; }
+        public string nom_corto { get; set; }
+        public string pagina_elimina { get; set; }
+        public string nom_elimina { get; set; }
+        public string cod_ccostos { get; set; }
         public string usuario_mod { get; set; }
         public DateTime fecha_mod { get; set; }
-        public string nro_audit { get; set; }
+        
         public string nro_trans_ndm { get; set; }
         public string cod_moneda { get; set; }
         public string cod_proc_aud { get; set; }

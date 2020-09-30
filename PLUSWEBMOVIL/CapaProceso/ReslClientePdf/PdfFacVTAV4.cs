@@ -375,7 +375,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 1;
                 tabladetaEmpresa1.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase("Nro. " + conscabcera.serie_docum + " - " + conscabcera.nro_docum, tipo1));
+                cell = new PdfPCell(new Phrase("Nro. " + resolucion.prefijo + " - " + conscabcera.nro_docum, tipo1));
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 1;
                 cell.BorderWidthLeft = 1;

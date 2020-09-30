@@ -56,7 +56,7 @@ namespace CapaWeb.WebForms
         public string ComPwm;
         public string AmUsrLog;
         public string Ccf_tipo1 = "C";
-        public string Ccf_tipo2 = "NDV";
+        public string Ccf_tipo2 = "";
         public string Ccf_nro_trans = "0";
         public string Ccf_estado = "0";
         public string Ccf_cliente = "0";
@@ -495,12 +495,12 @@ namespace CapaWeb.WebForms
                                     case "FINALIZADO":
 
                                         qs.Add("Id", Id.ToString());
-                                        Response.Write("<script>window.open('" + "ReporteNotaDebito" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
+                                        Response.Write("<script>window.open('" + "ReporteNotaDebito.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
                                         break;
                                     case "CONTABILIZADO":
 
                                         qs.Add("Id", Id.ToString());
-                                        Response.Write("<script>window.open('" + "ReporteNotaDebito" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
+                                        Response.Write("<script>window.open('" + "ReporteNotaDebito.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
                                         break;
                                     default:
                                         this.Page.Response.Write("<script language='JavaScript'>window.alert('SU NOTA DE DÉBITO ESTA " + estadoM + "')+ error;</script>");

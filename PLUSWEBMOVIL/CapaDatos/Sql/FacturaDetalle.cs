@@ -150,7 +150,7 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@cod_articulo2", SqlDbType.VarChar).Value =detalleFactura.cod_articulo2;
                 int dr = conmand.ExecuteNonQuery();
                 cn.Close();
-                return "Factura salvada correctamente";
+                return "";
             }
             catch (Exception e)
             {

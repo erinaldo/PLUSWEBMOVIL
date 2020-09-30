@@ -10,7 +10,16 @@
 namespace CapaWeb.WebForms {
     
     
-    public partial class CargaMasivaFactura {
+    public partial class CMasivaProformaE {
+        
+        /// <summary>
+        /// Control form1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
         /// Control Label1.
@@ -29,6 +38,15 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbl_mensaje;
+        
+        /// <summary>
+        /// Control lbl_error.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_error;
         
         /// <summary>
         /// Control Label2.
@@ -76,13 +94,22 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label lbl_prefijo;
         
         /// <summary>
-        /// Control form1.
+        /// Control Label3.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.Label Label3;
+        
+        /// <summary>
+        /// Control btn_proformas.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_proformas;
         
         /// <summary>
         /// Control mensaje.
@@ -94,31 +121,22 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label mensaje;
         
         /// <summary>
-        /// Control cod_tit.
+        /// Control lbl_nro.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label cod_tit;
+        protected global::System.Web.UI.WebControls.Label lbl_nro;
         
         /// <summary>
-        /// Control FileUpload1.
+        /// Control nro_trans_pro_sele.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload FileUpload1;
-        
-        /// <summary>
-        /// Control btn_importar.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_importar;
+        protected global::System.Web.UI.WebControls.Label nro_trans_pro_sele;
         
         /// <summary>
         /// Control lbl_facturas.
@@ -139,22 +157,22 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Button btn_verificar;
         
         /// <summary>
-        /// Control lbl_fec_ca.
+        /// Control lbl_moneda.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_fec_ca;
+        protected global::System.Web.UI.WebControls.Label lbl_moneda;
         
         /// <summary>
-        /// Control lbl_carga_fec.
+        /// Control cbx_moneda.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_carga_fec;
+        protected global::System.Web.UI.WebControls.DropDownList cbx_moneda;
         
         /// <summary>
         /// Control btn_cancelar.
@@ -245,5 +263,14 @@ namespace CapaWeb.WebForms {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BtnIniciar;
+        
+        /// <summary>
+        /// Control btn_limpiar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_limpiar;
     }
 }

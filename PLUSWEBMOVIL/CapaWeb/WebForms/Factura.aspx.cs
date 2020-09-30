@@ -1569,20 +1569,11 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-               
-                //Consultar si el vendedor tiene asignada una sucursal
-                ListaModeloUsuarioSucursal = ConsultaUsuxSuc.ConsultaUsuarioSucursal(ComPwm, AmUsrLog);
-                int count = 0;
-                foreach (var item in ListaModeloUsuarioSucursal)
-                {
-                    ModelousuarioSucursal = item;
-                    count++;
-                    break;
-                }
+                bool fec_valida =  ValidarFecha();
 
-                if (count == 0)
+                if (fec_valida ==true)
                 {
-                    this.Page.Response.Write("<script language='JavaScript'>window.alert('Usuario no tiene asignada sucursal, por favor asignar para continuar con el proceso ')+ error;</script>");
+                    this.Page.Response.Write("<script language='JavaScript'>window.alert('Colocar fecha dentro del rango permitido, para poder facturar ')+ error;</script>");
                 }
                 else
                 {
@@ -2085,35 +2076,58 @@ namespace CapaWeb.WebForms
             }
         }
 
+        public Boolean ValidarFecha()
+        {
+            try
+            {
+                lbl_validacion.Text = "";
+                lbl_validacion.Visible = false;
+                bool fecha_validar = false;
+                DateTime Fecha_seleccion = Convert.ToDateTime(fecha.Text);
+                if (Session["Ccf_tipo2"].ToString() == "VTAE")
+                {
+
+                    DateTime Fecha_actual = DateTime.Today;
+                    DateTime Fecha_minima = DateTime.Today.AddDays(-5);
+
+
+                    if (Fecha_seleccion < Fecha_minima)
+                    {
+                        lbl_validacion.Text = "La fecha de la factura no puede ser menor a cinco días de la fecha actual";
+                        lbl_validacion.Visible = true;
+                        fecha_validar = true;
+                    }
+                    if (Fecha_seleccion > Fecha_actual)
+                    {
+
+                        lbl_validacion.Text = "La fecha de la factura no puede ser mayor a  la fecha actual";
+                        lbl_validacion.Visible = true;
+                        fecha_validar = true;
+
+                    }
+                }
+                return fecha_validar;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("ValidarFecha", ex.ToString());
+                return true;
+            }
+        }
+
+
+
         protected void fecha_TextChanged(object sender, EventArgs e)
         {
             try
-            { 
-            lbl_validacion.Text = "";
-            lbl_validacion.Visible = false;
-            DateTime Fecha_seleccion = Convert.ToDateTime(fecha.Text);
-            if (Session["Ccf_tipo2"].ToString() == "VTAE")
             {
 
-                DateTime Fecha_actual = DateTime.Today;
-                DateTime Fecha_minima = DateTime.Today.AddDays(-5);
-                       
+                bool fec_valida = ValidarFecha();
 
-                            if (Fecha_seleccion < Fecha_minima)
-                            {
-                                lbl_validacion.Text = "La fecha de la factura no puede ser menor a cinco días de la fecha actual";
-                                lbl_validacion.Visible = true;
-                            }
-                            if (Fecha_seleccion > Fecha_actual)
-                            {
-
-                                lbl_validacion.Text = "La fecha de la factura no puede ser mayor a  la fecha actual";
-                                lbl_validacion.Visible = true;
-
-                            }
-
-                    
-            }
+                if (fec_valida == true)
+                {
+                    this.Page.Response.Write("<script language='JavaScript'>window.alert('Colocar fecha dentro del rango permitido, para poder facturar ')+ error;</script>");
+                }
             }
             catch (Exception ex)
             {

@@ -87,6 +87,8 @@ namespace CapaProceso.RestCliente
         public string Ven__fono = "0";
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         string metodo = "JsonNotaDebitoElectronicaV3.cs";
+        public string nit_validado = null;
+        public string nit_dian = null;
         public ComprobanteNDJSONV3 LlenarJSONNC(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string nro_factura)
         {
             try
@@ -168,8 +170,9 @@ namespace CapaProceso.RestCliente
 
                 Modelowmspclogo = null;
                 Modelowmspclogo = BuscarUsuarioLogo(Ccf_cod_emp, Ccf_usuario);
-                //Pruebas emisor 830106032
-                //Produccion emisor =Convert.ToInt32(Modeloempresa.nro_dgi2);
+                //vALIDAR NIT, EXTRANJERO Y CONSUMIDOR FINAL
+                string nit_dian = ConsumidorFinal(conscabceraNC.nro_dgi2.Trim(), Ccf_usuario, Ccf_cod_emp); //Verific si es consumidor o no
+                
                 if (conscabceraNC.cod_moneda.Trim() != "COP")
                 {
                     encabezado.baseimpuesto = Convert.ToDecimal(conscabceraNC.monto_imponible) * Convert.ToDecimal(ModeloCotizacion.tc_mov1c); //base imponible
@@ -201,14 +204,8 @@ namespace CapaProceso.RestCliente
                 {
                     encabezado.metodopago = 2;
                 }
-                string nit_dian = conscabceraNC.nro_dgi2.Trim();
-                string nuevo_nit = null;
-                if (nit_dian.Length > 10)
-                {
-                    nuevo_nit = nit_dian.Remove(10);
-                }
-                else { nuevo_nit = conscabceraNC.nro_dgi2.Trim(); }
-                encabezado.nit = Convert.ToInt64(nuevo_nit);
+               
+                encabezado.nit = Convert.ToInt64(nit_dian);
                 encabezado.numero = Convert.ToInt32(conscabceraNC.nro_docum);
                 encabezado.ordencompra = Convert.ToString(conscabceraNC.ocompra);
                 encabezado.prefijo = Convert.ToString(conscabceraNC.serie_docum.Trim());
@@ -419,18 +416,9 @@ namespace CapaProceso.RestCliente
             {
                 SucursalNDV3 sucursal = new SucursalNDV3();
                 TerceroNDV3 tercero = new TerceroNDV3();
-                modelowmspctitulares vendedor = new modelowmspctitulares();
-                modelowmspctitulares cliente = new modelowmspctitulares();
-                //................ENVIAR DATO DE LA SUCURSAL Y SOCION NEGOCIO
-                string cod_suc_cli = conscabceraNC.cod_suc_cli;
-                string Ven__cod_tit = conscabceraNC.cod_cliente;
-                cliente = null;
-                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, cod_suc_cli);
 
                 ModeloUsuSucursal = BuscarUsuarioSucursal(Ccf_cod_emp, Ccf_usuario);
 
-                vendedor = null;
-                vendedor = buscarCliente(Ccf_usuario, Ccf_cod_emp, "vendedores", conscabceraNC.cod_vendedor, Ven__cod_dgi,"0");
                 //----------------DATOS PROPISO DE LA SUCURSAL DEL CLIENTE AL QUE SE FACTURA----------------------------
                 sucursal.ciudad = cliente.ciudad_tit; //nombre ciudad
                 sucursal.codcliente = conscabceraNC.cod_cliente;
@@ -466,25 +454,13 @@ namespace CapaProceso.RestCliente
             {
                 TerceroNDV3 tercero = new TerceroNDV3();
 
-                modelowmspctitulares cliente = new modelowmspctitulares();
-
-                string Ven__cod_tit = conscabceraNC.cod_cliente;
-                cliente = null;
-                cliente = buscarCliente(Ccf_usuario, Ccf_cod_emp, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, conscabceraNC.cod_suc_cli);
-                string nit_dian = cliente.nro_dgi2.Trim();
-                string nuevo_nit = null;
-                if (nit_dian.Length > 10)
-                {
-                    nuevo_nit = nit_dian.Remove(10);
-                }
-                else { nuevo_nit = cliente.nro_dgi2.Trim(); }
                 tercero.apli1 = cliente.primer_apellido;
                 tercero.apl2 = cliente.segundo_apellido;
                 tercero.comentarios = "";
                 tercero.dv = cliente.nro_dgi1; //digito verificador
-                tercero.identificacion = Convert.ToInt64(cliente.nro_dgi2);
+                tercero.identificacion = Convert.ToInt64(nit_validado);
                 tercero.idtipoempresa = Convert.ToInt16(Modeloempresa.cod_emp);
-                tercero.nit = Convert.ToInt64(nuevo_nit); 
+                tercero.nit = Convert.ToInt64(nit_dian); 
                 tercero.nom1 = cliente.primer_nombre;
                 tercero.nom2 = cliente.segundo_nombre;
                 tercero.obligacionfiscal = cliente.obligacion_fiscal; //por defecto
@@ -750,6 +726,72 @@ namespace CapaProceso.RestCliente
             }
         }
 
+        public string ConsumidorFinal(string nit_cliente_Cab, string usuario, string empresa)
+        {
+            try
+            {
 
+                //NIT EXTRANJERO SOLO AUTORIZA ENVIANDO 8 NUMEROS
+                modelowmspctitulares cliente = new modelowmspctitulares();
+
+                string Ven__cod_tit = nit_cliente_Cab.Trim();
+                cliente = null;
+                cliente = buscarCliente(usuario, empresa, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, conscabceraNC.cod_suc_cli.Trim());
+                if (cliente.cod_dgi.Trim() == "14" || cliente.cod_dgi.Trim() == "22" || cliente.cod_dgi.Trim() == "42" || cliente.cod_dgi.Trim() == "43" || cliente.cod_dgi.Trim() == "50")
+                {
+                    //EXTRANJERO SOLO AUTORIZA CON NIT DE 8
+                    if (nit_cliente_Cab.Length > 8)
+                    {
+                        nit_dian = nit_cliente_Cab.Remove(8);
+                        nit_validado = nit_cliente_Cab.Remove(8);
+                    }
+                    else
+                    {
+                        nit_dian = nit_cliente_Cab.Trim();
+                        nit_validado = nit_cliente_Cab.Trim();//Identificacion en sucursal debe se 8 caracteres.
+                    }
+
+                }
+                else
+                {
+
+                    if (nit_cliente_Cab.Trim() == "22222222222" || nit_cliente_Cab.Trim() == "222222222222") //consumidor final
+                    {
+                        nit_dian = "222222222";
+                        nit_validado = "222222222222"; //Identificacion debe ser 12 siempre
+                    }
+                    else
+                    {
+                        if (nit_cliente_Cab.Trim() == "2222222222")
+                        {
+                            nit_dian = "222222222";
+                            nit_validado = "222222222222"; //Identificacion debe ser 12 siempre
+                        }
+                        else
+                        {
+                            if (nit_cliente_Cab.Length > 10)
+                            {
+                                nit_dian = nit_cliente_Cab.Remove(10);
+                                nit_validado = nit_cliente_Cab.Trim();
+                            }
+                            else
+                            {
+                                nit_dian = nit_cliente_Cab.Trim();
+                                nit_validado = nit_cliente_Cab.Trim();
+                            }
+                        }
+
+                    }
+
+                }
+                return nit_dian;
+            }
+            catch (Exception e)
+            {
+
+                 guardarExcepcion.ClaseInsertarExcepcion(empresa, metodo, "ConsumidorFinal", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
     }
 }

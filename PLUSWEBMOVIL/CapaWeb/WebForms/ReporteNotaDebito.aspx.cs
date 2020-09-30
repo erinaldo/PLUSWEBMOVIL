@@ -69,7 +69,7 @@ namespace CapaWeb.WebForms
                 Int64 id = Int64.Parse(qs["Id"].ToString());
                 Ccf_nro_trans = id.ToString();
                 //cOSNULTA BUSCAR TIPO DE FACTURA
-                cod_proceso = "RCOMFELECT";
+                cod_proceso = "RCOMNDEB";
                 conscabcera = null;
                 conscabcera = buscarTipoFac(Ccf_nro_trans);
                 if (conscabcera.tipo_nce.Trim() == "NDV" )

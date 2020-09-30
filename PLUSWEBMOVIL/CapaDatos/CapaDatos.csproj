@@ -47,6 +47,7 @@
     <Compile Include="Modelos\modeloCajasCierre.cs" />
     <Compile Include="Modelos\modeloCargosDscGlobalesF.cs" />
     <Compile Include="Modelos\modeloCierreCaja.cs" />
+    <Compile Include="Modelos\modeloClientesproforma.cs" />
     <Compile Include="Modelos\modeloCodProcesoFactura.cs" />
     <Compile Include="Modelos\ModeloConcFiscal.cs" />
     <Compile Include="Modelos\ModeloCtasContables.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Modelos\modeloPagoProveedores.cs" />
     <Compile Include="Modelos\modeloPagosEfectivoFacturas.cs" />
     <Compile Include="Modelos\modeloParametrosPWM.cs" />
+    <Compile Include="Modelos\modeloproformadetalle.cs" />
     <Compile Include="Modelos\modeloRemisionesFactura.cs" />
     <Compile Include="Modelos\modeloRolesFacturacion.cs" />
     <Compile Include="Modelos\modeloRolModificarPrecio.cs" />
