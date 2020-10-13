@@ -226,7 +226,9 @@ namespace CapaDatos.Sql
                         item.error = Convert.ToString(dr["error"]);
                         item.json = Convert.ToString(dr["json"]);
                         item.result = Convert.ToString(dr["result"]);
-                        item.jsonrRespuesta = Convert.ToString(dr["jsonrRespuesta"]);                        
+                        item.jsonrRespuesta = Convert.ToString(dr["jsonrRespuesta"]); 
+                        item.fecha_mod = Convert.ToString(dr["fecha_mod"]);
+
                         lista.Add(item);
                     }
 
@@ -236,7 +238,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "RespuestaDC.cs", "ConsultaResQRDS", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "RespuestaDC.cs", "ConsultaResQRDS", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
 

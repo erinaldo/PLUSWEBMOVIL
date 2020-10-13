@@ -88,7 +88,11 @@ namespace CapaWeb.WebForms
                         string ComPwm = Request.Cookies["ComPwm"].Value;
 
                     }
-  
+                    if (Session["Ccf_tipo2_Pagos"] != null)
+                    {
+                        Session["Ccf_tipo2"] = Session["Ccf_tipo2_Pagos"].ToString();
+                    }
+
                     if (Session["valor_asignado1"] != null)
                     {
                         txt_nro_trans.Text = Session["valor_asignado1"].ToString();
@@ -97,7 +101,7 @@ namespace CapaWeb.WebForms
                         conscabcera = BuscarCabecera();
                         DecimalesMoneda = null;
                         DecimalesMoneda = BuscarDecimales(conscabcera.cod_moneda);
-                        
+
                         txt_total_factura.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), conscabcera.total);
                     }
                     if (Session["Tipo"] != null)
@@ -116,11 +120,8 @@ namespace CapaWeb.WebForms
                             Agregar_MedioPago.Visible = false;
                         }
                     }
-                    if(Session["Ccf_tipo2_Pagos"] != null)
-                    {
-                        Session["Ccf_tipo2_Pagos"] = Session["Ccf_tipo2"];
-                    }
-                        cargarListaDesplegables();
+
+                    cargarListaDesplegables();
                 }
             }
             catch (Exception ex)
@@ -139,7 +140,7 @@ namespace CapaWeb.WebForms
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Now;
             ModeloExcepcion.usuario_mod = AmUsrLog;
-            
+
             consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
             //mandar mensaje de error a label
             lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
@@ -768,7 +769,7 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
                 Session.Remove("valor_asignado1");
                 Session.Remove("Tipo");
-              
+
                 this.Page.Response.Write("<script language='JavaScript'>window.close('./MediosPagoPos.aspx', 'Medios Pago', 'top=100,width=800 ,height=600, left=400');</script>");
             }
 
@@ -779,6 +780,6 @@ namespace CapaWeb.WebForms
             }
         }
 
-      
+
     }
-    }
+}

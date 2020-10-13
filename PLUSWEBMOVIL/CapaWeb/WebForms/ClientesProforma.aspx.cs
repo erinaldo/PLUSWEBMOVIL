@@ -93,9 +93,9 @@ namespace CapaWeb.WebForms
                         Response.Cookies["ProcAud"].Value = cod_proceso;
                     }
                 }
-                if (Request.Cookies["nrotrans"] != null)
+                if (Request.Cookies["PedGen"] != null)
                 {
-                    nro_trans = Request.Cookies["nrotrans"].Value;
+                    nro_trans = Request.Cookies["PedGen"].Value;
                 }
             }
             catch (Exception ex)
@@ -194,7 +194,7 @@ namespace CapaWeb.WebForms
                             lbl_error.Text = ConsultaProformas.InsertarClienteProformasAFacturar(modeloClientesP);
                             if (!string.IsNullOrEmpty(lbl_error.Text))
                             {
-
+                                return;
                             }
                             lbl_mensaje.Text = "Carga finalizada";
                             rowm2++;

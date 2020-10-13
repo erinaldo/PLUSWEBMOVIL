@@ -85,12 +85,12 @@ namespace CapaProceso.Consultas
 
         }
         //Cliente  FACTURAR POR PROFORMA
-        public string ClienteProformasAFacturar(string usuario, string cod_emp, string nro_trans)
+        public modelowmspctitulares ClienteProformasAFacturar(string usuario, string cod_emp, string nro_trans)
         {
             try
             {
-               
-               string  lista = consultaProformas.ClienteProformasAFacturar(usuario, cod_emp, nro_trans);
+                modelowmspctitulares lista = new modelowmspctitulares();
+               lista = consultaProformas.ClienteProformasAFacturar(usuario, cod_emp, nro_trans);
 
                 return lista;
             }

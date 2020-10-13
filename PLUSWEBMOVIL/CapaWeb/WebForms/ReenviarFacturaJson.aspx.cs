@@ -304,12 +304,12 @@ namespace CapaWeb.WebForms
                         {
                             ConsumoRestFEV3 consumoRest1 = new ConsumoRestFEV3();
 
-                            respuesta = consumoRest1.EnviarFactura(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
+                            respuesta = consumoRest1.enviarPDF(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
                         }
                         else
                         {
                             ConsumoRestFEV3_PDF consumoRest1 = new ConsumoRestFEV3_PDF();
-                            respuesta = consumoRest1.EnviarFactura(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
+                            respuesta = consumoRest1.enviarPDF(ComPwm, AmUsrLog, "C", conscabcera.tipo_nce, lbl_nro_trans.Text);
                         }
                         break;
                     case "1":

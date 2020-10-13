@@ -188,6 +188,7 @@ namespace CapaWeb.WebForms
                     Session.Remove("sumaIva19");
                     Session.Remove("sumaIva15");
                     Session.Remove("Tipo");
+                    Session.Remove("Ccf_tipo2_NDA");
 
                     QueryString qs = ulrDesencriptada();
 
@@ -913,7 +914,7 @@ namespace CapaWeb.WebForms
                     //Aqui se va a traer que tipo de facturacion es
                     if (resolucion.tipo_fac == "S")
                     {
-                        Session["Ccf_tipo2"] = "NDVE";
+                        Session["Ccf_tipo2_NDA"] = "NDVE";
                         lbl_tipo_nd.Text = "NDVE";
                         DateTime hoy = DateTime.Today;
                         fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
@@ -921,7 +922,7 @@ namespace CapaWeb.WebForms
                     }
                     else
                     {
-                        Session["Ccf_tipo2"] = "NDV";
+                        Session["Ccf_tipo2_NDA"] = "NDV";
                         lbl_tipo_nd.Text = "NDV";
                         fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
                     }
@@ -1084,9 +1085,9 @@ namespace CapaWeb.WebForms
 
                 string Ccf_nro_trans = lbl_trans.Text;
                 conscabceraTipo = Trans_Padre(Ccf_nro_trans);
-                Session["Ccf_tipo2"] = conscabceraTipo.tipo_nce.Trim();
+                Session["Ccf_tipo2_NDA"] = conscabceraTipo.tipo_nce.Trim();
                 lbl_tipo_nd.Text = conscabceraTipo.tipo_nce.Trim();
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2_NDA"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 conscabcera = null;
                 foreach (modelowmtfacturascab item in listaConsCab)
                 {
@@ -1557,7 +1558,7 @@ namespace CapaWeb.WebForms
                 cabecerafactura.nro_audit = "0"; // por defecto va cero s disapra triger
                 cabecerafactura.ocompra = ocompra.Text;
                 cabecerafactura.cod_moneda = cmbCod_moneda.SelectedValue;
-                cabecerafactura.tipo = Session["Ccf_tipo2"].ToString();// "NCVE";
+                cabecerafactura.tipo = Session["Ccf_tipo2_NDA"].ToString();// "NCVE";
                 cabecerafactura.porc_descto = Convert.ToDecimal("0.00");
                 cabecerafactura.descuento = Convert.ToDecimal("0.00");
                 cabecerafactura.diar = "0";
@@ -1597,7 +1598,7 @@ namespace CapaWeb.WebForms
                 //Busca el nro de auditoria para poder insertar el detalle factura
                 //consulta nro_auditoria de la cabecera
                 string Ccf_nro_trans = lbl_trans.Text;
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2_NDA"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 int count = 0;
                 conscabcera = null;
                 foreach (modelowmtfacturascab item in listaConsCab)
@@ -1759,7 +1760,7 @@ namespace CapaWeb.WebForms
                     break;
                 }
                 //vERIFICAR TIPO NCVE O NCV
-                string tipo = Session["Ccf_tipo2"].ToString();
+                string tipo = Session["Ccf_tipo2_NDA"].ToString();
   
                     if (Session["listaFacturas"] == null)
                     {
@@ -2042,7 +2043,7 @@ namespace CapaWeb.WebForms
                 lbl_validacion.Visible = false;
                 bool fecha_validar = false;
                 DateTime Fecha_seleccion = Convert.ToDateTime(fecha.Text);
-                if (Session["Ccf_tipo2"].ToString() == "NDVE")
+                if (Session["Ccf_tipo2_NDA"].ToString() == "NDVE")
                 {
 
                     DateTime Fecha_actual = DateTime.Today;
@@ -2103,7 +2104,7 @@ namespace CapaWeb.WebForms
                 if (serie_docum.SelectedValue.Trim() == "serie")
                 {
                     mensaje.Text = "Seleccione una Serie Documento para continuar";
-                    Session.Remove("Ccf_tipo2");
+                    Session.Remove("Ccf_tipo2_NDA");
                     lbl_tipo_nd.Text = "";
                 }
                 else
@@ -2121,12 +2122,12 @@ namespace CapaWeb.WebForms
                     //Aqui se va a traer que tipo de facturacion es
                     if (resolucion.tipo_fac == "S")
                     {
-                        Session["Ccf_tipo2"] = "NDVE";
+                        Session["Ccf_tipo2_NDA"] = "NDVE";
                         lbl_tipo_nd.Text = "NDVE";
                     }
                     else
                     {
-                        Session["Ccf_tipo2"] = "NDV";
+                        Session["Ccf_tipo2_NDA"] = "NDV";
                         lbl_tipo_nd.Text = "NDV";
                     }
                 }

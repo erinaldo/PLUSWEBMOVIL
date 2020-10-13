@@ -154,6 +154,7 @@
     <Compile Include="FacturaMasiva\FacturaMasivaProforma.cs" />
     <Compile Include="FacturaMasiva\GenerarPDFDocumentos.cs" />
     <Compile Include="FacturaMasiva\NotaCreditoMasivaE.cs" />
+    <Compile Include="FacturaMasiva\ReenvioDocsElectronicos.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonFacturaElecVer3.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonPdfNCV2.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonPdfNCElectronica.cs" />

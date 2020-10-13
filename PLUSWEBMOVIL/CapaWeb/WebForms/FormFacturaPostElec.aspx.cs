@@ -240,7 +240,7 @@ namespace CapaWeb.WebForms
                     Session.Remove("sumaIva15");
                     Session.Remove("Tipo");
                     Session.Remove("valor_asignado1");
-                    Session.Remove("Ccf_tipo2");
+                    Session.Remove("Ccf_tipo2_POS");
                     DecimalesMoneda = null;
                     DecimalesMoneda = BuscarDecimales();
 
@@ -492,9 +492,9 @@ namespace CapaWeb.WebForms
 
                 string Ccf_nro_trans = lbl_trans.Text;
                 conscabceraTipo = buscarTipoFac(Ccf_nro_trans);
-                Session["Ccf_tipo2"] = conscabceraTipo.tipo_nce.Trim();
+                Session["Ccf_tipo2_POS"] = conscabceraTipo.tipo_nce.Trim();
                 lbl_tipofac.Text = conscabceraTipo.tipo_nce.Trim(); 
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2_POS"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 int count = 0;
                 conscabcera = null;
                 foreach (modelowmtfacturascab item in listaConsCab)
@@ -609,7 +609,7 @@ namespace CapaWeb.WebForms
                     //Aqui se va a traer que tipo de facturacion es
                     if (resolucion.tipo_fac == "S")
                     {
-                        Session["Ccf_tipo2"] = "POSE";
+                        Session["Ccf_tipo2_POS"] = "POSE";
                         lbl_tipofac.Text = "POSE";
                         fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
                         lbl_cod_suc_emp.Text = resolucion.cod_sucursal.Trim();
@@ -617,7 +617,7 @@ namespace CapaWeb.WebForms
                     }
                     else
                     {
-                        Session["Ccf_tipo2"] = "POS";
+                        Session["Ccf_tipo2_POS"] = "POS";
                         lbl_tipofac.Text = "POS";
                         fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
                         lbl_cod_suc_emp.Text = resolucion.cod_sucursal.Trim();
@@ -672,7 +672,7 @@ namespace CapaWeb.WebForms
         {
 
             listaConsCab = null;
-            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(),lbl_trans.Text, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2_POS"].ToString(),lbl_trans.Text, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
 
             conscabcera = null;
             foreach (modelowmtfacturascab item in listaConsCab)
@@ -807,7 +807,7 @@ namespace CapaWeb.WebForms
                     cabecerafactura.nro_audit = "0"; // por defecto va cero s disapra triger
                     cabecerafactura.ocompra = ocompra.Text;
                     cabecerafactura.cod_moneda = cmbCod_moneda.SelectedValue;
-                    cabecerafactura.tipo = Session["Ccf_tipo2"].ToString(); //tipo vtae
+                    cabecerafactura.tipo = Session["Ccf_tipo2_POS"].ToString(); //tipo vtae
                     cabecerafactura.porc_descto = Convert.ToDecimal("0.00");
                     cabecerafactura.descuento = Convert.ToDecimal("0.00");
                     cabecerafactura.diar = "0";
@@ -999,7 +999,7 @@ namespace CapaWeb.WebForms
                 //Busca el nro de auditoria para poder insertar el detalle factura
                 //consulta nro_auditoria de la cabecera
                 string Ccf_nro_trans = lbl_trans.Text;
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2_POS"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 int count = 0;
                 conscabcera = null;
                 foreach (modelowmtfacturascab item in listaConsCab)
@@ -1095,7 +1095,7 @@ namespace CapaWeb.WebForms
                 cabecerafactura.nro_audit = "0"; // por defecto va cero s disapra triger
                 cabecerafactura.ocompra = ocompra.Text;
                 cabecerafactura.cod_moneda = cmbCod_moneda.SelectedValue;
-                cabecerafactura.tipo = Session["Ccf_tipo2"].ToString(); //TIPO POSE
+                cabecerafactura.tipo = Session["Ccf_tipo2_POS"].ToString(); //TIPO POSE
                 cabecerafactura.porc_descto = Convert.ToDecimal("0.00");
                 cabecerafactura.descuento = Convert.ToDecimal("0.00");
                 cabecerafactura.diar = "0";
@@ -1938,7 +1938,7 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
 
                 listaConsCab = null;
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), lbl_trans.Text, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2_POS"].ToString(), lbl_trans.Text, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
 
                 conscabcera = null;
                 foreach (modelowmtfacturascab item in listaConsCab)
@@ -2300,7 +2300,7 @@ namespace CapaWeb.WebForms
                                     BloquearFacturaPagos();
                                     Session["Tipo"] = Session["Tipo_Trans"];
                                     Session["valor_asignado1"] = lbl_trans.Text;
-                                    Session["Ccf_tipo2_Pagos"] = Session["Ccf_tipo2"];
+                                    Session["Ccf_tipo2_Pagos"] = Session["Ccf_tipo2_POS"];
                                     this.Page.Response.Write("<script language='JavaScript'>window.open('./MediosPagoPos.aspx', 'Medios Pago', 'top=100,width=900 ,height=500, left=500');</script>");
 
                                 }
@@ -2362,7 +2362,7 @@ namespace CapaWeb.WebForms
                 lbl_validacion.Visible = false;
                 bool fecha_validar = false;
                 DateTime Fecha_seleccion = Convert.ToDateTime(fecha.Text);
-                if (Session["Ccf_tipo2"].ToString() == "POSE")
+                if (Session["Ccf_tipo2_POS"].ToString() == "POSE")
                 {
 
                     DateTime Fecha_actual = DateTime.Today;
@@ -2469,7 +2469,7 @@ namespace CapaWeb.WebForms
                 if (serie_docum.SelectedValue.Trim() == "serie")
                 {
                     mensaje.Text = "Seleccione una Serie Documento para poder Facturar";
-                    Session.Remove("Ccf_tipo2");
+                    Session.Remove("Ccf_tipo2_POS");
                     lbl_tipofac.Text = "";
                 }
                 else
@@ -2485,12 +2485,12 @@ namespace CapaWeb.WebForms
                     }
                     if (resolucion.tipo_fac == "S")
                     {
-                        Session["Ccf_tipo2"] = "POSE";
+                        Session["Ccf_tipo2_POS"] = "POSE";
                         lbl_tipofac.Text = "POSE";
                     }
                     else
                     {
-                        Session["Ccf_tipo2"] = "POS";
+                        Session["Ccf_tipo2_POS"] = "POS";
                         lbl_tipofac.Text = "POS";
                     }
                 }

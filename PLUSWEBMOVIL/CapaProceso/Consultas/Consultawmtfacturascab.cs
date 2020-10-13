@@ -82,7 +82,101 @@ namespace CapaProceso.Consultas
                 return null;
             }
         }
+        //BUSQUEDA DOCUMENTOS COMERCIALES ELECTRONICOS Y POR COMPUTADOR PARA DESCARGAR POR SUCURSAL
+        //Busqueda de facturas por sucursal
+        public List<modelowmtfacturascab> ConsultaDocsXSucursal(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string Ccf_estado, string Ccf_cliente, string Ccf_cod_docum, string Ccf_serie_docum, string Ccf_nro_docum, string Ccf_diai, string Ccf_mesi, string Ccf_anioi, string Ccf_diaf, string Ccf_mesf, string Ccf_aniof, string cod_sucursal, string tipo_doc)
+        {
+            try
+            {
+                ConsultaSaldosFacturas BuscarElec = new ConsultaSaldosFacturas();
+                List<modelowmtfacturascab> lista = new List<modelowmtfacturascab>();
+                List<modelowmtfacturascab> listaAux = new List<modelowmtfacturascab>();
+                modeloFacturasElecSaldos modeloFacturasElecSaldos = new modeloFacturasElecSaldos();
+                //Traer todas las facturas con los filtros necesarios de esa empresa
+                lista = consulta.ConsultaFacturaNroTran(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                if (tipo_doc.Trim() == "ELE")
+                {
+                    foreach (var item in lista)
+                    {
 
+                        modeloFacturasElecSaldos = BuscarElec.BuscartaFacEleSaldos(item.cod_cliente, Ccf_cod_emp, item.serie_docum.Trim(), item.nro_docum.Trim());
+                        if (modeloFacturasElecSaldos.cufe != null && modeloFacturasElecSaldos.cod_suc_emp.Trim() == cod_sucursal.Trim())
+                        {
+                                listaAux.Add(item);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var item in lista)
+                    {
+                        if (item.cod_sucursal.Trim() == cod_sucursal.Trim() && item.estado=="F")//Filtrar por sucursal.
+                        {
+                            listaAux.Add(item);
+                        }
+                        if (item.cod_sucursal.Trim() == cod_sucursal.Trim() && item.estado == "c")//Filtrar por sucursal.
+                        {
+                            listaAux.Add(item);
+                        }
+                    }
+                }
+                
+               
+                return listaAux;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "ConsultaDocsXSucursal", e.ToString(), DateTime.Now, Ccf_usuario);
+                return null;
+            }
+        }
+
+        //Consulta documentos electronicos estado contabilizado para reenviar a la DIAN
+        public List<modelowmtfacturascab> ConsultaDocsElectronicosXSucursal(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans, string Ccf_estado, string Ccf_cliente, string Ccf_cod_docum, string Ccf_serie_docum, string Ccf_nro_docum, string Ccf_diai, string Ccf_mesi, string Ccf_anioi, string Ccf_diaf, string Ccf_mesf, string Ccf_aniof, string cod_sucursal)
+        {
+            try
+            {
+
+                List<modelowmtfacturascab> lista = new List<modelowmtfacturascab>();
+                List<modelowmtfacturascab> listaAux = new List<modelowmtfacturascab>();
+                //Traer todas las facturas con los filtros necesarios de esa empresa
+                lista = consulta.ConsultaFacturaNroTran(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                if (Ccf_tipo2.Trim() == "NC")
+                {
+                    foreach (var item in lista)
+                    {
+                        if(item.tipo =="NCVE" || item.tipo =="NCME")
+                        {
+                            if (item.cod_sucursal.Trim() == cod_sucursal.Trim())//Filtrar por sucursal.
+                            {
+                                listaAux.Add(item);
+                            }
+                            
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var item in lista)
+                    {
+                       
+                        if (item.cod_sucursal.Trim() == cod_sucursal.Trim())//Filtrar por sucursal.
+                        {
+                            listaAux.Add(item);
+                        }
+                    }
+                }
+
+                return listaAux;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "ConsultaDocsElectronicosXSucursa", e.ToString(), DateTime.Now, Ccf_usuario);
+                return null;
+            }
+        }
         public List<modelowmtfacturascab> ConsultaTipoFactura(string nro_trans)
         {
             try

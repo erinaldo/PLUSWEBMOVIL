@@ -11,10 +11,11 @@ using System.IO;
 using System.Text;
 using CapaDatos.Sql;
 using CapaProceso.FacturaMasiva;
+using Ionic.Zip;
 
 namespace CapaWeb.WebForms
 {
-    public partial class FormDocumentosElectronicos : System.Web.UI.Page
+    public partial class BuscarDocEleMasivo : System.Web.UI.Page
     {
         Consultaestadosfactura Consultaestados = new Consultaestadosfactura();
         List<modeloestadosfactura> Listaestados = null;
@@ -32,6 +33,7 @@ namespace CapaWeb.WebForms
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
 
         List<modelowmtfacturascab> listaConsCab = null;
+        List<modelowmtfacturascab> listaPathPdf = null;
         modelowmtfacturascab conscabcera = new modelowmtfacturascab();
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
 
@@ -103,8 +105,6 @@ namespace CapaWeb.WebForms
 
                     fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
                     fechafin.Text = DateTime.Today.ToString("yyyy-MM-dd");
-
-                    CargarRolesUsuario();
                     //Cargar la sucursal del usuario logeado
                     ListaModeloUsuarioSucursal = ConsultaUsuxSuc.UnicoUsuarioSucursal(ComPwm, AmUsrLog, ""); //Solo se envia empresa y usuario
                     if (ListaModeloUsuarioSucursal.Count == 0)
@@ -132,89 +132,18 @@ namespace CapaWeb.WebForms
         }
         public void GuardarExcepciones(string metodo, string error)
         {
-           
+
             ModeloExcepcion.cod_emp = ComPwm;
-            ModeloExcepcion.proceso = "FormDocumentosElectronicos.aspx";
+            ModeloExcepcion.proceso = "BuscarDocEleMasivo.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Now;
             ModeloExcepcion.usuario_mod = AmUsrLog;
-           
             consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
             //mandar mensaje de error a label
             lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
 
         }
-        private void CargarRolesUsuario()
-        {
-            try
-            {
-                lbl_error.Text = "";
-
-                //Rol acceso a la pantalla de Buscar facturas
-                ListaModelosRoles = ConsultaRoles.BuscarAccesoFactura(AmUsrLog);
-                int count2 = 0;
-                foreach (var item in ListaModelosRoles)
-                {
-                    count2++;
-                }
-
-                if (count2 == 0)
-                {
-                    txtAcceso.Visible = true;
-                }
-
-                //Rol editar factura
-                ListaModelosRoles = ConsultaRoles.BuscarRolEditar(AmUsrLog);
-                int count3 = 0;
-                foreach (var item in ListaModelosRoles)
-                {
-                    count3++;
-                }
-
-                if (count3 == 0)
-                {
-                    Grid.Columns[6].Visible = false;
-                }
-
-                //Rol eliminar factura
-                ListaModelosRoles = ConsultaRoles.BuscarRolEditar(AmUsrLog);
-                int count4 = 0;
-                foreach (var item in ListaModelosRoles)
-                {
-                    count4++;
-                }
-
-                if (count4 == 0)
-                {
-                    Grid.Columns[7].Visible = false;
-                }
-
-                //Rol imprimir factura
-                ListaModelosRoles = ConsultaRoles.BuscarRolEditar(AmUsrLog);
-                int count5 = 0;
-                foreach (var item in ListaModelosRoles)
-                {
-                    count5++;
-                }
-
-                if (count5 == 0)
-                {
-                    Grid.Columns[8].Visible = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("CargarRolesUsuario", ex.ToString());
-
-
-            }
-
-
-        }
-        
-      
-
 
         protected void Grid_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
         {
@@ -232,20 +161,43 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
                 DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
                 DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
-                string Ccf_cliente = txtCliente.Text;
-                string Ccf_tipo2 = cbx_tipo_doc.SelectedValue;
-                string Ccf_serie_docum = txtSerie.Text;
-                string Ccf_nro_docum = txtDocumento.Text;
                 string Ccf_estado = "F";
+                string Ccf_cliente = "0";
+                string Ccf_serie_docum = "xxx";
+                string Ccf_nro_docum = "0";
                 string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);
                 string Ccf_mesi = string.Format("{0:00}", Fechainicio.Month);
                 string Ccf_anioi = Fechainicio.Year.ToString();
                 string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
                 string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
                 string Ccf_aniof = Fechafin.Year.ToString();
+                if(cbx_tipo1.SelectedValue =="NOR")
+                {
+                    if(cbx_tipo_doc.SelectedValue =="VTAE")
+                    {
+                        Ccf_tipo2 = "VTA";
+                    }
+                    if (cbx_tipo_doc.SelectedValue == "POSE")
+                    {
+                        Ccf_tipo2 = "POS";
+                    }
+                    if (cbx_tipo_doc.SelectedValue == "NDVE")
+                    {
+                        Ccf_tipo2 = "NDV";
+                    }
+                    if (cbx_tipo_doc.SelectedValue == "NC")
+                    {
+                        Ccf_tipo2 = "NC";
+                    }
+                    Ccf_estado ="0";
+                }
+                else
+                {
+                    Ccf_estado = "F";
+                    Ccf_tipo2 = cbx_tipo_doc.SelectedValue.Trim();
+                }
 
-
-                listaConsCab = ConsultaCabe.ConsultaFacturaXSucursal(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof, lbl_cod_suc.Text.Trim());
+                listaConsCab = ConsultaCabe.ConsultaDocsXSucursal(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof, lbl_cod_suc.Text.Trim(), cbx_tipo1.SelectedValue.Trim());
                 Grid.DataSource = listaConsCab;
                 Grid.DataBind();
                 Grid.Height = 100;
@@ -256,45 +208,7 @@ namespace CapaWeb.WebForms
                 GuardarExcepciones("CargarGrilla", ex.ToString());
 
             }
-
-
-
         }
-
-        protected void Buscar_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                lbl_error.Text = "";
-                DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
-                DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
-                string Ccf_estado = "F";
-                string Ccf_tipo2 = cbx_tipo_doc.SelectedValue;
-                string Ccf_cliente = txtCliente.Text;
-                string Ccf_serie_docum = txtSerie.Text;
-                string Ccf_nro_docum = txtDocumento.Text;
-                string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);
-                string Ccf_mesi = string.Format("{0:00}", Fechainicio.Month);
-                string Ccf_anioi = Fechainicio.Year.ToString();
-                string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
-                string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
-                string Ccf_aniof = Fechafin.Year.ToString();
-
-
-                listaConsCab = ConsultaCabe.ConsultaFacturaXSucursal(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof,lbl_cod_suc.Text.Trim());
-                Grid.DataSource = listaConsCab;
-                Grid.DataBind();
-                Grid.Height = 100;
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("Buscar_Click", ex.ToString());
-
-            }
-        }
-
-
-
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
             try
@@ -340,7 +254,7 @@ namespace CapaWeb.WebForms
                             switch (estadoM)
                             {
                                 case "FINALIZADO":
-                                
+
                                     string pathPdf = "";
                                     string StringXml = ModeloResQr.xml;
                                     string pathTemporal = Modelowmspclogo.pathtmpfac;
@@ -348,7 +262,7 @@ namespace CapaWeb.WebForms
                                     string pathXml = pathTemporal + nombreXml;
                                     File.WriteAllText(pathXml, StringXml);
 
-                                    if (conscabcera.tipo_nce =="NCVE" || conscabcera.tipo_nce == "NCME")
+                                    if (conscabcera.tipo_nce == "NCVE" || conscabcera.tipo_nce == "NCME")
                                     {
                                         //Tipo NCE siempre trae lleno cuando es nc
                                         cod_proceso = "RCOMNCELEC";
@@ -404,7 +318,7 @@ namespace CapaWeb.WebForms
                             switch (estadoM)
                             {
                                 case "FINALIZADO":
-                                    
+
                                     string pathPdf = "";
                                     string StringXml = ModeloResQr.xml;
                                     string pathTemporal = Modelowmspclogo.pathtmpfac;
@@ -443,7 +357,7 @@ namespace CapaWeb.WebForms
 
                                     Boolean error = enviarcorreocliente.EnviarCorreoCliente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Id.ToString(), pathPdf, pathXml);
 
-                                  if(error==false)
+                                    if (error == false)
                                     {
                                         lbl_error.Text = "Ocurrio un problema al enviar por favor verifique que el documento sea electronico y las credenciales";
                                     }
@@ -451,7 +365,7 @@ namespace CapaWeb.WebForms
                                     {
                                         lbl_error.Text = "Se envío correctamente el documento";
                                     }
-                                        break;
+                                    break;
                                 default:
                                     this.Page.Response.Write("<script language='JavaScript'>window.alert('SU DOCUMENTO ESTA " + estadoM + "')+ error;</script>");
                                     break;
@@ -470,7 +384,7 @@ namespace CapaWeb.WebForms
 
 
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -520,31 +434,6 @@ namespace CapaWeb.WebForms
             }
 
 
-        }
-
-        public modelowmtfacturascab buscarCabezeraFactura(string Ccf_cod_emp, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
-        {
-            try
-            {
-                lbl_error.Text = "";
-
-
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-                int count = 0;
-                conscabcera = null;
-                foreach (modelowmtfacturascab item in listaConsCab)
-                {
-                    count++;
-                    conscabcera = item;
-
-                }
-                return conscabcera;
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("buscarCabezeraFactura", ex.ToString());
-                return null;
-            }
         }
 
 
@@ -729,5 +618,111 @@ namespace CapaWeb.WebForms
 
             }
         }
+
+        protected void Buscar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CargarGrilla();
+                if (listaConsCab.Count > 0)
+                {
+                    lbl_fac_txt.Visible = true;
+                    lbl_tot_doc.Visible = true;
+                    lbl_tot_doc.Text = listaConsCab.Count.ToString();
+                    btn_descargar.Visible = true;
+                }
+                else
+                {
+                    lbl_fac_txt.Visible = false;
+                    lbl_tot_doc.Visible = false;
+                    lbl_tot_doc.Text = "";
+                    btn_descargar.Visible = false;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                GuardarExcepciones("Buscar_Click", ex.ToString());
+
+            }
+        }
+
+       
+        protected void btn_descargar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CargarGrilla();
+                if (listaConsCab.Count > 0)
+                {
+                    using (ZipFile zip = new ZipFile())
+                    {
+
+                        foreach (var item in listaConsCab)
+                        {
+
+
+                            string pathPdf1 = null;
+                            if (cbx_tipo1.SelectedValue == "NOR")
+                            {
+                                if (cbx_tipo_doc.SelectedValue == "POSE" || cbx_tipo_doc.SelectedValue == "VTAE")
+                                {
+                                    cod_proceso = "RCOMFELECT";
+                                    pathPdf1 = generer_pdfElectronico.GenerarPDFFacturaNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, item.tipo.Trim(), item.nro_trans.Trim());
+                                }
+                                if (cbx_tipo_doc.SelectedValue == "NC")
+                                {
+                                    cod_proceso = "RCOMNCELEC";
+                                    pathPdf1 = generer_pdfElectronico.GenerarPDFNotaCreditoNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, item.tipo.Trim(), item.nro_trans.Trim());
+                                }
+                                if (cbx_tipo_doc.SelectedValue == "NDVE")
+                                {
+                                    cod_proceso = "RCOMNDEB";
+                                    pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, item.tipo.Trim(), item.nro_trans.Trim());
+                                }
+                            }
+                            else
+                            {
+                                if (cbx_tipo_doc.SelectedValue == "POSE" || cbx_tipo_doc.SelectedValue == "VTAE")
+                                {
+                                    cod_proceso = "RCOMFELECT";
+                                    pathPdf1 = generer_pdfElectronico.GenerarPDFFacturaElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, item.tipo.Trim(), item.nro_trans.Trim());
+                                }
+                                if (cbx_tipo_doc.SelectedValue == "NC")
+                                {
+                                    cod_proceso = "RCOMNCELEC";
+                                    pathPdf1 = generer_pdfElectronico.GenerarPDFNotaCreditoElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, item.tipo.Trim(), item.nro_trans.Trim());
+                                }
+                                if (cbx_tipo_doc.SelectedValue == "NDVE")
+                                {
+                                    cod_proceso = "RCOMNDEB";
+                                    pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, item.tipo.Trim(), item.nro_trans.Trim());
+                                }
+                            }
+                            var nombre_archivo = Path.GetFileName(pathPdf1);
+                            var archivo_byte = File.ReadAllBytes(pathPdf1);
+                            zip.AddEntry(nombre_archivo, archivo_byte);
+
+                        }
+                        var nombre_zip = "DocumentosComerciales.zip";
+                        using (MemoryStream output = new MemoryStream())
+                        {
+                            zip.Save(Response.OutputStream);
+
+                        }
+                        Response.AppendHeader("content-disposition", "attachment; filename=" +nombre_zip);
+                        Response.ContentType = "application/zip";
+                        Response.End();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("btn_descargar_Click", ex.ToString());
+
+            }
+        }
     }
+
 }

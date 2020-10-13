@@ -112,7 +112,7 @@ namespace CapaProceso.FacturaMasiva
                     pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                     break;
                 case "DEFECTO4":
-                    PdfFacEleV3Default3 pdf1 = new PdfFacEleV3Default3();
+                    PdfFacEleV3Default4 pdf1 = new PdfFacEleV3Default4();
                     pathPdf = pdf1.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                     break;
                 case "DEFECTO3":

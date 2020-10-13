@@ -24,11 +24,12 @@ namespace CapaDatos.Sql
                 using (cn = conexion.genearConexion())
                 {
                     Boolean existe = false;
-                    string consulta = "SELECT * FROM wmt_facturas_cab WHERE nro_trans =@nro_trans";
+                    string consulta = "SELECT * FROM wmt_facturas_cab WHERE nro_trans =@nro_trans and cod_emp=@cod_emp";
 
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
 
                     SqlDataReader dr = conmand.ExecuteReader();
 

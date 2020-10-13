@@ -21,21 +21,23 @@ namespace CapaDatos.Modelos
         public string StatusCode { get; set; }
         public List<Respuesta> Respuesta { get; set; }
     }
-        public class JsonRespuestaDSFEV2
+    public class JsonRespuestaDSFEV2
     {
-            public string qrdata { get; set; }
+        public string qrdata { get; set; }
         public List<DIAN> DIAN { get; set; }
         public string xml { get; set; }
-            public string id { get; set; }
-            public string cufe { get; set; }
-            public string error { get; set; }
-            public string json { get; set; }
+        public string id { get; set; }
+        public string cufe { get; set; }
+        public string error { get; set; }
+        public string json { get; set; }
         public string jsonrRespuesta { get; set; }
         public string nro_trans { get; set; }
-            public int linea { get; set; }
-            public string result { get; set; }
+        public int linea { get; set; }
+        public string result { get; set; }
         public bool respuestaerror { get; set; }
+        public string fecha_mod { get; set; }
     }
+    
 }
 
    

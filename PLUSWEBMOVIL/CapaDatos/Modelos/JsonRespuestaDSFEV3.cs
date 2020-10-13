@@ -37,6 +37,7 @@ namespace CapaDatos.Modelos
         public string result { get; set; }
         public string adjunto { get; set; }
         public bool respuestaerror { get; set; }
+        public string fecha_mod { get; set; }
     }
 
 }

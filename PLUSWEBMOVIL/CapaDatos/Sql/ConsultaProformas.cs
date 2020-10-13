@@ -295,7 +295,7 @@ namespace CapaDatos.Sql
             {
                 cn = conexion.genearConexion();
 
-                string insert = "INSERT INTO  wmt_proformas_tit (nro_trans, cod_emp, cod_cliente, fecha_mod, estado) VALUES (@nro_trans, @cod_emp,@cod_cliente, @fecha_mod,@estado)";
+                string insert = "INSERT INTO  wmt_proformas_tit (nro_trans, cod_emp, cod_cliente, fecha_mod, estado, cod_suc_cli) VALUES (@nro_trans, @cod_emp,@cod_cliente, @fecha_mod,@estado, @cod_suc_cli)";
                 SqlCommand conmand = new SqlCommand(insert, cn);
                 
                 conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = detalleFactura.nro_trans;
@@ -303,6 +303,7 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = detalleFactura.cod_cliente;
                 conmand.Parameters.Add("@fecha_mod", SqlDbType.DateTime).Value = detalleFactura.fecha_mod;
                 conmand.Parameters.Add("@estado", SqlDbType.VarChar).Value = detalleFactura.estado;
+                conmand.Parameters.Add("@cod_suc_cli", SqlDbType.VarChar).Value = detalleFactura.cod_suc_cli;
 
                 int dr = conmand.ExecuteNonQuery();
                 cn.Close();
@@ -317,15 +318,15 @@ namespace CapaDatos.Sql
 
         }
 
-        //Trae cliente activo para facturar proforma
-        public string ClienteProformasAFacturar(string usuario, string cod_emp, string nro_trans)
+        //Trae cliente sucursal activo para facturar proforma
+        public modelowmspctitulares ClienteProformasAFacturar(string usuario, string cod_emp, string nro_trans)
         {
             try
             {
                 using (cn = conexion.genearConexion())
                 {
-                    string cliente = null;
-                    string consulta = ("select TOP 1 cod_cliente from wmt_proformas_tit where estado= 'A' and nro_trans =@nro_trans");
+                    modelowmspctitulares clientes_suc = new modelowmspctitulares();
+                    string consulta = ("select TOP 1 cod_cliente,cod_suc_cli,nro_id from wmt_proformas_tit where estado= 'A' and nro_trans =@nro_trans");
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
 
@@ -333,9 +334,12 @@ namespace CapaDatos.Sql
                     SqlDataReader dr = conmand.ExecuteReader();
                     while (dr.Read())
                     {
-                      cliente = Convert.ToString(dr["cod_cliente"]); 
+                       
+                        clientes_suc.cod_tit = Convert.ToString(dr["cod_cliente"]); 
+                        clientes_suc.cod_sucursal = Convert.ToString(dr["cod_suc_cli"]);
+                        clientes_suc.nro_id = Convert.ToString(dr["nro_id"]);
                     }
-                    return cliente;
+                    return clientes_suc;
                 }
             }
             catch (Exception e)

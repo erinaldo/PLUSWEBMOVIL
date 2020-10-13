@@ -22,8 +22,8 @@ namespace CapaWeb.WebForms
         FacturaMasivaProforma carga = new FacturaMasivaProforma();
         List<modeloClientesproforma> lista = null;
         modeloClientesproforma modeloClientes = new modeloClientesproforma();
-     
 
+        modelowmspctitulares clientes_suc = new modelowmspctitulares();
         Consultawmspcresfact ConsultaResolucion = new Consultawmspcresfact();
         modelowmspcresfact resolucion = new modelowmspcresfact();
         List<modelowmspcresfact> listaRes = null;
@@ -302,19 +302,20 @@ namespace CapaWeb.WebForms
 
                 //tareas a realizar poner todo el codigo para facturar electronicamente
                 string error_fac = null;
-                string cod_cliente_fac = ConsultaProformas.ClienteProformasAFacturar(AmUsrLog, ComPwm, nro_trans_pro_sele.Text.Trim());
+                
+                clientes_suc = ConsultaProformas.ClienteProformasAFacturar(AmUsrLog, ComPwm, nro_trans_pro_sele.Text.Trim());
 
                 try
                 {
-                    if (cod_cliente_fac != "")
+                    if (!string.IsNullOrEmpty(clientes_suc.cod_tit.Trim()))
                     {
-                       error_fac= carga.GenerarFactura(AmUsrLog, ComPwm, lbl_cod_suc.Text.Trim(), cod_cliente_fac.Trim(), nro_trans_pro_sele.Text.Trim(), cbx_moneda.SelectedValue.Trim());
+                       error_fac= carga.GenerarFactura(AmUsrLog, ComPwm, lbl_cod_suc.Text.Trim(), clientes_suc.cod_tit.Trim(),clientes_suc.cod_sucursal.Trim(), nro_trans_pro_sele.Text.Trim(), cbx_moneda.SelectedValue.Trim(), clientes_suc.nro_id.Trim());
                        
                         if (!string.IsNullOrEmpty(error_fac))
                         {
                             carga.ActualizarErrorProformaTit(AmUsrLog, ComPwm, "E", nro_trans_pro_sele.Text.Trim());//Estado E cuando ocurre un error 
 
-                            lbl_error_factura.Text = error_fac + " Cliente: " + cod_cliente_fac;
+                            lbl_error_factura.Text = error_fac + " Cliente: " + clientes_suc.cod_tit + " sucursal: "+ clientes_suc.cod_sucursal;
                             lbl_error_factura.Visible = true;
                             return;
 

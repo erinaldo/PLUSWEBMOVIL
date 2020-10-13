@@ -115,14 +115,14 @@ namespace CapaProceso.FacturaMasiva
         public string Tipo_proforma = "PV";
         public string tipo_factura = null;
 
-        public string GenerarFactura(string Ccf_usuario, string Ccf_cod_emp, string cod_sucursal, string cod_cliente, string nro_trans_pro, string cod_moneda)
+        public string GenerarFactura(string Ccf_usuario, string Ccf_cod_emp, string cod_sucursal, string cod_cliente, string cod_suc_cli, string nro_trans_pro, string cod_moneda, string nro_id_cli)
         {
             try
             {
                 string error = null;
             
                 //Insertar en la cabecera de la factura
-               error =  InsertarCabecera(Ccf_usuario, Ccf_cod_emp, cod_cliente, cod_sucursal, nro_trans_pro,cod_moneda );
+               error =  InsertarCabecera(Ccf_usuario, Ccf_cod_emp, cod_cliente,cod_suc_cli, cod_sucursal, nro_trans_pro,cod_moneda );
                 if(string.IsNullOrEmpty(error))
                 {
                      //Referencia cruzada ---insertar detallle factura
@@ -132,7 +132,7 @@ namespace CapaProceso.FacturaMasiva
 
                         ModeloDetalleFactura = new List<ModeloDetalleFactura>();
                         //Finalizar factura
-                       error= FinalizarFactura(Ccf_usuario, Ccf_cod_emp, nro_trans_pro.Trim());
+                       error= FinalizarFactura(Ccf_usuario, Ccf_cod_emp, nro_trans_pro.Trim(), nro_id_cli.Trim());
                         if (!string.IsNullOrEmpty(error))
                         {
                             return error;
@@ -154,13 +154,13 @@ namespace CapaProceso.FacturaMasiva
             {
 
                 guardarExcepcion.ClaseInsertarExcepcion(Ccf_cod_emp, metodo, "GenerarFactura", e.ToString(), DateTime.Now, Ccf_usuario);
-                return null;
+                return e.ToString();
             }
         }
 
         //Insertar cabecera----------------------------FACTURACION MASIVA MEDIANTE PROFORMA--------------------------------
 
-        public string  InsertarCabecera(string AmUsrLog, string ComPwm, string cod_cliente, string cod_sucursal, string nro_trans_pro, string cod_moneda)
+        public string  InsertarCabecera(string AmUsrLog, string ComPwm, string cod_cliente,string cod_suc_cli, string cod_sucursal, string nro_trans_pro, string cod_moneda)
         {
             try
             {
@@ -200,11 +200,11 @@ namespace CapaProceso.FacturaMasiva
                     break;
                 }
 
-                //obtener cliente
+                //obtener cliente por sucursal 
                 string error = "";
                 string Ven__cod_tit = cod_cliente;
 
-                listaClientes = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, "0");
+                listaClientes = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, cod_suc_cli.Trim());
 
                 clientes = null;
                 foreach (modelowmspctitulares item in listaClientes)
@@ -380,7 +380,7 @@ namespace CapaProceso.FacturaMasiva
         }
 
         //FINALIZAR FACTURA
-        public string FinalizarFactura(string AmUsrLog, string ComPwm, string nro_trans_pro)
+        public string FinalizarFactura(string AmUsrLog, string ComPwm, string nro_trans_pro, string nro_id_cli)
         {
             try
             {
@@ -431,13 +431,13 @@ namespace CapaProceso.FacturaMasiva
                             mensaje = "Su factura fue procesada exitosamente";
                             GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
                             //Cambiar a estado 'F'(procesado) en wmt_proformas_tit
-                            ActualizarEstadoProformaTit(AmUsrLog, ComPwm, nro_trans_pro.Trim(), "F", conscabcera.cod_cliente.Trim());
+                            ActualizarEstadoProformaTit(AmUsrLog, ComPwm, nro_trans_pro.Trim(), "F", nro_id_cli.Trim());
                         }
                         else
                         {
                             GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
                             //Cambiar a estado 'F'(procesado) en wmt_proformas_tit
-                            ActualizarEstadoProformaTit(AmUsrLog, ComPwm, nro_trans_pro.Trim(), "F", conscabcera.cod_cliente.Trim());
+                            ActualizarEstadoProformaTit(AmUsrLog, ComPwm, nro_trans_pro.Trim(), "F", nro_id_cli.Trim());
                             return error_finalizar = respuesta;
                         }
                     }
@@ -446,7 +446,7 @@ namespace CapaProceso.FacturaMasiva
                     {
 
                         //Cambiar a estado 'F'(procesado) en wmt_proformas_tit
-                        ActualizarEstadoProformaTit(AmUsrLog, ComPwm, nro_trans_pro.Trim(), "F", conscabcera.cod_cliente.Trim());
+                        ActualizarEstadoProformaTit(AmUsrLog, ComPwm, nro_trans_pro.Trim(), "F", nro_id_cli.Trim());
                         return error_finalizar = respuestaConfirmacionFAC;
                     }
                 }
@@ -456,12 +456,12 @@ namespace CapaProceso.FacturaMasiva
                     {
                         string men_fn = "Finalizado";
                         //Cambiar a estado 'F'(procesado) en wmt_proformas_tit
-                        ActualizarEstadoProformaTit(AmUsrLog, ComPwm, nro_trans_pro.Trim(), "F", conscabcera.cod_cliente.Trim());
+                        ActualizarEstadoProformaTit(AmUsrLog, ComPwm, nro_trans_pro.Trim(), "F", nro_id_cli.Trim());
                     }
                     else
                     {
                         //Cambiar a estado 'F'(procesado) en wmt_proformas_tit
-                        ActualizarEstadoProformaTit(AmUsrLog, ComPwm, nro_trans_pro.Trim(), "F", conscabcera.cod_cliente.Trim());
+                        ActualizarEstadoProformaTit(AmUsrLog, ComPwm, nro_trans_pro.Trim(), "F", nro_id_cli.Trim());
                         return error_finalizar = respuestaConfirmacionFAC;
                     }
                 }
@@ -512,7 +512,7 @@ namespace CapaProceso.FacturaMasiva
                 {
 
 
-                    string consulta = "UPDATE wmt_proformas_tit SET estado=@estado_fac WHERE nro_trans=@nro_trans and cod_emp =@cod_emp ";
+                    string consulta = "UPDATE wmt_proformas_tit SET estado=@estado_fac WHERE nro_trans=@nro_trans and cod_emp =@cod_emp and estado ='A' ";
                     SqlCommand conmand = new SqlCommand(consulta, cn);
                     conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
                     conmand.Parameters.Add("@estado_fac", SqlDbType.VarChar).Value = estado_fac;
@@ -527,12 +527,12 @@ namespace CapaProceso.FacturaMasiva
             {
 
                 guardarExcepcion.ClaseInsertarExcepcion(ArtB__cod_emp, metodo, "ActualizarErrorProformaTit", e.ToString(), DateTime.Now, ArtB__usuario);
-                return null;
+                return e.ToString();
             }
         }
 
-        //Actualizar estado proforma wmt_proformas_tit
-        public string ActualizarEstadoProformaTit(string ArtB__usuario, string ArtB__cod_emp, string nro_trans, string estado_fac, string cod_cliente)
+        //Actualizar estado proforma wmt_proformas_tit por clinte y sucursal
+        public string ActualizarEstadoProformaTit(string ArtB__usuario, string ArtB__cod_emp, string nro_trans, string estado_fac, string nro_id)
         {
             try
             {
@@ -541,13 +541,14 @@ namespace CapaProceso.FacturaMasiva
                 {
 
 
-                    string consulta = "UPDATE wmt_proformas_tit SET estado=@estado_fac WHERE nro_trans =@nro_trans and cod_emp =@cod_emp and cod_cliente =@cod_cliente ";
+                    string consulta = "UPDATE wmt_proformas_tit SET estado=@estado_fac WHERE nro_trans =@nro_trans and nro_id=@nro_id ";
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
                     conmand.Parameters.Add("@estado_fac", SqlDbType.VarChar).Value = estado_fac;
                     conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = ArtB__cod_emp;
-                    conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = cod_cliente;
+                    conmand.Parameters.Add("@nro_id", SqlDbType.VarChar).Value = nro_id;
+                    
                     int dr = conmand.ExecuteNonQuery();
                     return "";
                 }
@@ -557,7 +558,7 @@ namespace CapaProceso.FacturaMasiva
             {
 
                 guardarExcepcion.ClaseInsertarExcepcion(ArtB__cod_emp, metodo, "ActualizarEstadoProformaTit", e.ToString(), DateTime.Now, ArtB__usuario);
-                return null;
+                return e.ToString();
             }
         }
 

@@ -53,6 +53,10 @@
       <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="DotNetZip, Version=1.13.8.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.13.8\lib\net40\DotNetZip.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Gma.QrCodeNet.Encoding, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\QrCode.Net.0.4.0.0\lib\net40\Gma.QrCodeNet.Encoding.dll</HintPath>
       <Private>True</Private>
@@ -132,6 +136,7 @@
     <Content Include="WebForms\BuscarCuentasCobrar.aspx" />
     <Content Include="WebForms\BuscarCuentasPagar.aspx" />
     <Content Include="WebForms\BuscarDatosFacturacion.aspx" />
+    <Content Include="WebForms\BuscarDocEleMasivo.aspx" />
     <Content Include="WebForms\BuscarExcepciones.aspx" />
     <Content Include="WebForms\BuscarFacturaPos.aspx" />
     <Content Include="WebForms\BuscarFacturasNC.aspx" />
@@ -250,6 +255,7 @@
     <Content Include="WebForms\ReenviarFacturaJson.aspx" />
     <Content Include="WebForms\ReenviarNCJson.aspx" />
     <Content Include="WebForms\ReenviarNotaDebitoJson.aspx" />
+    <Content Include="WebForms\ReenvioMasivoDE.aspx" />
     <Content Include="WebForms\ReporteCierreC.aspx" />
     <Content Include="WebForms\ReporteCierreCaja.aspx" />
     <Content Include="WebForms\ReporteDocumentosPWM.aspx" />
@@ -321,6 +327,13 @@
     </Compile>
     <Compile Include="WebForms\BuscarDatosFacturacion.aspx.designer.cs">
       <DependentUpon>BuscarDatosFacturacion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarDocEleMasivo.aspx.cs">
+      <DependentUpon>BuscarDocEleMasivo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarDocEleMasivo.aspx.designer.cs">
+      <DependentUpon>BuscarDocEleMasivo.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\BuscarExcepciones.aspx.cs">
       <DependentUpon>BuscarExcepciones.aspx</DependentUpon>
@@ -786,6 +799,13 @@
     </Compile>
     <Compile Include="WebForms\ReenviarNotaDebitoJson.aspx.designer.cs">
       <DependentUpon>ReenviarNotaDebitoJson.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\ReenvioMasivoDE.aspx.cs">
+      <DependentUpon>ReenvioMasivoDE.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\ReenvioMasivoDE.aspx.designer.cs">
+      <DependentUpon>ReenvioMasivoDE.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\ReporteCierreC.aspx.cs">
       <DependentUpon>ReporteCierreC.aspx</DependentUpon>
