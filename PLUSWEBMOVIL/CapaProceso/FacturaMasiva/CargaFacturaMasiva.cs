@@ -127,7 +127,7 @@ namespace CapaProceso.FacturaMasiva
                 {
 
 
-                    string consulta = "UPDATE wmh_cargaMasiva SET estado_fac=@estado_fac WHERE  estado_fac='A' ";
+                    string consulta = "UPDATE wmh_cargaMasiva SET estado_fac=@estado_fac WHERE  estado_fac='A' and razon_social ='' ";
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("@estado_fac", SqlDbType.VarChar).Value = estado_fac;
@@ -209,7 +209,7 @@ namespace CapaProceso.FacturaMasiva
                 {
                     string nro_docum = null;
 
-                    string consulta = "SELECT DISTINCT TOP 1 nro_docum from wmh_cargaMasiva where estado_fac='A' ";
+                    string consulta = "SELECT DISTINCT TOP 1 nro_docum from wmh_cargaMasiva where estado_fac='A' and razon_social ='' ";
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     // conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = ArtB__usuario;
@@ -247,7 +247,7 @@ namespace CapaProceso.FacturaMasiva
                 {
                     List<modeloFacturaEMasiva> lista = new List<modeloFacturaEMasiva>();
 
-                    string consulta = "SELECT DISTINCT nro_docum,fecha_carga from wmh_cargaMasiva where estado_fac='A' ";
+                    string consulta = "SELECT DISTINCT nro_docum,fecha_carga from wmh_cargaMasiva where estado_fac='A' and razon_social ='' ";
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     // conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = ArtB__usuario;
@@ -289,7 +289,7 @@ namespace CapaProceso.FacturaMasiva
                 {
 
 
-                    string consulta = "UPDATE wmh_cargaMasiva SET estado_fac=@estado_fac WHERE nro_docum =@nro_docum AND estado_fac='A' ";
+                    string consulta = "UPDATE wmh_cargaMasiva SET estado_fac=@estado_fac WHERE nro_docum =@nro_docum AND estado_fac='A' and razon_social ='' ";
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("@nro_docum", SqlDbType.VarChar).Value = nro_docum;
@@ -379,7 +379,7 @@ namespace CapaProceso.FacturaMasiva
                 {
                     List<modeloFacturaEMasiva> lista = new List<modeloFacturaEMasiva>();
 
-                    string consulta = "SELECT * from wmh_cargaMasiva where estado_fac ='A' and nro_docum =@nro_docum ";
+                    string consulta = "SELECT * from wmh_cargaMasiva where estado_fac ='A' and nro_docum =@nro_docum and razon_social =''";
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("@nro_docum", SqlDbType.VarChar).Value = nro_docum;

@@ -7,10 +7,10 @@ using System.Text;
 
 namespace CapaProceso.FacturaMasiva
 {
- public    class GenerarPDFDocumentos
+    public class GenerarPDFDocumentos
     {
         ConsultaLogoSql modelo_documento = new ConsultaLogoSql();
-        public string GenerarPDFNotaDebitoElectronica(string Ccf_cod_emp, string cod_proceso,string Ccf_usuario,string Ccf_tipo1,string Ccf_tipo2,string Ccf_nro_trans)
+        public string GenerarPDFNotaDebitoElectronica(string Ccf_cod_emp, string cod_proceso, string Ccf_usuario, string Ccf_tipo1, string Ccf_tipo2, string Ccf_nro_trans)
         {
             string pathPdf = null;
             string tipo_doc = null;
@@ -111,13 +111,18 @@ namespace CapaProceso.FacturaMasiva
                     PdfFacEleV2Default2 pdf = new PdfFacEleV2Default2();
                     pathPdf = pdf.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                     break;
+
+                case "DEFECTO3":
+                    PdfFacEleV3Default3 pdf2 = new PdfFacEleV3Default3();
+                    pathPdf = pdf2.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    break;
                 case "DEFECTO4":
                     PdfFacEleV3Default4 pdf1 = new PdfFacEleV3Default4();
                     pathPdf = pdf1.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                     break;
-                case "DEFECTO3":
-                    PdfFacEleV3Default3 pdf2 = new PdfFacEleV3Default3();
-                    pathPdf = pdf2.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                case "DEFECTO5":
+                    PdfFacEleV3Default5 pdf3 = new PdfFacEleV3Default5();
+                    pathPdf = pdf3.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                     break;
             }
             return pathPdf;
@@ -142,6 +147,10 @@ namespace CapaProceso.FacturaMasiva
                 case "DEFECTO4":
                     PdfFacVTAV4 pdf2 = new PdfFacVTAV4();
                     pathPdf = pdf2.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    break;
+                case "DEFECTO5":
+                    PdfFacVTAV5 pdf1 = new PdfFacVTAV5();
+                    pathPdf = pdf1.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                     break;
 
             }

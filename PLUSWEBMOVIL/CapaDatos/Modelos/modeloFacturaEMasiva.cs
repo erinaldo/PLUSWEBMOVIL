@@ -13,6 +13,7 @@ namespace CapaDatos.Modelos
         public string serie_docum { get; set; }
         public string nro_docum { get; set; }
         public string dni_cliente { get; set; }
+        public string cod_cliente { get; set; }
         public Int64 socio_negocio { get; set; }
         public string razon_social { get; set; }
         public string direccion { get; set; }
@@ -46,5 +47,7 @@ namespace CapaDatos.Modelos
         public string cod_moneda { get; set; }
         public string cod_vendedor { get; set; }
         public string cod_suc_cli { get; set; }
+        public string motivo { get; set; }
+        public string cod_emp { get; set; }
     }
 }

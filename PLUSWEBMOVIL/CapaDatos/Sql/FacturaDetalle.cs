@@ -344,12 +344,12 @@ namespace CapaDatos.Sql
                 conmand.Parameters.Add("@cod_ccostos", SqlDbType.VarChar).Value = detalleFactura.cod_ccostos;
                 int dr = conmand.ExecuteNonQuery();
                 cn.Close();
-                return "Factura salvada correctamente";
+                return "";
             }
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(detalleFactura.cod_emp, metodo, "InsertarDetalleNCFinanciera", e.ToString(), DateTime.Today, detalleFactura.usuario_mod);
+                guardarExcepcion.ClaseInsertarExcepcion(detalleFactura.cod_emp, metodo, "InsertarDetalleNCFinanciera", e.ToString(), DateTime.Now, detalleFactura.usuario_mod);
                 return "No se pudo completar la acción." + "InsertarDetalleNCFinanciera." + " Por favor notificar al administrador.";
             }
         }

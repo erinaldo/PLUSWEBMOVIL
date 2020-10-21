@@ -127,6 +127,7 @@
     <Content Include="Tema\imagenes\mail_send.png" />
     <Content Include="Tema\imagenes\procesando.gif" />
     <Content Include="Tema\imagenes\unnamed.gif" />
+    <Content Include="WebForms\AccesoMasivoNC.aspx" />
     <Content Include="WebForms\BuscaFacturasNCAn.aspx" />
     <Content Include="WebForms\BuscarArticuloNCDevolucion.aspx" />
     <Content Include="WebForms\BuscarCentroCosto.aspx" />
@@ -232,6 +233,7 @@
     <Content Include="WebForms\CrearCliente.aspx" />
     <Content Include="WebForms\Factura.aspx" />
     <Content Include="WebForms\FormListaSucursalEmpresa.aspx" />
+    <Content Include="WebForms\FormMasivoNCFinanciera.aspx" />
     <Content Include="WebForms\FormNotaCreditoDevolucion.aspx" />
     <Content Include="WebForms\FormNotaCreditoFin.aspx" />
     <Content Include="WebForms\FormNotaCreditoFinanciera.aspx" />
@@ -265,6 +267,13 @@
     <Content Include="WebForms\VerDetalleFacturas.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WebForms\AccesoMasivoNC.aspx.cs">
+      <DependentUpon>AccesoMasivoNC.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\AccesoMasivoNC.aspx.designer.cs">
+      <DependentUpon>AccesoMasivoNC.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\BuscaFacturasNCAn.aspx.cs">
       <DependentUpon>BuscaFacturasNCAn.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -673,6 +682,13 @@
     </Compile>
     <Compile Include="WebForms\Factura.aspx.designer.cs">
       <DependentUpon>Factura.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormMasivoNCFinanciera.aspx.cs">
+      <DependentUpon>FormMasivoNCFinanciera.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormMasivoNCFinanciera.aspx.designer.cs">
+      <DependentUpon>FormMasivoNCFinanciera.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormNotaCreditoDevolucion.aspx.cs">
       <DependentUpon>FormNotaCreditoDevolucion.aspx</DependentUpon>

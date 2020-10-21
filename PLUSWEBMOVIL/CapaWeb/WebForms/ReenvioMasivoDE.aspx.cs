@@ -66,6 +66,8 @@ namespace CapaWeb.WebForms
 
         List<modelowmtfacturascab> ListaDoc = new List<modelowmtfacturascab>();
         modelowmtfacturascab modeloDosc = new modelowmtfacturascab();
+        List<modelowmtfacturascab> listaRespuesta = new List<modelowmtfacturascab>();
+        List<modelowmtfacturascab> listaRespuestaVer = new List<modelowmtfacturascab>();
         public string numerador = "trans";
         public string ComPwm;
         public string AmUsrLog;
@@ -87,7 +89,7 @@ namespace CapaWeb.WebForms
         public string Ven__cod_tipotit = "cliente";
         public string Ven__cod_tit = " ";
         public string EstF_proceso = "RCOMFACT";
-        string respuesta_envio = null;
+        string tipo_envio = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -592,6 +594,8 @@ namespace CapaWeb.WebForms
             try
             {
                 Grid.Visible = false;
+                btn_reenviarpdf.Enabled = true;
+                BtnIniciar.Enabled = true;
                 CargarGrilla();
                 if (listaConsCab.Count > 0)
                 {
@@ -606,7 +610,7 @@ namespace CapaWeb.WebForms
                     lbl_fac_txt.Visible = false;
                     lbl_tot_doc.Visible = false;
                     lbl_tot_doc.Text = "";
-                    btn_reenviar.Visible = false;
+                    BtnIniciar.Visible = false;
                     btn_reenviarpdf.Visible = false;
                 }
             }
@@ -618,53 +622,7 @@ namespace CapaWeb.WebForms
             }
         }
 
-        protected void btn_reenviar_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                btn_reenviar.Enabled = false;
-                lbl_error.Text = "";
-                List<modelowmtfacturascab> listaRespuesta = new List<modelowmtfacturascab>();
-                CargarGrilla();
-                if (listaConsCab.Count > 0)
-                {
-                    foreach (var item in listaConsCab)
-                    {
-                       
-                        string respuesta = enviar_doc.ReenviarDocumentoDIAN(ComPwm, AmUsrLog, item.tipo.Trim(), item.nro_trans.Trim(), item.doc_adjunto, Modelowmspclogo.version_fe.Trim(), Modelowmspclogo.pathtmpfac);
-                        if(respuesta =="" || respuesta==null)
-                        {
-                            item.doc_adjunto = "Documento enviado exitosamente";
-                            listaRespuesta.Add(item);
-                        }
-                        else
-                        {
-                            item.doc_adjunto = "No se pudo reenviar por favor revisar los errores";
-                            listaRespuesta.Add(item);
-                        }
-
-                    }
-
-                }
-                if (listaRespuesta.Count > 0)
-                {
-                    Grid.Visible = true;
-                    Grid.DataSource = listaRespuesta;
-                    Grid.DataBind();
-                    Grid.Height = 100;
-                    lbl_fac_txt.Visible = false;
-                    lbl_tot_doc.Visible = false;
-                    lbl_tot_doc.Text = "";
-                    btn_reenviar.Visible = false;
-                    btn_reenviarpdf.Visible = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("btn_reenviar_Click", ex.ToString());
-
-            }
-        }
+       
 
         //PROGRESS BAR
         private int Prop_CoTareas
@@ -727,40 +685,43 @@ namespace CapaWeb.WebForms
 
                 //tareas a realizar poner todo el codigo para facturar electronicamente
                 string error_fac = null;
-                ListaDoc = (Session["ListaDocs"] as List<modelowmtfacturascab>); ;
+                ListaDoc = (Session["ListaDocs"] as List<modelowmtfacturascab>);
+                tipo_envio = Session["tipo_envio"].ToString();
                 foreach (var item in ListaDoc)
                 {
                     modeloDosc = item;
                     break;
                 }
 
-
                 try
                 {
                     if (ListaDoc.Count>0)
                     {
-                        List<modelowmtfacturascab> listaRespuesta = new List<modelowmtfacturascab>();
-
-
-                        string respuesta = enviar_doc.ReenviarDocumentoDIAN(ComPwm, AmUsrLog, modeloDosc.tipo.Trim(), modeloDosc.nro_trans.Trim(), modeloDosc.doc_adjunto, Modelowmspclogo.version_fe.Trim(), Modelowmspclogo.pathtmpfac);
-                        if (respuesta == "" || respuesta == null)
+                        if (tipo_envio == "DOC")
                         {
-                            modeloDosc.doc_adjunto = "Documento enviado exitosamente";
-                            listaRespuesta.Add(modeloDosc);
+                            string respuesta = enviar_doc.ReenviarDocumentoDIAN(ComPwm, AmUsrLog, modeloDosc.tipo.Trim(), modeloDosc.nro_trans.Trim(), modeloDosc.doc_adjunto, Modelowmspclogo.version_fe.Trim(), Modelowmspclogo.pathtmpfac);
+                            foreach (var item in ListaDoc)
+                            {
+                                if (item.nro_trans == modeloDosc.nro_trans)
+                                {
+                                    ListaDoc.Remove(item);
+                                    Session["LisataDocs"] = ListaDoc;
+                                }
+                            }
                         }
                         else
                         {
-                            modeloDosc.doc_adjunto = "No se pudo reenviar por favor revisar los errores";
-                            listaRespuesta.Add(modeloDosc);
-                        }
-                        foreach (var item in ListaDoc)
-                        {
-                            if(item.nro_trans == modeloDosc.nro_trans)
+                            string respuesta = enviar_doc.ReenviarPDFDIAN(ComPwm, AmUsrLog, modeloDosc.tipo.Trim(), modeloDosc.nro_trans.Trim(), modeloDosc.doc_adjunto, Modelowmspclogo.version_fe.Trim(), Modelowmspclogo.pathtmpfac);
+                            foreach (var item in ListaDoc)
                             {
-                                ListaDoc.Remove(item);
-                                Session["LisataDocs"] = ListaDoc;
+                                if (item.nro_trans == modeloDosc.nro_trans)
+                                {
+                                    ListaDoc.Remove(item);
+                                    Session["LisataDocs"] = ListaDoc;
+                                }
                             }
                         }
+
                     }
             
                 }
@@ -779,26 +740,62 @@ namespace CapaWeb.WebForms
                 Timer1.Enabled = false;
                 LblAvance.Text = "Tarea finalizada";
                 BtnIniciar.Visible = false;
+                btn_reenviarpdf.Visible = false;
                 btn_limpiar.Visible = true;
-
+                CargarGrilla();
+                if (listaConsCab.Count > 0)
+                {
+                    Grid.Visible = true;
+                    lbl_lisdoc.Visible = true;
+                }else
+                {
+                    lbl_error_factura.Text = "Documentos autorizados correctamente";
+                    lbl_error_factura.Visible = true;
+                }
+                Session.Remove("LisataDocs");
+                Session.Remove("tipo_envio");
             }
         }
         protected void BtnIniciar_Click(object sender, EventArgs e)
         {
             Timer1.Enabled = true;
+            Session["tipo_envio"] = "DOC";
             BtnIniciar.Enabled = false;
+            btn_reenviarpdf.Enabled = false;
             Prop_TotalTareas = 10;
             Documento();
         }
         public void Documento()
         {
             CargarGrilla();
-          Session["ListaDocs"]= listaConsCab;
+            Session["ListaDocs"]= listaConsCab;
+            
         }
 
         protected void btn_reenviarpdf_Click(object sender, EventArgs e)
         {
+            Timer1.Enabled = true;
+            Session["tipo_envio"] = "PDF";
+            btn_reenviarpdf.Enabled = false;
+            BtnIniciar.Enabled = false;
+            Prop_TotalTareas = 10;
+            Documento();
+        }
 
+        protected void btn_limpiar_Click(object sender, EventArgs e)
+        {
+            //limpiar todas las pantallas
+
+            LblPorcentajeAvance.Text = "";
+            LblAvance.Text = "";
+            btn_limpiar.Visible = false;
+            LblProgressBar.Width = 0;
+            Grid.Visible = false;
+            lbl_lisdoc.Visible = false;
+            lbl_error_factura.Text = "";
+            lbl_error_factura.Visible = false;
+            lbl_tot_doc.Text = "";
+                
         }
     }
 }
