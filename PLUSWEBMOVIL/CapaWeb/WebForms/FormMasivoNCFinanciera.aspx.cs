@@ -883,7 +883,18 @@ namespace CapaWeb.WebForms
                 Timer1.Enabled = false;
                 LblAvance.Text = "Tarea finalizada";
                 BtnIniciar.Visible = false;
-                
+                //MUESTRA CONTABILIZADAS
+                CargarGrilla();
+                if (listaConsCab.Count > 0)
+                {
+                    Grid.Visible = true;
+                    lbl_lisdoc.Visible = true;
+                }
+                else
+                {
+                    lbl_error_factura.Text = "Documentos autorizados correctamente";
+                    lbl_error_factura.Visible = true;
+                }
             }
         }
         protected void BtnIniciar_Click(object sender, EventArgs e)
@@ -892,6 +903,27 @@ namespace CapaWeb.WebForms
             BtnIniciar.Enabled = false;
             Prop_TotalTareas = 10;
             btn_cancelar.Visible = false;
+        }
+        private void CargarGrilla()
+        {
+            try
+            {
+                lbl_error.Text = "";
+
+                Ccf_estado = "C";
+                Ccf_tipo2 = "NC";
+
+                listaConsCab = ConsultaCabe.ConsultaDocsElectronicosXSucursal(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof, lbl_cod_suc_emp.Text.Trim());
+                Grid.DataSource = listaConsCab;
+                Grid.DataBind();
+                Grid.Height = 100;
+            }
+
+            catch (Exception ex)
+            {
+                GuardarExcepciones("CargarGrilla", ex.ToString());
+
+            }
         }
         protected void btn_cancelar_Click(object sender, EventArgs e)
         {
@@ -906,6 +938,17 @@ namespace CapaWeb.WebForms
             btn_importar.Visible = true;
             FileUpload1.Visible = true;
             lbl_carga.Visible = true;
+        }
+        protected void Grid_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
+        {
+            // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
+            Grid.CurrentPageIndex = 0;
+            Grid.CurrentPageIndex = e.NewPageIndex;
+            CargarGrilla();
+        }
+        protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
+        {
+           
         }
     }
 }

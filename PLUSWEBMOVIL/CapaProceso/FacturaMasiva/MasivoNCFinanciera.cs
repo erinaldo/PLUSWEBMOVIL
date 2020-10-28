@@ -214,8 +214,6 @@ namespace CapaProceso.FacturaMasiva
                         {
                             GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
                             ActualizarEstadoNCF(AmUsrLog, ComPwm, nro_docum.Trim(), serie.Trim(), "P");//ESTADO PROCESADO
-                            error = respuesta;
-
                         }
                     }
 

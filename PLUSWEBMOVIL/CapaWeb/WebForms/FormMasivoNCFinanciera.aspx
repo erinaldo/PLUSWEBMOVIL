@@ -118,6 +118,74 @@
                             <asp:Label ID="lbl_error_factura" runat="server" Visible="false" CssClass="textos_error" Text=""></asp:Label>
                             <br />
                             <asp:Button ID="BtnIniciar" CssClass="botones" Visible="false" runat="server" Text="Procesar" OnClick="BtnIniciar_Click" />
+                        <br />
+                            <tr>
+                                <td>
+                                    <asp:Label ID="lbl_lisdoc" runat="server" CssClass="Subtitulo1" Text="Listado de Documentos no autorizados, por favor revisar incidencias." Visible="false"></asp:Label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table align="center" border="0" bordercolor="#0E748A" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td>
+                                                <asp:DataGrid ID="Grid" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False" BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellPadding="2" CellSpacing="1" class="table table-hover" OnItemCommand="Grid_ItemCommand" OnPageIndexChanged="Grid_PageIndexChanged" onrowcommand="GriTipoUsuario_RowCommand" onrowcreated="GriTipoUsuario_RowCreated" PageSize="100" ShowFooter="True" Visible="false">
+                                                    <Columns>
+                                                        <asp:TemplateColumn HeaderText="TRX">
+                                                            <ItemTemplate>
+                                                                <span style="float: left;">
+                                                                <asp:Label ID="nro_trans" runat="server" class="textos" Text='<%#Eval("nro_trans") %>'></asp:Label>
+                                                                </span>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateColumn>
+                                                        <asp:TemplateColumn HeaderText="CLIENTE">
+                                                            <ItemTemplate>
+                                                                <span style="float: left;">
+                                                                <asp:Label ID="nom_tit" runat="server" class="textos" Text='<%#Eval("nom_tit") %>'></asp:Label>
+                                                                </span>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateColumn>
+                                                        <asp:TemplateColumn HeaderText="FECHA">
+                                                            <ItemTemplate>
+                                                                <span style="float: left;">
+                                                                <asp:Label ID="fec_doc" runat="server" class="textos" Text='<%#Eval("fec_doc_str") %>' Type="date"></asp:Label>
+                                                                </span>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateColumn>
+                                                        <asp:TemplateColumn HeaderText="DOCUMENTO">
+                                                            <ItemTemplate>
+                                                                <span style="float: left;">
+                                                                <asp:Label ID="descripcion" runat="server" class="textos" Text='<%#Eval("observacion") %>'></asp:Label>
+                                                                </span>
+                                                            </ItemTemplate>
+                                                            <ItemStyle Font-Bold="False" Font-Italic="False" Font-Overline="False" Font-Strikeout="False" Font-Underline="False" HorizontalAlign="Center" />
+                                                        </asp:TemplateColumn>
+                                                        <asp:TemplateColumn HeaderText="ESTADO">
+                                                            <ItemTemplate>
+                                                                <span style="float: left;">
+                                                                <asp:Label ID="nom_corto" runat="server" class="textos" Text='<%#Eval("nom_corto") %>'></asp:Label>
+                                                                </span>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateColumn>
+                                                        <asp:TemplateColumn HeaderText="TOTAL">
+                                                            <ItemTemplate>
+                                                                <span style="float: right;">
+                                                                <asp:Label ID="total" runat="server" class="textos" Text='<%#Eval("total", "{0:N}") %>'></asp:Label>
+                                                                </span>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateColumn>
+                                                    </Columns>
+                                                    <FooterStyle BackColor="White" ForeColor="#00000f" />
+                                                    <HeaderStyle BackColor="#DD6D29" Font-Bold="True" ForeColor="White" />
+                                                    <ItemStyle ForeColor="#00000f" />
+                                                    <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" Mode="NumericPages" />
+                                                    <SelectedItemStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                </asp:DataGrid>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
                         </ContentTemplate>
                     </asp:UpdatePanel>
 
