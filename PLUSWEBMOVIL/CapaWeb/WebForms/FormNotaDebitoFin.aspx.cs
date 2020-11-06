@@ -173,8 +173,8 @@ namespace CapaWeb.WebForms
                 if (!IsPostBack)
                 {
                     Session.Remove("listaClienteFac");
-                    Session.Remove("listaFacturas");
-                    Session.Remove("saldoFacturas");
+                    Session.Remove("listaFacturas_ndf");
+                    Session.Remove("saldoFacturas_ndf");
                     Session.Remove("listaProducto");
                     Session.Remove("articulo");
                     Session.Remove("sumaSubtotal");
@@ -201,7 +201,7 @@ namespace CapaWeb.WebForms
                                 Session.Remove("listaCliente");
                                 Session.Remove("listaArticulos");
                                 Session.Remove("articulo");
-                                Session.Remove("ListaFacturas");
+                                Session.Remove("ListaFacturas_ndf");
                                 Session.Remove("valor_asignado");
                                 Session["Tipo"] = "Anular";
                                 ConsultarTasaCambioCanorus();
@@ -277,9 +277,9 @@ namespace CapaWeb.WebForms
 
                 }
                 //Variable de listaClienteFac busqueda de facturas
-                if (Session["listaFacturas"] != null)
+                if (Session["listaFacturas_ndf"] != null)
                 {
-                    conscabcera = (modelowmtfacturascab)Session["listaFacturas"];
+                    conscabcera = (modelowmtfacturascab)Session["listaFacturas_ndf"];
 
                     cod_fpago.SelectedValue = conscabcera.cod_fpago.Trim();
                     nro_pedido.Text = conscabcera.nro_pedido;
@@ -317,9 +317,9 @@ namespace CapaWeb.WebForms
                     lbl_trx.Visible = false;
 
                 }
-                if (Session["saldoFacturas"] != null)
+                if (Session["saldoFacturas_ndf"] != null)
                 {
-                    txt_saldo_factura.Text = Session["saldoFacturas"].ToString();
+                    txt_saldo_factura.Text = Session["saldoFacturas_ndf"].ToString();
                 }
 
 
@@ -1824,13 +1824,13 @@ namespace CapaWeb.WebForms
                     break;
                 }
 
-                    if (Session["listaFacturas"] == null)
+                    if (Session["listaFacturas_ndf"] == null)
                     {
-                        Session["listaClienteFac"] = ListaSaldoFacturas;
-                        Session["Tipo"] = Session["Ccf_tipo2_NDF"].ToString();
-                        Session["Sucursal"] = lbl_cod_suc_emp.Text.Trim();
-                        Session["cod_Cliente"] = cliente.cod_tit.Trim();
-                        this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarFacturasNCFin.aspx', 'Buscar Facturas', 'top=100,width=800 ,height=400, left=400');</script>");
+
+                        Session["Tipo_ndf"] = Session["Ccf_tipo2_NDF"].ToString();
+                        Session["Sucursal_ndf"] = lbl_cod_suc_emp.Text.Trim();
+                        Session["cod_Cliente_ndf"] = cliente.cod_tit.Trim();
+                        this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarFacturasNDF.aspx', 'Buscar Facturas', 'top=100,width=800 ,height=400, left=400');</script>");
 
                     }
             }
@@ -1873,7 +1873,7 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
 
                 Session.Remove("articulo");
-                Session.Remove("ListaFacturas");
+                Session.Remove("ListaFacturas_ndf");
                 Response.Redirect("BuscarNotaDebito.aspx");
             }
             catch (Exception ex)
@@ -1925,7 +1925,7 @@ namespace CapaWeb.WebForms
                             Confirmar.Enabled = false;
                            // GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
                             EnviarCorreoRemitente(conscabcera.nro_trans, conscabceraTipo.tipo_nce.Trim());
-                            Session.Remove("listaFacturas");
+                            Session.Remove("listaFacturas_ndf");
 
                             Response.Redirect("BuscarNotaDebito.aspx");
 
@@ -1934,7 +1934,7 @@ namespace CapaWeb.WebForms
                         {
                             GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
                             mensaje.Text = respuesta;
-                            Session.Remove("listaFacturas");
+                            Session.Remove("listaFacturas_ndf");
                             Response.Redirect("BuscarNotaDebito.aspx");
 
                         }
@@ -1949,7 +1949,7 @@ namespace CapaWeb.WebForms
                 {
                     if (respuestaConfirmacionNC == "")
                     {
-                        Session.Remove("listaFacturas");
+                        Session.Remove("listaFacturas_ndf");
                         Response.Redirect("BuscarNotaDebito.aspx");
                     }
                     else

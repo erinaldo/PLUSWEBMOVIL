@@ -163,7 +163,7 @@ namespace CapaWeb.WebForms
              
                 txt_id.Text = ModeloExcepcion.id;
                 txt_empresa.Text = ModeloExcepcion.cod_emp;
-                txt_fecha.Text = ModeloExcepcion.fecha_for;
+                txt_fecha.Text = ModeloExcepcion.fecha_hora.ToString();
                 txt_usuario.Text = ModeloExcepcion.usuario_mod;
                 txt_metodo.Text = ModeloExcepcion.metodo;
                 txt_proceso.Text = ModeloExcepcion.proceso;

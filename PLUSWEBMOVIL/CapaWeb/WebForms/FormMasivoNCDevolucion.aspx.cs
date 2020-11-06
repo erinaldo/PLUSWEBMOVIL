@@ -16,7 +16,7 @@ using SpreadsheetLight;
 
 namespace CapaWeb.WebForms
 {
-    public partial class FormMasivoNCFinanciera : System.Web.UI.Page
+    public partial class FormMasivoNCDevolucion : System.Web.UI.Page
     {
         public ConsultaCodProceso ConsultaCodProceso = new ConsultaCodProceso();
         public modeloCodProcesoFactura ModeloCodProceso = new modeloCodProcesoFactura();
@@ -57,6 +57,7 @@ namespace CapaWeb.WebForms
         CabezeraFactura GuardarCabezera = new CabezeraFactura();
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
         List<modelowmtfacturascab> listaConsCab = null;
+        modelowmtfacturascab modeloFactura = new modelowmtfacturascab();
         List<modeloFacturaEMasiva> listaAux = new List<modeloFacturaEMasiva>();
         modeloFacturaEMasiva conscabcera = new modeloFacturaEMasiva();
         modeloFacturaEMasiva modeloNC = new modeloFacturaEMasiva();
@@ -159,7 +160,7 @@ namespace CapaWeb.WebForms
                 }
                 if (!IsPostBack)
                 {
-                   
+
                     cargarListaDesplegables();
 
                 }
@@ -170,7 +171,6 @@ namespace CapaWeb.WebForms
                 GuardarExcepciones("Page_Load", ex.ToString());
             }
         }
-
         public void cargarListaDesplegables()
         {
             try
@@ -219,14 +219,14 @@ namespace CapaWeb.WebForms
                         //Aqui se va a traer que tipo de facturacion es
                         if (resolucion.tipo_fac == "S")
                         {
-                            Session["Masivo_NCF"] = "NCME";
-                            lbl_tipo_nc.Text = "NCME";
+                            Session["Masivo_NCDev"] = "NCVE";
+                            lbl_tipo_nc.Text = "NCVE";
 
                         }
                         else
                         {
-                            Session["Masivo_NCF"] = "NCM";
-                            lbl_tipo_nc.Text = "NCM";
+                            Session["Masivo_NCDev"] = "NCV";
+                            lbl_tipo_nc.Text = "NCV";
 
                         }
                     }
@@ -282,7 +282,7 @@ namespace CapaWeb.WebForms
         public void GuardarExcepciones(string metodo, string error)
         {
             ModeloExcepcion.cod_emp = ComPwm;
-            ModeloExcepcion.proceso = "FormMasivoNCFinanciera.aspx";
+            ModeloExcepcion.proceso = "FormMasivoNCDevolucion.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Now;
@@ -291,7 +291,58 @@ namespace CapaWeb.WebForms
             lbl_error.Text = "No se pudo completar la acción" + metodo + "." + " Por favor notificar al administrador.";
 
         }
+        
+        public string ValidarArticuloDevolucion(string nro_docum, string serie, string articulo)
+        {
+            try
+            {
+                string cod_producto = null;
+                //Buscar nro_trans factura
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, "", Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, serie.Trim(), nro_docum.Trim(), Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                modeloFactura = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    modeloFactura = item;
+                }
 
+                string like = '%' + articulo.Trim() + '%';
+                listaConsDetalle = ConsultaDeta.ConsultaDetFacNCDev(modeloFactura.nro_trans.Trim(), like);
+
+                listaArticulos = ConsultaArticulo.ConsultaArticulos(AmUsrLog, ComPwm, "A", "NCRED", "0", "0");
+                foreach (modelowmspcarticulos item in listaArticulos)
+                {
+                    ModeloDetalleFactura modelodetalleFactura = new ModeloDetalleFactura();
+                    modelodetalleFactura.cod_articulo = item.cod_articulo;
+                    modelodetalleFactura.nom_articulo = item.nom_articulo;
+                    modelodetalleFactura.nc_iva = String.Format("{0:N}", Math.Round(Convert.ToDecimal(item.precio), 2)).ToString();
+                    modelodetalleFactura.nc_pvp = item.porc_impuesto;
+
+                    listaConsDetalle.Add(modelodetalleFactura);
+                }
+
+                foreach (ModeloDetalleFactura item in listaConsDetalle)
+                {
+                    if (item.cod_articulo.Trim() == articulo.Trim())
+                    {
+                        consdetalle = item;
+                        cod_producto = null;
+                        break;
+                
+                    }
+                    else
+                    {
+                        cod_producto = "Articulo no existe en la factura, no se puede devolver: " + articulo;
+                    }
+                }
+
+                return cod_producto;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("ValidarArticuloDevolucion", ex.ToString());
+                return ex.ToString();
+            }
+        }
         public string ValidacionPrevia(modeloFacturaEMasiva modelo)
         {
             try
@@ -299,12 +350,12 @@ namespace CapaWeb.WebForms
                 string error = null;
                 //Validar que exista la factura para dicho cliente
 
-                switch (Session["Masivo_NCF"].ToString())
+                switch (Session["Masivo_NCDev"].ToString())
                 {
-                    case "NCM":
+                    case "NCV":
                         ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacVTASaldosXNroPrefijo(AmUsrLog, ComPwm, modelo.cod_cliente, "C", "N", lbl_cod_suc_emp.Text.Trim(), modelo.nro_docum.Trim(), modelo.serie_docum.Trim());
                         break;
-                    case "NCME":
+                    case "NCVE":
                         ListaSaldoFacturas = consultaSaldoFactura.BuscarFacSaldosXNroPrefijoEle(AmUsrLog, ComPwm, modelo.cod_cliente, "C", "N", lbl_cod_suc_emp.Text.Trim(), modelo.nro_docum.Trim(), modelo.serie_docum.Trim());
                         break;
 
@@ -352,14 +403,14 @@ namespace CapaWeb.WebForms
 
             try
             {
-              
+
                 //string Path;
                 string pathtmpfac = Modelowmspclogo.pathtmpfac;  //Traemos el path, la ruta 
                 string fileName = pathtmpfac + Path.GetFileName(FileUpload1.FileName);
                 FileUpload1.PostedFile.SaveAs(fileName);
                 string extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
-                //Al importar eliminar todas las que estan en estado A solo nc
-                guardarNC.EliminarNCMasivaFinanciera(ComPwm, AmUsrLog);
+                //Al importar eliminar todas las que estan en estado A solo nc devolucion
+                guardarNC.EliminarNCMasivaDevolucion(ComPwm, AmUsrLog);
 
                 if (extension.ToLower() == ".xlsx")
                 {
@@ -517,10 +568,10 @@ namespace CapaWeb.WebForms
                         }
                         else
                         {
-                            listaArticulos = ConsultaArticulo.ConsultaArticulos(AmUsrLog, ComPwm, conscabcera.cod_articulo, ArtB__tipo, ArtB__compras, ArtB__ventas);
-                            if (listaArticulos.Count == 0)
+                            string validar_producto = ValidarArticuloDevolucion(conscabcera.nro_docum.Trim(), conscabcera.serie_docum.Trim(), conscabcera.cod_articulo);
+                            if (!string.IsNullOrEmpty(validar_producto))
                             {
-                                lbl_error.Text = "Articulo no es válido." + " Fila:" + rowm + " Columna: 11";
+                                lbl_error.Text = validar_producto + " Fila:" + rowm + " Columna: 11";
                                 return;
                             }
 
@@ -592,9 +643,9 @@ namespace CapaWeb.WebForms
                         }
                         else
                         {
-                            if (conscabcera.motivo.Trim() == "3" || conscabcera.motivo.Trim() == "4" || conscabcera.motivo.Trim() == "5" || conscabcera.motivo.Trim() == "6")
+                            if (conscabcera.motivo.Trim() == "1")
                             {
-                               
+
                             }
                             else
                             {
@@ -673,9 +724,9 @@ namespace CapaWeb.WebForms
                             conscabcera.usuario_mod = AmUsrLog;
                             conscabcera.fecha_carga = DateTime.Now;
                             conscabcera.estado_fac = "A";
-                            conscabcera.razon_social = Session["Masivo_NCF"].ToString();
-                           string error= guardarNC.InsertarNCMasiva(conscabcera);
-                            if(!string.IsNullOrEmpty(error.Trim()))
+                            conscabcera.razon_social = Session["Masivo_NCDev"].ToString();
+                            string error = guardarNC.InsertarNCMasiva(conscabcera);
+                            if (!string.IsNullOrEmpty(error.Trim()))
                             {
                                 lbl_mensaje.Text = error;
                                 return;
@@ -686,7 +737,7 @@ namespace CapaWeb.WebForms
                             }
                             rowm2++;
                         }
-                       
+
                     }
                     if (tot_eror == false)
                     {
@@ -701,7 +752,7 @@ namespace CapaWeb.WebForms
 
                     }
                 }
-                        
+
 
             }
             catch (Exception ex)
@@ -781,7 +832,7 @@ namespace CapaWeb.WebForms
             {
                 lbl_mensaje.Text = "";
                 //Total NC A PROCESAR 
-                listaAux = guardarNC.TotalNCFinancieras(AmUsrLog, ComPwm, Session["Masivo_NCF"].ToString());
+                listaAux = guardarNC.TotalNCFinancieras(AmUsrLog, ComPwm, Session["Masivo_NCDev"].ToString());
                 if (listaAux.Count == 0)
                 {
                     lbl_error.Text = "Notas de crédito no disponibles";
@@ -875,19 +926,19 @@ namespace CapaWeb.WebForms
                 //tareas a realizar poner todo el codigo para notas de credito electronicamente
                 string error_fac = null;
 
-                modeloNC = guardarNC.BuscarNCActiva(AmUsrLog, ComPwm, Session["Masivo_NCF"].ToString());
+                modeloNC = guardarNC.BuscarNCActiva(AmUsrLog, ComPwm, Session["Masivo_NCDev"].ToString());
 
                 try
                 {
                     if (!string.IsNullOrEmpty(modeloNC.nro_docum.Trim()))
                     {
-                        error_fac = guardarNC.ProcesarNotaCreditoFinanciera(AmUsrLog, ComPwm, modeloNC.nro_docum.Trim(), modeloNC.serie_docum.Trim(), lbl_cod_suc_emp.Text.Trim(), Session["Masivo_NCF"].ToString());
+                        error_fac = guardarNC.ProcesarNotaCreditoFinanciera(AmUsrLog, ComPwm, modeloNC.nro_docum.Trim(), modeloNC.serie_docum.Trim(), lbl_cod_suc_emp.Text.Trim(), Session["Masivo_NCDev"].ToString());
 
                         if (!string.IsNullOrEmpty(error_fac))
                         {
-                            guardarNC.ActualizarEstadosNCFinanciera(AmUsrLog, ComPwm, "E", Session["Masivo_NCF"].ToString());//Estado E cuando ocurre un error 
+                            guardarNC.ActualizarEstadosNCDevAnu(AmUsrLog, ComPwm, "E", Session["Masivo_NCDev"].ToString(),"1");//Estado E cuando ocurre un error 
 
-                            lbl_error_factura.Text = "Excepción al aplicar nota de crédito a la factura: " + modeloNC.serie_docum + "-" + modeloNC.nro_docum + "Incidencia: " + error_fac; 
+                            lbl_error_factura.Text = "Excepción al aplicar nota de crédito a la factura: " + modeloNC.serie_docum + "-" + modeloNC.nro_docum + "Incidencia: " + error_fac;
                             lbl_error_factura.Visible = true;
                             return;
 
@@ -933,7 +984,7 @@ namespace CapaWeb.WebForms
         }
         protected void btn_cancelar_Click(object sender, EventArgs e)
         {
-            btn_verificar.Visible= false;
+            btn_verificar.Visible = false;
             BtnIniciar.Enabled = false;
             BtnIniciar.Visible = false;
             btn_cancelar.Visible = false;
@@ -945,6 +996,7 @@ namespace CapaWeb.WebForms
             FileUpload1.Visible = true;
             lbl_carga.Visible = true;
         }
+
         private void CargarGrilla()
         {
             try
@@ -976,6 +1028,29 @@ namespace CapaWeb.WebForms
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
 
+        }
+        public modelowmtfacturascab BuscarCabeceraFactura()
+        {
+            try
+            {
+                lbl_error.Text = "";
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                int count = 0;
+                modeloFactura = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    modeloFactura = item;
+                }
+
+                return modeloFactura;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("BuscarCabeceraFactura", ex.ToString());
+
+                return null;
+            }
         }
     }
 }

@@ -11,10 +11,11 @@ using System.IO;
 using System.Text;
 using CapaDatos.Sql;
 using CapaProceso.FacturaMasiva;
+using Ionic.Zip;
 
 namespace CapaWeb.WebForms
 {
-    public partial class ReenvioMasivoDE : System.Web.UI.Page
+    public partial class FormDocsComercialesR : System.Web.UI.Page
     {
         Consultaestadosfactura Consultaestados = new Consultaestadosfactura();
         List<modeloestadosfactura> Listaestados = null;
@@ -32,9 +33,11 @@ namespace CapaWeb.WebForms
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
 
         List<modelowmtfacturascab> listaConsCab = null;
-
+        List<modelowmtfacturascab> listaPathPdf = null;
         modelowmtfacturascab conscabcera = new modelowmtfacturascab();
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
+
+        ConsumoRest consumoRest = new ConsumoRest();
 
         Consultawmsptitulares ConsultaTitulares = new Consultawmsptitulares();
         public List<modelowmspctitulares> lista = null;
@@ -60,14 +63,6 @@ namespace CapaWeb.WebForms
 
         Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
         GenerarPDFDocumentos generer_pdfElectronico = new GenerarPDFDocumentos();
-
-         CabezeraFactura ActualizarEstadoFact = new CabezeraFactura();
-        ReenvioDocsElectronicos enviar_doc = new ReenvioDocsElectronicos();
-
-        List<modelowmtfacturascab> ListaDoc = new List<modelowmtfacturascab>();
-        modelowmtfacturascab modeloDosc = new modelowmtfacturascab();
-        List<modelowmtfacturascab> listaRespuesta = new List<modelowmtfacturascab>();
-        List<modelowmtfacturascab> listaRespuestaVer = new List<modelowmtfacturascab>();
         public string numerador = "trans";
         public string ComPwm;
         public string AmUsrLog;
@@ -89,7 +84,6 @@ namespace CapaWeb.WebForms
         public string Ven__cod_tipotit = "cliente";
         public string Ven__cod_tit = " ";
         public string EstF_proceso = "RCOMFACT";
-        string tipo_envio = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -108,6 +102,9 @@ namespace CapaWeb.WebForms
                 if (!IsPostBack)
                 {
 
+
+                    fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                    fechafin.Text = DateTime.Today.ToString("yyyy-MM-dd");
                     //Cargar la sucursal del usuario logeado
                     ListaModeloUsuarioSucursal = ConsultaUsuxSuc.UnicoUsuarioSucursal(ComPwm, AmUsrLog, ""); //Solo se envia empresa y usuario
                     if (ListaModeloUsuarioSucursal.Count == 0)
@@ -133,12 +130,11 @@ namespace CapaWeb.WebForms
 
             }
         }
-
         public void GuardarExcepciones(string metodo, string error)
         {
 
             ModeloExcepcion.cod_emp = ComPwm;
-            ModeloExcepcion.proceso = "ReenvioMasivoDE.aspx";
+            ModeloExcepcion.proceso = "BuscarDocEleMasivo.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Now;
@@ -163,11 +159,45 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-               
-                Ccf_estado = "C";
-                Ccf_tipo2 = cbx_tipo_doc.SelectedValue.Trim();
+                DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
+                DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
+                string Ccf_estado = "F";
+                string Ccf_cliente = txtCliente.Text.Trim();
+                string Ccf_serie_docum = "xxx";
+                string Ccf_nro_docum = "0";
+                string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);
+                string Ccf_mesi = string.Format("{0:00}", Fechainicio.Month);
+                string Ccf_anioi = Fechainicio.Year.ToString();
+                string Ccf_diaf = string.Format("{0:00}", Fechafin.Day);
+                string Ccf_mesf = string.Format("{0:00}", Fechafin.Month);
+                string Ccf_aniof = Fechafin.Year.ToString();
+                if (cbx_tipo1.SelectedValue == "NOR")
+                {
+                    if (cbx_tipo_doc.SelectedValue == "VTAE")
+                    {
+                        Ccf_tipo2 = "VTA";
+                    }
+                    if (cbx_tipo_doc.SelectedValue == "POSE")
+                    {
+                        Ccf_tipo2 = "POS";
+                    }
+                    if (cbx_tipo_doc.SelectedValue == "NDVE")
+                    {
+                        Ccf_tipo2 = "NDV";
+                    }
+                    if (cbx_tipo_doc.SelectedValue == "NC")
+                    {
+                        Ccf_tipo2 = "NC";
+                    }
+                    Ccf_estado = "0";
+                }
+                else
+                {
+                    Ccf_estado = "F";
+                    Ccf_tipo2 = cbx_tipo_doc.SelectedValue.Trim();
+                }
 
-                listaConsCab = ConsultaCabe.ConsultaDocsElectronicosXSucursal(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof, lbl_cod_suc.Text.Trim());
+                listaConsCab = ConsultaCabe.ConsultaDocsXSucursal(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof, lbl_cod_suc.Text.Trim(), cbx_tipo1.SelectedValue.Trim());
                 Grid.DataSource = listaConsCab;
                 Grid.DataBind();
                 Grid.Height = 100;
@@ -406,98 +436,6 @@ namespace CapaWeb.WebForms
 
         }
 
-
-        public modeloRolesFacturacion BuscarRolNuevo(string usuario)
-        {
-            try
-            {
-                lbl_error.Text = "";
-                ListaModelosRoles = ConsultaRoles.BuscarRolNuevo(usuario);
-                ModeloRoles = null;
-                foreach (modeloRolesFacturacion item in ListaModelosRoles)
-                {
-
-                    ModeloRoles = item;
-
-                }
-                return ModeloRoles;
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("BuscarRolNuevo", ex.ToString());
-                return null;
-
-            }
-        }
-
-        public modeloRolesFacturacion BuscarRolEditar(string usuario)
-        {
-            try
-            {
-                lbl_error.Text = "";
-                ListaModelosRoles = ConsultaRoles.BuscarRolEditar(usuario);
-                ModeloRoles = null;
-                foreach (modeloRolesFacturacion item in ListaModelosRoles)
-                {
-
-                    ModeloRoles = item;
-
-                }
-                return ModeloRoles;
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("BuscarRolEditar", ex.ToString());
-                return null;
-
-            }
-        }
-
-        public modeloRolesFacturacion BuscarRolEliminar(string usuario)
-        {
-            try
-            {
-                lbl_error.Text = "";
-                ListaModelosRoles = ConsultaRoles.BuscarRolEditar(usuario);
-                ModeloRoles = null;
-                foreach (modeloRolesFacturacion item in ListaModelosRoles)
-                {
-
-                    ModeloRoles = item;
-
-                }
-                return ModeloRoles;
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("BuscarRolEliminar", ex.ToString());
-                return null;
-
-            }
-        }
-
-        public modeloRolesFacturacion BuscarRolImprimir(string usuario)
-        {
-            try
-            {
-                lbl_error.Text = "";
-                ListaModelosRoles = ConsultaRoles.BuscarRolEditar(usuario);
-                ModeloRoles = null;
-                foreach (modeloRolesFacturacion item in ListaModelosRoles)
-                {
-
-                    ModeloRoles = item;
-
-                }
-                return ModeloRoles;
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("BuscarRolImprimir", ex.ToString());
-                return null;
-
-            }
-        }
         public modeloRolesFacturacion BuscarAccesoFactura(string usuario)
         {
             try
@@ -572,46 +510,26 @@ namespace CapaWeb.WebForms
 
             }
         }
-        protected void ImgAyuda_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-        {
-            try
-            {
-                lbl_error.Text = "";
-                //Enviar codigo de porceso = nombre del proceso
-                //rEcibir de cookie
-                ModeloCodProceso = BuscarCodProceso(cod_proceso);
-                Response.Redirect("Ayuda.asp" + "?cod_proceso=" + cod_proceso);
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("ImgAyuda_Click", ex.ToString());
 
-            }
-        }
 
         protected void Buscar_Click(object sender, EventArgs e)
         {
             try
             {
-                Grid.Visible = false;
-                btn_reenviarpdf.Enabled = true;
-                BtnIniciar.Enabled = true;
                 CargarGrilla();
                 if (listaConsCab.Count > 0)
                 {
                     lbl_fac_txt.Visible = true;
                     lbl_tot_doc.Visible = true;
                     lbl_tot_doc.Text = listaConsCab.Count.ToString();
-                    BtnIniciar.Visible = true;
-                    btn_reenviarpdf.Visible = true;
+                    btn_descargar.Visible = true;
                 }
                 else
                 {
                     lbl_fac_txt.Visible = false;
                     lbl_tot_doc.Visible = false;
                     lbl_tot_doc.Text = "";
-                    BtnIniciar.Visible = false;
-                    btn_reenviarpdf.Visible = false;
+                    btn_descargar.Visible = false;
                 }
             }
 
@@ -622,167 +540,130 @@ namespace CapaWeb.WebForms
             }
         }
 
-       
 
-        //PROGRESS BAR
-        private int Prop_CoTareas
+        protected void btn_descargar_Click(object sender, EventArgs e)
         {
-            get
+            try
             {
-                if (ViewState["CoTareas"] == null)
-                {
-                    ViewState["CoTareas"] = 0;
-                }
-                return (int)ViewState["CoTareas"];
-            }
-
-            set
-            {
-                ViewState["CoTareas"] = value;
-            }
-        }
-
-        private int Prop_TotalTareas = 0;
-
-
-        private int f_PorcentajeAvance(int Par_TotalTareas, int Par_TareaActual)
-        {
-            int liPorcentaje = 0;
-            //aplicar una regla de 3 simple
-            liPorcentaje = (Par_TareaActual * 100) / Par_TotalTareas;
-            return liPorcentaje;
-        }
-
-        private int f_ancho_control_porcentaje(int Par_AnchoTotalControl, int Par_Porcentaje)
-        {
-            int liAnchoControl = 0;
-            liAnchoControl = (Par_Porcentaje * Par_AnchoTotalControl) / 100;
-            return liAnchoControl;
-        }
-
-        protected void Timer1_Tick(object sender, EventArgs e)
-        {
-
-            Prop_TotalTareas = Convert.ToInt16(lbl_tot_doc.Text);
-            //limitar el numero de tareas al total de tareas a realizar
-            if (Prop_CoTareas <= Prop_TotalTareas)
-            {
-                int liPorcentajeAvance = 0;
-
-                //contador de tarea??
-                Prop_CoTareas += 1;
-
-                //tarea actual con total tareas
-                LblAvance.Text = Prop_CoTareas.ToString() + " de " + Prop_TotalTareas.ToString();
-
-                //porcentaje de avance segun el numero de tareas
-                liPorcentajeAvance = f_PorcentajeAvance(Prop_TotalTareas, Prop_CoTareas);
-                LblPorcentajeAvance.Text = liPorcentajeAvance.ToString() + "%";
-
-                //barra de progreso
-                LblProgressBar.Visible = true;
-                LblProgressBar.Width = f_ancho_control_porcentaje(400, liPorcentajeAvance);
-
-                //tareas a realizar poner todo el codigo para facturar electronicamente
-                string error_fac = null;
-                CargarGrilla();
-                ListaDoc = listaConsCab;
-                tipo_envio = Session["tipo_envio"].ToString();
-                foreach (var item in ListaDoc)
-                {
-                    modeloDosc = item;
-                    break;
-                }
-
-                try
-                {
-                    if (ListaDoc.Count>0)
-                    {
-                        if (tipo_envio == "DOC")
-                        {
-                            string respuesta = enviar_doc.ReenviarDocumentoDIAN(ComPwm, AmUsrLog, modeloDosc.tipo.Trim(), modeloDosc.nro_trans.Trim(), modeloDosc.doc_adjunto, Modelowmspclogo.version_fe.Trim(), Modelowmspclogo.pathtmpfac);
-                           
-                        }
-                        else
-                        {
-                            string respuesta = enviar_doc.ReenviarPDFDIAN(ComPwm, AmUsrLog, modeloDosc.tipo.Trim(), modeloDosc.nro_trans.Trim(), modeloDosc.doc_adjunto, Modelowmspclogo.version_fe.Trim(), Modelowmspclogo.pathtmpfac);
-                           
-                        }
-
-                    }
-            
-                }
-                catch (Exception aee)
-                {
-
-                    throw;
-                }
-
-                //.....
-            }
-
-            if (Prop_CoTareas == Prop_TotalTareas)
-            {
-                Prop_CoTareas = 0;
-                Timer1.Enabled = false;
-                LblAvance.Text = "Tarea finalizada";
-                BtnIniciar.Visible = false;
-                btn_reenviarpdf.Visible = false;
-                btn_limpiar.Visible = true;
                 CargarGrilla();
                 if (listaConsCab.Count > 0)
                 {
-                    Grid.Visible = true;
-                    lbl_lisdoc.Visible = true;
-                }else
-                {
-                    lbl_error_factura.Text = "Documentos autorizados correctamente";
-                    lbl_error_factura.Visible = true;
+                    using (ZipFile zip = new ZipFile())
+                    {
+                        using (ZipFile zip1 = new ZipFile())
+                        {
+                            foreach (var item in listaConsCab)
+                        {
+
+
+                            string pathPdf1 = null;
+                            string pathXML = null;
+                                if (cbx_tipo1.SelectedValue == "NOR")
+                                {
+                                    if (cbx_tipo_doc.SelectedValue == "POSE" || cbx_tipo_doc.SelectedValue == "VTAE")
+                                    {
+                                        cod_proceso = "RCOMFELECT";
+                                        pathPdf1 = generer_pdfElectronico.GenerarPDFFacturaNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, item.tipo.Trim(), item.nro_trans.Trim());
+                                    }
+                                    if (cbx_tipo_doc.SelectedValue == "NC")
+                                    {
+                                        cod_proceso = "RCOMNCELEC";
+                                        pathPdf1 = generer_pdfElectronico.GenerarPDFNotaCreditoNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, item.tipo.Trim(), item.nro_trans.Trim());
+                                    }
+                                    if (cbx_tipo_doc.SelectedValue == "NDVE")
+                                    {
+                                        cod_proceso = "RCOMNDEB";
+                                        pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, item.tipo.Trim(), item.nro_trans.Trim());
+                                    }
+                                }
+                                else
+                                {
+                                    if (cbx_tipo_doc.SelectedValue == "POSE" || cbx_tipo_doc.SelectedValue == "VTAE")
+                                    {
+                                        cod_proceso = "RCOMFELECT";
+                                        pathPdf1 = generer_pdfElectronico.GenerarPDFFacturaElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, item.tipo.Trim(), item.nro_trans.Trim());
+                                        pathXML = GenerarXML(item.nro_trans.Trim());
+                                    }
+                                    if (cbx_tipo_doc.SelectedValue == "NC")
+                                    {
+                                        cod_proceso = "RCOMNCELEC";
+                                        pathPdf1 = generer_pdfElectronico.GenerarPDFNotaCreditoElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, item.tipo.Trim(), item.nro_trans.Trim());
+                                        pathXML = GenerarXML(item.nro_trans.Trim());
+                                    }
+                                    if (cbx_tipo_doc.SelectedValue == "NDVE")
+                                    {
+                                        cod_proceso = "RCOMNDEB";
+                                        pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, item.tipo.Trim(), item.nro_trans.Trim());
+                                        pathXML = GenerarXML(item.nro_trans.Trim());
+                                    }
+                                }
+                                   
+          
+                            var nombre_archivo = Path.GetFileName(pathPdf1);
+                            var archivo_byte = File.ReadAllBytes(pathPdf1);
+                            zip.AddEntry(nombre_archivo, archivo_byte);
+                                if (!string.IsNullOrEmpty(pathXML))
+                                {
+                                    var path_xml = Path.GetFileName(pathXML);
+                                    var byte_xml = File.ReadAllBytes(pathXML);
+                                    zip1.AddEntry(path_xml, byte_xml);
+                                }
+                                
+                            }
+                            //Buscar path
+                            string pathtmpfac = Modelowmspclogo.pathtmpfac;  //Traemos el path, la ruta 
+                            string pathDocGenerado = "DocumentosElectronicos.zip";
+                            string pathxml1 = "Adjunto.zip";
+                            string nombre_pathDocGenerado = pathtmpfac + pathDocGenerado;
+                            string nombre_pathXML = pathtmpfac + pathxml1;
+                            zip.Save(nombre_pathDocGenerado);
+                            zip1.Save(nombre_pathXML);
+                            //Enviar correo al remitente
+                            Boolean error = enviarcorreocliente.EnviarCorreoRemitente(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, nombre_pathDocGenerado, nombre_pathXML);
+                            if(error==true)
+                            {
+                                lbl_fac_txt.Visible = false;
+                                lbl_tot_doc.Visible = false;
+                                lbl_tot_doc.Text = "";
+                                btn_descargar.Visible = false;
+                                lbl_error.Text = "Documentos enviados correctamente";
+
+                            }
+                        }
+
+                    }
+
                 }
-                Session.Remove("LisataDocs");
-                Session.Remove("tipo_envio");
+                
+               
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("btn_descargar_Click", ex.ToString());
+
+
             }
         }
-        protected void BtnIniciar_Click(object sender, EventArgs e)
+        public string GenerarXML(string nro_trans)
         {
-            Timer1.Enabled = true;
-            Session["tipo_envio"] = "DOC";
-            BtnIniciar.Enabled = false;
-            btn_reenviarpdf.Enabled = false;
-            Prop_TotalTareas = 10;
-            Documento();
-        }
-        public void Documento()
-        {
-            CargarGrilla();
-           
-            
-        }
+            ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
+            foreach (var item in ListaModelorespuestaDs)
+            {
+                if (item.xml != "")
+                {
+                    ModeloResQr = item;
+                }
 
-        protected void btn_reenviarpdf_Click(object sender, EventArgs e)
-        {
-            Timer1.Enabled = true;
-            Session["tipo_envio"] = "PDF";
-            btn_reenviarpdf.Enabled = false;
-            BtnIniciar.Enabled = false;
-            Prop_TotalTareas = 10;
-            Documento();
-        }
+            }
 
-        protected void btn_limpiar_Click(object sender, EventArgs e)
-        {
-            //limpiar todas las pantallas
 
-            LblPorcentajeAvance.Text = "";
-            LblAvance.Text = "";
-            btn_limpiar.Visible = false;
-            LblProgressBar.Width = 0;
-            Grid.Visible = false;
-            lbl_lisdoc.Visible = false;
-            lbl_error_factura.Text = "";
-            lbl_error_factura.Visible = false;
-            lbl_tot_doc.Text = "";
-                
+            string StringXml = ModeloResQr.xml;
+            string pathTemporal = Modelowmspclogo.pathtmpfac;
+            string nombreXml = ModeloResQr.cufe.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + ".xml";
+            string pathXml = pathTemporal + nombreXml;
+            File.WriteAllText(pathXml, StringXml);
+            return pathXml;
         }
     }
 }
+    

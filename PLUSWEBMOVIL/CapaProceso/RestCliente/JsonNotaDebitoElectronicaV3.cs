@@ -121,6 +121,7 @@ namespace CapaProceso.RestCliente
             {
                 string tipoFactura = "";
                 EncabezadoNDV3 encabezado = new EncabezadoNDV3();
+
                 ListaDesc = consultaDesc.ConsultaDescCargTrans(Ccf_cod_emp, Ccf_usuario, Ccf_nro_trans);
                 //Recuperar el cufe ce la factura
                 ListaModelorespuestaDs = consultaRespuestaDS.ConsultaCUFE(nro_factura);
@@ -170,6 +171,18 @@ namespace CapaProceso.RestCliente
 
                 Modelowmspclogo = null;
                 Modelowmspclogo = BuscarUsuarioLogo(Ccf_cod_emp, Ccf_usuario);
+
+                List<modelowmspcfacturasWMimpuRest> ListaAux = new List<modelowmspcfacturasWMimpuRest>();
+                ListaModeloimpuesto = consultaImpuesto.BuscarImpuestoRest(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans, impuesto_rest);
+                foreach (modelowmspcfacturasWMimpuRest items in ListaModeloimpuesto)
+                {
+                    if (items.nom_impuesto.Trim() == "IVA GENERADO")
+                    {
+                        ListaAux.Add(items);
+
+                    }
+
+                }
                 //vALIDAR NIT, EXTRANJERO Y CONSUMIDOR FINAL
                 string nit_dian = ConsumidorFinal(conscabceraNC.nro_dgi2.Trim(), Ccf_usuario, Ccf_cod_emp); //Verific si es consumidor o no
                 
@@ -246,7 +259,7 @@ namespace CapaProceso.RestCliente
                 }
                
                 encabezado.totalDet = listaConsDet.Count; //la cantidad de lineas del detalle de la factura
-                encabezado.totalImp = 1; //la cantidad de lineas de los impuestos
+                encabezado.totalImp = ListaAux.Count; //la cantidad de lineas de los impuestos
                 encabezado.totalCon = ListaDesc.Count; //Total lineas de conceptos Descuento y Cargos
                 encabezado.usuario = Ccf_usuario;  //Usuario que facturo
                 encabezado.versionfe = Modelowmspclogo.version_fe.Trim(); //version de facturacion electronica
@@ -378,26 +391,37 @@ namespace CapaProceso.RestCliente
             try
             {
                 List<ImpuestoNDV3> impuesto = new List<ImpuestoNDV3>();
-                ImpuestoNDV3 item = new ImpuestoNDV3();
+               
+                List<modelowmspcfacturasWMimpuRest> ListaAux = new List<modelowmspcfacturasWMimpuRest>();
                 //Buscamos todos los impuestos de la factura
-                ModeloImpuesto = null;
-                ModeloImpuesto = BuscarImpuestosREst(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans, impuesto_rest);
-                if (conscabceraNC.cod_moneda.Trim() != "COP")
+                ListaModeloimpuesto = consultaImpuesto.BuscarImpuestoRest(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans, impuesto_rest);
+                foreach (modelowmspcfacturasWMimpuRest items in ListaModeloimpuesto)
                 {
-                    item.base_calculo = Convert.ToDecimal(ModeloImpuesto.base_impu) * Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
-                    item.porciva = Convert.ToDecimal(ModeloImpuesto.porc_impu);
-                    item.valor = Convert.ToDecimal(ModeloImpuesto.valor_impu) * Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
+                    if (items.nom_impuesto.Trim() == "IVA GENERADO")
+                    {
+                        ListaAux.Add(items);
+
+                    }
+
                 }
-                else
+                foreach (modelowmspcfacturasWMimpuRest ModeloImpuestos in ListaAux)
                 {
+                    ImpuestoNDV3 item = new ImpuestoNDV3();
+                    if (conscabceraNC.cod_moneda.Trim() != "COP")
+                    {
+                        item.base_calculo = Convert.ToDecimal(ModeloImpuestos.base_impu) * Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
+                        item.porciva = Convert.ToDecimal(ModeloImpuestos.porc_impu);
+                        item.valor = Convert.ToDecimal(ModeloImpuestos.valor_impu) * Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
+                    }
+                    else
+                    {
 
-                    item.base_calculo = Convert.ToDecimal(ModeloImpuesto.base_impu);
-                    item.porciva = Convert.ToDecimal(ModeloImpuesto.porc_impu);
-                    item.valor = Convert.ToDecimal(ModeloImpuesto.valor_impu);
+                        item.base_calculo = Convert.ToDecimal(ModeloImpuestos.base_impu);
+                        item.porciva = Convert.ToDecimal(ModeloImpuestos.porc_impu);
+                        item.valor = Convert.ToDecimal(ModeloImpuestos.valor_impu);
+                    }
+                    impuesto.Add(item);
                 }
-
-
-                impuesto.Add(item);
 
                 return impuesto;
             }

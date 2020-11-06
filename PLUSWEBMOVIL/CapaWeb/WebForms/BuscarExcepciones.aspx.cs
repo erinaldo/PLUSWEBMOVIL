@@ -175,7 +175,7 @@ namespace CapaWeb.WebForms
                 DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
 
 
-                listaExcepciones = consultaExcepcion.ListaExcepcionPFecha(ComPwm, Fechainicio, Fechafin, AmUsrLog);
+                listaExcepciones = consultaExcepcion.ListaExcepcionPFecha(ComPwm, Fechainicio.ToString("yyyy-MM-dd"), Fechafin.ToString("yyyy-MM-dd"), AmUsrLog);
                 Grid.DataSource = listaExcepciones;
                 Grid.DataBind();
                 Grid.Height = 100;
@@ -200,6 +200,7 @@ namespace CapaWeb.WebForms
                 //Cuando el usuario envia los datos llenos
                 DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
                 DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
+                
 
                 if (cbx_usuario.SelectedValue != "0")
                 {
@@ -251,7 +252,7 @@ namespace CapaWeb.WebForms
                     if (txtDocumento.Text == "0" && txtmetodo.Text == "0")
                 {
                     //Busca solo por fechas
-                    listaExcepciones = consultaExcepcion.ListaExcepcionPFecha(ComPwm, Fechainicio, Fechafin, AmUsrLog);
+                    listaExcepciones = consultaExcepcion.ListaExcepcionPFecha(ComPwm, Fechainicio.ToString("yyyy-MM-dd"), Fechafin.ToString("yyyy-MM-dd"), AmUsrLog);
                     Grid.DataSource = listaExcepciones;
                     Grid.DataBind();
                     Grid.Height = 100;

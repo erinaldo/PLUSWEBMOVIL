@@ -1,26 +1,25 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site1.Master" AutoEventWireup="true" CodeBehind="FormNotaCreditoFinanciera.aspx.cs" Inherits="CapaWeb.WebForms.FormNotaCreditoFinanciera" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
   
-<script LANGUAGE="JavaScript">
+    <script language="JavaScript">
 
 var cuenta=0;
 
-function enviado() { 
-if (cuenta == 0)
-{
-cuenta++;
-return true;
+function enviado() {
+    if (cuenta == 0) {
+        cuenta++;
+        return true;
+    }
+    else {
+        alert("La Nota de Crédito ya ha sido enviada, espere por favor.");
+        return false;
+    }
 }
-else 
-{
-alert("La Nota de Crédito ya ha sido enviado, espere por favor.");
-return false;
-}
-}
+
 // -->
-</script>
- 
-       <script type="text/javascript">
+    </script>
+
+    <script type="text/javascript">
 
         function cuentaCaracteres() {
             var cantidadCaracteresPermitidos = 250;
@@ -250,7 +249,7 @@ return false;
                                 </td>
                                 <td>
                                     <label>
-                                        <asp:DropDownList class="textos" name="serie_docum" AutoPostBack="true" Width="210" ID="serie_docum" runat="server" OnSelectedIndexChanged="serie_docum_SelectedIndexChanged">
+                                        <asp:DropDownList class="textos" name="serie_docum"  Width="210" ID="serie_docum" runat="server">
                                         </asp:DropDownList>
 
                                     </label>

@@ -269,14 +269,14 @@ namespace CapaDatos.Sql
 
         //Buscar solo por fechas todas las excepciones
 
-        public List<modeloExepciones> ListaExcepcionPFecha(string cod_emp,  DateTime fecha_ini, DateTime fecha_fin, string usuario_mod)
+        public List<modeloExepciones> ListaExcepcionPFecha(string cod_emp,  string fecha_ini, string fecha_fin, string usuario_mod)
         {
             try
             {
                 using (cn = conexion.genearConexion())
                 {
                     List<modeloExepciones> lista = new List<modeloExepciones>();
-                    string insert = "SELECT * FROM wmc_excepcion WHERE wmc_excepcion.fecha_hora BETWEEN @fecha_ini AND @fecha_fin and cod_emp =@cod_emp ORDER BY id DESC ";
+                    string insert = "SELECT * FROM wmc_excepcion WHERE cod_emp =@cod_emp and FORMAT(fecha_hora, 'yyyy-MM-dd')  BETWEEN @fecha_ini AND @fecha_fin  ORDER BY id DESC ";
                     SqlCommand conmand = new SqlCommand(insert, cn);
 
                     conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;

@@ -111,17 +111,7 @@ namespace CapaWeb.WebForms
                     {
                         Session["usuario"] = Session["cod_Cliente"].ToString();
                     }
-                    if (Session["listaClienteFac"] != null)
-                    {
-                        // recupera la variable de secion con el objeto persona 
 
-                        ListaSaldoFacturas = (List<modeloSaldosFacturas>)Session["listaClienteFac"];
-                        Session["listaConsCab"] = ListaSaldoFacturas;
-                        Grid.DataSource = ListaSaldoFacturas;
-                        Grid.DataBind();
-                        fechainicio.Text = DateTime.Today.ToString("yyyy-MM-dd");
-                        fechafin.Text = DateTime.Today.ToString("yyyy-MM-dd");
-                    }
 
                 }
             }

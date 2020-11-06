@@ -1,83 +1,92 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="CargaMasivaFactura.aspx.cs" Inherits="CapaWeb.WebForms.CargaMasivaFactura" %>
-
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WebForms/Site.Master" AutoEventWireup="true" CodeBehind="FormMasivoNDAnulacion.aspx.cs" Inherits="CapaWeb.WebForms.FormMasivoNDAnulacion" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <style type="text/css">
-        .estiloScroll {
-            width: 1%;
-            height: 20px;
-            border-style: solid;
-            border-color: #0E748A;
-            border-width: 1px;
-            background-color: #DD6D29;
-        }
+      <style type="text/css">
+      .estiloScroll {
+          width: 1%;
+          height: 20px;
+          border-style: solid;
+          border-color: #0E748A;
+          border-width: 1px;
+          background-color: #DD6D29;
+      }
     </style>
+      <form id="form1" class="forms-sample" runat="server" >
+        <div style="align-items: center">
+            <table>
+                <tr>
+                    <td valign="top">
+                        <table width="100%" border="0" cellspacing="0">
+                            <tr>
+                                <td class="nav">---&gt;<a href="<%Response.Write(Modelowmspclogo.sitio_app + "Menu_Ppal.asp"); %>">Menu Principal</a>---&gt;<a href="AccesoMasivoND.aspx">Masivo Notas de Débito</a>---&gt;Nuevo</td>
+                            </tr>
+                        </table>
+                    </td>
 
-    <table align="center">
-        <tr>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <asp:Label ID="lblAyuda" runat="server" CssClass="Titulo" Text="Importar Notas de Débito por Anulación"></asp:Label>
 
-            <td colspan="4">
+                    </td>
+                </tr>
+                   <tr>
+                    <td>
+                         <asp:Label ID="Label14" runat="server"  CssClass="Subtitulo2" Text="Sucursal: "></asp:Label>
+                        <asp:Label ID="lbl_cod_suc_emp" runat="server"  CssClass="Subtitulo2" Text=""></asp:Label>
+                        <asp:Label ID="lbl_suc_emp" runat="server"  CssClass="Subtitulo2" Text=""></asp:Label>
+                     </td>
+                       <td >
+                           <asp:Label ID="lbl_prefijio" runat="server" CssClass="Subtitulo2" Text="Prefijo: "></asp:Label>
+                           <asp:Label ID="lbl_tipo_prefijo" runat="server" CssClass="Subtitulo2" Text=""></asp:Label>
+                       </td>
+                       <td >
+                           <asp:Label ID="lbl_ve" runat="server" CssClass="Subtitulo2" Text="Tipo: "></asp:Label>
+                           <asp:Label ID="lbl_tipo_nc" runat="server" CssClass="Subtitulo2" Text=""></asp:Label>
+                       </td>
+                </tr>
+                      
+                 <tr>
+                    <td colspan="3">
 
-                <asp:Label ID="Label1" runat="server" CssClass="Titulo" Text="Importar Facturas de Venta"></asp:Label>
+                         <hr />
+                    </td>
+                </tr>
+                 <tr>
+                     <td colspan="3">
+                        <asp:Label ID="lbl_error" runat="server"  class="textos_error" Text=""></asp:Label>
+                        </td>
+                    </tr>
+                  <tr>
+                     <td colspan="3">
+                       <asp:Label ID="lbl_mensaje" runat="server"  class="textos_error" Text=""></asp:Label>
+                        
+                        </td>
+                    </tr>
+                <tr>
+                    <td>
+                        <asp:Label ID="lbl_carga" runat="server" class="Subtitulo1" Text="Cargar notas de crédito a aplicar: "></asp:Label>
+                    </td>
 
-            </td>
-        </tr>
-        <tr>
-            <td colspan="4">
-                <asp:Label ID="lbl_mensaje" runat="server" CssClass="textos_error" Text=""></asp:Label>
+                    <td class="busqueda">
+                        <asp:FileUpload ID="FileUpload1" runat="server" />
+                    </td>
+                    <td>
+                        <asp:Button ID="btn_importar" CssClass="botones" OnClick="btn_importar_Click" runat="server" Text="Importar" />
+                    </td>
 
-            </td>
-        </tr>
-        <tr>
-            <td aling="center">
-                <asp:Label ID="Label2" runat="server" CssClass="Subtitulo2" Text="Sucursal: "></asp:Label>
-                <asp:Label ID="lbl_cod_suc" runat="server" CssClass="Subtitulo2" Text=""></asp:Label>
-                <asp:Label ID="lbl_sucursal" runat="server" CssClass="Subtitulo2" Text=""></asp:Label>&nbsp;&nbsp;
-                        <asp:Label ID="lbl_pre" runat="server" CssClass="Subtitulo2" Text="Prefijo:" Visible="false"></asp:Label>
-                <asp:Label ID="lbl_prefijo" runat="server" CssClass="Subtitulo2" Text="" Visible="false"></asp:Label>
-            </td>
-
-        </tr>
-    </table>
-    <iframe  src="<%Response.Write(Modelowmspclogo.sitio_erp + "/CargaMasivaFEPWM.aspx"); %>" frameborder="0" allowfullscreen align="center" style="width: 821px; height: 135px; margin-left: 0px;"></iframe>
-
-
-    <form id="form1" runat="server" >
-
-        <table align="center">
-
-            <tr>
-                <td colspan="3">
-                    <asp:Label ID="mensaje" name="mensaje" runat="server" Text=""></asp:Label>
-                    <asp:Label ID="cod_tit" required="required" runat="server" Text="" Visible="False"></asp:Label>
-                </td>
-            </tr>
-
-            <tr valign="top">
-                <td align="right" nowrap="nowrap" class="busqueda">
-                    <asp:FileUpload ID="FileUpload1" Visible="false" runat="server" />
-                </td>
-                <td class="botones" colspan="2" align="left">
-                    <asp:Button ID="btn_importar" CssClass="botones" Visible="false" OnClick="btn_importar_Click" runat="server" Text="Importar" />
-                </td>
-            </tr>
-            
-
-
-            <tr valign="top">
-                <td align="right" nowrap="nowrap" class="busqueda">
-                    <div align="left">Total facturas a procesar:</div>
-                </td>
-
-                <td class="textos">
-
-                    <asp:Label ID="lbl_facturas" runat="server" Text=""></asp:Label>
-
-                </td>
-                <td class="botones" align="left">
-                    <asp:Button ID="btn_verificar" CssClass="botones" OnClick="btn_verificar_Click" runat="server" Text="Verificar" />
-                </td>
-            </tr>
-            <tr>
+                </tr>
+                <tr>
+                    <td >
+                        <asp:Label ID="lbl_verificar" runat="server" Visible="false" CssClass="busqueda" Text="Total notas de crédito a procesar:"></asp:Label>
+                    </td>
+                    <td>
+                        <asp:Label ID="lbl_total_nc" runat="server" Visible="false" CssClass="textos" Text=""></asp:Label>
+                        </td>
+                    <td>
+                        <asp:Button ID="btn_verificar" CssClass="botones" Visible="false" runat="server" Text="Verificar" OnClick="btn_verificar_Click" />
+                    </td>
+                </tr>
+                  <tr>
                 <td>
                     <asp:Label ID="lbl_fec_ca" CssClass="busqueda"  Visible="false" runat="server" Text="Fecha carga archivo: "></asp:Label>
                 </td>
@@ -88,7 +97,7 @@
                     <asp:Button ID="btn_cancelar" CssClass="botones" Visible="false"  onclick="btn_cancelar_Click" runat="server" Text="Cancelar" />
                 </td>
             </tr>
-            <tr>
+                 <tr>
                 <td colspan="3">
 
 
@@ -107,7 +116,7 @@
                             <asp:Label ID="lbl_error_factura" runat="server" Visible="false" CssClass="textos_error" Text=""></asp:Label>
                             <br />
                             <asp:Button ID="BtnIniciar" CssClass="botones" Visible="false" runat="server" Text="Procesar" OnClick="BtnIniciar_Click" />
-                              <br />
+                            <br />
                              <tr>
                                 <td>
                                     <asp:Label ID="lbl_lisdoc" runat="server" CssClass="Subtitulo1" Text="Listado de Documentos no autorizados, por favor revisar incidencias." Visible="false"></asp:Label>
@@ -180,7 +189,5 @@
 
                 </td>
             </tr>
-
-        </table>
     </form>
 </asp:Content>

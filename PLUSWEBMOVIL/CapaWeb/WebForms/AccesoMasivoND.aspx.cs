@@ -9,8 +9,9 @@ using CapaDatos.Modelos;
 
 namespace CapaWeb.WebForms
 {
-    public partial class AccesoMasivoNC : System.Web.UI.Page
+    public partial class AccesoMasivoND : System.Web.UI.Page
     {
+
         Consultaestadosfactura Consultaestados = new Consultaestadosfactura();
         List<modeloestadosfactura> Listaestados = null;
 
@@ -75,7 +76,7 @@ namespace CapaWeb.WebForms
         public string cod_proceso;
         public string ResF_estado = "S";
         public string ResF_serie = "0";
-        public string ResF_tipo = "C";
+        public string ResF_tipo = "D";
         public string EstF_proceso = "RCOMNCRED";
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -103,7 +104,6 @@ namespace CapaWeb.WebForms
                 GuardarExcepciones("Page_Load", ex.ToString());
             }
         }
-
         public void cargarListaDesplegables()
         {
             try
@@ -137,7 +137,7 @@ namespace CapaWeb.WebForms
         {
 
             ModeloExcepcion.cod_emp = ComPwm;
-            ModeloExcepcion.proceso = "AccesoMasivoNC.aspx";
+            ModeloExcepcion.proceso = "AccesoMasivoND.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Now;
@@ -163,9 +163,9 @@ namespace CapaWeb.WebForms
 
                 if (count1 > 0)
                 {
-                    NuevaNC.Visible = true;
-                    notaCreditoFinan.Visible = true;
-                    btn_AnularFactura.Visible = true;
+                   
+                    btn_financiera.Visible = true;
+                    btn_anulacion.Visible = true;
                 }
                 //Rol acceso a la pantalla de Buscar facturas
                 ListaModelosRoles = ConsultaRoles.BuscarAccesoFactura(AmUsrLog);
@@ -253,154 +253,13 @@ namespace CapaWeb.WebForms
         }
 
 
-        protected void NuevaNC_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                lbl_error.Text = "";
-                lbl_mensaje.Text = "";
-                NuevaNC.Enabled = true;
-                //vALIDAR QUE SOLO EXISTA UNA RESOLUCION ACTIVA-
-                listaRes = null;
-                listaRes = ConsultaResolucion.ConsultaResolusionXSucursalNC(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, lbl_cod_suc.Text.Trim());
-                resolucion = null;
-                foreach (modelowmspcresfact item in listaRes)
-                {
-                    resolucion = item;
-                }
-                if (listaRes.Count == 0)
-                {
-                    NuevaNC.Enabled = false;
-                    lbl_mensaje.Text = "No existe una resolución activa para emitir Nota de Crédito.";
-                }
-                else
-                {
-                    if (listaRes.Count == 1)
-                    {
-
-                        //1 primero creo un objeto Clave/Valor de QueryString 
-                        QueryString qs = new QueryString();
-
-                        //2 voy a agregando los valores que deseo
-                        qs.Add("TRN", "INS");
-                        qs.Add("Id", "");
-                        Response.Redirect("FormMasivoNCDevolucion.aspx" + Encryption.EncryptQueryString(qs).ToString());
-                    }
-                    else
-                    {
-                        if (listaRes.Count > 1)
-                        {
-                            NuevaNC.Enabled = false;
-                            lbl_mensaje.Text = "Existe más de una resolución activa, para emitir Nota de Crédito habilite una solamente.";
-
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("NuevaNC_Click", ex.ToString());
-
-            }
-        }
-
         protected void notaCreditoFinan_Click(object sender, EventArgs e)
         {
-            try
-            {
-                lbl_error.Text = "";
-                lbl_mensaje.Text = "";
-                notaCreditoFinan.Enabled = true;
-                //vALIDAR QUE SOLO EXISTA UNA RESOLUCION ACTIVA-
-                listaRes = null;
-                listaRes = ConsultaResolucion.ConsultaResolusionXSucursalNC(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, lbl_cod_suc.Text.Trim());
-                resolucion = null;
-                foreach (modelowmspcresfact item in listaRes)
-                {
-                    resolucion = item;
-                }
-                if (listaRes.Count == 0)
-                {
-                    notaCreditoFinan.Enabled = false;
-                    lbl_mensaje.Text = "No existe una resolución activa para emitir Nota de Crédito.";
-                }
-                else
-                {
-                    if (listaRes.Count == 1)
-                    {
-                        QueryString qs = new QueryString();
-                        qs.Add("TRN", "AFA");
-                        qs.Add("Id", "");
-                        Response.Redirect("FormMasivoNCFinanciera.aspx" + Encryption.EncryptQueryString(qs).ToString());
-                    }
-                    else
-                    {
-                        if (listaRes.Count > 1)
-                        {
-                            notaCreditoFinan.Enabled = false;
-                            lbl_mensaje.Text = "Existe más de una resolución activa, para emitir Nota de Crédito habilite una solamente.";
-
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("notaCreditoFinan_Click", ex.ToString());
-
-            }
+            
 
         }
 
-        protected void btn_AnularFactura_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                lbl_error.Text = "";
-                lbl_mensaje.Text = "";
-                btn_AnularFactura.Enabled = true;
-                //vALIDAR QUE SOLO EXISTA UNA RESOLUCION ACTIVA-
-                listaRes = null;
-                listaRes = ConsultaResolucion.ConsultaResolusionXSucursalNC(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, lbl_cod_suc.Text.Trim());
-                resolucion = null;
-                foreach (modelowmspcresfact item in listaRes)
-                {
-                    resolucion = item;
-                }
-                if (listaRes.Count == 0)
-                {
-                    btn_AnularFactura.Enabled = false;
-                    lbl_mensaje.Text = "No existe una resolución activa para emitir Nota de Crédito.";
-                }
-                else
-                {
-                    if (listaRes.Count == 1)
-                    {
-                        //Anular Factura
-                        QueryString qs = new QueryString();
 
-                        //2 voy a agregando los valores que deseo
-                        qs.Add("TRN", "AFA");
-                        qs.Add("Id", "");
-                        Response.Redirect("FormMasivoNCAnulacion.aspx" + Encryption.EncryptQueryString(qs).ToString());
-                    }
-                    else
-                    {
-                        if (listaRes.Count > 1)
-                        {
-                            btn_AnularFactura.Enabled = false;
-                            lbl_mensaje.Text = "Existe más de una resolución activa, para emitir Nota de Crédito habilite una solamente.";
-
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("btn_AnularFactura_Click", ex.ToString());
-
-            }
-        }
         public modeloRolesFacturacion BuscarCargarTablero(string usuario)
         {
             try
@@ -425,5 +284,101 @@ namespace CapaWeb.WebForms
             }
         }
 
+        protected void btn_financiera_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                lbl_error.Text = "";
+                lbl_mensaje.Text = "";
+                btn_financiera.Enabled = true;
+                //vALIDAR QUE SOLO EXISTA UNA RESOLUCION ACTIVA-
+                listaRes = null;
+                listaRes = ConsultaResolucion.ConsultaResolusionXSucursalND(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, lbl_cod_suc.Text.Trim());
+                resolucion = null;
+                foreach (modelowmspcresfact item in listaRes)
+                {
+                    resolucion = item;
+                }
+                if (listaRes.Count == 0)
+                {
+                    btn_financiera.Enabled = false;
+                    lbl_mensaje.Text = "No existe una resolución activa para emitir Nota de Débito.";
+                }
+                else
+                {
+                    if (listaRes.Count == 1)
+                    {
+                        QueryString qs = new QueryString();
+                        qs.Add("TRN", "AFA");
+                        qs.Add("Id", "");
+                        Response.Redirect("FormMasivoNDFinanciera.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    }
+                    else
+                    {
+                        if (listaRes.Count > 1)
+                        {
+                            btn_financiera.Enabled = false;
+                            lbl_mensaje.Text = "Existe más de una resolución activa, para emitir Nota de Débito habilite una solamente.";
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("btn_financiera_Click", ex.ToString());
+
+            }
+        }
+
+        protected void btn_anulacion_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                lbl_error.Text = "";
+                lbl_mensaje.Text = "";
+                btn_anulacion.Enabled = true;
+                //vALIDAR QUE SOLO EXISTA UNA RESOLUCION ACTIVA-
+                listaRes = null;
+                listaRes = ConsultaResolucion.ConsultaResolusionXSucursalND(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, lbl_cod_suc.Text.Trim());
+                resolucion = null;
+                foreach (modelowmspcresfact item in listaRes)
+                {
+                    resolucion = item;
+                }
+                if (listaRes.Count == 0)
+                {
+                    btn_anulacion.Enabled = false;
+                    lbl_mensaje.Text = "No existe una resolución activa para emitir Nota de Débito.";
+                }
+                else
+                {
+                    if (listaRes.Count == 1)
+                    {
+                        //Anular Factura
+                        QueryString qs = new QueryString();
+
+                        //2 voy a agregando los valores que deseo
+                        qs.Add("TRN", "AFA");
+                        qs.Add("Id", "");
+                        Response.Redirect("FormMasivoNDAnulacion.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                    }
+                    else
+                    {
+                        if (listaRes.Count > 1)
+                        {
+                            btn_anulacion.Enabled = false;
+                            lbl_mensaje.Text = "Existe más de una resolución activa, para emitir Nota de Débito habilite una solamente.";
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("btn_anulacion_Click", ex.ToString());
+
+            }
+        }
     }
 }

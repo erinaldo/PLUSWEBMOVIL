@@ -16,7 +16,7 @@ using SpreadsheetLight;
 
 namespace CapaWeb.WebForms
 {
-    public partial class FormMasivoNCFinanciera : System.Web.UI.Page
+    public partial class FormMasivoNDFinanciera : System.Web.UI.Page
     {
         public ConsultaCodProceso ConsultaCodProceso = new ConsultaCodProceso();
         public modeloCodProcesoFactura ModeloCodProceso = new modeloCodProcesoFactura();
@@ -44,6 +44,7 @@ namespace CapaWeb.WebForms
         modelowmspcresfact resolucion = new modelowmspcresfact();
         List<modelowmspcresfact> listaRes = null;
         MasivoNCFinanciera guardarNC = new MasivoNCFinanciera();
+        MasivoNDebito guardarND = new MasivoNDebito();
 
 
         ConsultawmusuarioSucursal consultaUsuarioSucursal = new ConsultawmusuarioSucursal();
@@ -116,18 +117,18 @@ namespace CapaWeb.WebForms
         public string Ven__cod_tipotit = "clientes";
         public string ResF_estado = "v";
         public string ResF_serie = "0";
-        public string ResF_tipo = "C";
+        public string ResF_tipo = "D";
         public string CC__cod_dpto = "0";
         public string MonB__moneda = "0";
         public string Vend__cod_tipotit = "vendedores";
         public string Vend__cod_tit = "0";
         public string FP__cod_fpago = "0";
         public string ArtB__articulo = "tubo";
-        public string ArtB__tipo = "NCRED";
+        public string ArtB__tipo = "NDEB";
         public string ArtB__compras = "0";
         public string ArtB__ventas = "0";
         public string Ccf_tipo1 = "C";
-        public string Ccf_tipo2 = "NCME";
+        public string Ccf_tipo2 = "NDVE";
         public string Ccf_nro_trans = "0";
         public string Ccf_estado = null;
         public string Ccf_cliente = null;
@@ -147,6 +148,7 @@ namespace CapaWeb.WebForms
         public string cod_proceso;
         protected void Page_Load(object sender, EventArgs e)
         {
+
             try
             {
                 lbl_error.Text = "";
@@ -159,7 +161,7 @@ namespace CapaWeb.WebForms
                 }
                 if (!IsPostBack)
                 {
-                   
+
                     cargarListaDesplegables();
 
                 }
@@ -195,7 +197,7 @@ namespace CapaWeb.WebForms
                 }
 
                 listaRes = null;
-                listaRes = ConsultaResolucion.ConsultaResolusionXSucursalNC(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, lbl_cod_suc_emp.Text.Trim());
+                listaRes = ConsultaResolucion.ConsultaResolusionXSucursalND(AmUsrLog, ComPwm, ResF_estado, ResF_serie, ResF_tipo, lbl_cod_suc_emp.Text.Trim());
                 resolucion = null;
                 foreach (modelowmspcresfact item in listaRes)
                 {
@@ -204,14 +206,14 @@ namespace CapaWeb.WebForms
                 if (listaRes.Count == 0)
                 {
 
-                    lbl_mensaje.Text = "No existe una resolución activa para emitir nota crédito.";
+                    lbl_mensaje.Text = "No existe una resolución activa para emitir nota débito.";
                 }
                 else
                 {
                     if (listaRes.Count > 1)
                     {
 
-                        lbl_mensaje.Text = "Existe más de una resolución activa, para Facturar habilite una solamente.";
+                        lbl_mensaje.Text = "Existe más de una resolución activa, para emitir nota débito habilite una solamente.";
                     }
                     else
                     {
@@ -219,14 +221,14 @@ namespace CapaWeb.WebForms
                         //Aqui se va a traer que tipo de facturacion es
                         if (resolucion.tipo_fac == "S")
                         {
-                            Session["Masivo_NCF"] = "NCME";
-                            lbl_tipo_nc.Text = "NCME";
+                            Session["Masivo_NDF"] = "NDVE";
+                            lbl_tipo_nc.Text = "NDVE";
 
                         }
                         else
                         {
-                            Session["Masivo_NCF"] = "NCM";
-                            lbl_tipo_nc.Text = "NCM";
+                            Session["Masivo_NDF"] = "NDV";
+                            lbl_tipo_nc.Text = "NDV";
 
                         }
                     }
@@ -282,7 +284,7 @@ namespace CapaWeb.WebForms
         public void GuardarExcepciones(string metodo, string error)
         {
             ModeloExcepcion.cod_emp = ComPwm;
-            ModeloExcepcion.proceso = "FormMasivoNCFinanciera.aspx";
+            ModeloExcepcion.proceso = "FormMasivoNDFinanciera.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Now;
@@ -299,12 +301,12 @@ namespace CapaWeb.WebForms
                 string error = null;
                 //Validar que exista la factura para dicho cliente
 
-                switch (Session["Masivo_NCF"].ToString())
+                switch (Session["Masivo_NDF"].ToString())
                 {
-                    case "NCM":
+                    case "NDV":
                         ListaSaldoFacturas = consultaSaldoFactura.ConsultaFacVTASaldosXNroPrefijo(AmUsrLog, ComPwm, modelo.cod_cliente, "C", "N", lbl_cod_suc_emp.Text.Trim(), modelo.nro_docum.Trim(), modelo.serie_docum.Trim());
                         break;
-                    case "NCME":
+                    case "NDVE":
                         ListaSaldoFacturas = consultaSaldoFactura.BuscarFacSaldosXNroPrefijoEle(AmUsrLog, ComPwm, modelo.cod_cliente, "C", "N", lbl_cod_suc_emp.Text.Trim(), modelo.nro_docum.Trim(), modelo.serie_docum.Trim());
                         break;
 
@@ -328,14 +330,14 @@ namespace CapaWeb.WebForms
                 }
                 if (ModeloSaldoFactura.fec_doc > modelo.fecha_emision)
                 {
-                    error = "La fecha de nota de crédito no pude ser menor que la fecha de la Factura N° " + modelo.serie_docum + "-" + modelo.nro_docum;
+                    error = "La fecha de nota de débito no pude ser menor que la fecha de la Factura N° " + modelo.serie_docum + "-" + modelo.nro_docum;
                 }
                 //Validar que la nc no sea mayor a la nc
                 //por linea
                 decimal total = modelo.cant_pro * modelo.precio_unit;
                 if (total > ModeloSaldoFactura.saldo)
                 {
-                    error = "La nota de crédito no pude ser mayor a la factura: " + modelo.serie_docum + "-" + modelo.nro_docum;
+                    error = "La nota de débito no pude ser mayor a la factura: " + modelo.serie_docum + "-" + modelo.nro_docum;
                 }
 
                 return error;
@@ -352,14 +354,14 @@ namespace CapaWeb.WebForms
 
             try
             {
-              
+
                 //string Path;
                 string pathtmpfac = Modelowmspclogo.pathtmpfac;  //Traemos el path, la ruta 
                 string fileName = pathtmpfac + Path.GetFileName(FileUpload1.FileName);
                 FileUpload1.PostedFile.SaveAs(fileName);
                 string extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
                 //Al importar eliminar todas las que estan en estado A solo nc
-                guardarNC.EliminarNCMasivaFinanciera(ComPwm, AmUsrLog);
+                guardarND.EliminarNDMasivaFinanciera(ComPwm, AmUsrLog);
 
                 if (extension.ToLower() == ".xlsx")
                 {
@@ -382,13 +384,13 @@ namespace CapaWeb.WebForms
                             DateTime Fecha_minima = DateTime.Today.AddDays(-5);
                             if (conscabcera.fecha_emision < Fecha_minima)
                             {
-                                lbl_error.Text = "La fecha de la nota de crédito no puede ser menor a cinco días de la fecha actual." + " Fila: " + rowm + "Columna: 1";
+                                lbl_error.Text = "La fecha de la nota de débito no puede ser menor a cinco días de la fecha actual." + " Fila: " + rowm + "Columna: 1";
                                 return;
                             }
                             if (conscabcera.fecha_emision > Fecha_actual)
                             {
 
-                                lbl_error.Text = "La fecha de la nota de crédito no puede ser mayor a  la fecha actual." + " Fila: " + rowm + "Columna: 1";
+                                lbl_error.Text = "La fecha de la nota de débito no puede ser mayor a  la fecha actual." + " Fila: " + rowm + "Columna: 1";
                                 return;
 
                             }
@@ -587,18 +589,18 @@ namespace CapaWeb.WebForms
                         conscabcera.motivo = doc.GetCellValueAsString(rowm, 18);//Motivo
                         if (string.IsNullOrEmpty(conscabcera.motivo.Trim()))
                         {
-                            lbl_error.Text = "Motivo de nota de crédito no puede ser nulo." + " Fila:" + rowm + " Columna: 18";
+                            lbl_error.Text = "Motivo de nota de débito no puede ser nulo." + " Fila:" + rowm + " Columna: 18";
                             return;
                         }
                         else
                         {
-                            if (conscabcera.motivo.Trim() == "3" || conscabcera.motivo.Trim() == "4" || conscabcera.motivo.Trim() == "5" || conscabcera.motivo.Trim() == "6")
+                            if (conscabcera.motivo.Trim() == "1" || conscabcera.motivo.Trim() == "2" || conscabcera.motivo.Trim() == "3")
                             {
-                               
+
                             }
                             else
                             {
-                                lbl_error.Text = "Motivo de nota de crédito no válido." + " Fila:" + rowm + " Columna: 18";
+                                lbl_error.Text = "Motivo de nota de débito no válido." + " Fila:" + rowm + " Columna: 18";
                                 return;
                             }
                         }
@@ -673,9 +675,9 @@ namespace CapaWeb.WebForms
                             conscabcera.usuario_mod = AmUsrLog;
                             conscabcera.fecha_carga = DateTime.Now;
                             conscabcera.estado_fac = "A";
-                            conscabcera.razon_social = Session["Masivo_NCF"].ToString();
-                           string error= guardarNC.InsertarNCMasiva(conscabcera);
-                            if(!string.IsNullOrEmpty(error.Trim()))
+                            conscabcera.razon_social = Session["Masivo_NDF"].ToString();
+                            string error = guardarNC.InsertarNCMasiva(conscabcera);
+                            if (!string.IsNullOrEmpty(error.Trim()))
                             {
                                 lbl_mensaje.Text = error;
                                 return;
@@ -686,7 +688,7 @@ namespace CapaWeb.WebForms
                             }
                             rowm2++;
                         }
-                       
+
                     }
                     if (tot_eror == false)
                     {
@@ -701,7 +703,7 @@ namespace CapaWeb.WebForms
 
                     }
                 }
-                        
+
 
             }
             catch (Exception ex)
@@ -781,10 +783,10 @@ namespace CapaWeb.WebForms
             {
                 lbl_mensaje.Text = "";
                 //Total NC A PROCESAR 
-                listaAux = guardarNC.TotalNCFinancieras(AmUsrLog, ComPwm, Session["Masivo_NCF"].ToString());
+                listaAux = guardarND.TotalNDFinancieras(AmUsrLog, ComPwm, Session["Masivo_NDF"].ToString());
                 if (listaAux.Count == 0)
                 {
-                    lbl_error.Text = "Notas de crédito no disponibles";
+                    lbl_error.Text = "Notas de débito no disponibles";
                 }
                 else
                 {
@@ -875,19 +877,19 @@ namespace CapaWeb.WebForms
                 //tareas a realizar poner todo el codigo para notas de credito electronicamente
                 string error_fac = null;
 
-                modeloNC = guardarNC.BuscarNCActiva(AmUsrLog, ComPwm, Session["Masivo_NCF"].ToString());
+                modeloNC = guardarND.BuscarNDActiva(AmUsrLog, ComPwm, Session["Masivo_NDF"].ToString());
 
                 try
                 {
                     if (!string.IsNullOrEmpty(modeloNC.nro_docum.Trim()))
                     {
-                        error_fac = guardarNC.ProcesarNotaCreditoFinanciera(AmUsrLog, ComPwm, modeloNC.nro_docum.Trim(), modeloNC.serie_docum.Trim(), lbl_cod_suc_emp.Text.Trim(), Session["Masivo_NCF"].ToString());
+                        error_fac = guardarND.ProcesarNotaDebitoFinanciera(AmUsrLog, ComPwm, modeloNC.nro_docum.Trim(), modeloNC.serie_docum.Trim(), lbl_cod_suc_emp.Text.Trim(), Session["Masivo_NDF"].ToString(), modeloNC.motivo.Trim());
 
                         if (!string.IsNullOrEmpty(error_fac))
                         {
-                            guardarNC.ActualizarEstadosNCFinanciera(AmUsrLog, ComPwm, "E", Session["Masivo_NCF"].ToString());//Estado E cuando ocurre un error 
+                            guardarND.ActualizarEstadosNDFinanciera(AmUsrLog, ComPwm, "E", Session["Masivo_NDF"].ToString());//Estado E cuando ocurre un error 
 
-                            lbl_error_factura.Text = "Excepción al aplicar nota de crédito a la factura: " + modeloNC.serie_docum + "-" + modeloNC.nro_docum + "Incidencia: " + error_fac; 
+                            lbl_error_factura.Text = "Excepción al aplicar nota de débito a la factura: " + modeloNC.serie_docum + "-" + modeloNC.nro_docum + "Incidencia: " + error_fac;
                             lbl_error_factura.Visible = true;
                             return;
 
@@ -933,7 +935,7 @@ namespace CapaWeb.WebForms
         }
         protected void btn_cancelar_Click(object sender, EventArgs e)
         {
-            btn_verificar.Visible= false;
+            btn_verificar.Visible = false;
             BtnIniciar.Enabled = false;
             BtnIniciar.Visible = false;
             btn_cancelar.Visible = false;

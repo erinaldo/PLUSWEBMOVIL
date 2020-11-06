@@ -152,9 +152,21 @@ namespace CapaWeb.WebForms
 
                         if (listaClientes.Count > 1)
                         {
-                            lbl_error.Text = "Cliente tiene varias sucursales" + modeloClientesP.cod_cliente.Trim() + " Fila:" + rowm;
-                            tot_eror = true;
-                            return;
+                            foreach(var item in listaClientes)
+                            {
+                                if(item.nro_dgi2.Trim()== modeloClientesP.cod_cliente.Trim())
+                                {
+                                   clientes =item;
+                                    break;
+                                }
+                            }
+                            if (string.IsNullOrEmpty(clientes.nro_dgi2))
+                            {
+                                lbl_error.Text = "Cliente no existe por favor revisar: " + modeloClientesP.cod_cliente.Trim() + " Fila:" + rowm;
+                                tot_eror = true;
+                                return;
+                            }
+
                         }
                         else
                         {
@@ -165,7 +177,7 @@ namespace CapaWeb.WebForms
                                 return;
                             }
                         }
-                                
+                            
                         rowm++;
                     }
                     int rowm2 = 2;
@@ -178,11 +190,28 @@ namespace CapaWeb.WebForms
                             //Validar que exista
                             listaClientes = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, modeloClientesP.cod_cliente.Trim(), Ven__cod_dgi, modeloClientesP.cod_suc_cli.Trim());
                             clientes = null;
-                            foreach (modelowmspctitulares item in listaClientes)
+                            if (listaClientes.Count > 1)
                             {
-                                clientes = item;
-                                break;
+                                foreach (modelowmspctitulares item in listaClientes)
+                                {
+                                    if (item.nro_dgi2.Trim() == modeloClientesP.cod_cliente.Trim())
+                                    {
+                                        clientes = item;
+                                        break;
+                                    }
+
+                                }
                             }
+                            else
+                            {
+                                foreach (modelowmspctitulares item in listaClientes)
+                                {
+                                    clientes = item;
+                                    break;
+
+                                }
+                            }
+                          
                             modeloClientesP.cod_cliente = clientes.cod_tit.Trim();
                             modeloClientesP.cod_suc_cli = clientes.cod_sucursal.Trim();
                             modeloClientesP.nro_trans = nro_trans;

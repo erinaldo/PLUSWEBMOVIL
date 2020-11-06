@@ -254,7 +254,7 @@ namespace CapaProceso.Consultas
                 return null;
             }
         }
-        //Saldos sin restricciones filtro por nro_docum unicamente
+        //Saldos sin restricciones filtro por nro_docum unicamente para masivo nc devolucion y finacieras /todos los saldos abiertos y cerrados
         public List<modeloSaldosFacturas> BuscarFacSaldosXNroPrefijoEle(string Ccf_usuario, string Ccf_cod_emp, string Ccf_tipo1, string Ccf_tipo2, string solo_saldo, string cod_suc_emp, string nro_docum, string prefijo)
         {
             try

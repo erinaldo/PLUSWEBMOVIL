@@ -133,10 +133,9 @@ namespace CapaProceso.FacturaMasiva
                         ModeloDetalleFactura = new List<ModeloDetalleFactura>();
                         //Finalizar factura
                        error= FinalizarFactura(Ccf_usuario, Ccf_cod_emp, nro_trans_pro.Trim(), nro_id_cli.Trim());
-                        if (!string.IsNullOrEmpty(error))
-                        {
+                    
                             return error;
-                        }
+                        
                     }
                     else
                     {
@@ -213,7 +212,7 @@ namespace CapaProceso.FacturaMasiva
                     break;
                 }
 
-                DateTime Fecha = DateTime.Now;
+                DateTime Fecha = CabeceraProformaMasiva.fec_doc;
                 cabecerafactura.cod_cliente = cod_cliente.Trim();
                 cabecerafactura.dia = string.Format("{0:00}", Fecha.Day);
                 cabecerafactura.mes = string.Format("{0:00}", Fecha.Month);
@@ -438,7 +437,7 @@ namespace CapaProceso.FacturaMasiva
                             GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
                             //Cambiar a estado 'F'(procesado) en wmt_proformas_tit
                             ActualizarEstadoProformaTit(AmUsrLog, ComPwm, nro_trans_pro.Trim(), "F", nro_id_cli.Trim());
-                            return error_finalizar = respuesta;
+                           
                         }
                     }
 
@@ -454,7 +453,7 @@ namespace CapaProceso.FacturaMasiva
                 {
                     if (respuestaConfirmacionFAC == "")
                     {
-                        string men_fn = "Finalizado";
+                        
                         //Cambiar a estado 'F'(procesado) en wmt_proformas_tit
                         ActualizarEstadoProformaTit(AmUsrLog, ComPwm, nro_trans_pro.Trim(), "F", nro_id_cli.Trim());
                     }

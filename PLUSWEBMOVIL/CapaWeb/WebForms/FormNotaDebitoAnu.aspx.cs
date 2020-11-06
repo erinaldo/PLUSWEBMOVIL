@@ -1764,7 +1764,7 @@ namespace CapaWeb.WebForms
   
                     if (Session["listaFacturas"] == null)
                     {
-                        Session["listaClienteFac"] = ListaSaldoFacturas;
+                      
                         Session["TipoFactura"] = tipo;
                         Session["Sucursal"] = lbl_cod_suc_emp.Text.Trim();
                         Session["cod_Cliente"] = cliente.cod_tit.Trim();
@@ -1856,13 +1856,13 @@ namespace CapaWeb.WebForms
                     {
                         if (Convert.ToDecimal(txtSumaTotal.Text) == 0)
                         {
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('No existen productos para la nota de crédito')+ error;</script>");
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('No existen productos para la nota de débito')+ error;</script>");
                         }
                         else
                         {
                             if (Session["detalle"] == null)
                             {
-                                this.Page.Response.Write("<script language='JavaScript'>window.alert('No existen productos para la nota de crédito')+ error;</script>");
+                                this.Page.Response.Write("<script language='JavaScript'>window.alert('No existen productos para la nota de débito')+ error;</script>");
 
                             }
                             else

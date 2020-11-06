@@ -91,7 +91,7 @@ namespace CapaProceso.Consultas
         }
 
         //buscar solo por fecha
-        public List<modeloExepciones> ListaExcepcionPFecha(string cod_emp, DateTime fecha_ini, DateTime fecha_fin, string usuario_mod)
+        public List<modeloExepciones> ListaExcepcionPFecha(string cod_emp, string fecha_ini, string fecha_fin, string usuario_mod)
         {
             try
             {

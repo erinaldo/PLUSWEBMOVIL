@@ -42,7 +42,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion("0", "UsuarioSistema.cs", "NombreUsuario", e.ToString(), DateTime.Today, usuario);
+                guardarExcepcion.ClaseInsertarExcepcion("0", "UsuarioSistema.cs", "NombreUsuario", e.ToString(), DateTime.Now, usuario);
                 return "No se pudo completar la acción." + "NombreUsuario." + " Por favor notificar al administrador.";
             }
         }
@@ -54,11 +54,9 @@ namespace CapaDatos.Sql
                 using (cn = conexion.genearConexion())
                 {
                     List<modeloUsuarioSistema> lista = new List<modeloUsuarioSistema>();
-                    string consulta = ("select * from wm_usuario WHERE  estado_usuario ='A'");
+                    string consulta = ("select * from wmv_usersxemp where cod_emp =@cod_emp and estado_usuario ='A'");
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                    
-                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario_mod;
                     conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
                 
 
@@ -69,7 +67,7 @@ namespace CapaDatos.Sql
 
                         modeloUsuarioSistema item = new modeloUsuarioSistema();
                         item.usuario = Convert.ToString(dr["usuario"]);
-                        item.Nombre = Convert.ToString(dr["Nombre"]);
+                        item.Nombre = Convert.ToString(dr["nombre"]);
                         item.estado_usuario = Convert.ToString(dr["estado_usuario"]);
                       
                         lista.Add(item);
@@ -82,7 +80,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "UsuariosSistema.cs", "ListaBuscaCCostos", e.ToString(), DateTime.Today, usuario_mod);
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "UsuariosSistema.cs", "ListaUsuariosSistema", e.ToString(), DateTime.Now, usuario_mod);
                 return null;
             }
 

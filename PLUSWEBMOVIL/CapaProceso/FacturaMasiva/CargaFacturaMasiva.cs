@@ -247,7 +247,7 @@ namespace CapaProceso.FacturaMasiva
                 {
                     List<modeloFacturaEMasiva> lista = new List<modeloFacturaEMasiva>();
 
-                    string consulta = "SELECT DISTINCT nro_docum,fecha_carga from wmh_cargaMasiva where estado_fac='A' and razon_social ='' ";
+                    string consulta = "SELECT DISTINCT nro_docum, FORMAT(fecha_carga, 'yyyy-MM-dd HH:00') AS fecha_carga from wmh_cargaMasiva where estado_fac='A' and razon_social =''";
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     // conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = ArtB__usuario;

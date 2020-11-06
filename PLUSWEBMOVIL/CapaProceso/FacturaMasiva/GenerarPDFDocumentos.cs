@@ -124,6 +124,10 @@ namespace CapaProceso.FacturaMasiva
                     PdfFacEleV3Default5 pdf3 = new PdfFacEleV3Default5();
                     pathPdf = pdf3.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                     break;
+                case "DEFECTO6":
+                    PdfFacEleV3Default6 pdf4 = new PdfFacEleV3Default6();
+                    pathPdf = pdf4.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    break;
             }
             return pathPdf;
         }
@@ -152,7 +156,10 @@ namespace CapaProceso.FacturaMasiva
                     PdfFacVTAV5 pdf1 = new PdfFacVTAV5();
                     pathPdf = pdf1.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                     break;
-
+                case "DEFECTO6":
+                    PdfFacVTAV6 pdf4 = new PdfFacVTAV6();
+                    pathPdf = pdf4.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    break;
             }
             return pathPdf;
         }

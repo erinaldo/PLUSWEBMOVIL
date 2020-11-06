@@ -210,18 +210,9 @@ namespace CapaWeb.WebForms
                                 Session.Remove("Tipo");
                                 Session.Remove("articulo");
                                 Session.Remove("ListaFacturas");
-                                Session.Remove("valor_asignado");
                                 cargarListaDesplegables();
-
-                                //Consultar tasa de cambio
                                 ConsultarTasaCambioCanorus();
                                 SetearCampos();
-
-                                /*ModeloRolMod = BuscarRolModificar( AmUsrLog, ComPwm, "VTA", "NA", "N");
-                                 if (ModeloRolMod.control_uso == "readonly=\"readonly\"")
-                                 {
-                                     txt_Precio.Enabled = false;
-                                 }*/
                                 break;
                             }
                             catch (Exception ex)

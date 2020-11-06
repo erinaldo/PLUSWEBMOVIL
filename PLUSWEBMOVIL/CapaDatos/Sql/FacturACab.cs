@@ -747,7 +747,6 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@cod_sucursal", SqlDbType.VarChar).Value = cabezeraFactura.cod_sucursal.Trim();
                     conmand.Parameters.Add("@nro_pedido", SqlDbType.VarChar).Value = cabezeraFactura.nro_pedido;
                     conmand.Parameters.Add("@nro_trans_padre", SqlDbType.VarChar).Value = cabezeraFactura.nro_trans_padre;
-                  
                     conmand.Parameters.Add("@mot_nce", SqlDbType.VarChar).Value = cabezeraFactura.mot_nce.Trim();
                     conmand.Parameters.Add("@cod_suc_cli", SqlDbType.VarChar).Value = cabezeraFactura.cod_suc_cli;
                     conmand.Parameters.Add("@desctos_rcgos", SqlDbType.VarChar).Value = cabezeraFactura.desctos_rcgos;

@@ -34,6 +34,9 @@ namespace CapaWeb.WebForms
         public ConsultausuarioSucursal consultaUsuarioSucursal = new ConsultausuarioSucursal();
         List<modeloFacturaEMasiva> listaFacturar = new List<modeloFacturaEMasiva>();
 
+        List<modelowmtfacturascab> listaConsCab = null;
+        modelowmtfacturascab conscabcera = new modelowmtfacturascab();
+        Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
         public string ComPwm;
         public string socio;
         public string AmUsrLog;
@@ -43,6 +46,20 @@ namespace CapaWeb.WebForms
         public string ResF_estado = "S";
         public string ResF_serie = "0";
         public string ResF_tipo = "F";
+        public string Ccf_tipo1 = "C";
+        public string Ccf_tipo2 = "VTA";
+        public string Ccf_nro_trans = " ";
+        public string Ccf_estado = "0";
+        public string Ccf_cliente = "0";
+        public string Ccf_cod_docum = "0";
+        public string Ccf_serie_docum = "xxx";
+        public string Ccf_nro_docum = "0";
+        public string Ccf_diai = "";
+        public string Ccf_mesi = "";
+        public string Ccf_anioi = "";
+        public string Ccf_diaf = "";
+        public string Ccf_mesf = "";
+        public string Ccf_aniof = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -354,6 +371,19 @@ namespace CapaWeb.WebForms
                 BtnIniciar.Visible = false;
                 btn_verificar.Visible = true;
                 listaFacturar.Clear();
+                //MUESTRA CONTABILIZADAS
+                CargarGrilla();
+                if (listaConsCab.Count > 0)
+                {
+                    Grid.Visible = true;
+                    lbl_lisdoc.Visible = true;
+                }
+                else
+                {
+                    lbl_error_factura.Text = "Documentos autorizados correctamente";
+                    lbl_error_factura.Visible = true;
+                }
+
             }
         }
         protected void BtnIniciar_Click(object sender, EventArgs e)
@@ -372,6 +402,36 @@ namespace CapaWeb.WebForms
             lbl_carga_fec.Visible = false;
             lbl_fec_ca.Visible = false;
             lbl_facturas.Text = "";
+
+        }
+        private void CargarGrilla()
+        {
+            try
+            {
+
+                Ccf_estado = "C";
+                Ccf_tipo2 = "VTAE";
+                listaConsCab = ConsultaCabe.ConsultaDocsElectronicosXSucursal(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof, lbl_cod_suc.Text.Trim());
+                Grid.DataSource = listaConsCab;
+                Grid.DataBind();
+                Grid.Height = 100;
+            }
+
+            catch (Exception ex)
+            {
+                GuardarExcepciones("CargarGrilla", ex.ToString());
+
+            }
+        }
+        protected void Grid_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
+        {
+            // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
+            Grid.CurrentPageIndex = 0;
+            Grid.CurrentPageIndex = e.NewPageIndex;
+            CargarGrilla();
+        }
+        protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
+        {
 
         }
     }

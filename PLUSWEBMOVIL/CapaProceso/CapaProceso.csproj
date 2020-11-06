@@ -154,6 +154,7 @@
     <Compile Include="FacturaMasiva\FacturaMasivaProforma.cs" />
     <Compile Include="FacturaMasiva\GenerarPDFDocumentos.cs" />
     <Compile Include="FacturaMasiva\MasivoNCFinanciera.cs" />
+    <Compile Include="FacturaMasiva\MasivoNDebito.cs" />
     <Compile Include="FacturaMasiva\NotaCreditoMasivaE.cs" />
     <Compile Include="FacturaMasiva\ReenvioDocsElectronicos.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonFacturaElecVer3.cs" />
@@ -167,9 +168,11 @@
     <Compile Include="ReslClientePdf\JsonFacturaPDF.cs" />
     <Compile Include="ReslClientePdf\JsonNDPDF.cs" />
     <Compile Include="ReslClientePdf\PdfCierreCaja.cs" />
+    <Compile Include="ReslClientePdf\PdfFacEleV3Default6.cs" />
     <Compile Include="ReslClientePdf\PdfFacEleV3Default5.cs" />
     <Compile Include="ReslClientePdf\PdfFacEleV3Default4.cs" />
     <Compile Include="ReslClientePdf\PdfFacEleV3Default3.cs" />
+    <Compile Include="ReslClientePdf\PdfFacVTAV6.cs" />
     <Compile Include="ReslClientePdf\PdfFacVTAV5.cs" />
     <Compile Include="ReslClientePdf\PdfFacVTAV4.cs" />
     <Compile Include="ReslClientePdf\PdfFacVTAV3.cs" />

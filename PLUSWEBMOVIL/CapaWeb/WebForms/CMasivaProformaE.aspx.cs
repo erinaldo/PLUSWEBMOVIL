@@ -30,9 +30,9 @@ namespace CapaWeb.WebForms
 
         ConsultaProformasFac ConsultaProformas = new ConsultaProformasFac();
         modelowmtproformascab ModeloProformas = new modelowmtproformascab();
-        List<modelowmtproformascab> ListaProofrmas = null;
+        List<modelowmtproformascab> ListaProformas = null;
         ConsultaProformaIns InsertarProIns = new ConsultaProformaIns();
-
+       
         public modeloUsuariosucursal ModelousuarioSucursal = new modeloUsuariosucursal();
         public List<modeloUsuariosucursal> ListaModeloUsuarioSucursal = new List<modeloUsuariosucursal>();
         public ConsultawmusuarioSucursal ConsultaUsuxSuc = new ConsultawmusuarioSucursal();
@@ -128,7 +128,11 @@ namespace CapaWeb.WebForms
                 else
                 {
                     lbl_prefijo.Text = resolucion.prefijo;
-                    lbl_prefijo.Visible = true;
+                    //Tipo factura
+                    if (resolucion.tipo_fac == "S")
+                    { Session["Tipo_facturaP"] = "VTAE"; }
+                    else { Session["Tipo_facturaP"] = "VTA"; }
+                        lbl_prefijo.Visible = true;
                     lbl_pre.Visible = true;
                     lista = ConsultaProformas.TotalProformasAFacturar(AmUsrLog, ComPwm, nro_trans_pro_sele.Text); //Buscar el total de clientes a facturar
                     int count = 0;
@@ -145,6 +149,7 @@ namespace CapaWeb.WebForms
                         btn_cancelar.Visible = true;
                         BtnIniciar.Enabled = true;
                         BtnIniciar.Visible = true;
+                        lbl_facturas.Text = Convert.ToString(count);
                         //Cargar moneda para facturar
                         listaMonedas = ConsultaCMonedas.ConsultaCMonedas(AmUsrLog, ComPwm, MonB__moneda);
                         cbx_moneda.DataSource = listaMonedas;
@@ -153,6 +158,8 @@ namespace CapaWeb.WebForms
                         cbx_moneda.DataBind();
                         cbx_moneda.Visible = true;
                         lbl_moneda.Visible = true;
+                        //validar fecha de factura
+                        ValidarFecha();
 
                     }
                     if(lista.Count==0)
@@ -160,9 +167,53 @@ namespace CapaWeb.WebForms
                         btn_proformas.Visible = true;
                         btn_cancelar.Visible = true;
                     }
-                    lbl_facturas.Text = Convert.ToString(count);
+                    
 
                 }
+            }
+        }
+
+        public Boolean ValidarFecha()
+        {
+            try
+            {
+                lbl_mensaje.Text = "";
+                ListaProformas = ConsultaProformas.BuscarProformasCab(nro_trans_pro_sele.Text.Trim());
+                foreach (var item in ListaProformas)
+                {
+                    ModeloProformas = item;
+                }
+
+                bool fecha_validar = false;
+                DateTime Fecha_seleccion = ModeloProformas.fec_doc;
+                if (Session["Tipo_facturaP"].ToString() == "VTAE")
+                {
+
+                    DateTime Fecha_actual = DateTime.Today;
+                    DateTime Fecha_minima = DateTime.Today.AddDays(-5);
+
+
+                    if (Fecha_seleccion < Fecha_minima)
+                    {
+                        lbl_mensaje.Text = "La fecha de la factura no puede ser menor a cinco días de la fecha actual";
+                        lbl_mensaje.Visible = true;
+                        fecha_validar = true;
+                    }
+                    if (Fecha_seleccion > Fecha_actual)
+                    {
+
+                        lbl_mensaje.Text = "La fecha de la factura no puede ser mayor a  la fecha actual";
+                        lbl_mensaje.Visible = true;
+                        fecha_validar = true;
+
+                    }
+                }
+                return fecha_validar;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("ValidarFecha", ex.ToString());
+                return true;
             }
         }
         public void RecuperarCokie()

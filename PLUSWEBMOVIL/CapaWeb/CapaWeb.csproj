@@ -122,12 +122,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="WebForms\BuscarFacturasNDF.aspx" />
     <Content Include="Tema\css\StylePront.css" />
     <Content Include="Tema\imagenes\cargando.gif" />
     <Content Include="Tema\imagenes\mail_send.png" />
     <Content Include="Tema\imagenes\procesando.gif" />
     <Content Include="Tema\imagenes\unnamed.gif" />
     <Content Include="WebForms\AccesoMasivoNC.aspx" />
+    <Content Include="WebForms\AccesoMasivoND.aspx" />
     <Content Include="WebForms\BuscaFacturasNCAn.aspx" />
     <Content Include="WebForms\BuscarArticuloNCDevolucion.aspx" />
     <Content Include="WebForms\BuscarCentroCosto.aspx" />
@@ -174,6 +176,7 @@
     <Content Include="WebForms\FormDatosFacturacion.aspx" />
     <Content Include="WebForms\FormDenominaciones.aspx" />
     <Content Include="WebForms\FormDetalleImpuestos.aspx" />
+    <Content Include="WebForms\FormDocsComercialesR.aspx" />
     <Content Include="WebForms\FormDocumentosElectronicos.aspx" />
     <Content Include="WebForms\FormExcepciones.aspx" />
     <Content Include="WebForms\FormFacturaPostElec.aspx" />
@@ -233,7 +236,11 @@
     <Content Include="WebForms\CrearCliente.aspx" />
     <Content Include="WebForms\Factura.aspx" />
     <Content Include="WebForms\FormListaSucursalEmpresa.aspx" />
+    <Content Include="WebForms\FormMasivoNCAnulacion.aspx" />
+    <Content Include="WebForms\FormMasivoNCDevolucion.aspx" />
     <Content Include="WebForms\FormMasivoNCFinanciera.aspx" />
+    <Content Include="WebForms\FormMasivoNDAnulacion.aspx" />
+    <Content Include="WebForms\FormMasivoNDFinanciera.aspx" />
     <Content Include="WebForms\FormNotaCreditoDevolucion.aspx" />
     <Content Include="WebForms\FormNotaCreditoFin.aspx" />
     <Content Include="WebForms\FormNotaCreditoFinanciera.aspx" />
@@ -267,12 +274,26 @@
     <Content Include="WebForms\VerDetalleFacturas.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WebForms\BuscarFacturasNDF.aspx.cs">
+      <DependentUpon>BuscarFacturasNDF.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarFacturasNDF.aspx.designer.cs">
+      <DependentUpon>BuscarFacturasNDF.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\AccesoMasivoNC.aspx.cs">
       <DependentUpon>AccesoMasivoNC.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\AccesoMasivoNC.aspx.designer.cs">
       <DependentUpon>AccesoMasivoNC.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\AccesoMasivoND.aspx.cs">
+      <DependentUpon>AccesoMasivoND.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\AccesoMasivoND.aspx.designer.cs">
+      <DependentUpon>AccesoMasivoND.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\BuscaFacturasNCAn.aspx.cs">
       <DependentUpon>BuscaFacturasNCAn.aspx</DependentUpon>
@@ -596,6 +617,13 @@
     <Compile Include="WebForms\FormDetalleImpuestos.aspx.designer.cs">
       <DependentUpon>FormDetalleImpuestos.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\FormDocsComercialesR.aspx.cs">
+      <DependentUpon>FormDocsComercialesR.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormDocsComercialesR.aspx.designer.cs">
+      <DependentUpon>FormDocsComercialesR.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\FormDocumentosElectronicos.aspx.cs">
       <DependentUpon>FormDocumentosElectronicos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -683,12 +711,40 @@
     <Compile Include="WebForms\Factura.aspx.designer.cs">
       <DependentUpon>Factura.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\FormMasivoNCAnulacion.aspx.cs">
+      <DependentUpon>FormMasivoNCAnulacion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormMasivoNCAnulacion.aspx.designer.cs">
+      <DependentUpon>FormMasivoNCAnulacion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormMasivoNCDevolucion.aspx.cs">
+      <DependentUpon>FormMasivoNCDevolucion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormMasivoNCDevolucion.aspx.designer.cs">
+      <DependentUpon>FormMasivoNCDevolucion.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\FormMasivoNCFinanciera.aspx.cs">
       <DependentUpon>FormMasivoNCFinanciera.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\FormMasivoNCFinanciera.aspx.designer.cs">
       <DependentUpon>FormMasivoNCFinanciera.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormMasivoNDAnulacion.aspx.cs">
+      <DependentUpon>FormMasivoNDAnulacion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormMasivoNDAnulacion.aspx.designer.cs">
+      <DependentUpon>FormMasivoNDAnulacion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormMasivoNDFinanciera.aspx.cs">
+      <DependentUpon>FormMasivoNDFinanciera.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormMasivoNDFinanciera.aspx.designer.cs">
+      <DependentUpon>FormMasivoNDFinanciera.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\FormNotaCreditoDevolucion.aspx.cs">
       <DependentUpon>FormNotaCreditoDevolucion.aspx</DependentUpon>
