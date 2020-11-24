@@ -143,7 +143,7 @@ namespace CapaWeb.WebForms
         public string MonB__moneda = "0";
         public string Vend__cod_tipotit = "vendedores";
         public string Vend__cod_tit = "0";
-        public string FP__cod_fpago = "0";
+        public string FP__cod_fpago = "";
         public string ArtB__articulo = "tubo";
         public string ArtB__tipo = "0";
         public string ArtB__compras = "0";
@@ -1584,13 +1584,12 @@ namespace CapaWeb.WebForms
                     }
                     else
                     {
-                        if (Convert.ToDecimal(txtSumaTotal.Text) == 0)
+                        if (Convert.ToDecimal(txtSumaTotal.Text) == 0 || Convert.ToDecimal(txtSumaTotal.Text) <0)
                         {
-                            this.Page.Response.Write("<script language='JavaScript'>window.alert('No existen productos para facturar')+ error;</script>");
+                            this.Page.Response.Write("<script language='JavaScript'>window.alert('No existe productos para facturar ó la factura no puede se menor a cero')+ error;</script>");
                         }
                         else
                         {
-                            Confirmar.Enabled = false;
 
                             //ValidarParametrosFactura();
                             string respuestaConfirmacionFAC = "";

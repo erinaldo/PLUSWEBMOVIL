@@ -386,7 +386,21 @@ namespace CapaProceso.Consultas
                 return null;
             }
         }
+        //saldos notas debito electronicas
+        public modeloFacturasElecSaldos BuscaNDebitoEleSaldos(string cod_cliente, string cod_emp, string serie, string nro_docum, string usuario)
+        {
+            try
+            {
+                modeloFacturasElecSaldos item = new modeloFacturasElecSaldos();
+                item = consultaSaldoa.ConsultaNDebitoEleSaldos(cod_cliente, cod_emp, serie, nro_docum, usuario);
+                return item;
+            }
+            catch (Exception e)
+            {
 
-
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "BuscaNDebitoEleSaldos", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
     }
 }

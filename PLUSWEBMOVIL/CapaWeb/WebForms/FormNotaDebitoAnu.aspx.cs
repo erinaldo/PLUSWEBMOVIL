@@ -125,7 +125,7 @@ namespace CapaWeb.WebForms
         public string MonB__moneda = "0";
         public string Vend__cod_tipotit = "vendedores";
         public string Vend__cod_tit = "0";
-        public string FP__cod_fpago = "0";
+        public string FP__cod_fpago = "";
         public string ArtB__articulo = "tubo";
         public string ArtB__tipo = "0";
         public string ArtB__compras = "0";
@@ -713,7 +713,7 @@ namespace CapaWeb.WebForms
                 ModeloCotizacion = BuscarCotizacion(AmUsrLog, ComPwm, dia, mes, anio, "USD");
                 if (ModeloCotizacion.tc_mov == null)
                 {
-                    lbl_trx.Text = " No existe Tipo de Cambio registrado para la fecha de la nota de crédito. Por favor registrar la tasa del dia y actualizar la pagina";
+                    lbl_trx.Text = " No existe Tipo de Cambio registrado para la fecha de la nota de débito. Por favor registrar la tasa del dia y actualizar la pagina";
                     lbl_trx.Visible = true;
                     BloquearFactura();
                 }

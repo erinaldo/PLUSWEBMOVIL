@@ -167,7 +167,11 @@ namespace CapaProceso.RestCliente
                 Modeloempresa = BuscarCabEmpresa(Ccf_usuario, Ccf_cod_emp);
 
                 ModeloCotizacion = null;
-                ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
+                if (conscabceraNCMot.mot_nce.Trim() == "4")//por anulacion nc
+                {
+                    ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, nro_factura);
+                }
+                else { ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans); }
 
                 Modelowmspclogo = null;
                 Modelowmspclogo = BuscarUsuarioLogo(Ccf_cod_emp, Ccf_usuario);

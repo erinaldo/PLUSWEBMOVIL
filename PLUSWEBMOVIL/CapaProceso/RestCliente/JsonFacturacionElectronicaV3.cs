@@ -680,33 +680,49 @@ namespace CapaProceso.RestCliente
                 }
                 else
                 {
-
-                    if (nit_cliente_Cab.Trim() == "22222222222" || nit_cliente_Cab.Trim() == "222222222222") //consumidor final
+                    if (cliente.cod_dgi.Trim() == "13")//cEDULA CIUDADANIA
                     {
-                        nit_dian = "222222222";
-                        nit_validado = "222222222222"; //Identificacion debe ser 12 siempre
+                        if (nit_cliente_Cab.Length > 10)
+                        {
+                            nit_dian = nit_cliente_Cab.Remove(9); 
+                            nit_validado = nit_cliente_Cab.Remove(9);
+                        }
+                        else
+                        {
+                            nit_dian = nit_cliente_Cab.Trim();
+                            nit_validado = nit_cliente_Cab.Trim();
+                        }
                     }
+
                     else
                     {
-                        if (nit_cliente_Cab.Trim() == "2222222222")
+                        if (nit_cliente_Cab.Trim() == "22222222222" || nit_cliente_Cab.Trim() == "222222222222") //consumidor final
                         {
                             nit_dian = "222222222";
                             nit_validado = "222222222222"; //Identificacion debe ser 12 siempre
                         }
                         else
                         {
-                            if (nit_cliente_Cab.Length > 10)
+                            if (nit_cliente_Cab.Trim() == "2222222222")
                             {
-                                nit_dian = nit_cliente_Cab.Remove(10);
-                                nit_validado = nit_cliente_Cab.Trim();
+                                nit_dian = "222222222";
+                                nit_validado = "222222222222"; //Identificacion debe ser 12 siempre
                             }
                             else
                             {
-                                nit_dian = nit_cliente_Cab.Trim();
-                                nit_validado = nit_cliente_Cab.Trim();
+                                if (nit_cliente_Cab.Length > 10)
+                                {
+                                    nit_dian = nit_cliente_Cab.Remove(10);
+                                    nit_validado = nit_cliente_Cab.Trim();
+                                }
+                                else
+                                {
+                                    nit_dian = nit_cliente_Cab.Trim();
+                                    nit_validado = nit_cliente_Cab.Trim();
+                                }
                             }
-                        }
 
+                        }
                     }
 
                 }

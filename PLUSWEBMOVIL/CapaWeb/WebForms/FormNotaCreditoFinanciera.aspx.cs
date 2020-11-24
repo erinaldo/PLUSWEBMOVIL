@@ -125,7 +125,7 @@ namespace CapaWeb.WebForms
         public string MonB__moneda = "0";
         public string Vend__cod_tipotit = "vendedores";
         public string Vend__cod_tit = "0";
-        public string FP__cod_fpago = "0";
+        public string FP__cod_fpago = "";
         public string ArtB__articulo = "tubo";
         public string ArtB__tipo = "NCRED";
         public string ArtB__compras = "0";

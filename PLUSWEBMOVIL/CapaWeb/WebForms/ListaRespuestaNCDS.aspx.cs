@@ -60,20 +60,13 @@ namespace CapaWeb.WebForms
                     switch (qs["TRN"].Substring(0, 3))
                     {
 
-                        case "INS":
-
-                            break;
-
-                        case "UDP":
-                            break;
-
                         case "MTR":
                             try
                             {
                                 Int64 ide = Int64.Parse(qs["Id"].ToString());
                                 string nro_trans = ide.ToString();
-                                //CargarFormularioRespuestaDS(nro_trans);
-                                CargarGrilla(nro_trans);
+                                Session["numero_nc"] = ide.ToString();
+                                CargarGrilla();
 
                                 break;
                             }
@@ -112,12 +105,12 @@ namespace CapaWeb.WebForms
         }
 
 
-        private void CargarGrilla(string nro_trans)
+        private void CargarGrilla()
         {
             try
             {
                 lbl_error.Text = "";
-                ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
+                ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(Session["numero_nc"].ToString());
                 Grid.DataSource = ListaModelorespuestaDs;
                 Grid.DataBind();
                 Grid.Height = 100;
@@ -138,7 +131,7 @@ namespace CapaWeb.WebForms
                 // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
                 Grid.CurrentPageIndex = 0;
                 Grid.CurrentPageIndex = e.NewPageIndex;
-                CargarGrilla(nro_trans);
+                CargarGrilla();
             }
             catch (Exception ex)
             {
@@ -255,6 +248,7 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
+                Session.Remove("numero_nc");
                 Response.Redirect("FormBuscarNotaCredito.aspx");
             }
             catch (Exception ex)

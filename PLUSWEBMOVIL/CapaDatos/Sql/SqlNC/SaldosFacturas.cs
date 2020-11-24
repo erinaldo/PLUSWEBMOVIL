@@ -221,6 +221,50 @@ namespace CapaDatos.Sql.SqlNC
             }
 
         }
+
+        //CONSULTA NC ELECTRONICAS  CON CUFE SE USA EN ND PARA SALDOS Y TOTALES
+        public modeloFacturasElecSaldos ConsultaNDebitoEleSaldos(string cod_cliente, string cod_emp, string serie, string nro_docum, string usuario)
+        {
+            try
+            {
+                modeloFacturasElecSaldos items = new modeloFacturasElecSaldos();
+
+                using (cn = conexion.genearConexion())
+                {
+
+                    string consulta = ("SELECT	TOP 1 F.nro_trans,	F.cod_emp,	F.serie_docum,	F.nro_docum, F.cod_sucursal, F.cod_suc_cli, D.cufe FROM 	wmt_facturas_cab AS F INNER JOIN wmt_respuestaDS AS D ON F.nro_trans = D.nro_trans WHERE D.cufe <> '' AND F.tipo IN( 'NDVE') AND F.cod_cliente = @cod_cliente AND F.cod_emp = @cod_emp AND F.estado IN ('F') AND F.serie_docum = @serie AND F.nro_docum =@nro_docum GROUP BY 	F.nro_trans,	F.cod_emp,F.serie_docum,	F.nro_docum,F.cod_sucursal, F.cod_suc_cli, 	D.cufe");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@cod_cliente", SqlDbType.VarChar).Value = cod_cliente.Trim();
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("@serie", SqlDbType.VarChar).Value = serie;
+                    conmand.Parameters.Add("@nro_docum", SqlDbType.VarChar).Value = nro_docum.Trim();
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+
+                        items.nro_trans = Convert.ToString(dr["nro_trans"]);
+                        items.cod_emp = Convert.ToString(dr["cod_emp"]);
+                        items.cufe = Convert.ToString(dr["cufe"]);
+                        items.serie_docum = Convert.ToString(dr["serie_docum"]);
+                        items.nro_docum = Convert.ToString(dr["nro_docum"]);
+                        items.cod_suc_emp = Convert.ToString(dr["cod_sucursal"]);
+                        items.cod_suc_cli = Convert.ToString(dr["cod_suc_cli"]);
+                    }
+
+                    return items;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ConsultaNDebitoEleSaldos", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+
+        }
         //CONSULTA NC NORMALES 
         public modeloFacturasElecSaldos ConsultaNCNormalesSaldos(string cod_cliente, string cod_emp, string nro_trans, string usuario, string serie_docum)
         {

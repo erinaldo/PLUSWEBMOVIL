@@ -96,13 +96,42 @@ namespace CapaProceso.Consultas
                 lista = consulta.ConsultaFacturaNroTran(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 if (tipo_doc.Trim() == "ELE")
                 {
-                    foreach (var item in lista)
+                    if (Ccf_tipo2 == "NC")
                     {
-
-                        modeloFacturasElecSaldos = BuscarElec.BuscartaFacEleSaldos(item.cod_cliente, Ccf_cod_emp, item.serie_docum.Trim(), item.nro_docum.Trim());
-                        if (modeloFacturasElecSaldos.cufe != null && modeloFacturasElecSaldos.cod_suc_emp.Trim() == cod_sucursal.Trim())
+                        foreach (var item in lista)
                         {
+
+                            modeloFacturasElecSaldos = BuscarElec.BuscaNCEleSaldos(item.cod_cliente, Ccf_cod_emp, item.serie_docum.Trim(), item.nro_docum.Trim(), Ccf_usuario);
+                            if (modeloFacturasElecSaldos.cufe != null && modeloFacturasElecSaldos.cod_suc_emp.Trim() == cod_sucursal.Trim())
+                            {
                                 listaAux.Add(item);
+                            }
+                        }
+
+                    }
+                    if (Ccf_tipo2 == "NDVE")
+                    {
+                        foreach (var item in lista)
+                        {
+
+                            modeloFacturasElecSaldos = BuscarElec.BuscaNDebitoEleSaldos(item.cod_cliente, Ccf_cod_emp, item.serie_docum.Trim(), item.nro_docum.Trim(), Ccf_usuario);
+                            if (modeloFacturasElecSaldos.cufe != null && modeloFacturasElecSaldos.cod_suc_emp.Trim() == cod_sucursal.Trim())
+                            {
+                                listaAux.Add(item);
+                            }
+                        }
+
+                    }
+                    if (Ccf_tipo2 == "VTAE" || Ccf_tipo2 == "POSE")
+                    {
+                        foreach (var item in lista)
+                        {
+
+                            modeloFacturasElecSaldos = BuscarElec.BuscartaFacEleSaldos(item.cod_cliente, Ccf_cod_emp, item.serie_docum.Trim(), item.nro_docum.Trim());
+                            if (modeloFacturasElecSaldos.cufe != null && modeloFacturasElecSaldos.cod_suc_emp.Trim() == cod_sucursal.Trim())
+                            {
+                                listaAux.Add(item);
+                            }
                         }
                     }
                 }
