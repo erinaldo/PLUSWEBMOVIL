@@ -324,22 +324,22 @@ namespace CapaWeb.WebForms
                 {
                     if (Session["tipo_nc"].ToString() == "NDVE")
                     {
-                        ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, "0");
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, "0");
                     }
                     else
                     {
-                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldos(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, "0");
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, "0");
                     }
                 }
                 else
                 {
                     if (Session["tipo_nc"].ToString() == "NDVE")
                     {
-                        ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldosXNroDoc(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", Session["suc_emp"].ToString(), txtDocumento.Text.Trim());
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldosXNroDoc(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "S", Session["suc_emp"].ToString(), txtDocumento.Text.Trim());
                     }
                     else
                     {
-                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldosXNroDoc(AmUsrLog, ComPwm, cliente.cod_tit, "C", "S", Session["suc_emp"].ToString(),txtDocumento.Text.Trim());
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldosXNroDoc(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "S", Session["suc_emp"].ToString(),txtDocumento.Text.Trim());
                     }
                 }
 

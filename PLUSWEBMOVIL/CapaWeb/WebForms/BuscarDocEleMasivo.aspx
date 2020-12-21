@@ -71,6 +71,11 @@ function enviado() {
                       <table align="center">
    
                         <tr valign="top">
+                             <td width="20%" class="busqueda">Cliente:</td>
+                          <td>
+                              <asp:TextBox ID="txtCliente" class="textos" value="0" width="203" runat="server" maxlength="50" ></asp:TextBox>
+                              
+                              <div class="textos_sm">Codigo, Nombre, NIT (0 = Todos)</div></td>
                          <td width="20%" class="busqueda">Fecha inicio:</td>
                           <td>
                                 <asp:TextBox ID="fechainicio" type="date"  Width="202"   runat="server"></asp:TextBox>
@@ -80,7 +85,10 @@ function enviado() {
                                 <asp:TextBox ID="fechafin" type="date"  Width="202"  runat="server"></asp:TextBox>
                             </td>
 
-                           <td width="80%" class="busqueda">Tipo Documento:</td>
+                          
+                        </tr>
+                        <tr valign="top">
+                             <td width="80%" class="busqueda">Tipo Documento:</td>
                           <td>
                               <asp:DropDownList ID="cbx_tipo_doc" Width="224px" class="textos" runat="server" Height="16px">
                                   <asp:ListItem Value="VTAE">Factura</asp:ListItem>
@@ -89,8 +97,6 @@ function enviado() {
                                   <asp:ListItem Value="NDVE">Nota Débito</asp:ListItem>
                               </asp:DropDownList>
                           </td>
-                        </tr>
-                        <tr valign="top">
                             <td> 
                                 <asp:Label ID="Label2" CssClass="busqueda" runat="server" Text="Tipo: "></asp:Label>
                             </td>
@@ -119,6 +125,7 @@ function enviado() {
                         <asp:Label ID="lbl_tot_doc" CssClass="textos" visible="false" runat="server" Text=""></asp:Label>
         
                           <asp:Button ID="btn_descargar" CssClass="botones" Visible="false" runat="server" Text="Descargar archivo" OnClick="btn_descargar_Click" />
+                        <asp:Button ID="btn_xml" class="botones" Visible="false" runat="server" Text="Descargar Xml" OnClick="btn_xml_Click" />
                       </td>
                 </tr>
                         <tr>

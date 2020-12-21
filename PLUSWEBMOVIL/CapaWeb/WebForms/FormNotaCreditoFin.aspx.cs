@@ -1918,7 +1918,7 @@ namespace CapaWeb.WebForms
                             else
                             {
                                 ValidarParametrosNC();
-
+                                
                                 Confirmar.Enabled = false;
                                 string respuestaConfirmacionNC = "";
                                 //Boton Coonfirmar hace lo mismo que el salvar solo aumenta la insercion a la tabla wmt_facturas_ins

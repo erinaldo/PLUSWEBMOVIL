@@ -356,7 +356,7 @@ namespace CapaDatos.Sql
                 using (cn = conexion.genearConexion())
                 {
                     modeloUsuariosucursal item = new modeloUsuariosucursal();
-                    string consulta = "SELECT u.usuario,u.fecha_mod,u.cod_emp,u.cod_sucursal,e.nom_sucursal,e.serie_factura,e.serie_nc,e.serie_nd FROM wmm_userxsucur AS u , wmm_sucuremp AS e WHERE u.cod_emp = @cod_emp AND u.cod_sucursal = e.cod_sucursal AND u.usuario =@usuario and e.serie_nd = @serie_nd";
+                    string consulta = "SELECT u.usuario,u.fecha_mod,u.cod_emp,u.cod_sucursal,e.nom_sucursal,e.serie_factura,e.serie_nc,e.serie_nd FROM wmm_userxsucur AS u , wmm_sucuremp AS e WHERE u.cod_emp = @cod_emp AND u.cod_sucursal = e.cod_sucursal AND u.cod_emp = e.cod_emp AND u.usuario =@usuario and e.serie_nd = @serie_nd";
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
@@ -521,7 +521,7 @@ namespace CapaDatos.Sql
                 using (cn = conexion.genearConexion())
                 {
                     List<modeloUsuariosucursal> lista = new List<modeloUsuariosucursal>();
-                    string consulta = "SELECT S.cod_emp,S.cod_sucursal,S.usuario,S.usuario_mod,S.fecha_mod,S.nro_audit,S.cod_proc_aud,E.nom_sucursal FROM wmm_userxsucur AS S ,wmm_sucuremp AS E WHERE S.cod_emp = @cod_emp AND S.usuario = @usuario AND S.cod_sucursal = E.cod_sucursal ";
+                    string consulta = "SELECT S.cod_emp,S.cod_sucursal,S.usuario,S.usuario_mod,S.fecha_mod,S.nro_audit,S.cod_proc_aud,E.nom_sucursal FROM wmm_userxsucur AS S ,wmm_sucuremp AS E WHERE S.cod_emp = @cod_emp AND S.usuario = @usuario AND S.cod_sucursal = E.cod_sucursal AND S.cod_emp = E.cod_emp ";
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;

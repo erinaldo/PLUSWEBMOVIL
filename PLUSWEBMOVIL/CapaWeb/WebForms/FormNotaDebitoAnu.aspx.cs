@@ -916,15 +916,17 @@ namespace CapaWeb.WebForms
                     {
                         Session["Ccf_tipo2_NDA"] = "NDVE";
                         lbl_tipo_nd.Text = "NDVE";
-                        DateTime hoy = DateTime.Today;
                         fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
-
+                        lbl_cod_suc_emp.Text = resolucion.cod_sucursal.Trim();
+                        lbl_suc_emp.Text = "-" + resolucion.nom_sucursal.Trim();
                     }
                     else
                     {
                         Session["Ccf_tipo2_NDA"] = "NDV";
                         lbl_tipo_nd.Text = "NDV";
                         fecha.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                        lbl_cod_suc_emp.Text = resolucion.cod_sucursal.Trim();
+                        lbl_suc_emp.Text = "-" + resolucion.nom_sucursal.Trim();
                     }
                 }
                
@@ -985,7 +987,7 @@ namespace CapaWeb.WebForms
                     empresa = consultaValidarFactura.ConsultaValidarMonCiudEmpresaERP(ComPwm, AmUsrLog);
                     if (empresa == false)
                     {
-                        lbl_validacion.Text = " No existe moneda o ciudad de la empresa registrado para la nota de crédito. Por favor registrar información y actualizar la página";
+                        lbl_validacion.Text = " No existe moneda o ciudad de la empresa registrado para la nota de débito. Por favor registrar información y actualizar la página";
                         lbl_validacion.Visible = true;
                         Confirmar.Enabled = false;
                     }
@@ -995,7 +997,7 @@ namespace CapaWeb.WebForms
                         resolucion = consultaValidarFactura.ConsultaValidarResolucionERP(ComPwm, AmUsrLog, "V", serie_docum.SelectedValue.Trim(), fecha.Text, Modelowmspclogo.cod_emp_erp.Trim());
                         if (resolucion == false)
                         {
-                            lbl_validacion.Text = " No existe resolución de la nota de crédito. Por favor registrar información y actualizar la página";
+                            lbl_validacion.Text = " No existe resolución de la nota de débito. Por favor registrar información y actualizar la página";
                             lbl_validacion.Visible = true;
                             Confirmar.Enabled = false;
                         }
