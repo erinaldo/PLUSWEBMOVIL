@@ -338,7 +338,9 @@ return false;
                               
                                 <td>
                                    <asp:TextBox ID="txt_saldo_factura" Visible="false" runat="server"></asp:TextBox>
+                                    
                                </td>
+                                <td><asp:TextBox ID="txt_cod_socio" Visible="false" runat="server"></asp:TextBox></td>
                                </tr>
                              <tr>
                                 <td align="right" valign="top" nowrap="nowrap" class="busqueda">

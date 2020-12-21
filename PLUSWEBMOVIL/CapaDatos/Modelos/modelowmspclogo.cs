@@ -32,6 +32,7 @@ namespace CapaDatos.Modelos
         public int cantidad_decimal { get; set; }
         public int pvp_decimal { get; set; }
         public string path_adjunto { get; set; }
+        public string linkestadodoc { get; set; }
 
     }
 }

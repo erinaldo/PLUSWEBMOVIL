@@ -12,7 +12,7 @@ namespace CapaProceso.Consultas
 {
     public class Consultawmsptitulares
     {
-        Documento documento = new Documento();
+        CapaDatos.Sql.Documento documento = new CapaDatos.Sql.Documento();
         modelowmspctitulares modelotitulares = new modelowmspctitulares();
         UsuariosSistema usuarioDatos = new UsuariosSistema();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();

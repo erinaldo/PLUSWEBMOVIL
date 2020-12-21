@@ -13,6 +13,16 @@
                         </td>
 
                     </tr>
+               
+                
+                <tr>
+                    <td>
+                        <asp:Label ID="Label1" CssClass="Subtitulo2" runat="server" Text="Estado Factura:"></asp:Label>
+                        <asp:TextBox ID="txt_estado" CssClass="Subtitulo1" ReadOnly="true" runat="server" Width="242px"></asp:TextBox>
+                        <asp:Button ID="btn_estado" CssClass="botones" runat="server" Text="Ver" OnClick="btn_estado_Click" />
+                    </td>
+
+                </tr>
                 <tr>
                     <td>
                         <p class="Subtitulo1">Lista de incidencias</p>
@@ -92,9 +102,7 @@
                                                     <asp:ImageButton ID="imgVer" runat="server" CausesValidation="false" CommandName="Ver"
                                                         ImageUrl="~/Tema/imagenes/search.png" ToolTip="Ver DIAN" Width="16" />
                                                 </ItemTemplate>
-                                            </asp:TemplateColumn>
-
-                                          
+                                            </asp:TemplateColumn> 
                                         </Columns>
 
 

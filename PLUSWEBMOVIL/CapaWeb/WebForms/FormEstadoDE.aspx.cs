@@ -10,9 +10,8 @@ using CapaProceso.EstadoDocEle;
 
 namespace CapaWeb.WebForms
 {
-    public partial class ListaRespuestaNCDS : System.Web.UI.Page
+    public partial class FormEstadoDE : System.Web.UI.Page
     {
-
         modelocabecerafactura cabecerafactura = new modelocabecerafactura();
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
 
@@ -22,6 +21,8 @@ namespace CapaWeb.WebForms
 
         modelowmtfacturascab conscabcera = new modelowmtfacturascab();
         ModeloDetalleFactura consdetalle = new ModeloDetalleFactura();
+        List<modelowmtfacturascab> listaConsCab = null;
+
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
@@ -30,16 +31,14 @@ namespace CapaWeb.WebForms
         public JsonRespuestaDE ModeloResQr = new JsonRespuestaDE();
         public ConsultawmtrespuestaDS consultaRespuestaDS = new ConsultawmtrespuestaDS();
 
-        ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
-        modelonumerador nrotrans = new modelonumerador();
-        ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
-        modeloExepciones ModeloExcepcion = new modeloExepciones();
-
         List<JsonEstadoDocElec> ListaEstado = new List<JsonEstadoDocElec>();
         RespuestaDC consEstado = new RespuestaDC();
         ConsultaEstadoDE consumo = new ConsultaEstadoDE();
-        public string numerador = "trans";
-
+        ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
+        modeloExepciones ModeloExcepcion = new modeloExepciones();
+        modelowmtfacturascab conscabceraTipo = new modelowmtfacturascab();
+        CabezeraFactura GuardarCabezera = new CabezeraFactura();
+        RolesUserFacturacion activa = new RolesUserFacturacion();
         public string ComPwm;
         public string AmUsrLog;
         public string nro_trans = null;
@@ -48,7 +47,6 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-
 
                 RecuperarCokie();
                 ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
@@ -66,13 +64,34 @@ namespace CapaWeb.WebForms
                     switch (qs["TRN"].Substring(0, 3))
                     {
 
+                        case "VER":
+                            try
+                            {
+                                lbl_error.Text = "";
+                                Int64 ide = Int64.Parse(qs["Id"].ToString());
+                                string nro_trans = ide.ToString();
+                                Session["numero_trx"] = ide.ToString();
+                                ConsultarEstado(nro_trans);
+                                CargarGrilla();
+
+                                break;
+                            }
+                            catch (Exception ex)
+                            {
+                                GuardarExcepciones("Page_Load, VER", ex.ToString());
+
+                            }
+                            break;
+
+
                         case "MTR":
                             try
                             {
+                                lbl_error.Text = "";
                                 Int64 ide = Int64.Parse(qs["Id"].ToString());
-                                string nro_trans = ide.ToString();
-                                Session["numero_nc"] = ide.ToString();
-                                ConsultarEstado(nro_trans);
+                                nro_trans = ide.ToString();
+                                Session["numero"] = ide.ToString();
+                                //CargarFormularioRespuestaDS(nro_trans);
                                 CargarGrilla();
 
                                 break;
@@ -93,33 +112,19 @@ namespace CapaWeb.WebForms
 
             }
         }
-
         public void ConsultarEstado(string nro_trans)
         {
             try
             {
-                
-                lbl_error.Text = consumo.ConsultaEstadoDocumento(ComPwm, AmUsrLog, "C", "", nro_trans);
-                ListaEstado = consEstado.ConsultaEstados(Session["numero_nc"].ToString());
+               
 
-                foreach (var item in ListaEstado)
+                lbl_error.Text =  consumo.ConsultaEstadoDocumento(ComPwm, AmUsrLog, "C", "", nro_trans);
+                //Activar boton finalizar documento
+                string activo_estado = activa.RolModificarEstado(AmUsrLog);
+                if( !string.IsNullOrEmpty(activo_estado.Trim() ))
                 {
-                    if (item.cargopdf.Trim() == "false")
-                    {
-                        txt_estado.Text = "Documento  no autorizado. PDF no enviado, revisar incidencias.";
-                    }
-                    if (string.IsNullOrEmpty(item.cargopdf.Trim()))
-                    {
-                        txt_estado.Text = "Documento  no autorizado. PDF no enviado, revisar incidencias.";
-                    }
-                    if (item.cargopdf.Trim() == "true")
-                    {
-                        txt_estado.Text = "Documento   autorizado correctamente.";
-                    }
-                    break;
-                    
+                    btn_udp.Visible = true;
                 }
-
             }
             catch (Exception ex)
             {
@@ -127,18 +132,16 @@ namespace CapaWeb.WebForms
 
             }
 
-        }
+}
         public void GuardarExcepciones(string metodo, string error)
         {
-            //obtener numero de transaccion
-       
+
             ModeloExcepcion.cod_emp = ComPwm;
-            ModeloExcepcion.proceso = "ListaRespuestaNCDS.aspx";
+            ModeloExcepcion.proceso = "FormEstadoDE.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Now;
             ModeloExcepcion.usuario_mod = AmUsrLog;
-           
             consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
             //mandar mensaje de error a label
             lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
@@ -146,39 +149,45 @@ namespace CapaWeb.WebForms
         }
 
 
-        private void CargarGrilla()
+        private void CargarFormularioRespuestaDS(string nro_trans, string linea)
         {
             try
             {
                 lbl_error.Text = "";
-                ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(Session["numero_nc"].ToString());
-                Grid.DataSource = ListaModelorespuestaDs;
-                Grid.DataBind();
-                Grid.Height = 100;
+
+                ListaModelorespuestaDs = consultaRespuestaDS.RespuestaLineaQr(nro_trans, linea);
+                int count = 0;
+                foreach (var item in ListaModelorespuestaDs)
+                {
+                    ModeloResQr = item;
+                    count++;
+                    break;
+                }
             }
             catch (Exception ex)
             {
-                GuardarExcepciones("CargarGrilla", ex.ToString());
+                GuardarExcepciones("CargarFormularioRespuestaDS", ex.ToString());
 
             }
+
+
+
+        }
+        private void CargarGrilla()
+        {
+
+            ListaEstado = consEstado.ConsultaEstados(Session["numero_trx"].ToString());
+            Grid.DataSource = ListaEstado;
+            Grid.DataBind();
+            Grid.Height = 100;
         }
 
         protected void Grid_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
         {
-            try
-            {
-                lbl_error.Text = "";
-
-                // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
-                Grid.CurrentPageIndex = 0;
-                Grid.CurrentPageIndex = e.NewPageIndex;
-                CargarGrilla();
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("Grid_PageIndexChanged", ex.ToString());
-
-            }
+            // paginar la grilla asegurarse que la obcion que la propiedad AllowPaging sea True.
+            Grid.CurrentPageIndex = 0;
+            Grid.CurrentPageIndex = e.NewPageIndex;
+            CargarGrilla();
         }
 
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
@@ -186,7 +195,6 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-
 
                 //1 primero creo un objeto Clave/Valor de QueryString 
                 QueryString qs = new QueryString();
@@ -198,42 +206,24 @@ namespace CapaWeb.WebForms
                 switch (e.CommandName) //ultilizo la variable para la opcion
                 {
 
-                    case "Mostrar": //ejecuta el codigo si el usuario ingresa el numero 3
-                        try
-                        {
-                            Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
-                            linea = Convert.ToInt32(((Label)e.Item.Cells[2].FindControl("linea")).Text);
-                            qs.Add("TRN", "MTR");
-                            qs.Add("Id", Id.ToString());
-                            qs.Add("linea", linea.ToString());
-
-                            Response.Redirect("FormRespuestaJsonNC.aspx" + Encryption.EncryptQueryString(qs).ToString());
-
-                            break;
-                        }
-                        catch (Exception ex)
-                        {
-                            GuardarExcepciones("Grid_ItemCommand, Mostrar", ex.ToString());
-
-                        }
-                        break;
-
+                    
                     case "Ver": //ejecuta el codigo si el usuario ingresa el numero 3
                         try
                         {
+                            lbl_error.Text = "";
                             Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                             linea = Convert.ToInt32(((Label)e.Item.Cells[2].FindControl("linea")).Text);
                             qs.Add("TRN", "VER");
                             qs.Add("Id", Id.ToString());
                             qs.Add("linea", linea.ToString());
 
-                            Response.Redirect("FormRespuestaNCDIAN.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                            Response.Redirect("FormEstadoDocElec.aspx" + Encryption.EncryptQueryString(qs).ToString());
 
                             break;
                         }
                         catch (Exception ex)
                         {
-                            GuardarExcepciones("Grid_ItemCommand, VER", ex.ToString());
+                            GuardarExcepciones("Grid_ItemCommand, Ver", ex.ToString());
 
                         }
                         break;
@@ -247,19 +237,29 @@ namespace CapaWeb.WebForms
         }
         public void RecuperarCokie()
         {
-            if (Request.Cookies["ComPwm"] != null)
+            try
             {
-                ComPwm = Request.Cookies["ComPwm"].Value;
-            }
-            else
-            {
-                Response.Redirect("../Inicio.asp");
-            }
+                lbl_error.Text = "";
+
+                if (Request.Cookies["ComPwm"] != null)
+                {
+                    ComPwm = Request.Cookies["ComPwm"].Value;
+                }
+                else
+                {
+                    Response.Redirect("../Inicio.asp");
+                }
 
 
-            if (Request.Cookies["AmUsrLog"] != null)
+                if (Request.Cookies["AmUsrLog"] != null)
+                {
+                    AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+
+                }
+            }
+            catch (Exception ex)
             {
-                AmUsrLog = Request.Cookies["AmUsrLog"].Value;
+                GuardarExcepciones("RecuperarCokie", ex.ToString());
 
             }
         }
@@ -269,7 +269,6 @@ namespace CapaWeb.WebForms
             try
             {
                 lbl_error.Text = "";
-
                 //1- guardo el Querystring encriptado que viene desde el request en mi objeto
                 QueryString qs = new QueryString(Request.QueryString);
 
@@ -281,16 +280,58 @@ namespace CapaWeb.WebForms
             {
                 GuardarExcepciones("ulrDesencriptada", ex.ToString());
                 return null;
+
             }
         }
 
+        public modelowmtfacturascab buscarTipoFac(string nro_trans)
+        {
+            try
+            {
+                lbl_error.Text = "";
+
+                listaConsCab = ConsultaCabe.ConsultaTipoFactura(nro_trans);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
+
+                }
+                return conscabcera;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("buscarTipoFac", ex.ToString());
+                return null;
+            }
+        }
         protected void Cancelar_Click(object sender, EventArgs e)
         {
             try
             {
                 lbl_error.Text = "";
-                Session.Remove("numero_nc");
-                Response.Redirect("FormBuscarNotaCredito.aspx");
+                //Consultar tipo
+                conscabceraTipo = null;
+                conscabceraTipo = buscarTipoFac(Session["numero_trx"].ToString());
+                QueryString qs = new QueryString();
+                //2 voy a agregando los valores que deseo
+                qs.Add("TRN", "MTR");
+                qs.Add("Id", Session["numero_trx"].ToString());
+                if (conscabceraTipo.tipo_nce.Trim() == "VTAE" || conscabceraTipo.tipo_nce.Trim() == "POSE")
+                {
+                    Response.Redirect("PortalFacturas.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                }
+                if (conscabceraTipo.tipo_nce.Trim() == "NCVE" || conscabceraTipo.tipo_nce.Trim() == "NCME")
+                {
+                    Response.Redirect("ListaRespuestaNCDS.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                }
+                if (conscabceraTipo.tipo_nce.Trim() == "NDVE")
+                {
+                    Response.Redirect("ListaRespuestaND.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                }
+
             }
             catch (Exception ex)
             {
@@ -299,20 +340,15 @@ namespace CapaWeb.WebForms
             }
         }
 
-        protected void btn_estado_Click(object sender, EventArgs e)
+        protected void btn_udp_Click(object sender, EventArgs e)
         {
             try
             {
-                QueryString qs = new QueryString();
-
-                qs.Add("TRN", "VER");
-                qs.Add("Id", Session["numero_nc"].ToString());
-                Response.Redirect("FormEstadoDE.aspx" + Encryption.EncryptQueryString(qs).ToString());
+                GuardarCabezera.ActualizarEstadoFactura(Session["numero_trx"].ToString().Trim(), "F");
             }
-
             catch (Exception ex)
             {
-                GuardarExcepciones("btn_estado_Click", ex.ToString());
+                GuardarExcepciones("btn_udp_Click", ex.ToString());
 
             }
         }

@@ -10,7 +10,7 @@
 namespace CapaWeb.WebForms {
     
     
-    public partial class BuscarDocEleMasivo {
+    public partial class FormEstadoDocElec {
         
         /// <summary>
         /// Control form1.
@@ -22,24 +22,6 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// Control ImgAyuda.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ImgAyuda;
-        
-        /// <summary>
-        /// Control lblAyuda.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAyuda;
-        
-        /// <summary>
         /// Control lbl_error.
         /// </summary>
         /// <remarks>
@@ -49,138 +31,129 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Label lbl_error;
         
         /// <summary>
-        /// Control lbl_mensaje.
+        /// Control FormularioRes.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_mensaje;
+        protected global::System.Web.UI.HtmlControls.HtmlTable FormularioRes;
         
         /// <summary>
-        /// Control Label1.
+        /// Control mensaje.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        protected global::System.Web.UI.WebControls.Label mensaje;
         
         /// <summary>
-        /// Control lbl_cod_suc.
+        /// Control txt_nro_trans.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_cod_suc;
+        protected global::System.Web.UI.WebControls.TextBox txt_nro_trans;
         
         /// <summary>
-        /// Control lbl_sucursal.
+        /// Control txt_id.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_sucursal;
+        protected global::System.Web.UI.WebControls.TextBox txt_id;
         
         /// <summary>
-        /// Control txtCliente.
+        /// Control txt_linea.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCliente;
+        protected global::System.Web.UI.WebControls.TextBox txt_linea;
         
         /// <summary>
-        /// Control fechainicio.
+        /// Control txt_estado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fechainicio;
+        protected global::System.Web.UI.WebControls.TextBox txt_estado;
         
         /// <summary>
-        /// Control fechafin.
+        /// Control txt_operacion.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fechafin;
+        protected global::System.Web.UI.WebControls.TextBox txt_operacion;
         
         /// <summary>
-        /// Control cbx_tipo_doc.
+        /// Control txt_email.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cbx_tipo_doc;
+        protected global::System.Web.UI.WebControls.TextBox txt_email;
         
         /// <summary>
-        /// Control Label2.
+        /// Control txt_qrdata.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label2;
+        protected global::System.Web.UI.WebControls.TextBox txt_qrdata;
         
         /// <summary>
-        /// Control cbx_tipo1.
+        /// Control txt_xml.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cbx_tipo1;
+        protected global::System.Web.UI.WebControls.TextBox txt_xml;
         
         /// <summary>
-        /// Control Buscar.
+        /// Control txt_cufe.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Buscar;
+        protected global::System.Web.UI.WebControls.TextBox txt_cufe;
         
         /// <summary>
-        /// Control lbl_fac_txt.
+        /// Control txt_error.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_fac_txt;
+        protected global::System.Web.UI.WebControls.TextBox txt_error;
         
         /// <summary>
-        /// Control lbl_tot_doc.
+        /// Control txt_result.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_tot_doc;
+        protected global::System.Web.UI.WebControls.TextBox txt_result;
         
         /// <summary>
-        /// Control btn_descargar.
+        /// Control txt_json.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_descargar;
-        
-        /// <summary>
-        /// Control Grid.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DataGrid Grid;
+        protected global::System.Web.UI.WebControls.TextBox txt_json;
     }
 }

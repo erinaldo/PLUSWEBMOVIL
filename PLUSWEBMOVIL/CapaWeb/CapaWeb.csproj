@@ -21,6 +21,7 @@
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <TargetFrameworkProfile />
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -105,6 +106,9 @@
       <HintPath>..\packages\Microsoft.Bcl.1.1.10\lib\net40\System.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Threading.Tasks, Version=2.6.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.1.1.10\lib\net40\System.Threading.Tasks.dll</HintPath>
       <Private>True</Private>
@@ -122,6 +126,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="APIS\ServicioPWM.svc" />
     <Content Include="WebForms\BuscarFacturasNDF.aspx" />
     <Content Include="Tema\css\StylePront.css" />
     <Content Include="Tema\imagenes\cargando.gif" />
@@ -178,6 +183,8 @@
     <Content Include="WebForms\FormDetalleImpuestos.aspx" />
     <Content Include="WebForms\FormDocsComercialesR.aspx" />
     <Content Include="WebForms\FormDocumentosElectronicos.aspx" />
+    <Content Include="WebForms\FormEstadoDE.aspx" />
+    <Content Include="WebForms\FormEstadoDocElec.aspx" />
     <Content Include="WebForms\FormExcepciones.aspx" />
     <Content Include="WebForms\FormFacturaPostElec.aspx" />
     <Content Include="WebForms\FormHostMail.aspx" />
@@ -271,9 +278,14 @@
     <Content Include="WebForms\ReporteFactura.aspx" />
     <Content Include="WebForms\ReporteNotaCreditoPWM.aspx" />
     <Content Include="WebForms\ReporteNotaDebito.aspx" />
+    <Content Include="WebForms\ReporteNotaDebitoPWM.aspx" />
     <Content Include="WebForms\VerDetalleFacturas.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIS\IServicioPWM.cs" />
+    <Compile Include="APIS\ServicioPWM.svc.cs">
+      <DependentUpon>ServicioPWM.svc</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\BuscarFacturasNDF.aspx.cs">
       <DependentUpon>BuscarFacturasNDF.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -631,6 +643,20 @@
     <Compile Include="WebForms\FormDocumentosElectronicos.aspx.designer.cs">
       <DependentUpon>FormDocumentosElectronicos.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\FormEstadoDE.aspx.cs">
+      <DependentUpon>FormEstadoDE.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormEstadoDE.aspx.designer.cs">
+      <DependentUpon>FormEstadoDE.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\FormEstadoDocElec.aspx.cs">
+      <DependentUpon>FormEstadoDocElec.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\FormEstadoDocElec.aspx.designer.cs">
+      <DependentUpon>FormEstadoDocElec.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForms\FormExcepciones.aspx.cs">
       <DependentUpon>FormExcepciones.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -920,6 +946,13 @@
     </Compile>
     <Compile Include="WebForms\ReporteNotaDebito.aspx.designer.cs">
       <DependentUpon>ReporteNotaDebito.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\ReporteNotaDebitoPWM.aspx.cs">
+      <DependentUpon>ReporteNotaDebitoPWM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\ReporteNotaDebitoPWM.aspx.designer.cs">
+      <DependentUpon>ReporteNotaDebitoPWM.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>

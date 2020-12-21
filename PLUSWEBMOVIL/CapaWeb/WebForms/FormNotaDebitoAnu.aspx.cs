@@ -260,12 +260,13 @@ namespace CapaWeb.WebForms
                 {
                     // recupera la variable de secion con el objeto persona
                     cliente = (modelowmspctitulares)Session["cliente"];
-                    nombreCliente.Text = cliente.nom_tit;
+                    nombreCliente.Text = cliente.nom_tit.Trim();
                     dniCliente.Text = cliente.nro_dgi2;
                     fonoCliente.Text = cliente.tel_tit;
                     txtcorreo.Text = cliente.email_tit;
                     suc_cliente.Text = cliente.cod_sucursal;
                     sucursal_lbl.Text = cliente.codnom_suc;
+                    txt_cod_socio_n.Text = cliente.cod_tit.Trim();
                 }
                 //Variable de listaClienteFac busqueda de notas de credito
                 if (Session["listaFacturas"] != null)
@@ -611,7 +612,7 @@ namespace CapaWeb.WebForms
                         txtcorreo.Text = "";
                         suc_cliente.Text = "";
                         sucursal_lbl.Text = "";
-                        // this.Page.Response.Write("<script language='JavaScript'>window.open('./CrearCliente.aspx','Crear Cliente', 'top=100,width=580 ,height=400, left=400');</script>");
+                        txt_cod_socio_n.Text = "";
 
                     }
                     else
@@ -619,13 +620,13 @@ namespace CapaWeb.WebForms
 
                         Session.Remove("cliente");
 
-                        nombreCliente.Text = cliente.nom_tit;
+                        nombreCliente.Text = cliente.nom_tit.Trim();
                         fonoCliente.Text = cliente.tel_tit;
                         dniCliente.Text = cliente.nro_dgi2;
                         txtcorreo.Text = cliente.email_tit;
                         suc_cliente.Text = cliente.cod_sucursal;
                         sucursal_lbl.Text = cliente.codnom_suc;
-
+                        txt_cod_socio_n.Text = cliente.cod_tit.Trim();
                     }
                 }
             }
@@ -1518,12 +1519,25 @@ namespace CapaWeb.WebForms
                 string Ven__cod_tit = dniCliente.Text;
 
                 lista = ConsultaTitulares.ConsultaTitulares(AmUsrLog, ComPwm, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, suc_cliente.Text);
-
                 cliente = null;
-                foreach (modelowmspctitulares item in lista)
+                if (lista.Count > 1)
                 {
-                    cliente = item;
-                    break;
+                    foreach (modelowmspctitulares item in lista)
+                    {
+                        if (item.cod_tit.Trim() == txt_cod_socio_n.Text.Trim())
+                        {
+                            cliente = item;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (modelowmspctitulares item in lista)
+                    {
+                        cliente = item;
+                        break;
+                    }
                 }
 
                 //Procedimiento para actualizar email del titular

@@ -150,6 +150,10 @@
     <Compile Include="Consultas\EnviarCorreo.cs" />
     <Compile Include="Consultas\Enviarcorreocliente.cs" />
     <Compile Include="Consultas\GuardarrespuestaDS.cs" />
+    <Compile Include="EstadoDocEle\ComprobanteDocEle.cs" />
+    <Compile Include="EstadoDocEle\ConsultaEstadoDE.cs" />
+    <Compile Include="EstadoDocEle\JsonEstadoDE.cs" />
+    <Compile Include="EstadoDocEle\ProcesoRestEstado.cs" />
     <Compile Include="FacturaMasiva\CargaFacturaMasiva.cs" />
     <Compile Include="FacturaMasiva\FacturaMasivaProforma.cs" />
     <Compile Include="FacturaMasiva\GenerarPDFDocumentos.cs" />

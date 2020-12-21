@@ -162,7 +162,7 @@ namespace CapaWeb.WebForms
                 DateTime Fechainicio = Convert.ToDateTime(fechainicio.Text);
                 DateTime Fechafin = Convert.ToDateTime(fechafin.Text);
                 string Ccf_estado = "F";
-                string Ccf_cliente = "0";
+                string Ccf_cliente = txtCliente.Text.Trim();
                 string Ccf_serie_docum = "xxx";
                 string Ccf_nro_docum = "0";
                 string Ccf_diai = string.Format("{0:00}", Fechainicio.Day);

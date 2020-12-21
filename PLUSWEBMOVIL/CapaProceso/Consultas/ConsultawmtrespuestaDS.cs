@@ -34,6 +34,23 @@ namespace CapaProceso.Consultas
                 return null;
             }
         }
+
+        //Conusulta etados documentos  x linea
+        public JsonEstadoDocElec EstadosDocs(string nro_trans, string linea)
+        {
+            try
+            {
+                JsonEstadoDocElec lista = new JsonEstadoDocElec();
+                lista = consultaRespuesta.ConsultaEstadosXLinea(nro_trans, linea);
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "ConsultawmtrespuestaDs.cs", "EstadosDocs", e.ToString(), DateTime.Now, "consulta");
+                return null;
+            }
+        }
         //Conusulta respuesta x linea
         public List<JsonRespuestaDE> RespuestaLineaQr(string nro_trans, string linea)
         {
@@ -46,7 +63,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "ConsultawmtrespuestaDs.cs", "RespuestaLineaQR", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "ConsultawmtrespuestaDs.cs", "RespuestaLineaQR", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }

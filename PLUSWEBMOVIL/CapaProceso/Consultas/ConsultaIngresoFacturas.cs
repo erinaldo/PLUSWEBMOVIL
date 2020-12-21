@@ -11,7 +11,7 @@ namespace CapaProceso.Consultas
 {
     public class ConsultaIngresoFacturas
     {
-        Documento documento = new Documento();
+        CapaDatos.Sql.Documento documento = new CapaDatos.Sql.Documento();
         IngresosPFacturas ConsPgsFacturas = new IngresosPFacturas();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         //NV

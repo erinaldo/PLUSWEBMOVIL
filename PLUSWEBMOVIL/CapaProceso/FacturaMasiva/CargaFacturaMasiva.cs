@@ -1012,42 +1012,82 @@ namespace CapaProceso.FacturaMasiva
                 //Boton Coonfirmar hace lo mismo que el salvar solo aumenta la insercion a la tabla wmt_facturas_ins
                 conscabcera = null;
                 conscabcera = BuscarCabecera(ComPwm, AmUsrLog);
-
-                confirmarinsertar.nro_trans = conscabcera.nro_trans;
-                confirmarinsertar.cod_emp = conscabcera.cod_emp;
-                confirmarinsertar.usuario_mod = AmUsrLog;
-                confirmarinsertar.fecha_mod = DateTime.Now;
-                confirmarinsertar.nro_audit = conscabcera.nro_audit;
-
-                respuestaConfirmacionFAC = ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
-
-                //AVERIGUAR Q TIPO DE FACTURACION USA
-                //cOSNULTA BUSCAR TIPO DE FACTURA
-                conscabceraTipo = null;
-                conscabceraTipo = buscarTipoFac(conscabcera.nro_trans.Trim(), ComPwm, AmUsrLog);
-                if (conscabceraTipo.tipo_nce.Trim() == "VTAE" || conscabceraTipo.tipo_nce.Trim() == "POSE")
+                //vALIDAR TOTAL DE LA FACTURA
+                if (conscabcera.total < 0)
+                { return error_finalizar = "Los Cargos y Descuentos no pueden ser superiores al total de la factura"; }
+                else
                 {
-                    if (respuestaConfirmacionFAC == "")
-                    {
-                        string respuesta = "";
-                        switch (Modelowmspclogo.version_fe.Trim()) //AVERIGUAR Q TIPO DE FACTURACION USA
-                        {
-                            case "1":
-                                ConsumoRestFEV2 consumoRest1 = new ConsumoRestFEV2();
-                                respuesta = consumoRest1.EnviarFactura(ComPwm, AmUsrLog, "C", conscabceraTipo.tipo_nce.Trim(), conscabcera.nro_trans);
+                    confirmarinsertar.nro_trans = conscabcera.nro_trans;
+                    confirmarinsertar.cod_emp = conscabcera.cod_emp;
+                    confirmarinsertar.usuario_mod = AmUsrLog;
+                    confirmarinsertar.fecha_mod = DateTime.Now;
+                    confirmarinsertar.nro_audit = conscabcera.nro_audit;
 
-                                break;
-                            case "2":
-                                ConsumoRestFEV3 consumoRest = new ConsumoRestFEV3();
-                                respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", conscabceraTipo.tipo_nce.Trim(), conscabcera.nro_trans);
-                                break;
+                    respuestaConfirmacionFAC = ConfirmarFactura.ConfirmarFactura(confirmarinsertar);
+
+                    //AVERIGUAR Q TIPO DE FACTURACION USA
+                    //cOSNULTA BUSCAR TIPO DE FACTURA
+                    conscabceraTipo = null;
+                    conscabceraTipo = buscarTipoFac(conscabcera.nro_trans.Trim(), ComPwm, AmUsrLog);
+                    if (conscabceraTipo.tipo_nce.Trim() == "VTAE" || conscabceraTipo.tipo_nce.Trim() == "POSE")
+                    {
+                        if (respuestaConfirmacionFAC == "")
+                        {
+                            string respuesta = "";
+                            switch (Modelowmspclogo.version_fe.Trim()) //AVERIGUAR Q TIPO DE FACTURACION USA
+                            {
+                                case "1":
+                                    ConsumoRestFEV2 consumoRest1 = new ConsumoRestFEV2();
+                                    respuesta = consumoRest1.EnviarFactura(ComPwm, AmUsrLog, "C", conscabceraTipo.tipo_nce.Trim(), conscabcera.nro_trans);
+
+                                    break;
+                                case "2":
+                                    ConsumoRestFEV3 consumoRest = new ConsumoRestFEV3();
+                                    respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", conscabceraTipo.tipo_nce.Trim(), conscabcera.nro_trans);
+                                    break;
+                            }
+
+
+                            if (respuesta == "")
+                            {
+                                mensaje = "Su factura fue procesada exitosamente";
+                                GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
+                                //Cambiar a estado 'P'(procesado) en wmh_cargaMasiva
+                                ActualizarEstado(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
+                                //Cambiar a estado 'P'(procesado) en wmh_facturas_pgs
+                                ActualizarEstadoFPagos(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
+                                //Cambiar a estado 'P'(procesado) en wmh_facturas_cdsc
+                                ActualizarEstadoDsc(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
+                            }
+                            else
+                            {
+                                GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
+                                mensaje = respuesta;
+                                //Cambiar a estado 'P'(procesado) en wmh_cargaMasiva si a error se puede ver en buscar facturas
+                                ActualizarEstado(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
+                                //Cambiar a estado 'P'(procesado) en wmh_facturas_pgs
+                                ActualizarEstadoFPagos(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
+                                //Cambiar a estado 'P'(procesado) en wmh_facturas_cdsc
+                                ActualizarEstadoDsc(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
+                            }
                         }
 
-
-                        if (respuesta == "")
+                        else
                         {
-                            mensaje = "Su factura fue procesada exitosamente";
-                            GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
+                            //Cambiar a estado 'P'(procesado) en wmh_cargaMasiva
+                            ActualizarEstado(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
+                            //Cambiar a estado 'P'(procesado) en wmh_facturas_pgs
+                            ActualizarEstadoFPagos(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
+                            //Cambiar a estado 'P'(procesado) en wmh_facturas_cdsc
+                            ActualizarEstadoDsc(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
+                            return error_finalizar = respuestaConfirmacionFAC;
+                        }
+                    }
+                    else
+                    {
+                        if (respuestaConfirmacionFAC == "")
+                        {
+                            string men_fn = "Finalizado";
                             //Cambiar a estado 'P'(procesado) en wmh_cargaMasiva
                             ActualizarEstado(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
                             //Cambiar a estado 'P'(procesado) en wmh_facturas_pgs
@@ -1057,44 +1097,9 @@ namespace CapaProceso.FacturaMasiva
                         }
                         else
                         {
-                            GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
-                            mensaje = respuesta;
-                            //Cambiar a estado 'P'(procesado) en wmh_cargaMasiva si a error se puede ver en buscar facturas
-                            ActualizarEstado(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                            //Cambiar a estado 'P'(procesado) en wmh_facturas_pgs
-                            ActualizarEstadoFPagos(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                            //Cambiar a estado 'P'(procesado) en wmh_facturas_cdsc
-                            ActualizarEstadoDsc(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                        }
-                    }
 
-                    else
-                    {
-                        //Cambiar a estado 'P'(procesado) en wmh_cargaMasiva
-                        ActualizarEstado(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                        //Cambiar a estado 'P'(procesado) en wmh_facturas_pgs
-                        ActualizarEstadoFPagos(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                        //Cambiar a estado 'P'(procesado) en wmh_facturas_cdsc
-                        ActualizarEstadoDsc(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                     return  error_finalizar = respuestaConfirmacionFAC;
-                    }
-                }
-                else
-                {
-                    if (respuestaConfirmacionFAC == "")
-                    {
-                        string men_fn = "Finalizado";
-                        //Cambiar a estado 'P'(procesado) en wmh_cargaMasiva
-                        ActualizarEstado(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                        //Cambiar a estado 'P'(procesado) en wmh_facturas_pgs
-                        ActualizarEstadoFPagos(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                        //Cambiar a estado 'P'(procesado) en wmh_facturas_cdsc
-                        ActualizarEstadoDsc(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                    }
-                    else
-                    {
-                        
-                        return error_finalizar = respuestaConfirmacionFAC;
+                            return error_finalizar = respuestaConfirmacionFAC;
+                        }
                     }
                 }
                 return error_finalizar;

@@ -5,6 +5,8 @@ using CapaProceso.Modelos;
 using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
 using CapaDatos.Modelos;
+using CapaDatos.Sql;
+using CapaProceso.EstadoDocEle;
 
 namespace CapaWeb.WebForms
 {
@@ -34,6 +36,10 @@ namespace CapaWeb.WebForms
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
 
+        List<JsonEstadoDocElec> ListaEstado = new List<JsonEstadoDocElec>();
+        RespuestaDC consEstado = new RespuestaDC();
+        ConsultaEstadoDE consumo = new ConsultaEstadoDE();
+
         public string ComPwm;
         public string AmUsrLog;
         public string nro_trans = null;
@@ -59,30 +65,6 @@ namespace CapaWeb.WebForms
                     switch (qs["TRN"].Substring(0, 3))
                     {
 
-                        case "INS":
-
-                            break;
-
-                        case "VER":
-                            try
-                            {
-                                lbl_error.Text = "";
-                                Int64 ide = Int64.Parse(qs["Id"].ToString());
-                                string nro_trans = ide.ToString();
-                                Session["numero"] = ide.ToString();
-                                //CargarFormularioRespuestaDS(nro_trans);
-                                CargarGrilla();
-
-                                break;
-                            }
-                            catch (Exception ex)
-                            {
-                                GuardarExcepciones("Page_Load, VER", ex.ToString());
-
-                            }
-                            break;
-                           
-
                         case "MTR":
                             try
                             {
@@ -90,9 +72,9 @@ namespace CapaWeb.WebForms
                                 Int64 ide = Int64.Parse(qs["Id"].ToString());
                                 nro_trans = ide.ToString();
                                 Session["numero"] = ide.ToString();
-                                //CargarFormularioRespuestaDS(nro_trans);
+                                ConsultarEstado(nro_trans);
                                 CargarGrilla();
-
+                                
                                 break;
                             }
                             catch (Exception ex)
@@ -112,6 +94,38 @@ namespace CapaWeb.WebForms
             }
         }
 
+        public void ConsultarEstado(string nro_trans)
+        {
+            try
+            {
+               
+                lbl_error.Text = consumo.ConsultaEstadoDocumento(ComPwm, AmUsrLog, "C", "", nro_trans);
+                ListaEstado = consEstado.ConsultaEstados(Session["numero"].ToString());
+                
+                foreach (var item in ListaEstado)
+                {
+                    if(item.cargopdf.Trim() == "false")
+                    {
+                        txt_estado.Text = "Documento  no autorizado. PDF no enviado, revisar incidencias.";
+                    }
+                    if (string.IsNullOrEmpty(item.cargopdf.Trim()))
+                    {
+                        txt_estado.Text = "Documento  no autorizado. PDF no enviado, revisar incidencias.";
+                    }
+                    if (item.cargopdf.Trim() == "true")
+                    { txt_estado.Text = "Documento   autorizado correctamente.";
+                    }
+                    break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("ConsultarEstado", ex.ToString());
+
+            }
+
+        }
         public void GuardarExcepciones(string metodo, string error)
         {
             //obtener numero de transaccion
@@ -315,5 +329,24 @@ namespace CapaWeb.WebForms
             }
 
         }
+
+        protected void btn_estado_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                QueryString qs = new QueryString();
+               
+                qs.Add("TRN", "VER");
+                qs.Add("Id", Session["numero"].ToString());
+                Response.Redirect("FormEstadoDE.aspx" + Encryption.EncryptQueryString(qs).ToString());
+            }
+            
+            catch (Exception ex)
+            {
+                GuardarExcepciones("btn_estado_Click", ex.ToString());
+
+            }
+
+}
     }
 }

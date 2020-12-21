@@ -182,7 +182,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "RespuestaRolNuevo", e.ToString(), DateTime.Today, usuario);
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "RespuestaRolNuevo", e.ToString(), DateTime.Now, usuario);
                 return null;
             }
         }
@@ -217,6 +217,38 @@ namespace CapaDatos.Sql
             {
 
                 guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "RespuestaRolEditar", e.ToString(), DateTime.Today, usuario);
+                return null;
+            }
+        }
+        //Consultar rol modificar estado a Ffinalizado de odumentos electronicos 
+        //Consulat rol editar
+        public string  RolModificarEstado(string usuario)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    string estado = null;
+                    string consulta = ("SELECT cod_rol FROM wm_userroles WHERE usuario = @usuario AND cod_rol='32FDE'");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        estado= Convert.ToString(dr["cod_rol"]);
+
+                       
+                    }
+                    return estado;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion("0", metodo, "RolModificarEstado", e.ToString(), DateTime.Now, usuario);
                 return null;
             }
         }

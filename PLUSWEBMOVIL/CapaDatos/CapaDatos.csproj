@@ -39,6 +39,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conexion\Conexion.cs" />
+    <Compile Include="Modelos\JsonDocumentosPWM.cs" />
+    <Compile Include="Modelos\JsonEstadoDocElec.cs" />
     <Compile Include="Modelos\JsonRespuestaDE.cs" />
     <Compile Include="Modelos\JsonRespuestaDSFEV3.cs" />
     <Compile Include="Modelos\JsonRespuestaDSFEV2.cs" />

@@ -5,6 +5,8 @@ using CapaProceso.Modelos;
 using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
 using CapaDatos.Modelos;
+using CapaDatos.Sql;
+using CapaProceso.EstadoDocEle;
 
 namespace CapaWeb.WebForms
 {
@@ -31,6 +33,9 @@ namespace CapaWeb.WebForms
         modelonumerador nrotrans = new modelonumerador();
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
+        List<JsonEstadoDocElec> ListaEstado = new List<JsonEstadoDocElec>();
+        RespuestaDC consEstado = new RespuestaDC();
+        ConsultaEstadoDE consumo = new ConsultaEstadoDE();
         public string numerador = "trans";
 
         public string ComPwm;
@@ -65,6 +70,7 @@ namespace CapaWeb.WebForms
                                 Int64 ide = Int64.Parse(qs["Id"].ToString());
                                 nro_trans = ide.ToString();
                                 Session["numero_nd"] = ide.ToString();
+                                ConsultarEstado(nro_trans);
                                 CargarGrilla();
 
                                 break;
@@ -84,6 +90,40 @@ namespace CapaWeb.WebForms
                 GuardarExcepciones("Page_Load", ex.ToString());
 
             }
+        }
+
+        public void ConsultarEstado(string nro_trans)
+        {
+            try
+            {
+               
+                lbl_error.Text = consumo.ConsultaEstadoDocumento(ComPwm, AmUsrLog, "C", "", nro_trans);
+                ListaEstado = consEstado.ConsultaEstados(Session["numero_nd"].ToString());
+
+                foreach (var item in ListaEstado)
+                {
+                    if (item.cargopdf.Trim() == "false")
+                    {
+                        txt_estado.Text = "Documento  no autorizado. PDF no enviado, revisar incidencias.";
+                    }
+                    if (string.IsNullOrEmpty(item.cargopdf.Trim()))
+                    {
+                        txt_estado.Text = "Documento  no autorizado. PDF no enviado, revisar incidencias.";
+                    }
+                    if (item.cargopdf.Trim() == "true")
+                    {
+                        txt_estado.Text = "Documento   autorizado correctamente.";
+                    }
+                    break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("ConsultarEstado", ex.ToString());
+
+            }
+
         }
         public void GuardarExcepciones(string metodo, string error)
         {
@@ -254,6 +294,24 @@ namespace CapaWeb.WebForms
             catch (Exception ex)
             {
                 GuardarExcepciones("Cancelar_Click", ex.ToString());
+
+            }
+        }
+
+        protected void btn_estado_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                QueryString qs = new QueryString();
+
+                qs.Add("TRN", "VER");
+                qs.Add("Id", Session["numero_nd"].ToString());
+                Response.Redirect("FormEstadoDE.aspx" + Encryption.EncryptQueryString(qs).ToString());
+            }
+
+            catch (Exception ex)
+            {
+                GuardarExcepciones("btn_estado_Click", ex.ToString());
 
             }
         }

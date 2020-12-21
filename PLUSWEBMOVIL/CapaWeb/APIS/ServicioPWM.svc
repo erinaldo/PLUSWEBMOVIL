@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="CapaWeb.APIS.ServicioPWM" CodeBehind="ServicioPWM.svc.cs" %>
