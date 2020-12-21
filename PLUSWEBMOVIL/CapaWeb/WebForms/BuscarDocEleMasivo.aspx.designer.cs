@@ -175,6 +175,15 @@ namespace CapaWeb.WebForms {
         protected global::System.Web.UI.WebControls.Button btn_descargar;
         
         /// <summary>
+        /// Control btn_xml.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_xml;
+        
+        /// <summary>
         /// Control Grid.
         /// </summary>
         /// <remarks>

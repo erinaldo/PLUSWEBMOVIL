@@ -723,6 +723,66 @@ namespace CapaWeb.WebForms
 
             }
         }
+
+        protected void btn_xml_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CargarGrilla();
+                if (listaConsCab.Count > 0)
+                {
+                    using (ZipFile zip = new ZipFile())
+                    {
+
+                        foreach (var item in listaConsCab)
+                        {
+                            string pathXML = null;
+                            pathXML = GenerarXML(item.nro_trans.Trim(), item.serie_docum.Trim(), item.nro_docum.Trim());
+                            var nombre_archivo = Path.GetFileName(pathXML);
+                            var archivo_byte = File.ReadAllBytes(pathXML);
+                            zip.AddEntry(nombre_archivo, archivo_byte);
+
+                        }
+                        var nombre_zip = "DocumentosComercialesXML.zip";
+                        using (MemoryStream output = new MemoryStream())
+                        {
+                            zip.Save(Response.OutputStream);
+
+                        }
+                        Response.AppendHeader("content-disposition", "attachment; filename=" + nombre_zip);
+                        Response.ContentType = "application/zip";
+                        Response.End();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("btn_xml_Click", ex.ToString());
+
+            }
+        }
+        public string GenerarXML(string nro_trans, string serie, string numero)
+        {
+            ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
+            foreach (var item in ListaModelorespuestaDs)
+            {
+                if (item.xml != "")
+                {
+                    ModeloResQr = item;
+                }
+
+            }
+
+
+            string StringXml = ModeloResQr.xml;
+            string pathTemporal = Modelowmspclogo.pathtmpfac;
+            //string nombreXml = ModeloResQr.cufe.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + ".xml";
+            string nombreXml = serie.Trim()+"-"+numero.Trim()+".xml";
+            string pathXml = pathTemporal + nombreXml;
+            File.WriteAllText(pathXml, StringXml);
+            return pathXml;
+        }
     }
 
 }
