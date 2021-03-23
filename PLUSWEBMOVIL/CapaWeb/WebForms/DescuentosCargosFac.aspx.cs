@@ -28,7 +28,7 @@ namespace CapaWeb.WebForms
         ModeloDescCargoFac modelodescuento = new ModeloDescCargoFac();
 
         Consultawmtfacturascab ConsultaCabe = new Consultawmtfacturascab();
-        List<modelowmtfacturascab> listaConsCab = null;
+        public List<modelowmtfacturascab> listaConsCab = new List<modelowmtfacturascab>();
         modelowmtfacturascab conscabcera = new modelowmtfacturascab();
         Consultawmspcmonedas ConsultaCMonedas = new Consultawmspcmonedas();
         List<modelowmspcmonedas> listaMonedas = null;
@@ -111,7 +111,8 @@ namespace CapaWeb.WebForms
                 //Busca el nro de auditoria para poder insertar el detalle factura
                 //consulta nro_auditoria de la cabecera
                 string Ccf_nro_trans = txt_nro_trans.Text;
-                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Session["Ccf_tipo2"].ToString(), Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                listaConsCab = null;
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, "", Ccf_nro_trans, Ccf_estado, Ccf_cliente, Ccf_cod_docum, Ccf_serie_docum, Ccf_nro_docum, Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
                 int count = 0;
                 conscabcera = null;
                 foreach (modelowmtfacturascab item in listaConsCab)

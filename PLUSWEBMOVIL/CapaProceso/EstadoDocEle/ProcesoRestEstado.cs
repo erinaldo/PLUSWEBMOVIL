@@ -68,10 +68,22 @@ namespace CapaProceso.EstadoDocEle
                 {
                     jsonRespuestaDE.emailfe = " ";
                 }
-                if (jsonRespuestaDE.documento == null)
+              /*  if (jsonRespuestaDE.documento == null)
                 {
-                    jsonRespuestaDE.documento = " ";
-                }
+                   
+                    foreach (var items in jsonRespuestaDE.documento)
+                    {
+                        if (items.prefijodian == null)
+                        {
+                            items.prefijodian = " ";
+                        }
+                        if (items.resolucion == null)
+                        {
+                            items.resolucion = " ";
+                                }
+                    }
+                } */  
+
                 if (jsonRespuestaDE.xml == null)
                 {
                     jsonRespuestaDE.xml = " ";
@@ -85,56 +97,55 @@ namespace CapaProceso.EstadoDocEle
                     jsonRespuestaDE.xml = base64Decoded;
                 }
 
-                if (jsonRespuestaDE.DIAN == null)
+                if (jsonRespuestaDE.DIAN != null)
                 {
-                    jsonRespuestaDE.DIAN = " ";
-                    /* foreach (var item in jsonRespuestaDE.DIAN)
-                     {
-                         if (item.Xml == null)
-                         {
-                             item.Xml = " ";
-                         }
-                         else
-                         {
-                             string base64Encoded = item.Xml;
-                             string base64Decoded;
-                             byte[] data = Convert.FromBase64String(base64Encoded);
-                             base64Decoded = ASCIIEncoding.ASCII.GetString(data);
-                             item.Xml = base64Decoded;
-                         }
-                         if (item.Mensaje == null)
-                         {
-                             item.Mensaje = " ";
-                         }
-                         if (item.Valido == null)
-                         {
-                             item.Valido = " ";
-                         }
-                         if (item.Descripcion == null)
-                         {
-                             item.Descripcion = " ";
-                         }
 
-                         if (item.StatusCode == null)
-                         {
-                             item.StatusCode = " ";
-                         }
+                    foreach (var item in jsonRespuestaDE.DIAN)
+                    {
+                        if (item.Xml == null)
+                        {
+                            item.Xml = " ";
+                        }
+                        else
+                        {
+                            string base64Encoded = item.Xml;
+                            string base64Decoded;
+                            byte[] data = Convert.FromBase64String(base64Encoded);
+                            base64Decoded = ASCIIEncoding.ASCII.GetString(data);
+                            item.Xml = base64Decoded;
+                        }
+                        if (item.Mensaje == null)
+                        {
+                            item.Mensaje = " ";
+                        }
+                        if (item.Valido == null)
+                        {
+                            item.Valido = " ";
+                        }
+                        if (item.Descripcion == null)
+                        {
+                            item.Descripcion = " ";
+                        }
 
-                         if (item.Valido == "true")
-                         {
-                             item.StatusCode = " ";
-                         }
-                         else
-                         {
-                             error = true;
-                         }
-                         */
+                        if (item.StatusCode == null)
+                        {
+                            item.StatusCode = " ";
+                        }
 
+                        if (item.Valido == "true")
+                        {
+                            item.StatusCode = " ";
+                        }
+                        else
+                        {
+                            error = true;
+                        }
+                    }
                 }
             
             
 
-            //    jsonRespuestaDE.respuestaerror = error;
+               // jsonRespuestaDE.respuestaerror = error;
 
 
                 return jsonRespuestaDE;

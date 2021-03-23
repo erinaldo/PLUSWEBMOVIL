@@ -181,13 +181,7 @@ namespace CapaWeb.WebForms
                             Id = Convert.ToInt32(((Label)e.Item.Cells[1].FindControl("nro_trans")).Text);
                             total = Convert.ToDecimal(((Label)e.Item.Cells[4].FindControl("total")).Text);
                             saldo = Convert.ToDecimal(((Label)e.Item.Cells[5].FindControl("saldo")).Text);
-                            //Consultamos la opcion seleccionada saldos y totales
-                            if (total != saldo)
-                            {
-                                this.Page.Response.Write("<script language='JavaScript'>window.alert('Nota de Crédito seleccionada no se puede Anular,saldo no es igual al total de la nota de crédito ')+ error;</script>");
-                            }
-                            else
-                            {
+                          
                                 //cOSNULTA BUSCAR TIPO DE NOTA DE CREDITO
                                 conscabceraTipo = null;
                                 conscabceraTipo = buscarTipoFac(Id.ToString());
@@ -211,7 +205,7 @@ namespace CapaWeb.WebForms
 
                                 // Refrescamos el formuario padre
                                 ClientScript.RegisterClientScriptBlock(GetType(), "Refresca", "window.opener.location.reload(); window.close();", true);
-                            }
+                            
                             break;
                         }
                         catch (Exception ex)
@@ -324,22 +318,22 @@ namespace CapaWeb.WebForms
                 {
                     if (Session["tipo_nc"].ToString() == "NDVE")
                     {
-                        ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, "0");
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, "0");
                     }
                     else
                     {
-                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "S", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, "0");
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldos(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString(), fechainicio.Text, fechafin.Text, "0");
                     }
                 }
                 else
                 {
                     if (Session["tipo_nc"].ToString() == "NDVE")
                     {
-                        ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldosXNroDoc(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "S", Session["suc_emp"].ToString(), txtDocumento.Text.Trim());
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldosXNroDoc(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString(), txtDocumento.Text.Trim());
                     }
                     else
                     {
-                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldosXNroDoc(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "S", Session["suc_emp"].ToString(),txtDocumento.Text.Trim());
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldosXNroDoc(AmUsrLog, ComPwm, Session["usuario"].ToString(), "C", "N", Session["suc_emp"].ToString(),txtDocumento.Text.Trim());
                     }
                 }
 

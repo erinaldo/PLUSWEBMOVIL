@@ -20,7 +20,7 @@ namespace CapaWeb.WebForms
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
 
 
-      
+
         ConsultaEfectivoCaja ConsultaECaja = new ConsultaEfectivoCaja();
         modeloTotalPgsFacturas modeloTPFacturas = new modeloTotalPgsFacturas();
         List<modeloTotalPgsFacturas> listaTPFacturas = null;
@@ -52,7 +52,7 @@ namespace CapaWeb.WebForms
         modeloIngresoFacturas modeloFaturasPgs = new modeloIngresoFacturas();
         List<modeloIngresoFacturas> listaIngresosFac = null;
 
-        
+
         ConsultaNumerador ConsultaNroTran = new ConsultaNumerador();
         modelonumerador nrotrans = new modelonumerador();
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
@@ -106,7 +106,7 @@ namespace CapaWeb.WebForms
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Now;
             ModeloExcepcion.usuario_mod = AmUsrLog;
-            
+
             consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
             //mandar mensaje de error a label
             lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
@@ -128,63 +128,69 @@ namespace CapaWeb.WebForms
                 string mes = string.Format("{0:00}", Fechainicio.Month);
                 string anio = Fechainicio.Year.ToString();
 
+                foreach (modeloCajasCierre item in listaCajasUsuario)
+                {
+                    if (item.nrocta_banco.Trim() == cbx_caja_usuario.SelectedValue.Trim() && item.nomtcta_banco.Trim() == cbx_caja_usuario.SelectedItem.ToString().Trim())
+                    {
+                        Session["cod_cta"] = item.cod_cta.Trim();
+                        break;
+                    }
+                }
                 //tOTAL FACTURAS DEL DIA, INGRESO POR FACTURAS, FV
                 ListaPProveedores = null;
-                ListaPProveedores = ConsultaCCaja.TotalPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "FV", "R");
-
-                modeloPProveedor = null;
-                foreach (modeloPagoProveedores item in ListaPProveedores)
+                ListaPProveedores = ConsultaCCaja.TotalPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "FV", "R", Session["cod_cta"].ToString());
+                if (ListaPProveedores.Count > 0)
                 {
+                    modeloPProveedor = null;
+                    foreach (modeloPagoProveedores item in ListaPProveedores)
+                    {
 
-                    modeloPProveedor = item;
+                        modeloPProveedor = item;
+
+                    }
+                    decimal ipfac = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloPProveedor.valor));
+                    txt_ingreso_facturas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), ipfac);
 
                 }
-                decimal ipfac = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloPProveedor.valor));
-                txt_ingreso_facturas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), ipfac);
-
-
                 //TOTAL NOTAS DE VENTA DEL DIA, NV
                 ListaPProveedores = null;
-                ListaPProveedores = ConsultaCCaja.TotalPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "NV", "R");
-
-                modeloPProveedor = null;
-                foreach (modeloPagoProveedores item in ListaPProveedores)
+                ListaPProveedores = ConsultaCCaja.TotalPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "NV", "R", Session["cod_cta"].ToString());
+                if (ListaPProveedores.Count > 0)
                 {
+                    modeloPProveedor = null;
+                    foreach (modeloPagoProveedores item in ListaPProveedores)
+                    {
+                        modeloPProveedor = item;
+                    }
 
-                    modeloPProveedor = item;
+                    decimal inv = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloPProveedor.valor));
 
+                    txt_ingreso_nventas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), inv);
                 }
-
-                decimal inv = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloPProveedor.valor));
-
-                txt_ingreso_nventas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), inv);
                 //TOTAL PAGO EN EFECTIVO DE FACTURAS
 
                 ListaPProveedores = null;
-                ListaPProveedores = ConsultaCCaja.TotalPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "PP", "R" );
-               
-                modeloPProveedor = null;
-                foreach (modeloPagoProveedores item in ListaPProveedores)
+                ListaPProveedores = ConsultaCCaja.TotalPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "PP", "R", Session["cod_cta"].ToString());
+                if (ListaPProveedores.Count > 0)
                 {
-                    
-                    modeloPProveedor = item;
+                    modeloPProveedor = null;
+                    foreach (modeloPagoProveedores item in ListaPProveedores)
+                    {
+                        modeloPProveedor = item;
+                    }
 
-                }
-                
                     decimal pago = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloPProveedor.valor));
 
                     txt_pefectivo_facturas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), pago);
-
-                
-
+                }
             }
             catch (Exception ex)
             {
                 GuardarExcepciones("llenarCampos", ex.ToString());
 
             }
-
         }
+
         private void CargarGrilla()
         {
 
@@ -209,10 +215,10 @@ namespace CapaWeb.WebForms
             catch (Exception ex)
             {
                 GuardarExcepciones("CargarGrilla", ex.ToString());
-                
+
             }
         }
-        
+
 
         protected void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
@@ -627,7 +633,7 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
 
                 CalcularTotal();
-               
+
                 Lbl_Usuario.Text = UsuarioDatos.BuscarNombreUsuario(AmUsrLog.Trim());
             }
             catch (Exception ex)
@@ -658,7 +664,7 @@ namespace CapaWeb.WebForms
             {
                 lbl_error.Text = "";
                 lbl_mensaje.Text = "";
-               
+
                 if (ValidarNumero(txt_valor_id.Text))
                 {
                     decimal valor = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(txt_valor_id.Text));
@@ -676,8 +682,8 @@ namespace CapaWeb.WebForms
                 lbl_mensaje.Text = "Números con formato incorrecto.";
                 lbl_error.Text = "";
             }
-            
-           
+
+
         }
 
         public bool ValidarNumero(string texto)
@@ -687,20 +693,20 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
 
                 decimal valor = Convert.ToDecimal(texto);
-                if(valor<0 )
+                if (valor < 0)
                 {
                     return false;
                 }
-               
-                    return true;
-                
-                
+
+                return true;
+
+
             }
             catch (Exception e)
             {
                 GuardarExcepciones("ValidarNumero", e.ToString());
                 lbl_error.Text = "";
-                return false ;
+                return false;
             }
         }
 
@@ -728,7 +734,7 @@ namespace CapaWeb.WebForms
                 lbl_mensaje.Text = "Números con formato incorrecto.";
                 lbl_error.Text = "";
             }
-           
+
         }
 
         protected void txt_ingreso_nventas_TextChanged(object sender, EventArgs e)
@@ -756,7 +762,7 @@ namespace CapaWeb.WebForms
                 lbl_mensaje.Text = "Números con formato incorrecto.";
                 lbl_error.Text = "";
             }
-            
+
         }
 
         protected void txt_pefectivo_facturas_TextChanged(object sender, EventArgs e)
@@ -783,7 +789,7 @@ namespace CapaWeb.WebForms
                 lbl_mensaje.Text = "Números con formato incorrecto.";
                 lbl_error.Text = "";
             }
-            
+
 
         }
 
@@ -811,7 +817,7 @@ namespace CapaWeb.WebForms
                 lbl_mensaje.Text = "Números con formato incorrecto.";
                 lbl_error.Text = "";
             }
-           
+
         }
 
         protected void txt_depositos_TextChanged(object sender, EventArgs e)
@@ -838,8 +844,8 @@ namespace CapaWeb.WebForms
 
                 lbl_mensaje.Text = "Números con formato incorrecto.";
                 lbl_error.Text = "";
-            }   
-            
+            }
+
         }
 
         protected void txt_efectivo_caja_TextChanged(object sender, EventArgs e)
@@ -877,6 +883,8 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
 
                 Session["Fecha"] = lbl_fecha.Text;
+                Session["Cod_cta_cja"] = cbx_caja_usuario.SelectedValue;
+                Session["Nom_cta_cja"] = cbx_caja_usuario.SelectedItem;
                 this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarIngresoFacturasPgs.aspx', 'Ingreso Facturas', 'top=100,width=800 ,height=400, left=400');</script>");
             }
             catch (Exception ex)
@@ -892,6 +900,8 @@ namespace CapaWeb.WebForms
             {
                 lbl_error.Text = "";
                 Session["Fecha"] = lbl_fecha.Text;
+                Session["Cod_cta_cja"] = cbx_caja_usuario.SelectedValue;
+                Session["Nom_cta_cja"] = cbx_caja_usuario.SelectedItem;
                 this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarNotasVenta.aspx', 'Notas Venta', 'top=100,width=800 ,height=400, left=400');</script>");
             }
             catch (Exception ex)
@@ -913,8 +923,8 @@ namespace CapaWeb.WebForms
                 cbx_caja_usuario.Enabled = false;
                 Lbl_Usuario.Text = UsuarioDatos.BuscarNombreUsuario(AmUsrLog.Trim());
 
-                
-               
+
+
                 txt_valor_id.Enabled = false;
                 txt_ingreso_facturas.Enabled = false;
 
@@ -922,7 +932,7 @@ namespace CapaWeb.WebForms
                 txt_pefectivo_facturas.Enabled = false;
                 txt_pefectivo_otros.Enabled = false;
                 txt_depositos.Enabled = false;
-                txt_diferencia.Enabled =false;
+                txt_diferencia.Enabled = false;
                 txt_efectivo_caja.Enabled = false;
                 Btn_Calcular.Visible = false;
                 btn_confirmar.Visible = false;
@@ -939,7 +949,7 @@ namespace CapaWeb.WebForms
                 Session["usuario"] = AmUsrLog;
 
                 Response.Write("<script>window.open('" + "ReporteCierreC.aspx" + Encryption.EncryptQueryString(qs).ToString() + "')</script>");
-             
+
             }
             catch (Exception ex)
             {
@@ -954,6 +964,8 @@ namespace CapaWeb.WebForms
             {
                 lbl_error.Text = "";
                 Session["Fecha"] = lbl_fecha.Text;
+                Session["Cod_cta_cja"] = cbx_caja_usuario.SelectedValue;
+                Session["Nom_cta_cja"] = cbx_caja_usuario.SelectedItem;
                 this.Page.Response.Write("<script language='JavaScript'>window.open('./BuscarPProveedores.aspx', 'Pago Proveedores', 'top=100,width=800 ,height=400, left=400');</script>");
             }
             catch (Exception ex)
@@ -962,5 +974,81 @@ namespace CapaWeb.WebForms
 
             }
         }
+
+      
+
+        protected void cbx_caja_usuario_SelectedIndexChanged1(object sender, EventArgs e)
+        {
+            try
+            {
+                lbl_error.Text = "";
+            listaCajasUsuario = ConsultaCCaja.ConsultaCajasCierre(AmUsrLog, ComPwm, "", "");
+            foreach (modeloCajasCierre item in listaCajasUsuario)
+            {
+                if (item.nrocta_banco.Trim() == cbx_caja_usuario.SelectedValue.Trim() && item.nomtcta_banco.Trim() == cbx_caja_usuario.SelectedItem.ToString().Trim())
+                {
+                    Session["cod_cta"] = item.cod_cta.Trim();
+                    break;
+                }
+            }
+            DateTime Fechainicio = DateTime.Today;
+            string dia = string.Format("{0:00}", Fechainicio.Day);
+            string mes = string.Format("{0:00}", Fechainicio.Month);
+            string anio = Fechainicio.Year.ToString();
+            //tOTAL FACTURAS DEL DIA, INGRESO POR FACTURAS, FV
+            ListaPProveedores = null;
+            ListaPProveedores = ConsultaCCaja.TotalPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "FV", "R", Session["cod_cta"].ToString());
+            if (ListaPProveedores.Count > 0)
+            {
+                modeloPProveedor = null;
+                foreach (modeloPagoProveedores item in ListaPProveedores)
+                {
+
+                    modeloPProveedor = item;
+
+                }
+                decimal ipfac = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloPProveedor.valor));
+                txt_ingreso_facturas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), ipfac);
+
+            }
+            //TOTAL NOTAS DE VENTA DEL DIA, NV
+            ListaPProveedores = null;
+            ListaPProveedores = ConsultaCCaja.TotalPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "NV", "R", Session["cod_cta"].ToString());
+            if (ListaPProveedores.Count > 0)
+            {
+                modeloPProveedor = null;
+                foreach (modeloPagoProveedores item in ListaPProveedores)
+                {
+                    modeloPProveedor = item;
+                }
+
+                decimal inv = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloPProveedor.valor));
+
+                txt_ingreso_nventas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), inv);
+            }
+            //TOTAL PAGO EN EFECTIVO DE FACTURAS
+
+            ListaPProveedores = null;
+            ListaPProveedores = ConsultaCCaja.TotalPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "PP", "R", Session["cod_cta"].ToString());
+            if (ListaPProveedores.Count > 0)
+            {
+                modeloPProveedor = null;
+                foreach (modeloPagoProveedores item in ListaPProveedores)
+                {
+                    modeloPProveedor = item;
+                }
+
+                decimal pago = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(modeloPProveedor.valor));
+
+                txt_pefectivo_facturas.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), pago);
+            }
+        }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("cbx_caja_usuario_SelectedIndexChanged", ex.ToString());
+
+            }
+
+}
     }
 }

@@ -57,111 +57,121 @@ namespace CapaWeb.WebForms
         string cod_docum;
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
 
-                RecuperarParametros();
-            }
-            catch (Exception ex)
-            {
-                GuardarExcepciones("Page_Load", ex.ToString());
+            RecuperarParametros();
+            /* }
+             catch (Exception ex)
+             {
+                 GuardarExcepciones("Page_Load", ex.ToString());
 
-            }
+             }*/
         }
         public void RecuperarParametros()
         {
-            try
+            //   try
+            // {
+            JsonDocumentosPWMItem modeloDoc = new JsonDocumentosPWMItem();
+            string json = "";
+            json = Request.QueryString["jsonDocumento"];
+
+            List<JsonDocumentosPWMItem> ListDoc = (List<JsonDocumentosPWMItem>)Newtonsoft.Json.JsonConvert.DeserializeObject((json), typeof(List<JsonDocumentosPWMItem>));
+
+            foreach (var item in ListDoc)
             {
-                JsonDocumentosPWMItem modeloDoc = new JsonDocumentosPWMItem();
-                string json = "";
-                json = Request.QueryString["jsonDocumento"];
+                modeloDoc = item;
+                break;
+            }
 
-                List<JsonDocumentosPWMItem> ListDoc = (List<JsonDocumentosPWMItem>)Newtonsoft.Json.JsonConvert.DeserializeObject((json), typeof(List<JsonDocumentosPWMItem>));
+            ComPwm = modeloDoc.AmComComPwm;
+            AmUsrLog = modeloDoc.AmUsrLog;
 
-                foreach (var item in ListDoc)
+            ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
+            foreach (var item in ListaModelowmspclogo)
+            {
+                Modelowmspclogo = item;
+                break;
+            }
+            cod_proceso = "RCOMNDEB";
+
+            if (ListDoc.Count > 1)
+            {
+                using (ZipFile zip = new ZipFile())
                 {
-                    modeloDoc = item;
-                    break;
-                }
 
-                ComPwm = modeloDoc.AmComComPwm;
-                AmUsrLog = modeloDoc.AmUsrLog;
-
-                ListaModelowmspclogo = consultaLogo.BuscartaLogo(ComPwm, AmUsrLog);
-                foreach (var item in ListaModelowmspclogo)
-                {
-                    Modelowmspclogo = item;
-                    break;
-                }
-                cod_proceso = "RCOMNDEB";
-
-                if (ListDoc.Count > 1)
-                {
-                    using (ZipFile zip = new ZipFile())
+                    foreach (var item in ListDoc)
                     {
-
-                        foreach (var item in ListDoc)
+                        string pathPdf1 = null;
+                        listaConsCab = null;
+                        listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, item.XmTDcCod.Trim(), item.XcCxCSer.Trim(), item.XcCxCNum.Trim(), Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                        foreach (var item1 in listaConsCab)
                         {
-                            string pathPdf1 = null;
-                            listaConsCab = null;
-                            listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, item.XmTDcCod.Trim(), item.XcCxCSer.Trim(), item.XcCxCNum.Trim(), Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-                            foreach (var item1 in listaConsCab)
-                            {
-                                conscabcera = item1;
-                                break;
-                            }
-                            Ccf_nro_trans = conscabcera.nro_trans;
+                            conscabcera = item1;
+                            break;
+                        }
+                        Ccf_nro_trans = conscabcera.nro_trans;
 
-                            if (conscabcera.tipo.Trim() == "NDV")
+                        if (conscabcera.tipo.Trim() == "NDV")
+                        {
+                            pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo.Trim(), Ccf_nro_trans);
+                        }
+
+                        else
+                        {
+                            if (conscabcera.estado.Trim() == "C")
                             {
                                 pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo.Trim(), Ccf_nro_trans);
                             }
 
                             else
                             {
-                                if (conscabcera.estado.Trim() == "C")
-                                {
-                                    pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo.Trim(), Ccf_nro_trans);
-                                }
+                                pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo.Trim(), Ccf_nro_trans);
 
-                                else
-                                {
-                                    pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo.Trim(), Ccf_nro_trans);
-
-                                }
                             }
-
-                            var nombre_archivo = Path.GetFileName(pathPdf1);
-                            var archivo_byte = File.ReadAllBytes(pathPdf1);
-                            zip.AddEntry(nombre_archivo, archivo_byte);
-
                         }
-                        var nombre_zip = "DocumentosComerciales.zip";
-                        using (MemoryStream output = new MemoryStream())
-                        {
-                            zip.Save(Response.OutputStream);
 
-                        }
-                        Response.AppendHeader("content-disposition", "attachment; filename=" + nombre_zip);
-                        Response.ContentType = "application/zip";
-                        Response.End();
+                        var nombre_archivo = Path.GetFileName(pathPdf1);
+                        var archivo_byte = File.ReadAllBytes(pathPdf1);
+                        zip.AddEntry(nombre_archivo, archivo_byte);
+                        Ccf_nro_trans = null;
                     }
+                    var nombre_zip = "DocumentosComerciales.zip";
+                    using (MemoryStream output = new MemoryStream())
+                    {
+                        zip.Save(Response.OutputStream);
+
+                    }
+                    Response.AppendHeader("content-disposition", "attachment; filename=" + nombre_zip);
+                    Response.ContentType = "application/zip";
+                    Response.End();
                 }
+            }
+            else
+            {
+                listaConsCab = null;
+                listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, modeloDoc.XmTDcCod.Trim(), modeloDoc.XcCxCSer.Trim(), modeloDoc.XcCxCNum.Trim(), Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
+                foreach (var item1 in listaConsCab)
+                {
+                    conscabcera = item1;
+                    break;
+                }
+
+                Ccf_nro_trans = conscabcera.nro_trans;
+
+                if (conscabcera.tipo.Trim() == "NDV")
+                {
+
+                    string pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo.Trim(), Ccf_nro_trans);
+                    Response.ContentType = "application/pdf";
+                    Response.WriteFile(pathPdf1);
+                    Response.End();
+                }
+
                 else
                 {
-                    listaConsCab = null;
-                    listaConsCab = ConsultaCabe.ConsultaCabFacura(ComPwm, AmUsrLog, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans, Ccf_estado, Ccf_cliente, modeloDoc.XmTDcCod.Trim(), modeloDoc.XcCxCSer.Trim(), modeloDoc.XcCxCNum.Trim(), Ccf_diai, Ccf_mesi, Ccf_anioi, Ccf_diaf, Ccf_mesf, Ccf_aniof);
-                    foreach (var item1 in listaConsCab)
+                    if (conscabcera.estado.Trim() == "C")
                     {
-                        conscabcera = item1;
-                        break;
-                    }
-
-                    Ccf_nro_trans = conscabcera.nro_trans;
-
-                    if (conscabcera.tipo.Trim() == "NDV")
-                    {
-
                         string pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo.Trim(), Ccf_nro_trans);
                         Response.ContentType = "application/pdf";
                         Response.WriteFile(pathPdf1);
@@ -170,30 +180,20 @@ namespace CapaWeb.WebForms
 
                     else
                     {
-                        if (conscabcera.estado.Trim() == "C")
-                        {
-                            string pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoNormal(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo.Trim(), Ccf_nro_trans);
-                            Response.ContentType = "application/pdf";
-                            Response.WriteFile(pathPdf1);
-                            Response.End();
-                        }
-
-                        else
-                        {
-                            string pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo.Trim(), Ccf_nro_trans);
-                            Response.ContentType = "application/pdf";
-                            Response.WriteFile(pathPdf1);
-                            Response.End();
-                        }
+                        string pathPdf1 = generer_pdfElectronico.GenerarPDFNotaDebitoElectronica(ComPwm, cod_proceso, AmUsrLog, Ccf_tipo1, conscabcera.tipo.Trim(), Ccf_nro_trans);
+                        Response.ContentType = "application/pdf";
+                        Response.WriteFile(pathPdf1);
+                        Response.End();
                     }
                 }
             }
+            /*}
 
             catch (Exception ex)
             {
                 GuardarExcepciones("RecuperarParametros", ex.ToString());
 
-            }
+            }*/
         }
         public modelowmtfacturascab buscarTipoFac(string nro_trans)
         {

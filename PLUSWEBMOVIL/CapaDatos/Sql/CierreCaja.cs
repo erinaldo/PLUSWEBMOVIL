@@ -8,9 +8,9 @@ using System.Text;
 
 namespace CapaDatos.Sql
 {
-   public class CierreCaja
+    public class CierreCaja
     {
-        
+
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
@@ -18,7 +18,7 @@ namespace CapaDatos.Sql
         string stringConexionERP = "";// Aqui va la consulta de la table de alfredo desia que va ir el string
 
         //Consulta wmm_parametros conexion_erp
-        public string ConsultaConexionERP( string usuario, string cod_emp)
+        public string ConsultaConexionERP(string usuario, string cod_emp)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace CapaDatos.Sql
                     string consulta = ("SELECT TOP 1 BpBanCaja from BpBan");
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
-                    
+
 
 
                     SqlDataReader dr = conmand.ExecuteReader();
@@ -146,7 +146,7 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@banco", SqlDbType.VarChar).Value = banco;
                     conmand.Parameters.Add("@tipo", SqlDbType.VarChar).Value = tipo;
                     SqlDataReader dr = conmand.ExecuteReader();
-                   
+
 
                     while (dr.Read())
                     {
@@ -160,7 +160,7 @@ namespace CapaDatos.Sql
                         item.nrocta_banco = Convert.ToString(dr["nrocta_banco"]);
                         item.cod_cta = Convert.ToString(dr["cod_cta"]);
                         item.cod_moneda = Convert.ToString(dr["cod_moneda"]);
-                        item.observacion = item.nomtcta_banco + '-'+ ' '+ item.nrocta_banco;
+                        item.observacion = item.nomtcta_banco + '-' + ' ' + item.nrocta_banco;
 
                         lista.Add(item);
                     }
@@ -176,7 +176,7 @@ namespace CapaDatos.Sql
 
         }
         //Modelo cierre de caja tabla wmt_cierre_resumencaja PP PAGO PROVEEDORES
-        public List<modeloPagoProveedores> ListaPagoProveedores(string usuario, string cod_emp, string dia, string mes, string anio, string tipo1, string tipo2)
+        public List<modeloPagoProveedores> ListaPagoProveedores(string usuario, string cod_emp, string dia, string mes, string anio, string tipo1, string tipo2, string cod_cta)
         {
             try
             {
@@ -193,7 +193,7 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@anio", SqlDbType.VarChar).Value = anio;
                     conmand.Parameters.Add("@tipo1", SqlDbType.VarChar).Value = tipo1;
                     conmand.Parameters.Add("@tipo2", SqlDbType.VarChar).Value = tipo2;
-
+                    conmand.Parameters.Add("@@cod_cta", SqlDbType.VarChar).Value = cod_cta;
 
                     SqlDataReader dr = conmand.ExecuteReader();
 
@@ -201,22 +201,22 @@ namespace CapaDatos.Sql
                     {
 
                         modeloPagoProveedores item = new modeloPagoProveedores();
-                          item.cod_docum = Convert.ToString(dr["cod_docum"]);
-                           item.serie_docum = Convert.ToString(dr["serie_docum"]);
-                           item.nro_docum = Convert.ToString(dr["nro_docum"]);
-                           item.cod_tit = Convert.ToString(dr["cod_tit"]);
-                           item.nom_tit = Convert.ToString(dr["nom_tit"]);
-                           item.observaciones = Convert.ToString(dr["observaciones"]);
-                        item.documento = item.serie_docum +'-'+ item.nro_docum;
+                        item.cod_docum = Convert.ToString(dr["cod_docum"]);
+                        item.serie_docum = Convert.ToString(dr["serie_docum"]);
+                        item.nro_docum = Convert.ToString(dr["nro_docum"]);
+                        item.cod_tit = Convert.ToString(dr["cod_tit"]);
+                        item.nom_tit = Convert.ToString(dr["nom_tit"]);
+                        item.observaciones = Convert.ToString(dr["observaciones"]);
+                        item.documento = item.serie_docum + '-' + item.nro_docum;
 
                         decimal formPrecio = Convert.ToDecimal(dr["total"]);
                         item.total_st = String.Format("{0:N2}", formPrecio).ToString();
                         item.total = Convert.ToString(dr["total"]);
-                           item.fec_doc = Convert.ToString(dr["fec_doc"]);
+                        item.fec_doc = Convert.ToString(dr["fec_doc"]);
                         DateTime fec_venc_str = Convert.ToDateTime(dr["fec_doc"]);
-                        item.fec_st= fec_venc_str.ToString("yyyy-MM-dd");
-                        item.estado= Convert.ToString(dr["estado"]);
-                       // item.valor = Convert.ToDecimal(dr["valor"]);
+                        item.fec_st = fec_venc_str.ToString("yyyy-MM-dd");
+                        item.estado = Convert.ToString(dr["estado"]);
+                        // item.valor = Convert.ToDecimal(dr["valor"]);
 
                         lista.Add(item);
 
@@ -237,7 +237,7 @@ namespace CapaDatos.Sql
         }
 
         //Modelo cierre de caja tabla wmt_cierre_resumencaja FV, NV
-        public List<modeloPagoProveedores> ListaFcturasNV(string usuario, string cod_emp, string dia, string mes, string anio, string tipo1, string tipo2)
+        public List<modeloPagoProveedores> ListaFcturasNV(string usuario, string cod_emp, string dia, string mes, string anio, string tipo1, string tipo2, string cod_cta)
         {
             try
             {
@@ -254,6 +254,7 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@anio", SqlDbType.VarChar).Value = anio;
                     conmand.Parameters.Add("@tipo1", SqlDbType.VarChar).Value = tipo1;
                     conmand.Parameters.Add("@tipo2", SqlDbType.VarChar).Value = tipo2;
+                    conmand.Parameters.Add("@cod_cta", SqlDbType.VarChar).Value = cod_cta;
 
 
                     SqlDataReader dr = conmand.ExecuteReader();
@@ -277,7 +278,7 @@ namespace CapaDatos.Sql
                         DateTime fec_venc_str = Convert.ToDateTime(dr["fec_doc"]);
                         item.fec_st = fec_venc_str.ToString("yyyy-MM-dd");
                         item.estado = Convert.ToString(dr["estado"]);
-                        item.nro_trans= Convert.ToString(dr["nro_trans"]);
+                        item.nro_trans = Convert.ToString(dr["nro_trans"]);
 
                         lista.Add(item);
 
@@ -291,14 +292,14 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaFcturasNV", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaFcturasNV", e.ToString(), DateTime.Now, usuario);
                 return null;
             }
 
         }
 
         //Resumen ListaPagoProveedores devuel solo valor
-        public List<modeloPagoProveedores> TotalPagoProveedores(string usuario, string cod_emp, string dia, string mes, string anio, string tipo1, string tipo2)
+        public List<modeloPagoProveedores> TotalPagoProveedores(string usuario, string cod_emp, string dia, string mes, string anio, string tipo1, string tipo2, string cod_cta)
         {
             try
             {
@@ -315,7 +316,7 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@anio", SqlDbType.VarChar).Value = anio;
                     conmand.Parameters.Add("@tipo1", SqlDbType.VarChar).Value = tipo1;
                     conmand.Parameters.Add("@tipo2", SqlDbType.VarChar).Value = tipo2;
-                    
+                    conmand.Parameters.Add("@cod_cta", SqlDbType.VarChar).Value = cod_cta;
 
                     SqlDataReader dr = conmand.ExecuteReader();
 
@@ -323,18 +324,7 @@ namespace CapaDatos.Sql
                     {
 
                         modeloPagoProveedores item = new modeloPagoProveedores();
-                        /*  item.cod_docum = Convert.ToString(dr["cod_docum"]);
-                           item.serie_docum = Convert.ToString(dr["serie_docum"]);
-                           item.nro_docum = Convert.ToString(dr["nro_docum"]);
-                           item.cod_tit = Convert.ToString(dr["od_tit"]);
-                           item.nom_tit = Convert.ToString(dr["nom_tit"]);
-                           item.observaciones = Convert.ToString(dr["observaciones"]);
-                         
-                           item.total = Convert.ToString(dr["total"]);
-                           item.fec_doc = Convert.ToString(dr["fec_doc"]);
-                           item.estado= Convert.ToString(dr["estado"]);*/
                         item.valor = Convert.ToDecimal(dr["valor"]);
-
                         lista.Add(item);
 
                     }
@@ -342,12 +332,10 @@ namespace CapaDatos.Sql
                     return lista;
                 }
             }
-
-
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, " TotalPagoProveedores", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, " TotalPagoProveedores", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
 
@@ -386,13 +374,13 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion( cod_emp, metodo, "BuscarCierreDiaSecuencial", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "BuscarCierreDiaSecuencial", e.ToString(), DateTime.Today, "consulta");
                 return 0;
             }
         }
 
         //ultimo secuencial
-        public Int64 UltimoCierreDiaSecuencial(string fecha_cie,string cod_emp)
+        public Int64 UltimoCierreDiaSecuencial(string fecha_cie, string cod_emp)
         {
             try
             {
@@ -475,7 +463,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp,metodo, "ListaCierreCF", e.ToString(), DateTime.Today,usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ListaCierreCF", e.ToString(), DateTime.Today, usuario);
                 return null;
             }
 

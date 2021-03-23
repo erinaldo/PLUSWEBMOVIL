@@ -208,7 +208,10 @@ namespace CapaProceso.FacturaMasiva
                             ActualizarEstadoNDFinanciera(AmUsrLog, ComPwm, nro_docum.Trim(), serie.Trim(), "P", conscabcera.tipo.Trim(), motivo.Trim());//ESTADO PROCESADO
                             if(motivo.Trim()=="4")
                             {
-                                GuardarCabezera.ActualizarEstadoFactura(nro_trans_padre.Trim(), "N");//Actualiza factura a Anulada
+                                GuardarCabezera.ActualizarEstadoFactura(nro_trans_padre.Trim(), "N");//Actualiza nota de credito a Anulada
+                                conscabceraTipo = null;
+                                conscabceraTipo = Trans_Padre(nro_trans_padre.Trim(), ComPwm, AmUsrLog);
+                                GuardarCabezera.ActualizarEstadoFactura(conscabceraTipo.nro_trans_padre.Trim(), "F");//Actualiza factura a finalizado
                             }
 
                         }
@@ -231,11 +234,15 @@ namespace CapaProceso.FacturaMasiva
                 {
                     if (respuestaConfirmacionFAC == "")
                     {
+                        ActualizarEstadoNDFinanciera(AmUsrLog, ComPwm, nro_docum.Trim(), serie.Trim(), "P", conscabcera.tipo.Trim(), motivo.Trim());//ESTADO PROCESADO
                         if (motivo.Trim() == "4")
                         {
-                            GuardarCabezera.ActualizarEstadoFactura(nro_trans_padre.Trim(), "N");//Actualiza factura a Anulada
+                            GuardarCabezera.ActualizarEstadoFactura(nro_trans_padre.Trim(), "N");//Actualiza nota de credito a Anulada
+                            conscabceraTipo = null;
+                            conscabceraTipo = Trans_Padre(nro_trans_padre.Trim(), ComPwm, AmUsrLog);
+                            GuardarCabezera.ActualizarEstadoFactura(conscabceraTipo.nro_trans_padre.Trim(), "F");//Actualiza factura a finalizado
                         }
-                        ActualizarEstadoNDFinanciera(AmUsrLog, ComPwm, nro_docum.Trim(), serie.Trim(), "P", conscabcera.tipo.Trim(), motivo.Trim());//ESTADO PROCESADO
+                       
                     }
                     else
                     {
@@ -995,6 +1002,29 @@ namespace CapaProceso.FacturaMasiva
 
                 guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "EliminarNDMasivaFinanciera", e.ToString(), DateTime.Now, usuario_mod);
                 return e.ToString();
+            }
+        }
+
+        public modelowmtfacturascab Trans_Padre(string nro_trans, string cod_emp, string usuario_mod)
+        {
+            try
+            {
+            
+                listaConsCab = ConsultaCabe.ConsultaNCTransPadre(nro_trans);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
+
+                }
+                return conscabcera;
+            }
+            catch (Exception ex)
+            {
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "Trans_Padre", ex.ToString(), DateTime.Now, usuario_mod);
+                return null;
             }
         }
     }

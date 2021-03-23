@@ -42,6 +42,7 @@ namespace CapaWeb.WebForms
         public string ComPwm;
         public string AmUsrLog;
         public string nro_trans = null;
+       public  string activo_estado = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -118,13 +119,16 @@ namespace CapaWeb.WebForms
             {
                
 
-                lbl_error.Text =  consumo.ConsultaEstadoDocumento(ComPwm, AmUsrLog, "C", "", nro_trans);
+               lbl_error.Text =  consumo.ConsultaEstadoDocumento(ComPwm, AmUsrLog, "C", "", nro_trans);
                 //Activar boton finalizar documento
-                string activo_estado = activa.RolModificarEstado(AmUsrLog);
-                if( !string.IsNullOrEmpty(activo_estado.Trim() ))
+               
+                activo_estado =activa.RolModificarEstado(AmUsrLog);
+
+                if(!string.IsNullOrEmpty(activo_estado))
                 {
                     btn_udp.Visible = true;
                 }
+                else { btn_udp.Visible = false; }
             }
             catch (Exception ex)
             {

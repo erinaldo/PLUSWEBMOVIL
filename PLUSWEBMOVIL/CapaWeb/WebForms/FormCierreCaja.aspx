@@ -162,7 +162,7 @@
                                         <asp:Label ID="lblAyuda" runat="server" CssClass="Titulo" Text="Cierre Caja"></asp:Label>
                                     </td>
                                        <td>
-                                          <asp:DropDownList ID="cbx_caja_usuario" class="Subtitulo1" runat="server"></asp:DropDownList>
+                                          <asp:DropDownList ID="cbx_caja_usuario" class="Subtitulo1" runat="server"  AutoPostBack="True" OnSelectedIndexChanged="cbx_caja_usuario_SelectedIndexChanged1" ></asp:DropDownList>
                                     </td>
                                   
                                     <td style="width: 33px">

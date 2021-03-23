@@ -116,6 +116,37 @@ namespace CapaDatos.Sql
             }
 
         }
+
+        //Buscar unico sucrsal x empresa
+        public string SucursalEmpresaDian(string cod_emp, string cod_sucursal, string usuario)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    string cod_suc_dian = null;
+                    string consulta = "SELECT cod_suc_dian FROM wmm_sucuremp WHERE cod_emp =@cod_emp AND cod_sucursal = @cod_sucursal";
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    conmand.Parameters.Add("cod_sucursal", SqlDbType.VarChar).Value = cod_sucursal;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        cod_suc_dian = Convert.ToString(dr["cod_suc_dian"]);
+                    }
+
+                    return cod_suc_dian;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "SucursalEmpresaDian", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
         //Buscar unico sucrsal x empresa
         public List<modeloSucuralempresa> UnicoSucursalEmpresa(string cod_emp, string cod_sucursal)
         {

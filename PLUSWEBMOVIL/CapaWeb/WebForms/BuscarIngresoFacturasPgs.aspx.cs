@@ -37,7 +37,7 @@ namespace CapaWeb.WebForms
         ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
         modeloExepciones ModeloExcepcion = new modeloExepciones();
 
-
+        List<modeloCajasCierre> listaCajasUsuario = null;
         List<modeloPagoProveedores> ListaPProveedores = null;
         ConsultaCierecaja ConsultaCCaja = new ConsultaCierecaja();
         public string numerador = "trans";
@@ -73,33 +73,35 @@ namespace CapaWeb.WebForms
                 {
 
 
-                    /*   if (Session["Fecha"] != null)
-                      {
-                          Session["Fecha1"] = Session["Fecha"];
-                          listaIngresosFac = consultaIngFaturas.BuscarPgsFacturas(ComPwm, Session["Fecha"].ToString(), AmUsrLog, "clientes", "0", "0");
 
-                          gvProducto.DataSource = listaIngresosFac;
-                          gvProducto.DataBind();
+                    if (Session["Fecha"] != null)
+                    {
+                        Session["Fecha1"] = Session["Fecha"];
+                        Session["cta_banco"] = Session["Cod_cta_cja"];
+                        Session["nom_cta"] = Session["Nom_cta_cja"];
+                        //Buscar codigo de cuenta
 
+                        listaCajasUsuario = ConsultaCCaja.ConsultaCajasCierre(AmUsrLog, ComPwm, "", "");
+                        foreach (modeloCajasCierre item in listaCajasUsuario)
+                        {
+                            if (item.nrocta_banco.Trim() == Session["cta_banco"].ToString().Trim() && item.nomtcta_banco.Trim() == Session["nom_cta"].ToString().Trim())
+                            {
+                                Session["cod_cta"] = item.cod_cta.Trim();
+                                break;
+                            }
+                        }
+                        //TOTAL PAGO EN EFECTIVO DE FACTURAS
+                        string fecha = Session["Fecha"].ToString();
+                        DateTime Fechainicio = Convert.ToDateTime(fecha);
+                        string dia = string.Format("{0:00}", Fechainicio.Day);
+                        string mes = string.Format("{0:00}", Fechainicio.Month);
+                        string anio = Fechainicio.Year.ToString();
+                        ListaPProveedores = null;
+                        ListaPProveedores = ConsultaCCaja.ListaFacturasNV(AmUsrLog, ComPwm, dia, mes, anio, "FV", "D", Session["cod_cta"].ToString().Trim());
 
-                      }
-                     DecimalesMoneda = null;
-                     DecimalesMoneda = BuscarDecimales();*/
-                      if (Session["Fecha"] != null)
-                      {
-                          Session["Fecha1"] = Session["Fecha"];
-
-                          //TOTAL PAGO EN EFECTIVO DE FACTURAS
-                          string fecha = Session["Fecha"].ToString();
-                          DateTime Fechainicio = Convert.ToDateTime(fecha);
-                          string dia = string.Format("{0:00}", Fechainicio.Day);
-                          string mes = string.Format("{0:00}", Fechainicio.Month);
-                          string anio = Fechainicio.Year.ToString();
-                          ListaPProveedores = null;
-                          ListaPProveedores = ConsultaCCaja.ListaFacturasNV(AmUsrLog, ComPwm, dia, mes, anio, "FV", "D");
-
-                          gvProducto.DataSource = ListaPProveedores;
-                          gvProducto.DataBind();}
+                        gvProducto.DataSource = ListaPProveedores;
+                        gvProducto.DataBind();
+                    }
 
 
                 }
@@ -112,14 +114,14 @@ namespace CapaWeb.WebForms
         }
         public void GuardarExcepciones(string metodo, string error)
         {
-           
+
             ModeloExcepcion.cod_emp = ComPwm;
             ModeloExcepcion.proceso = "BuscarIngresoFacturasPgs.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Now;
             ModeloExcepcion.usuario_mod = AmUsrLog;
-           
+
             consultaExcepcion.InsertarExcepciones(ModeloExcepcion);
             //mandar mensaje de error a label
             lbl_error.Text = "No se pudo completar la acción." + metodo + "." + " Por favor notificar al administrador.";
@@ -134,32 +136,32 @@ namespace CapaWeb.WebForms
                 lbl_error.Text = "";
 
 
-    
-                   string fecha = Session["Fecha"].ToString();
-                    DateTime Fechainicio = Convert.ToDateTime(fecha);
-                    string dia = string.Format("{0:00}", Fechainicio.Day);
-                    string mes = string.Format("{0:00}", Fechainicio.Month);
-                    string anio = Fechainicio.Year.ToString();
-                    ListaPProveedores = null;
-                    ListaPProveedores = ConsultaCCaja.ListaFacturasNV(AmUsrLog, ComPwm, dia, mes, anio, "FV", "D");
-                    if (ListaPProveedores.Count > 0)
-                    {
+
+                string fecha = Session["Fecha"].ToString();
+                DateTime Fechainicio = Convert.ToDateTime(fecha);
+                string dia = string.Format("{0:00}", Fechainicio.Day);
+                string mes = string.Format("{0:00}", Fechainicio.Month);
+                string anio = Fechainicio.Year.ToString();
+                ListaPProveedores = null;
+                ListaPProveedores = ConsultaCCaja.ListaFacturasNV(AmUsrLog, ComPwm, dia, mes, anio, "FV", "D", Session["cod_cta"].ToString().Trim());
+                if (ListaPProveedores.Count > 0)
+                {
 
 
-                        decimal TotalFactura = 0;
+                    decimal TotalFactura = 0;
                     decimal TotalRedondeado = 0;
 
                     foreach (GridViewRow item in gvProducto.Rows)
-                        {
-                            
+                    {
+
                         TotalRedondeado = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(item.Cells[4].Text));
                         TotalFactura += TotalRedondeado;
                     }
-                        gvProducto.FooterRow.Cells[3].Text = "TOTALES:";
-                    
+                    gvProducto.FooterRow.Cells[3].Text = "TOTALES:";
+
                     gvProducto.FooterRow.Cells[4].Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), TotalFactura);
 
-                    }
+                }
             }
             catch (Exception ex)
             {
@@ -215,7 +217,7 @@ namespace CapaWeb.WebForms
                 return null;
             }
         }
-      
+
 
         protected void gvProducto_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
@@ -247,7 +249,7 @@ namespace CapaWeb.WebForms
                 string mes = string.Format("{0:00}", Fechainicio.Month);
                 string anio = Fechainicio.Year.ToString();
                 ListaPProveedores = null;
-                ListaPProveedores = ConsultaCCaja.ListaFacturasNV(AmUsrLog, ComPwm, dia, mes, anio, "FV", "D");
+                ListaPProveedores = ConsultaCCaja.ListaFacturasNV(AmUsrLog, ComPwm, dia, mes, anio, "FV", "D", Session["cod_cta"].ToString().Trim());
                 gvProducto.DataSource = ListaPProveedores;
                 gvProducto.DataBind();
             }
@@ -257,7 +259,7 @@ namespace CapaWeb.WebForms
                 GuardarExcepciones("CargarGrid", ex.ToString());
 
             }
-}
+        }
         protected void Cancelar_Click(object sender, EventArgs e)
         {
             try
@@ -327,4 +329,4 @@ namespace CapaWeb.WebForms
 
     }
 
-    }
+}

@@ -13,6 +13,23 @@ namespace CapaProceso.Consultas
     {
         DetalleProformaFac consultaProformasDetalle = new DetalleProformaFac();
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo= "ConsultaDetalleProforma";
+
+        public string BuscarProformasVendedor(string nro_trans, string empresa, string usuario)
+        {
+            try
+            {
+                
+                string vendedor = consultaProformasDetalle.VendedorProforma(nro_trans, empresa, usuario);
+                return vendedor;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(empresa, metodo, "BuscarProformasVendedor", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
         public List<modeloDetalleProforma> BuscarProformasDetalle(string nro_trans)
         {
             try
@@ -24,7 +41,7 @@ namespace CapaProceso.Consultas
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "ConsulyaDetalleProforma.cs", "BuscarProformasDetalle", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "BuscarProformasDetalle", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
         }

@@ -15,6 +15,7 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo = "ConsultaLogoSql";
 
         public List<modelowmspclogo> ConsultaLogo(string cod_emp, string usuario)
         {
@@ -162,6 +163,35 @@ namespace CapaDatos.Sql
             {
 
                 guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "ConsultaLogoSql.cs", "TipoDocImprimir", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
+        //Busca para carga masiva de factura de venta si maneja excel o txt
+        public string TipoCargaMasiva(string cod_emp, string usuario)
+        {
+            try
+            {
+
+                using (cn = conexion.genearConexion())
+                {
+                    string tipo_doc = null;
+
+                    string consulta = ("SELECT formato_carma FROM wmm_param_comercial where cod_emp =@cod_emp");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        tipo_doc = Convert.ToString(dr["formato_carma"]);
+                    }
+                    return tipo_doc;
+                }
+            }
+            catch (Exception e)
+            {
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "TipoCargaMasiva", e.ToString(), DateTime.Now, usuario);
                 return null;
             }
         }

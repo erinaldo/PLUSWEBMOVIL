@@ -644,6 +644,7 @@ namespace CapaWeb.WebForms
                 {
                      conscabcera = item;
                 }
+                cod_vendedor.SelectedValue = conscabcera.cod_vendedor;
 
                 decimal SubTotal = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), conscabcera.subtotal);
                 txtSumaSubTo.Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), SubTotal);
@@ -1519,9 +1520,10 @@ namespace CapaWeb.WebForms
                 ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
                 foreach (var item in ListaModelorespuestaDs)
                 {
-                    if (item.xml != "")
+                    if (!string.IsNullOrEmpty(item.xml.Trim()))
                     {
                         ModeloResQr = item;
+                        break;
                     }
 
                 }
@@ -1833,7 +1835,9 @@ namespace CapaWeb.WebForms
                     string nro_trans_pro = Convert.ToString(cbx_proformas.SelectedValue);
                     ListaDetaProforma = ConsultaDetallePro.BuscarProformasDetalle(nro_trans_pro);
                     //Insertar primero la cabecera
+                    cod_vendedor.SelectedValue = ConsultaDetallePro.BuscarProformasVendedor(cbx_proformas.SelectedValue, ComPwm, AmUsrLog);
                     InsertarCabecera();
+
                     ///Insertar en la tabla proforma ins luego de q escoja
                     if (cbx_proformas != null)
                     {

@@ -22,6 +22,7 @@ namespace CapaWeb.WebForms
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
         CargaFacturaMasiva carga = new CargaFacturaMasiva();
         List<modeloFacturaEMasiva> lista = new List<modeloFacturaEMasiva>();
+        List<modeloFacturaEMasiva> listaP = new List<modeloFacturaEMasiva>();
         modeloFacturaEMasiva modeloFacturas = new modeloFacturaEMasiva();
 
         Consultawmspcresfact ConsultaResolucion = new Consultawmspcresfact();
@@ -109,11 +110,11 @@ namespace CapaWeb.WebForms
             }
             if (listaRes.Count == 0)
             {
-                
+
                 lbl_mensaje.Text = "No existe una resolución activa para Facturar.";
             }
             else
-               {
+            {
                 if (listaRes.Count > 1)
                 {
 
@@ -124,12 +125,28 @@ namespace CapaWeb.WebForms
                     lbl_prefijo.Text = resolucion.prefijo;
                     lbl_prefijo.Visible = true;
                     lbl_pre.Visible = true;
+                    string existe = null;
+                    lista = carga.TotalFacturas(AmUsrLog, ComPwm);
+                    //Verificar que las ordenes de compra disponibles no hayan sido procesadas en los ultimos 5 dias para evitar duplicidad
+                    if (lista.Count > 0)
+                    {
+                        foreach (modeloFacturaEMasiva item in lista)
+                        {
+                            existe = carga.OCompraProcesada(AmUsrLog, ComPwm, item.fecha_emision, item.nro_docum.Trim());
+                            if (!string.IsNullOrEmpty(existe))
+                            {
+                                //Colocar en esta P en canorus para evitar duplicidad
+                                carga.ActualizarEstado(AmUsrLog, ComPwm, item.nro_docum.Trim(), "P");
+                                mensaje.Text = "Orden de compra: " + existe + " facturada anteriormente. No se puede volver a procesar";
+                            }
+                        }
+                    }
+                    lista = null;
                     lista = carga.TotalFacturas(AmUsrLog, ComPwm);
                     int count = 0;
                     modeloFacturas = null;
                     foreach (modeloFacturaEMasiva item in lista)
                     {
-
                         modeloFacturas = item;
                         lbl_carga_fec.Text = item.fecha_carga.ToString();
                         count++;
@@ -142,16 +159,14 @@ namespace CapaWeb.WebForms
                         btn_cancelar.Visible = true;
                         lbl_carga_fec.Visible = true;
                         lbl_fec_ca.Visible = true;
-
-
                     }
                     lbl_facturas.Text = Convert.ToString(count);
-                    
+
                 }
-            }   
+            }
         }
 
-       
+
         public void RecuperarCokie()
         {
             try
@@ -198,6 +213,8 @@ namespace CapaWeb.WebForms
                         Response.Cookies["ProcAud"].Value = cod_proceso;
                     }
                 }
+                //Buscar tipo de archivo que va a cargar(excel-01, txt-02)
+               // string formato = consultaLogo.BuscarFormatoCargaMasiva(ComPwm, AmComCod);
                 //Codigo empresa
                 string empresa_codigo = ComPwm;
                 string empresa_canorus = AmComCod;
@@ -206,6 +223,7 @@ namespace CapaWeb.WebForms
                 Response.Cookies["socio_codigo"].Value = socio;
                 Response.Cookies["usuario"].Value = AmUsrLog;
                 Response.Cookies["sesion"].Value = sesion;
+                //Response.Cookies["formato"].Value = formato.Trim();
             }
             catch (Exception ex)
             {
@@ -233,10 +251,10 @@ namespace CapaWeb.WebForms
         protected void btn_importar_Click(object sender, EventArgs e)
         {
             List<modeloFacturaEMasiva> listaFacturas = new List<modeloFacturaEMasiva>();
-            modeloFacturaEMasiva modeloFacturas1= new modeloFacturaEMasiva();
+            modeloFacturaEMasiva modeloFacturas1 = new modeloFacturaEMasiva();
             //Leer archivo excel
-         // if (FileUpload1.PostedFile.ContentType == "application/vnd.ms-excel" ||
-           //   FileUpload1.PostedFile.ContentType == "application/vnd.openxmlformats.officedocument.spreadsheetml.sheet")
+            // if (FileUpload1.PostedFile.ContentType == "application/vnd.ms-excel" ||
+            //   FileUpload1.PostedFile.ContentType == "application/vnd.openxmlformats.officedocument.spreadsheetml.sheet")
 
             {
                 try
@@ -245,14 +263,14 @@ namespace CapaWeb.WebForms
                     string fileName = pathtmpfac + Path.GetFileName(FileUpload1.FileName);
                     FileUpload1.PostedFile.SaveAs(fileName);
                     string extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
-                  
+
                     if (extension.ToLower() == ".xlsx")
                     {
                         string leerExcel = System.IO.File.ReadAllText(fileName);
-                       
+
                         foreach (string row in leerExcel.Split('\n'))
                         {
-                            if(!string.IsNullOrEmpty(row))
+                            if (!string.IsNullOrEmpty(row))
                             {
                                 listaFacturas.Add(new modeloFacturaEMasiva
                                 {
@@ -267,7 +285,7 @@ namespace CapaWeb.WebForms
                 catch (Exception ex)
                 {
                     GuardarExcepciones("buscarTipoFac", ex.ToString());
-                    
+
                 }
 
             }
@@ -291,7 +309,7 @@ namespace CapaWeb.WebForms
         }
 
         private int Prop_TotalTareas = 0;
-        
+
 
         private int f_PorcentajeAvance(int Par_TotalTareas, int Par_TareaActual)
         {
@@ -334,32 +352,32 @@ namespace CapaWeb.WebForms
                 //tareas a realizar poner todo el codigo para facturar electronicamente
                 string error_fac = null;
 
-                    string nro_docum = carga.FacturaOCompra(AmUsrLog, ComPwm);
-               
+                string nro_docum = carga.FacturaOCompra(AmUsrLog, ComPwm);
+
 
                 try
                 {
                     if (nro_docum != "")
                     {
-                       error_fac= carga.BuscartaDatosFacturasMasivas(AmUsrLog, ComPwm, lbl_cod_suc.Text.Trim(), nro_docum.Trim());
-                        if(! string.IsNullOrEmpty(error_fac))
+                        error_fac = carga.BuscartaDatosFacturasMasivas(AmUsrLog, ComPwm, lbl_cod_suc.Text.Trim(), nro_docum.Trim());
+                        if (!string.IsNullOrEmpty(error_fac))
                         {
                             carga.ActualizarEstadoLista(AmUsrLog, ComPwm, "E");//Estado E cuando ocurre un error 
                             carga.ErrorFPagosActualizar(AmUsrLog, ComPwm, "E");//Estado E cuando ocurre un error
                             carga.ErrorDscCargActualizar(AmUsrLog, ComPwm, "E");//Estado E cuando ocurre un error
-                            lbl_error_factura.Text = error_fac+ " Nro docum: "+nro_docum;
+                            lbl_error_factura.Text = error_fac + " Nro docum: " + nro_docum;
                             lbl_error_factura.Visible = true;
                             return;
-                            
+
                         }
                     }
                 }
-                catch (Exception aee )
+                catch (Exception aee)
                 {
 
                     throw;
                 }
-               
+
                 //.....
             }
 
@@ -402,7 +420,7 @@ namespace CapaWeb.WebForms
             lbl_carga_fec.Visible = false;
             lbl_fec_ca.Visible = false;
             lbl_facturas.Text = "";
-
+            mensaje.Text = "";
         }
         private void CargarGrilla()
         {

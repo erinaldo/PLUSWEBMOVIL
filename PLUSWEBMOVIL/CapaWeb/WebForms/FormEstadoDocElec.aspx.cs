@@ -154,7 +154,7 @@ namespace CapaWeb.WebForms
                 txt_cufe.Text = modeloestado.cufe;
                 txt_error.Text = modeloestado.error;
                 txt_json.Text = modeloestado.json;
-                txt_result.Text = modeloestado.documento;
+                txt_result.Text = modeloestado.jsonrRespuesta;
                 FormularioRes.Visible = true;
             }
             catch (Exception ex)

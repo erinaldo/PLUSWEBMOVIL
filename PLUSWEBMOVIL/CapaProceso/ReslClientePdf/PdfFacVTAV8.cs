@@ -16,7 +16,7 @@ using System.Web;
 
 namespace CapaProceso.GenerarPDF.FacturaElectronica
 {
-    public class PdfFacVTAV4
+    public class PdfFacVTAV8
     {
        public modelowmtfacturascab conscabcera = new modelowmtfacturascab();
         public ModeloDetalleFactura consdetalle = new ModeloDetalleFactura();
@@ -83,7 +83,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
         public string nro_trans = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         Articulos consulta_uni = new Articulos();
-        string metodo = "PdfFacVTAV4.cs";
+        string metodo = "PdfFacVTAV8.cs";
         //Buscar cantidad de decimales q se va ausar x tipo de moneda
         public modelowmspcmonedas BuscarDecimales(string usuario, string empresa, string cod_moneda)
         {
@@ -249,7 +249,6 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                         resolucion = item;
                         break;
                     }
-
                 }
                 //Impuestos
                 ListaModeloimpuesto = consultaImpuesto.ImpuestosSinRetencion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans, "0","N");
@@ -1173,7 +1172,14 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 foreach (modelowmspcfacturasWMimpuRest item in ListaModeloimpuesto)
                 {
 
-                    total1.DefaultCell.HorizontalAlignment = 0; total1.AddCell(new Paragraph(item.nom_impuesto, fontText3));
+                    if (item.nom_impuesto.Trim() == "IVA GENERADO")
+                    {
+                        total1.DefaultCell.HorizontalAlignment = 0; total1.AddCell(new Paragraph("IMPOCONSUMO", fontText3));
+                    }
+                    else
+                    {
+                        total1.DefaultCell.HorizontalAlignment = 0; total1.AddCell(new Paragraph(item.nom_impuesto, fontText3));
+                    }
                     total1.DefaultCell.HorizontalAlignment = 2; total1.AddCell(new Paragraph(item.porc_impu1, fontText3));
                     decimal base_imp = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, Convert.ToDecimal(item.base_impu));
                     total1.DefaultCell.HorizontalAlignment = 2; total1.AddCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, base_imp), fontText3));
@@ -1263,7 +1269,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 2;
                 detatot.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("(+)IVA: ", fontText1));
+                cell = new PdfPCell(new Paragraph("(+)IMPOCONSUMO: ", fontText1));
                 cell.BorderWidthBottom = 1;
                 cell.BorderWidthLeft = 0;
                 cell.BorderWidthTop = 0;

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace CapaProceso.Consultas
 {
-   public  class ConsultaCierecaja
+    public class ConsultaCierecaja
     {
         CierreCaja ccaja = new CierreCaja();
         modeloCierreCaja modeloCCaja = new modeloCierreCaja();
@@ -23,7 +23,7 @@ namespace CapaProceso.Consultas
                 List<modeloCajasCierre> lista = new List<modeloCajasCierre>();
                 string tipo_cuenta;
                 tipo_cuenta = ccaja.ConsultaTipoCuenta(usuario, cod_emp);
-                lista = ccaja.ConsultaCajasCierre(usuario, cod_emp,"", tipo_cuenta);
+                lista = ccaja.ConsultaCajasCierre(usuario, cod_emp, "", tipo_cuenta);
                 return lista;
             }
             catch (Exception e)
@@ -42,7 +42,7 @@ namespace CapaProceso.Consultas
                 List<modeloCajasCierre> lista = new List<modeloCajasCierre>();
                 string tipo_cuenta;
                 tipo_cuenta = ccaja.ConsultaTipoCuenta(usuario, cod_emp);
-                lista = ccaja.ConsultaDatosCaja(usuario, cod_emp,banco, tipo_cuenta, nro_caja);
+                lista = ccaja.ConsultaDatosCaja(usuario, cod_emp, banco, tipo_cuenta, nro_caja);
                 return lista;
             }
             catch (Exception e)
@@ -54,12 +54,12 @@ namespace CapaProceso.Consultas
         }
 
         //Consulta lista de cierre caja por fecha en wmt_cierre_resumencaja, fv, nv
-        public List<modeloPagoProveedores> ListaFacturasNV(string usuario, string cod_emp, string dia, string mes, string anio, string tipo1, string tipo2)
+        public List<modeloPagoProveedores> ListaFacturasNV(string usuario, string cod_emp, string dia, string mes, string anio, string tipo1, string tipo2, string cod_cta)
         {
             try
             {
                 List<modeloPagoProveedores> lista = new List<modeloPagoProveedores>();
-                lista = ccaja.ListaFcturasNV(usuario, cod_emp, dia, mes, anio, tipo1, tipo2);
+                lista = ccaja.ListaFcturasNV(usuario, cod_emp, dia, mes, anio, tipo1, tipo2, cod_cta);
                 return lista;
             }
             catch (Exception e)
@@ -70,12 +70,12 @@ namespace CapaProceso.Consultas
             }
         }
 
-        public List<modeloPagoProveedores> TotalPagoProveedores(string usuario, string cod_emp, string dia, string mes, string anio, string tipo1, string tipo2)
+        public List<modeloPagoProveedores> TotalPagoProveedores(string usuario, string cod_emp, string dia, string mes, string anio, string tipo1, string tipo2, string cod_cta)
         {
             try
             {
                 List<modeloPagoProveedores> lista = new List<modeloPagoProveedores>();
-                lista = ccaja.TotalPagoProveedores(usuario, cod_emp, dia, mes, anio, tipo1, tipo2);
+                lista = ccaja.TotalPagoProveedores(usuario, cod_emp, dia, mes, anio, tipo1, tipo2, cod_cta);
                 return lista;
             }
             catch (Exception e)
@@ -87,12 +87,12 @@ namespace CapaProceso.Consultas
         }
 
         //Consulta lista de cierre caja por fecha en wmt_cierre_resumencaja
-        public List<modeloPagoProveedores> ListaPagoProveedores(string usuario, string cod_emp, string dia, string mes, string anio, string tipo1, string tipo2)
+        public List<modeloPagoProveedores> ListaPagoProveedores(string usuario, string cod_emp, string dia, string mes, string anio, string tipo1, string tipo2, string cod_cta)
         {
             try
             {
                 List<modeloPagoProveedores> lista = new List<modeloPagoProveedores>();
-                lista = ccaja.ListaPagoProveedores(usuario,  cod_emp,  dia,  mes, anio,tipo1,  tipo2);
+                lista = ccaja.ListaPagoProveedores(usuario, cod_emp, dia, mes, anio, tipo1, tipo2, cod_cta);
                 return lista;
             }
             catch (Exception e)
@@ -106,9 +106,9 @@ namespace CapaProceso.Consultas
 
 
         //Consulta cierre caja por fecha en wmt_cierre_resumencaja
-        public Int64 BuscarCCajaFechaSecuencial(string fecha , string cod_emp)
-        {          
-            
+        public Int64 BuscarCCajaFechaSecuencial(string fecha, string cod_emp)
+        {
+
             return ccaja.BuscarCierreDiaSecuencial(fecha, cod_emp);
         }
         //ultimo secuencial

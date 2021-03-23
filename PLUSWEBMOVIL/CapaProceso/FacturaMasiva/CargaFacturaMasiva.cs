@@ -220,7 +220,7 @@ namespace CapaProceso.FacturaMasiva
                     while (dr.Read())
                     {
 
-                       
+
                         nro_docum = Convert.ToString(dr["nro_docum"]);
 
                     }
@@ -247,7 +247,7 @@ namespace CapaProceso.FacturaMasiva
                 {
                     List<modeloFacturaEMasiva> lista = new List<modeloFacturaEMasiva>();
 
-                    string consulta = "SELECT DISTINCT nro_docum, FORMAT(fecha_carga, 'yyyy-MM-dd HH:00') AS fecha_carga from wmh_cargaMasiva where estado_fac='A' and razon_social =''";
+                    string consulta = "SELECT DISTINCT nro_docum, FORMAT(fecha_carga, 'yyyy-MM-dd HH:00') AS fecha_carga, fecha_emision from wmh_cargaMasiva where estado_fac='A' and razon_social =''";
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     // conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = ArtB__usuario;
@@ -261,7 +261,7 @@ namespace CapaProceso.FacturaMasiva
                         modeloFacturaEMasiva item = new modeloFacturaEMasiva();
                         item.nro_docum = Convert.ToString(dr["nro_docum"]);
                         item.fecha_carga = Convert.ToDateTime(dr["fecha_carga"]);
-
+                        item.fecha_emision = Convert.ToDateTime(dr["fecha_emision"]);
                         lista.Add(item);
 
                     }
@@ -277,6 +277,40 @@ namespace CapaProceso.FacturaMasiva
                 return null;
             }
         }
+
+        //Consulta en pwm si ya fue procesada la ocompra por fecha de emision
+        public string OCompraProcesada(string ArtB__usuario, string ArtB__cod_emp, DateTime fec_doc, string ocompra)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+
+                    string result = null;
+                    string consulta = "SELECT ocompra from wmt_facturas_cab where ocompra =@ocompra and cod_emp =@cod_emp and fec_doc =@fec_doc";
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@ocompra", SqlDbType.VarChar).Value = ocompra;
+                    conmand.Parameters.Add("@fec_doc", SqlDbType.VarChar).Value = fec_doc;
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = ArtB__cod_emp;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        result = Convert.ToString(dr["ocompra"]);
+                    }
+                    return result;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(ArtB__cod_emp, metodo, "OCompraProcesada", e.ToString(), DateTime.Now, ArtB__usuario);
+                return null;
+            }
+        }
+
         //Actuaizar estado tabla wmh_cargaMasiva
         public string ActualizarEstado(string ArtB__usuario, string ArtB__cod_emp, string nro_docum, string estado_fac)
         {
@@ -545,40 +579,40 @@ namespace CapaProceso.FacturaMasiva
         }
         //Enviar nro factura para consultar datos d facturas
         //Saldos sin restricciones
-        public string BuscartaDatosFacturasMasivas(string Ccf_usuario, string Ccf_cod_emp, string cod_sucursal,string nro_docum)
+        public string BuscartaDatosFacturasMasivas(string Ccf_usuario, string Ccf_cod_emp, string cod_sucursal, string nro_docum)
         {
             try
             {
                 string error = null;
 
                 List<modeloFacturaEMasiva> listaAux = new List<modeloFacturaEMasiva>();
-
-
                 //Llenar datos de la factura
                 listaAux = ListaFacturas(Ccf_usuario, Ccf_cod_emp, nro_docum);
                 //Insertar en la cabecera de la factura
-                error= InsertarCabecera(Ccf_usuario, Ccf_cod_emp, listaAux, cod_sucursal);
+                error = InsertarCabecera(Ccf_usuario, Ccf_cod_emp, listaAux, cod_sucursal);
+
                 if (string.IsNullOrEmpty(error))
                 {
-
-                    //Referencia cruzada ---insertar detallle factura
-                   error= InsertarDetalle(Ccf_usuario, Ccf_cod_emp, listaAux);
+                    ActualizarEstado(Ccf_usuario, Ccf_cod_emp, nro_docum, "P");//Cambiar a estado 'P'(procesado) en wmh_cargaMasiva                                                           
+                    error = InsertarDetalle(Ccf_usuario, Ccf_cod_emp, listaAux);
                     if (string.IsNullOrEmpty(error))
                     {
                         //Insertar Formas de pago si es POS /POSE
                         if (tipo_factura.Trim() == "POSE" || tipo_factura.Trim() == "POS")
                         {
-                           error= InsertarFPagos(Ccf_usuario, Ccf_cod_emp, nro_docum);
+                            error = InsertarFPagos(Ccf_usuario, Ccf_cod_emp, nro_docum);
                         }
                         if (string.IsNullOrEmpty(error))
                         {
+                            ActualizarEstadoFPagos(Ccf_usuario, Ccf_cod_emp, nro_docum, "P");//Cambiar a estado 'P'(procesado) en wmh_facturas_pgs
                             //Insertar Descuentos y Cargos globales
-                          error=  InsertarCDscGlobales(Ccf_usuario, Ccf_cod_emp, nro_docum);
+                            error = InsertarCDscGlobales(Ccf_usuario, Ccf_cod_emp, nro_docum);
                             if (string.IsNullOrEmpty(error))
                             {
+                                ActualizarEstadoDsc(Ccf_usuario, Ccf_cod_emp, nro_docum, "P");//Cambiar a estado 'P'(procesado) en wmh_facturas_cdsc
                                 ModeloDetalleFactura = new List<ModeloDetalleFactura>();
                                 //Finalizar factura
-                               error= FinalizarFactura(Ccf_usuario, Ccf_cod_emp);
+                                error = FinalizarFactura(Ccf_usuario, Ccf_cod_emp);
                             }
                         }
                     }
@@ -588,8 +622,6 @@ namespace CapaProceso.FacturaMasiva
                     return error;
                 }
                 listaAux = null;
-
-
                 return error;
             }
             catch (Exception e)
@@ -638,8 +670,8 @@ namespace CapaProceso.FacturaMasiva
                         modeloDesCargo.cod_cta = ModeloDescuento.cod_cta;
                         modeloDesCargo.usuario_mod = AmUsrLog;
                         modeloDesCargo.fecha_mod = DateTime.Now.ToString();
-                        error_des= consultaDesc.InsertarDescCargTrans(modeloDesCargo);
-                        if(!string.IsNullOrEmpty(error_des))
+                        error_des = consultaDesc.InsertarDescCargTrans(modeloDesCargo);
+                        if (!string.IsNullOrEmpty(error_des))
                         {
                             return error_des;
                         }
@@ -697,7 +729,7 @@ namespace CapaProceso.FacturaMasiva
                     item.cod_cta = modeloTemporal.cod_cta;
                     item.cod_fpago = modeloTemporal.cod_fpago;
 
-                   error_pag= guardarPagos.InsertarPagosFactura(item);
+                    error_pag = guardarPagos.InsertarPagosFactura(item);
 
                     if (!string.IsNullOrEmpty(error_pag))
                     {
@@ -864,7 +896,7 @@ namespace CapaProceso.FacturaMasiva
                 }
                 else
                 {
-                   
+
                 }
                 return error;
             }
@@ -920,7 +952,7 @@ namespace CapaProceso.FacturaMasiva
                     referencia_C.EliminarArticuloTem(AmUsrLog, ComPwm, valor_asignado); //eliminar de tabla temporal
                     item = null;
                 }
-              return error_det= GuardarDetalle(ComPwm, AmUsrLog, ModeloDetalleFactura);
+                return error_det = GuardarDetalle(ComPwm, AmUsrLog, ModeloDetalleFactura);
             }
             catch (Exception ex)
             {
@@ -934,7 +966,7 @@ namespace CapaProceso.FacturaMasiva
         {
             try
             {
-                string error =null;
+                string error = null;
                 //Busca en gv_producto todos los items añadidos que estan en la variable de session detalle
                 ModeloDetalleFactura = new List<ModeloDetalleFactura>();
                 ModeloDetalleFactura = (listaD as List<ModeloDetalleFactura>);
@@ -1052,34 +1084,15 @@ namespace CapaProceso.FacturaMasiva
                             {
                                 mensaje = "Su factura fue procesada exitosamente";
                                 GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");
-                                //Cambiar a estado 'P'(procesado) en wmh_cargaMasiva
-                                ActualizarEstado(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                                //Cambiar a estado 'P'(procesado) en wmh_facturas_pgs
-                                ActualizarEstadoFPagos(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                                //Cambiar a estado 'P'(procesado) en wmh_facturas_cdsc
-                                ActualizarEstadoDsc(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
                             }
                             else
                             {
                                 GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "C");
                                 mensaje = respuesta;
-                                //Cambiar a estado 'P'(procesado) en wmh_cargaMasiva si a error se puede ver en buscar facturas
-                                ActualizarEstado(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                                //Cambiar a estado 'P'(procesado) en wmh_facturas_pgs
-                                ActualizarEstadoFPagos(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                                //Cambiar a estado 'P'(procesado) en wmh_facturas_cdsc
-                                ActualizarEstadoDsc(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
                             }
                         }
-
                         else
                         {
-                            //Cambiar a estado 'P'(procesado) en wmh_cargaMasiva
-                            ActualizarEstado(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                            //Cambiar a estado 'P'(procesado) en wmh_facturas_pgs
-                            ActualizarEstadoFPagos(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                            //Cambiar a estado 'P'(procesado) en wmh_facturas_cdsc
-                            ActualizarEstadoDsc(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
                             return error_finalizar = respuestaConfirmacionFAC;
                         }
                     }
@@ -1088,16 +1101,9 @@ namespace CapaProceso.FacturaMasiva
                         if (respuestaConfirmacionFAC == "")
                         {
                             string men_fn = "Finalizado";
-                            //Cambiar a estado 'P'(procesado) en wmh_cargaMasiva
-                            ActualizarEstado(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                            //Cambiar a estado 'P'(procesado) en wmh_facturas_pgs
-                            ActualizarEstadoFPagos(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
-                            //Cambiar a estado 'P'(procesado) en wmh_facturas_cdsc
-                            ActualizarEstadoDsc(ComPwm, AmUsrLog, conscabcera.ocompra, "P");
                         }
                         else
                         {
-
                             return error_finalizar = respuestaConfirmacionFAC;
                         }
                     }
@@ -1111,7 +1117,7 @@ namespace CapaProceso.FacturaMasiva
 
             }
         }
- 
+
         //Buscar Cabecera de factura
         public modelowmtfacturascab BuscarCabecera(string ComPwm, string AmUsrLog)
         {

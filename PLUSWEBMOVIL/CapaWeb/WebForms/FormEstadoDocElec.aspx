@@ -130,15 +130,7 @@
                                     <asp:TextBox ID="txt_error" Width="880" class="textos" ReadOnly="true" TextMode="MultiLine" cols="100" Rows="3" runat="server"></asp:TextBox>
                                 </td>
                             </tr>
-                            <tr valign="top">
-                                <td align="right" nowrap="nowrap" class="busqueda">
-                                    <div align="left">Documento:</div>
-                                </td>
-                                <td>
-                                    <asp:TextBox ID="txt_result" Width="880" class="textos" ReadOnly="true" TextMode="MultiLine" cols="100" Rows="3" runat="server"></asp:TextBox>
-                                </td>
-                            </tr>
-                            <tr valign="top">
+                             <tr valign="top">
                                 <td align="right" nowrap="nowrap" class="busqueda">
                                     <div align="left">Json:</div>
                                 </td>
@@ -151,6 +143,15 @@
 
 
                             </tr>
+                            <tr valign="top">
+                                <td align="right" nowrap="nowrap" class="busqueda">
+                                    <div align="left">Json Respuesta:</div>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txt_result" Width="880" class="textos" ReadOnly="true" TextMode="MultiLine" cols="200" Rows="10" runat="server"></asp:TextBox>
+                                </td>
+                            </tr>
+                           
 
                         </table>
                     </td>

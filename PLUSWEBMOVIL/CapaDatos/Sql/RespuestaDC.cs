@@ -43,8 +43,8 @@ namespace CapaDatos.Sql
                         item.cargopdf = Convert.ToString(dr["cargopdf"]);
                         item.foperacion = Convert.ToString(dr["foperacion"]);
                         item.emailfe = Convert.ToString(dr["emailfe"]);
-                        item.documento = Convert.ToString(dr["documento"]);
-                        item.DIAN = Convert.ToString(dr["DIAN"]);
+                        item.jsonrRespuesta = Convert.ToString(dr["dian"]);
+                        //item.DIAN = Convert.ToString(dr["DIAN"]);
                         item.json = Convert.ToString(dr["json"]);
                         item.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
                         item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
@@ -90,8 +90,8 @@ namespace CapaDatos.Sql
                         item.cargopdf = Convert.ToString(dr["cargopdf"]);
                         item.foperacion = Convert.ToString(dr["foperacion"]);
                         item.emailfe = Convert.ToString(dr["emailfe"]);
-                        item.documento = Convert.ToString(dr["documento"]);
-                        item.DIAN = Convert.ToString(dr["DIAN"]);
+                        item.jsonrRespuesta = Convert.ToString(dr["dian"]);
+                       // item.DIAN = Convert.ToString(dr["DIAN"]);
                         item.json = Convert.ToString(dr["json"]);
                         item.fecha_mod = Convert.ToDateTime(dr["fecha_mod"]);
                         item.usuario_mod = Convert.ToString(dr["usuario_mod"]);
@@ -300,7 +300,7 @@ namespace CapaDatos.Sql
             {
                 using (cn = conexion.genearConexion())
                 {
-                    string insert = "INSERT INTO  wmt_estadoDE (nro_trans, linea, qrdata, xml, id, cufe, error, cargopdf, foperacion, emailfe, documento, dian, fecha_mod,usuario_mod,json) VALUES (@nro_trans, @linea, @qrdata, @xml, @id, @cufe, @error, @cargopdf, @foperacion, @emailfe, @documento, @dian, @fecha_mod,@usuario_mod,@json)";
+                    string insert = "INSERT INTO  wmt_estadoDE (nro_trans, linea, qrdata, xml, id, cufe, error, cargopdf, foperacion, emailfe,dian, fecha_mod,usuario_mod,json) VALUES (@nro_trans, @linea, @qrdata, @xml, @id, @cufe, @error, @cargopdf, @foperacion, @emailfe,@dian, @fecha_mod,@usuario_mod,@json)";
                     SqlCommand conmand = new SqlCommand(insert, cn);
                     conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = item.nro_trans;
                     conmand.Parameters.Add("@linea", SqlDbType.Int).Value = item.linea;
@@ -312,8 +312,8 @@ namespace CapaDatos.Sql
                     conmand.Parameters.Add("@cargopdf", SqlDbType.VarChar).Value = item.cargopdf;
                     conmand.Parameters.Add("@foperacion", SqlDbType.VarChar).Value = item.foperacion;
                     conmand.Parameters.Add("@emailfe", SqlDbType.VarChar).Value = item.emailfe;
-                    conmand.Parameters.Add("@documento", SqlDbType.VarChar).Value = item.documento;
-                    conmand.Parameters.Add("@dian", SqlDbType.VarChar).Value = item.DIAN;
+                   // conmand.Parameters.Add("@documento", SqlDbType.VarChar).Value = item.documento;
+                    conmand.Parameters.Add("@dian", SqlDbType.VarChar).Value = item.jsonrRespuesta;
                     conmand.Parameters.Add("@fecha_mod", SqlDbType.DateTime).Value = item.fecha_mod;
                     conmand.Parameters.Add("@usuario_mod", SqlDbType.VarChar).Value = item.usuario_mod;
                     conmand.Parameters.Add("@json", SqlDbType.VarChar).Value = item.json;

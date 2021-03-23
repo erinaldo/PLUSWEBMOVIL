@@ -11,7 +11,7 @@ namespace CapaDatos.Modelos
         public string secuencia { get; set; }
     }
 
-
+  
     public class DIANED
     {
         public string nro_trans { get; set; }
@@ -24,7 +24,7 @@ namespace CapaDatos.Modelos
         public string StatusCode { get; set; }
         public List<RespuestaDE> Respuesta { get; set; }
     }
-    public class Documento
+    public class DocumentoED
     {
         public string prefijodian { get; set; }
         public string resolucion { get; set; }
@@ -37,14 +37,14 @@ namespace CapaDatos.Modelos
     public  class JsonEstadoDocElec
     {
         public string qrdata { get; set; }
-        public string DIAN { get; set; }
+        public List<DIANED> DIAN { get; set; }
         public string xml { get; set; }
         public string id { get; set; }
         public string cufe { get; set; }
         public string error { get; set; }
-        public string documento { get; set; }
+        //public List<DocumentoED> documento { get; set; }
         public string cargopdf { get; set; }
-        public string docpdf { get; set; }
+       // public List<Docpdf> docpdf { get; set; }
         public string foperacion { get; set; }
         public string emailfe { get; set; }
         public string json { get; set; }

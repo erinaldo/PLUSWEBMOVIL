@@ -244,7 +244,11 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 resolucion = null;
                 foreach (modelowmspcresfact item in listaRes)
                 {
-                    resolucion = item;
+                    if (item.serie_docum.Trim() == conscabcera.serie_docum.Trim() && item.cod_atrib1.Trim() == conscabcera.cod_atrib1.Trim())
+                    {
+                        resolucion = item;
+                        break;
+                    }
 
                 }
                 //Impuestos

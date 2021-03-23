@@ -30,6 +30,21 @@ namespace CapaProceso.Consultas
             }
         }
 
+        public string BuscarFormatoCargaMasiva(string cod_emp, string usuario)
+        {
+            try
+            {
+
+                string formato = consultaLogoSql.TipoCargaMasiva(cod_emp, usuario);
+                return formato;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, "ConsultaLogo.cs", "BuscarFormatoCargaMasiva", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
         public List<modelowmusuario> BuscarUsuario(string usuario)
         {
             try

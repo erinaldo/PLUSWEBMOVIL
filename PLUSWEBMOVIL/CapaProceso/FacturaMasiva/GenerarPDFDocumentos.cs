@@ -128,6 +128,14 @@ namespace CapaProceso.FacturaMasiva
                     PdfFacEleV3Default6 pdf4 = new PdfFacEleV3Default6();
                     pathPdf = pdf4.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                     break;
+                case "DEFECTO7":
+                    PdfFacEleV3Default7 pdf5 = new PdfFacEleV3Default7();
+                    pathPdf = pdf5.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    break;
+                case "DEFECTO8":
+                    PdfFacEleV3Default8 pdf6 = new PdfFacEleV3Default8();
+                    pathPdf = pdf6.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    break;
             }
             return pathPdf;
         }
@@ -159,6 +167,14 @@ namespace CapaProceso.FacturaMasiva
                 case "DEFECTO6":
                     PdfFacVTAV6 pdf4 = new PdfFacVTAV6();
                     pathPdf = pdf4.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    break;
+                case "DEFECTO7":
+                    PdfFacVTAV7 pdf5 = new PdfFacVTAV7();
+                    pathPdf = pdf5.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    break;
+                case "DEFECTO8":
+                    PdfFacVTAV8 pdf6 = new PdfFacVTAV8();
+                    pathPdf = pdf6.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                     break;
             }
             return pathPdf;

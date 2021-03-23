@@ -398,8 +398,7 @@ return false;
                                     <asp:TextBox ID="txt_Descripcion2" CssClass="textos" Size="40"  runat="server"></asp:TextBox>
                                  </td>
                                 <td>
-                                    <asp:TextBox ID="txt_Cantidad" CssClass="textos" min="1" step="0.01"  type="number" value="1" Width="60px"  runat="server"></asp:TextBox>
-                                    
+                                    <asp:TextBox ID="txt_Cantidad" CssClass="textos" step="0.001" type="number" value="1" Width="60px"  runat="server"></asp:TextBox>
                                 </td>
                                  <td>
                                     <asp:TextBox ID="txt_Precio" CssClass="textos" type="number"   step="any" value="0" Width="100px" runat="server" ></asp:TextBox>
@@ -445,9 +444,9 @@ return false;
                                     <asp:Panel ID="Panel1" runat="server" Height="250px" Width="100%" ScrollBars="Auto">
                                         <asp:DataGrid ID="gv_Producto" runat="server" 
                                         
-                                        AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
+                                                        AutoGenerateColumns="False" AllowPaging="True" class="table table-hover"
                                          AllowSorting="True" ShowFooter="True"
-                                          CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" OnItemCommand="gv_Producto_ItemCommand">
+                                          CellPadding="2"  BackColor="White" BorderColor="#DD6D29" BorderStyle="None" BorderWidth="0px" CellSpacing="1" OnItemCommand="gv_Producto_ItemCommand" PageSize="2000">
 
 
                                         <Columns>

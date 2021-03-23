@@ -62,6 +62,8 @@ namespace CapaProceso.RestCliente
         List<ModeloDescCargoFac> ListaDesc = new List<ModeloDescCargoFac>();
         ModeloDescCargoFac modelodescuento = new ModeloDescCargoFac();
 
+        SucursalEmpresa buscarSucursalDian = new SucursalEmpresa();
+        public string cod_suc_dian = null;
         public string Ccf_estado = null;
         public string Ccf_cliente = null;
         public string Ccf_cod_docum = null;
@@ -128,13 +130,11 @@ namespace CapaProceso.RestCliente
                 Modeloempresa = null;
                 Modeloempresa = BuscarCabEmpresa(Ccf_usuario, Ccf_cod_emp);
 
-                ModeloCotizacion = null;
-                ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
-
                 Modelowmspclogo = null;
                 Modelowmspclogo = BuscarUsuarioLogo(Ccf_cod_emp, Ccf_usuario);
 
-                List<modelowmspcfacturasWMimpuRest> ListaAux = new List<modelowmspcfacturasWMimpuRest>();
+                 cod_suc_dian = buscarSucursalDian.SucursalEmpresaDian(Ccf_cod_emp,conscabcera.cod_sucursal, Ccf_usuario);
+                List <modelowmspcfacturasWMimpuRest> ListaAux = new List<modelowmspcfacturasWMimpuRest>();
                 ListaModeloimpuesto = consultaImpuesto.BuscarImpuestoRest(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans, impuesto_rest);
                 foreach (modelowmspcfacturasWMimpuRest items in ListaModeloimpuesto)
                 {
@@ -160,7 +160,7 @@ namespace CapaProceso.RestCliente
                 encabezado.factortrm = Convert.ToDecimal(ModeloCotizacion.tc_mov1c);
                 encabezado.fecha = conscabcera.fec_doc.ToString("yyyy-MM-dd");
                 encabezado.fvence = conscabcera.fec_venc.ToString("yyyy-MM-dd");
-                encabezado.idsuc = 1;//Convert.ToInt16(conscabcera.cod_sucursal); //Va a traer sucursal de la empresa con la que se factura
+                encabezado.idsuc = Convert.ToInt16(cod_suc_dian);//1;//Convert.ToInt16(conscabcera.cod_sucursal); //Va a traer sucursal de la empresa con la que se factura//cambio 9-2-21
                 encabezado.idvendedor = Convert.ToInt32(conscabcera.cod_vendedor);
                 if (conscabcera.cod_moneda.Trim() != "COP")
                 {
@@ -191,7 +191,7 @@ namespace CapaProceso.RestCliente
                 {
                     encabezado.subtotal = conscabcera.subtotal;
                 }
-                encabezado.sucursal = 1;//7-9-20 Convert.ToInt16(conscabcera.cod_sucursal); //Va a traer sucursal de la empresa con la que se factura
+                encabezado.sucursal = Convert.ToInt16(cod_suc_dian);// 1;//7-9-20 Convert.ToInt16(conscabcera.cod_sucursal); //Va a traer sucursal de la empresa con la que se factura
                 encabezado.terminospago = "30"; //por defecto 30
                 if (conscabcera.cod_moneda.Trim() != "COP")
                 {
@@ -235,21 +235,26 @@ namespace CapaProceso.RestCliente
                 ListaDesc = null;
                 ListaDesc = consultaDesc.ConsultaDescCargTrans(Ccf_cod_emp, Ccf_usuario, Ccf_nro_trans);
                 List<Concepto> concepto = new List<Concepto>();
-                ModeloCotizacion = null;
-                ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
 
                 foreach (var item in ListaDesc)
                 {
                     Concepto itemDetalle = new Concepto();
-                    itemDetalle.naturaleza = item.signo;
+                    itemDetalle.naturaleza = item.signo.ToLower();
                     itemDetalle.transaccion = item.nom_concepto;
-                    itemDetalle.coddescuento = item.cod_concepto;
-             
+                    itemDetalle.coddescuento = item.cod_concepto_fis.Trim();
+
                     if (conscabcera.cod_moneda.Trim() != "COP")
                     {
                         itemDetalle.valor = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.valor_descto;
+                        itemDetalle.Base = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.valor_descto;
+                        itemDetalle.porcentaje = 100;
                     }
-                    else { itemDetalle.valor = item.valor_descto; }
+                    else
+                    {
+                        itemDetalle.valor = item.valor_descto;
+                        itemDetalle.Base = item.valor_descto;
+                        itemDetalle.porcentaje = 100;
+                    }
 
                     concepto.Add(itemDetalle);
                 }
@@ -405,7 +410,7 @@ namespace CapaProceso.RestCliente
                 sucursal.dpto = cliente.cod_provincia;
                 sucursal.email = cliente.email_tit;
                 sucursal.emailfe = cliente.email_tit;
-                sucursal.idsuc = 1;// Convert.ToInt16(conscabcera.cod_sucursal); //Va a traer sucursal de la empresa con la que se factura
+                sucursal.idsuc = Convert.ToInt16(cod_suc_dian);//1;// Convert.ToInt16(conscabcera.cod_sucursal); //Va a traer sucursal de la empresa con la que se factura
                 sucursal.idvendedor = Convert.ToInt64(conscabcera.cod_vendedor);
                 sucursal.movil = "";
                 sucursal.mun = cliente.ciudad_tit;

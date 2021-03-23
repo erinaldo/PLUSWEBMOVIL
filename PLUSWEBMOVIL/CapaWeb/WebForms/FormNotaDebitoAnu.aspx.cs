@@ -1917,6 +1917,7 @@ namespace CapaWeb.WebForms
                                 //cOSNULTA BUSCAR TIPO DE FACTURA
                                 conscabceraTipo = null;
                                 conscabceraTipo = buscarTipoFac(conscabcera.nro_trans.Trim());
+                                //Buscar factura afectada
                                 if (conscabceraTipo.tipo_nce.Trim() == "NDVE")
                                 {
 
@@ -1935,9 +1936,13 @@ namespace CapaWeb.WebForms
                                         {
                                             mensaje.Text = "Su nota de débito fue procesada exitosamente";
                                             Confirmar.Enabled = false;
-                                            GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");//Actualiza NC a Finalizado
-                                            GuardarCabezera.ActualizarEstadoFactura(txt_nro_trans_padre.Text, "N");//Actualiza factura a Anulada
+                                            GuardarCabezera.ActualizarEstadoFactura(conscabcera.nro_trans, "F");//Actualiza NDebito a Finalizado
+                                            GuardarCabezera.ActualizarEstadoFactura(txt_nro_trans_padre.Text, "N");//Actualiza nc a Anulada
                                             EnviarCorreoRemitente(conscabcera.nro_trans, conscabceraTipo.tipo_nce.Trim()); //Enviar correo a remitente
+                                            conscabceraTipo = null;
+                                            conscabceraTipo = Trans_Padre(txt_nro_trans_padre.Text);
+                                            //Buscar trx de factura para colocar como activa es decir finalizada 1-7-2021
+                                            GuardarCabezera.ActualizarEstadoFactura(conscabceraTipo.nro_trans_padre.Trim(), "F");//Actualiza factura a finalizada(debe quedar activa ya que se anula la nc)
                                             Session.Remove("listaFacturas");
                                             Response.Redirect("BuscarNotaDebito.aspx");
                                         }
@@ -1961,8 +1966,11 @@ namespace CapaWeb.WebForms
                                 {
                                     if (respuestaConfirmacionNC == "")
                                     {
-                                        GuardarCabezera.ActualizarEstadoFactura(txt_nro_trans_padre.Text, "N");//Actualiza factura a Anulada
+                                        GuardarCabezera.ActualizarEstadoFactura(txt_nro_trans_padre.Text, "N");//Actualiza nc a Anulada
                                         EnviarCorreoCliente(conscabcera.nro_trans, conscabceraTipo.tipo_nce.Trim());
+                                        conscabceraTipo = null;
+                                        conscabceraTipo = Trans_Padre(txt_nro_trans_padre.Text);
+                                        GuardarCabezera.ActualizarEstadoFactura(conscabceraTipo.nro_trans_padre.Trim(), "F");//Actualiza factura a finalizado
                                         Session.Remove("listaFacturas");
                                         Response.Redirect("BuscarNotaDebito.aspx");
                                     }

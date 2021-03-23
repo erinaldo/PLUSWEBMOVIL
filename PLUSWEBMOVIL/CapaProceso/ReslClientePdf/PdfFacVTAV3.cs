@@ -84,6 +84,8 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
         public string nro_trans = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         Articulos consulta_uni = new Articulos();
+        Documento buscarCliente = new Documento();
+        modelowmspctitulares cliente_valido = new modelowmspctitulares();
         string metodo = "PdfFacVTAV3.cs";
         //Buscar cantidad de decimales q se va ausar x tipo de moneda
         public modelowmspcmonedas BuscarDecimales(string usuario, string empresa, string cod_moneda)
@@ -180,8 +182,15 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
         {
             try
             {
+                string formato_nit_cliente = null;
                 conscabcera = null;
                 conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                //VALIDAR NIT OARA EXTRANJEROS ---18-2-21
+                cliente_valido = buscarCliente.ListaBuscaCliente(Ccf_usuario, Ccf_cod_emp, "C", conscabcera.cod_cliente,null);
+                if(cliente_valido.cod_dgi.Trim() == "42" || cliente_valido.cod_dgi.Trim() == "22" || cliente_valido.cod_dgi.Trim() == "43" || cliente_valido.cod_dgi.Trim() == "14")
+                {
+                    formato_nit_cliente = conscabcera.nro_dgi2.Trim();
+                } else { formato_nit_cliente = conscabcera.nro_dgi2 + "-" + conscabcera.nro_dgi1; }
                 //FORMA DE PAGO Y MEDIO DE PAGO PDF DIAN 10-7-20
                 if(conscabcera.tipo.Trim() =="POS" || conscabcera.tipo.Trim() == "POSE")
                 {
@@ -243,7 +252,11 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 resolucion = null;
                 foreach (modelowmspcresfact item in listaRes)
                 {
-                    resolucion = item;
+                    if (item.serie_docum.Trim() == conscabcera.serie_docum.Trim() && item.cod_atrib1.Trim() == conscabcera.cod_atrib1.Trim())
+                    {
+                        resolucion = item;
+                        break;
+                    }
 
                 }
                 //Impuestos
@@ -548,7 +561,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 0;
                 tablaCab3.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph(conscabcera.nro_dgi2 + "-" + conscabcera.nro_dgi1, fontText3));
+                cell = new PdfPCell(new Paragraph(formato_nit_cliente, fontText3));
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 0;
                 cell.BorderWidthLeft = 0;

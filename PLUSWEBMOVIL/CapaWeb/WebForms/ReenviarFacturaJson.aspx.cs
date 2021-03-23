@@ -236,9 +236,10 @@ namespace CapaWeb.WebForms
                 ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
                 foreach (var item in ListaModelorespuestaDs)
                 {
-                    if (item.xml != "")
+                    if (!string.IsNullOrEmpty(item.xml.Trim()))
                     {
                         ModeloResQr = item;
+                        break;
                     }
 
                 }

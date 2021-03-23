@@ -13,6 +13,7 @@ namespace CapaDatos.Modelos
         public string cod_emp { get; set; }
         public string linea { get; set; }
         public string cod_concepto { get; set; }
+        public string cod_concepto_fis { get; set; }
         public string signo { get; set; }
         public string nom_concepto { get; set; }
         public decimal porc_descto { get; set; }

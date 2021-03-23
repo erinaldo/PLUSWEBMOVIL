@@ -288,21 +288,26 @@ namespace CapaProceso.RestCliente
                 ListaDesc = null;
                 ListaDesc = consultaDesc.ConsultaDescCargTrans(Ccf_cod_emp, Ccf_usuario, Ccf_nro_trans);
                 List<ConceptoNCV3> concepto = new List<ConceptoNCV3>();
-                ModeloCotizacion = null;
-                ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
 
                 foreach (var item in ListaDesc)
                 {
                     ConceptoNCV3 itemDetalle = new ConceptoNCV3();
-                    itemDetalle.naturaleza = item.signo;
+                    itemDetalle.naturaleza = item.signo.ToLower();
                     itemDetalle.transaccion = item.nom_concepto;
-                    itemDetalle.coddescuento = item.cod_concepto;
+                    itemDetalle.coddescuento = item.cod_concepto_fis.Trim();
 
                     if (conscabcera.cod_moneda.Trim() != "COP")
                     {
                         itemDetalle.valor = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.valor_descto;
+                        itemDetalle.Base = Convert.ToDecimal(ModeloCotizacion.tc_mov1c) * item.valor_descto;
+                        itemDetalle.porcentaje = 100;
                     }
-                    else { itemDetalle.valor = item.valor_descto; }
+                    else
+                    {
+                        itemDetalle.valor = item.valor_descto;
+                        itemDetalle.Base = item.valor_descto;
+                        itemDetalle.porcentaje = 100;
+                    }
 
                     concepto.Add(itemDetalle);
                 }
@@ -322,8 +327,6 @@ namespace CapaProceso.RestCliente
             {
                 listaConsDet = ConsultaDeta.ConsultaDetalleFacura(Ccf_nro_trans);
                 List<DetalleNCV3> detalle = new List<DetalleNCV3>();
-                ModeloCotizacion = null;
-                ModeloCotizacion = BuscarCotizacion(Ccf_usuario, Ccf_cod_emp, Ccf_nro_trans);
 
                 foreach (var item in listaConsDet)
                 {

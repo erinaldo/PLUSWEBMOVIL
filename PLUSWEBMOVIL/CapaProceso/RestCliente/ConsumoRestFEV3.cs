@@ -52,7 +52,9 @@ namespace CapaProceso.RestCliente
                 //Consultar datos para enviar el json arma la consulta y la estructura de json factura
                 string jsonRes = "";
                 string jsonrRespuesta = "";
-                jsonRes = JsonConvert.SerializeObject(consultaResJson.LlenarJSONFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans), Formatting.Indented);
+                string json_concepto = "";
+                json_concepto = JsonConvert.SerializeObject(consultaResJson.LlenarJSONFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans), Formatting.Indented);
+                jsonRes = json_concepto.Replace("Base", "base");
 
                JsonRespuestaDSFEV2 jsonRespuestaDE = new JsonRespuestaDSFEV2();
                 //Envia el json armado para y obtiene la respuesta

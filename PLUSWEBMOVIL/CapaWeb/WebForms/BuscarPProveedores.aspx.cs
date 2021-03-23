@@ -39,6 +39,8 @@ namespace CapaWeb.WebForms
 
         List<modeloPagoProveedores> ListaPProveedores = null;
         ConsultaCierecaja ConsultaCCaja = new ConsultaCierecaja();
+        List<modeloCajasCierre> listaCajasUsuario = null;
+        modeloCajasCierre modeloCaja = new modeloCajasCierre();
         public string numerador = "trans";
 
 
@@ -75,15 +77,28 @@ namespace CapaWeb.WebForms
                     if (Session["Fecha"] != null)
                     {
                         Session["Fecha1"] = Session["Fecha"];
-                       
+                        Session["cta_banco"] = Session["Cod_cta_cja"];
+                        Session["nom_cta"] = Session["Nom_cta_cja"];
+                        //Buscar codigo de cuenta
+
+                        listaCajasUsuario = ConsultaCCaja.ConsultaCajasCierre(AmUsrLog, ComPwm, "", "");
+                        foreach (modeloCajasCierre item in listaCajasUsuario)
+                        {
+                            if (item.nrocta_banco.Trim() == Session["cta_banco"].ToString().Trim() && item.nomtcta_banco.Trim() == Session["nom_cta"].ToString().Trim())
+                            {
+                                Session["cod_cta"] = item.cod_cta.Trim();
+                                break;
+                            }
+                        }
+
                         //TOTAL PAGO EN EFECTIVO DE FACTURAS
                         string fecha = Session["Fecha"].ToString();
-                         DateTime Fechainicio   = Convert.ToDateTime(fecha);
+                        DateTime Fechainicio = Convert.ToDateTime(fecha);
                         string dia = string.Format("{0:00}", Fechainicio.Day);
                         string mes = string.Format("{0:00}", Fechainicio.Month);
                         string anio = Fechainicio.Year.ToString();
                         ListaPProveedores = null;
-                        ListaPProveedores = ConsultaCCaja.ListaPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "PP", "D");
+                        ListaPProveedores = ConsultaCCaja.ListaPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "PP", "D", Session["cod_cta"].ToString().Trim());
 
                         gvProducto.DataSource = ListaPProveedores;
                         gvProducto.DataBind();
@@ -128,18 +143,18 @@ namespace CapaWeb.WebForms
                 string mes = string.Format("{0:00}", Fechainicio.Month);
                 string anio = Fechainicio.Year.ToString();
                 ListaPProveedores = null;
-                ListaPProveedores = ConsultaCCaja.ListaPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "PP", "D");
+                ListaPProveedores = ConsultaCCaja.ListaPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "PP", "D", Session["cod_cta"].ToString().Trim());
                 if (ListaPProveedores.Count > 0)
                 {
 
-                   
+
                     decimal TotalFactura = 0;
                     decimal TotalRedondeado = 0;
                     foreach (GridViewRow item in gvProducto.Rows)
                     {
                         TotalRedondeado = ConsultaCMonedas.RedondearNumero(Session["redondeo"].ToString(), Convert.ToDecimal(item.Cells[7].Text));
                         TotalFactura += TotalRedondeado;
-                      
+
                     }
                     gvProducto.FooterRow.Cells[6].Text = "TOTALES:";
                     gvProducto.FooterRow.Cells[7].Text = ConsultaCMonedas.FormatorNumero(Session["redondeo"].ToString(), TotalFactura);
@@ -233,7 +248,7 @@ namespace CapaWeb.WebForms
                 string mes = string.Format("{0:00}", Fechainicio.Month);
                 string anio = Fechainicio.Year.ToString();
                 ListaPProveedores = null;
-                ListaPProveedores = ConsultaCCaja.ListaPagoProveedores(AmUsrLog, ComPwm, dia, mes , anio, "PP", "D");
+                ListaPProveedores = ConsultaCCaja.ListaPagoProveedores(AmUsrLog, ComPwm, dia, mes, anio, "PP", "D", Session["cod_cta"].ToString().Trim());
 
                 gvProducto.DataSource = ListaPProveedores;
                 gvProducto.DataBind();
@@ -278,7 +293,7 @@ namespace CapaWeb.WebForms
 
                 //Buscar tipo factura
 
-                string pagina = Modelowmspclogo.sitio_app + "Cons_DetalleDocs.asp" + "?cod_docum=" + cod.Trim() + "&nro_docum=" + nro.Trim()+ "&serie_docum=" + serie.Trim() + "&cod_tit=" + cod_tit.Trim() + "&tipo=P";
+                string pagina = Modelowmspclogo.sitio_app + "Cons_DetalleDocs.asp" + "?cod_docum=" + cod.Trim() + "&nro_docum=" + nro.Trim() + "&serie_docum=" + serie.Trim() + "&cod_tit=" + cod_tit.Trim() + "&tipo=P";
 
 
                 Response.Redirect(pagina);

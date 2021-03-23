@@ -155,7 +155,7 @@ namespace CapaDatos.Sql
                 {
                     List<ModeloDescCargoFac> lista = new List<ModeloDescCargoFac>();
 
-                    string consulta = ("SELECT*FROM wmt_facturas_descto where cod_emp =@cod_emp and nro_trans=@nro_trans ORDER BY linea ASC");
+                    string consulta = ("SELECT D.nro_trans,D.cod_emp,D.linea,D.cod_concepto,D.signo,D.nom_concepto,D.porc_descto,D.valor_descto,D.cod_cta,D.cod_ccostos,D.usuario_mod,D.fecha_mod,D.total,D.base_imponible,C.cod_concepto_fis FROM dbo.wmt_facturas_descto AS D ,dbo.wmm_facturas_descto AS C WHERE D.cod_concepto = C.cod_concepto AND D.cod_emp = C.cod_emp AND D.cod_emp =@cod_emp and D.nro_trans=@nro_trans ORDER BY linea ASC");
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = Ccf_cod_emp;
@@ -172,6 +172,7 @@ namespace CapaDatos.Sql
                         item.nro_trans = Convert.ToString(dr["nro_trans"]);
                         item.cod_emp = Convert.ToString(dr["cod_emp"]);
                         item.cod_concepto = Convert.ToString(dr["cod_concepto"]);
+                        item.cod_concepto_fis = Convert.ToString(dr["cod_concepto_fis"]);
                         item.nom_concepto = Convert.ToString(dr["nom_concepto"]);
                         item.signo = Convert.ToString(dr["signo"]);
                         item.nomcod = item.cod_concepto +"-"+ item.nom_concepto;

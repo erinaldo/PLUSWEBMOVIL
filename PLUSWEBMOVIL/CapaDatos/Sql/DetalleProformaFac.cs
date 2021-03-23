@@ -14,8 +14,37 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
+        string metodo = "DetalleProformaFac";
+        //Vendedor proforma
+        public string VendedorProforma(string nro_trans, string empresa, string usuario)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    string vendedor = null;
+
+                    string consulta = ("SELECT cod_vendedor FROM wmt_proformas_cab WHERE  nro_trans = @nro_trans");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
 
 
+                    conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        vendedor = Convert.ToString(dr["cod_vendedor"]);
+                    }
+                    return vendedor;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(empresa, metodo, "VendedorProforma", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
 
         public List<modeloDetalleProforma> ListaProformasDetalle(string nro_trans)
         {
@@ -70,7 +99,7 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, "DetalleProformaFac.cs", "ListaProformasDetalle", e.ToString(), DateTime.Today, "consulta");
+                guardarExcepcion.ClaseInsertarExcepcion(nro_trans, metodo, "ListaProformasDetalle", e.ToString(), DateTime.Now, "consulta");
                 return null;
             }
 

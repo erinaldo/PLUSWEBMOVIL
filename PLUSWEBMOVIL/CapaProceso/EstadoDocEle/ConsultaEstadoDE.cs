@@ -45,7 +45,7 @@ namespace CapaProceso.EstadoDocEle
                 jsonRespuestaDE = procesoRest.EnviarJSONDS(linkemidocuelec, credentials, jsonRes);
                 jsonrRespuesta = JsonConvert.SerializeObject(jsonRespuestaDE);
                 jsonRespuestaDE.json = jsonRes;
-                jsonRespuestaDE.DIAN= jsonrRespuesta;
+                jsonRespuestaDE.jsonrRespuesta= jsonrRespuesta;
                 jsonRespuestaDE.nro_trans = Ccf_nro_trans;
                 jsonRespuestaDE.cod_emp = Ccf_cod_emp;
                 jsonRespuestaDE.usuario_mod = Ccf_usuario;

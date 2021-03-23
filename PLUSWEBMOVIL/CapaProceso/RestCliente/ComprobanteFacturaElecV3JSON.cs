@@ -113,6 +113,8 @@ namespace CapaProceso.RestCliente
         public string transaccion { get; set; }
 		public string coddescuento { get; set; }
         public decimal valor { get; set; }
+        public decimal Base { get; set; }
+        public decimal porcentaje { get; set; }
     }
     public class DocumentoFEV3
     {

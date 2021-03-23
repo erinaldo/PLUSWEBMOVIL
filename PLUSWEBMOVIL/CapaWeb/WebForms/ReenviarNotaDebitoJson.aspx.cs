@@ -33,6 +33,7 @@ namespace CapaWeb.WebForms
 
         GenerarPDFDocumentos generer_pdfElectronico = new GenerarPDFDocumentos();
         Enviarcorreocliente enviarcorreocliente = new Enviarcorreocliente();
+        modelowmtfacturascab conscabceraTipo = new modelowmtfacturascab();
         public string ComPwm;
         public string AmUsrLog;
         public string nro_trans = null;
@@ -176,11 +177,16 @@ namespace CapaWeb.WebForms
                     mensaje.Text = "La Nota Dédito fue enviada exitosamente";
                     btn_reenviar.Enabled = false;
                     ActualizarEstadoFact.ActualizarEstadoFactura(lbl_nro_trans.Text, "F"); //Actualizar estado nNOTA DEBITO
+                    EnviarCorreoRemitente(lbl_nro_trans.Text, conscabcera.tipo_nce);//CORREO REMITENTE
                     if (conscabcera.mot_nce.Trim() == "4")
                     {
                         ActualizarEstadoFact.ActualizarEstadoFactura(conscabcera.nro_trans_padre.Trim(), "N");//Actualiza NOTA CREDITO a Anulada
+                        conscabceraTipo = null;
+                        conscabceraTipo = Trans_Padre(conscabcera.nro_trans_padre.Trim());
+                        //Buscar trx de factura para colocar como activa es decir finalizada 1-7-2021
+                        ActualizarEstadoFact.ActualizarEstadoFactura(conscabceraTipo.nro_trans_padre.Trim(), "F");//Actualiza factura a finalizada(debe quedar activa ya que se anula la nc)
                     }
-                    EnviarCorreoRemitente(lbl_nro_trans.Text, conscabcera.tipo_nce);//CORREO REMITENTE
+                   
                 }
                 else
                 {
@@ -221,9 +227,10 @@ namespace CapaWeb.WebForms
                 ListaModelorespuestaDs = consultaRespuestaDS.ConsultaRespuestaQr(nro_trans);
                 foreach (var item in ListaModelorespuestaDs)
                 {
-                    if (item.xml != "")
+                    if (!string.IsNullOrEmpty(item.xml.Trim()))
                     {
                         ModeloResQr = item;
+                        break;
                     }
 
                 }
@@ -279,11 +286,16 @@ namespace CapaWeb.WebForms
                     mensaje.Text = "La Nota Débito fue enviada exitosamente";
                     btn_reenviar.Enabled = false;
                     ActualizarEstadoFact.ActualizarEstadoFactura(lbl_nro_trans.Text, "F");//Actualiza estado de la NOTA DEBITO
+                    EnviarCorreoRemitente(lbl_nro_trans.Text, conscabcera.tipo_nce);//CORREO REMITENTE
                     if (conscabcera.mot_nce.Trim() == "4")
                     {
                         ActualizarEstadoFact.ActualizarEstadoFactura(conscabcera.nro_trans_padre.Trim(), "N");//Actualiza NOTA CREDITO a Anulada
+                        conscabceraTipo = null;
+                        conscabceraTipo = Trans_Padre(conscabcera.nro_trans_padre.Trim());
+                        //Buscar trx de factura para colocar como activa es decir finalizada 1-7-2021
+                        ActualizarEstadoFact.ActualizarEstadoFactura(conscabceraTipo.nro_trans_padre.Trim(), "F");//Actualiza factura a finalizada(debe quedar activa ya que se anula la nc)
                     }
-                    EnviarCorreoRemitente(lbl_nro_trans.Text, conscabcera.tipo_nce);//CORREO REMITENTE
+                   
 
                 }
                 else
@@ -298,6 +310,29 @@ namespace CapaWeb.WebForms
 
             }
 
+        }
+        public modelowmtfacturascab Trans_Padre(string nro_trans)
+        {
+            try
+            {
+                lbl_error.Text = "";
+
+                listaConsCab = ConsultaCabe.ConsultaNCTransPadre(nro_trans);
+                int count = 0;
+                conscabcera = null;
+                foreach (modelowmtfacturascab item in listaConsCab)
+                {
+                    count++;
+                    conscabcera = item;
+
+                }
+                return conscabcera;
+            }
+            catch (Exception ex)
+            {
+                GuardarExcepciones("Trans_Padre", ex.ToString());
+                return null;
+            }
         }
     }
 }

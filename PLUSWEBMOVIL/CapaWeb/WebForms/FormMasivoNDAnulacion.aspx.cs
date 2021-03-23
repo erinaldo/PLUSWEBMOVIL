@@ -304,10 +304,10 @@ namespace CapaWeb.WebForms
                 switch (Session["Masivo_NDAnu"].ToString())
                 {
                     case "NDV":
-                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldosXNroDoc(AmUsrLog, ComPwm, modelo.cod_cliente, "C", "S", lbl_cod_suc_emp.Text.Trim(), modelo.nro_docum.Trim());
+                        ListaSaldoFacturas = consultaSaldoFactura.ConsultaNCNormalesSaldosXNroDoc(AmUsrLog, ComPwm, modelo.cod_cliente, "C", "N", lbl_cod_suc_emp.Text.Trim(), modelo.nro_docum.Trim());
                         break;
                     case "NDVE":
-                        ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldosXNroDoc(AmUsrLog, ComPwm, modelo.cod_cliente, "C", "S", lbl_cod_suc_emp.Text.Trim(), modelo.nro_docum.Trim());
+                        ListaSaldoFacturas = consultaSaldoFactura.BuscarNCElecSaldosXNroDoc(AmUsrLog, ComPwm, modelo.cod_cliente, "C", "N", lbl_cod_suc_emp.Text.Trim(), modelo.nro_docum.Trim());
                         break;
 
                 }
