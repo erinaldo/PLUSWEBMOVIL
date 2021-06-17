@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="APIS\ServicioPWM.svc" />
+    <Content Include="WebForms\BuscarDocEleValidar.aspx" />
     <Content Include="WebForms\BuscarFacturasNDF.aspx" />
     <Content Include="Tema\css\StylePront.css" />
     <Content Include="Tema\imagenes\cargando.gif" />
@@ -267,6 +268,7 @@
     <Content Include="WebForms\ListaRespuestaND.aspx" />
     <Content Include="WebForms\MediosPagoPos.aspx" />
     <Content Include="WebForms\NotaCreditoMasiva.aspx" />
+    <Content Include="WebForms\ParametrosComerciales.aspx" />
     <Content Include="WebForms\PortalFacturas.aspx" />
     <Content Include="WebForms\ReenviarFacturaJson.aspx" />
     <Content Include="WebForms\ReenviarNCJson.aspx" />
@@ -285,6 +287,13 @@
     <Compile Include="APIS\IServicioPWM.cs" />
     <Compile Include="APIS\ServicioPWM.svc.cs">
       <DependentUpon>ServicioPWM.svc</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\BuscarDocEleValidar.aspx.cs">
+      <DependentUpon>BuscarDocEleValidar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\BuscarDocEleValidar.aspx.designer.cs">
+      <DependentUpon>BuscarDocEleValidar.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\BuscarFacturasNDF.aspx.cs">
       <DependentUpon>BuscarFacturasNDF.aspx</DependentUpon>
@@ -883,6 +892,13 @@
     </Compile>
     <Compile Include="WebForms\NotaCreditoMasiva.aspx.designer.cs">
       <DependentUpon>NotaCreditoMasiva.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\ParametrosComerciales.aspx.cs">
+      <DependentUpon>ParametrosComerciales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\ParametrosComerciales.aspx.designer.cs">
+      <DependentUpon>ParametrosComerciales.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\ReenviarNCJson.aspx.cs">
       <DependentUpon>ReenviarNCJson.aspx</DependentUpon>

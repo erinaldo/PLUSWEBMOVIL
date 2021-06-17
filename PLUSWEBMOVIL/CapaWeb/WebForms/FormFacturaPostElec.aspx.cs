@@ -1741,13 +1741,21 @@ namespace CapaWeb.WebForms
                                         switch (Modelowmspclogo.version_fe.Trim())  //AVERIGUAR QUE VERSION  DE FACTURACION USA
                                         {
                                             case "1":
-                                                 ConsumoRestFEV2 consumoRest1 = new ConsumoRestFEV2();
-                                                 respuesta = consumoRest1.EnviarFactura(ComPwm, AmUsrLog, "C", "POSE", conscabcera.nro_trans);
-                                               
+                                                ConsumoRestFEV2 consumoRest1 = new ConsumoRestFEV2();
+                                                respuesta = consumoRest1.EnviarFactura(ComPwm, AmUsrLog, "C", "POSE", conscabcera.nro_trans);
+
                                                 break;
                                             case "2":
-                                                ConsumoRestFEV3 consumoRest = new ConsumoRestFEV3();
-                                                respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "POSE", conscabcera.nro_trans);
+                                                if (conscabcera.doc_adjunto == null || conscabcera.doc_adjunto == "")
+                                                {
+                                                    ConsumoRestFEV3 consumoRest = new ConsumoRestFEV3();
+                                                    respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "POSE", conscabcera.nro_trans);
+                                                }
+                                                else
+                                                {
+                                                    ConsumoRestFEV3_PDF consumoRest = new ConsumoRestFEV3_PDF();
+                                                    respuesta = consumoRest.EnviarFactura(ComPwm, AmUsrLog, "C", "POSE", conscabcera.nro_trans);
+                                                }
                                                 break;
                                         }
      

@@ -29,8 +29,28 @@
             background-color: #DD6D29;
         }
   
+.btnTabs {
+  -webkit-border-radius: 5;
+  -moz-border-radius: 5;
+  border-radius: 5px;
+  font-family: Arial;
+  color: #000000;
+  font-size: 12px;
+  background: #FFFFFF;
+  padding: 10px 10px 10px 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
 
+.btnTabs:hover {
+  background: #d8d8ff;
+  text-decoration: none;
+}
 
+.btnTabs:focus{
+  background: #0E748A;
+  text-decoration: none;
+}
 
 .btnFactura1 {
   -webkit-border-radius: 5;
@@ -205,6 +225,11 @@ body {
 	color: #DD6D29;
 }
 .botones {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	color: #0E748A;
+}
+.botones1 {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 13px;
 	color: #0E748A;

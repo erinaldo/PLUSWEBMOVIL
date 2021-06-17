@@ -61,6 +61,7 @@ namespace CapaDatos.Sql
                         item.personeria = Convert.ToString(dr["personeria"]);
                         item.tributacion = Convert.ToString(dr["tributacion"]);
                         item.tipo_ide= Convert.ToString(dr["tipo_ide"]);
+                        item.sigla_ide = Convert.ToString(dr["sigla_ide"]);
 
                         lista.Add(item);
 

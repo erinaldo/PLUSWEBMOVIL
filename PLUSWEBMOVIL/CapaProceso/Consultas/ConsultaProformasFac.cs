@@ -121,5 +121,24 @@ namespace CapaProceso.Consultas
             }
 
         }
+
+        //Eliminar lista de clientes de proforma
+        public string EliminarClienteProformasAFacturar(string cod_emp, string usuario, string nro_trans)
+        {
+            try
+            {
+
+                string lista = consultaProformas.EliminarClientesProforma(cod_emp, usuario, nro_trans);
+
+                return lista;
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "EliminarClienteProformasAFacturar", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+
+        }
     }
 }

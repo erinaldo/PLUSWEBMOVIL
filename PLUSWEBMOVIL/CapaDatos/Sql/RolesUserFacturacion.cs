@@ -9,7 +9,7 @@ using CapaDatos.Modelos;
 
 namespace CapaDatos.Sql
 {
-   public  class RolesUserFacturacion
+    public class RolesUserFacturacion
     {
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
@@ -119,6 +119,35 @@ namespace CapaDatos.Sql
             }
         }
 
+        //Consulta acceso parametros comerciales
+        public string RespuestaAccesoParamComerciales(string usuario, string cod_emp)
+        {
+            try
+            {
+                using (cn = conexion.genearConexion())
+                {
+                    string rol = "";
+                    string consulta = ("SELECT cod_rol FROM wm_userroles WHERE usuario = @usuario AND cod_rol IN ('30','31','311','3113')");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@usuario", SqlDbType.VarChar).Value = usuario;
+
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        rol = Convert.ToString("cod_rol");
+                    }
+                    return rol;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "RespuestaAccesoParamComerciales", e.ToString(), DateTime.Now, usuario);
+                return null;
+            }
+        }
         //Consulta acceso rol para visualizar buscar factura una nueva factura
         public List<modeloRolesFacturacion> RespuestaAccesoFacturacion(string usuario)
         {
@@ -222,7 +251,7 @@ namespace CapaDatos.Sql
         }
         //Consultar rol modificar estado a Ffinalizado de odumentos electronicos 
         //Consulat rol editar
-        public string  RolModificarEstado(string usuario)
+        public string RolModificarEstado(string usuario)
         {
             try
             {
@@ -238,9 +267,9 @@ namespace CapaDatos.Sql
 
                     while (dr.Read())
                     {
-                        estado= Convert.ToString(dr["cod_rol"]);
+                        estado = Convert.ToString(dr["cod_rol"]);
 
-                       
+
                     }
                     return estado;
                 }
@@ -389,7 +418,7 @@ namespace CapaDatos.Sql
         }
 
         //Consulta prar crear una nueva factura
-        public List<modeloRolesFacturacion>NDebitoRolNuevo(string usuario)
+        public List<modeloRolesFacturacion> NDebitoRolNuevo(string usuario)
         {
             try
             {

@@ -471,8 +471,10 @@ namespace CapaProceso.RestCliente
                 cliente = null;
                 foreach (modelowmspctitulares item in lista)
                 {
-                    count++;
-                    cliente = item;
+                    if (item.nro_dgi2.Trim().Equals(Ven__cod_tit.Trim()))
+                    {
+                        cliente = item;
+                    }
 
                 }
                 return cliente;
@@ -668,6 +670,7 @@ namespace CapaProceso.RestCliente
                 string Ven__cod_tit = nit_cliente_Cab.Trim();
                 cliente = null;
                 cliente = buscarCliente(usuario, empresa, Ven__cod_tipotit, Ven__cod_tit, Ven__cod_dgi, conscabcera.cod_suc_cli.Trim());
+
                 if (cliente.cod_dgi.Trim() == "14" || cliente.cod_dgi.Trim() == "22" || cliente.cod_dgi.Trim() == "42" || cliente.cod_dgi.Trim() == "43" || cliente.cod_dgi.Trim() == "50")
                 {
                     //EXTRANJERO SOLO AUTORIZA CON NIT DE 8
@@ -722,8 +725,23 @@ namespace CapaProceso.RestCliente
                                 }
                                 else
                                 {
-                                    nit_dian = nit_cliente_Cab.Trim();
-                                    nit_validado = nit_cliente_Cab.Trim();
+                                    if (cliente.cod_dgi.Trim() == "31")
+                                    {
+                                        if (nit_cliente_Cab.Length > 9)
+                                        {
+                                            nit_dian = nit_cliente_Cab.Remove(9);
+                                            nit_validado = nit_cliente_Cab.Remove(9);
+                                        }
+                                        else
+                                        {
+                                            nit_dian = nit_cliente_Cab.Trim();
+                                            nit_validado = nit_cliente_Cab.Trim();
+                                        }
+                                    }
+                                    else {
+                                        nit_dian = nit_cliente_Cab.Trim();
+                                        nit_validado = nit_cliente_Cab.Trim();
+                                    }
                                 }
                             }
 

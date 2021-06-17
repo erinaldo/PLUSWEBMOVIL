@@ -15,15 +15,73 @@ namespace CapaDatos.Sql
         Conexion conexion = new Conexion();
         public SqlConnection cn = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
-        string metodo ="ValidarParametrizacionFactura.cs";
+        string metodo = "ValidarParametrizacionFactura.cs";
         string stringConexionERP = "";// Aqui va la consulta de la table de alfredo desia que va ir el string
+        //Consulta wmm_parametros conexion_valle EValle
+        public string ConsultaConexionEVallePDF(string cod_emp, string usuario)
+        {
+            try
+            {
+                string stringConexionValle = "";
+                using (cn = conexion.genearConexion())
+                {
+                    string consulta = ("SELECT conexion_pdf FROM wmm_parametros where cod_emp =@cod_emp");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        stringConexionValle = Convert.ToString(dr["conexion_pdf"]);
+                    }
+                    return stringConexionValle;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ConsultaConexionEVallePDF", e.ToString(), DateTime.Now, usuario);
+                return "No se pudo completar la acción." + "ConsultaConexionERP." + " Por favor notificar al administrador.";
+            }
+        }
+
+
+        //Consulta wmm_parametros conexion_valle EValle
+        public string ConsultaConexionEValle(string cod_emp, string usuario)
+        {
+            try
+            {
+                string stringConexionValle = "";
+                using (cn = conexion.genearConexion())
+                {
+                    string consulta = ("SELECT conexion_valle FROM wmm_parametros where cod_emp =@cod_emp");
+                    SqlCommand conmand = new SqlCommand(consulta, cn);
+
+                    conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                    SqlDataReader dr = conmand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        stringConexionValle = Convert.ToString(dr["conexion_valle"]);
+                    }
+                    return stringConexionValle;
+                }
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ConsultaConexionEValle", e.ToString(), DateTime.Now, usuario);
+                return "No se pudo completar la acción." + "ConsultaConexionERP." + " Por favor notificar al administrador.";
+            }
+        }
 
         //Consulta wmm_parametros conexion_erp
         public string ConsultaConexionERP(string cod_emp, string usuario)
         {
             try
             {
-                
+
                 using (cn = conexion.genearConexion())
                 {
                     string consulta = ("SELECT conexion_erp FROM wmm_parametros where cod_emp =@cod_emp");
@@ -64,7 +122,7 @@ namespace CapaDatos.Sql
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     conmand.Parameters.Add("@fecha", SqlDbType.VarChar).Value = fecha;
-                  
+
 
                     SqlDataReader dr = conmand.ExecuteReader();
 
@@ -78,14 +136,14 @@ namespace CapaDatos.Sql
             catch (Exception e)
             {
 
-                guardarExcepcion.ClaseInsertarExcepcion(cod_emp,metodo, "ValidarPeriodoContable", e.ToString(), DateTime.Now, usuario);
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "ValidarPeriodoContable", e.ToString(), DateTime.Now, usuario);
                 return "No se pudo completar la acción." + "ValidarPeriodoContable." + " Por favor notificar al administrador.";
             }
         }
 
         //Consulta codigo pais, cuidad, cod_moenda empresa ERP TABLA(AmCom)
-        
-         public Boolean ValidarMonCiudEmpresaERP(string cod_emp, string usuario)
+
+        public Boolean ValidarMonCiudEmpresaERP(string cod_emp, string usuario)
         {
             try
             {
@@ -94,18 +152,18 @@ namespace CapaDatos.Sql
 
                 using (cn = conexion.genearConexionERP(stringConexionERP))
                 {
-                    
+
                     string consulta = ("SELECT TOP 1 AmComMonB, AmComCiuM FROM AmCom");
                     SqlCommand conmand = new SqlCommand(consulta, cn);
 
                     SqlDataReader dr = conmand.ExecuteReader();
 
                     while (dr.Read())
-                    {                       
+                    {
                         if (Convert.ToString(dr["AmComCiuM"]) != null && Convert.ToString(dr["AmComMonB"]) != null)
                         {
                             repuesta = true;
-                        }                       
+                        }
 
                     }
 
@@ -121,7 +179,7 @@ namespace CapaDatos.Sql
         }
 
         //Consulta BUSCAR RESOLUCION DE Factura
-        public Boolean ValidarResolucionERP(string cod_emp, string usuario, string estado , string serie, string fecha,string emp_erp)
+        public Boolean ValidarResolucionERP(string cod_emp, string usuario, string estado, string serie, string fecha, string emp_erp)
         {
             try
             {
@@ -161,7 +219,7 @@ namespace CapaDatos.Sql
 
         //Validar nro_docum , rango fecha (AdSer)
 
-        public Boolean ValidarNroDocumERP(string cod_emp, string usuario, string serie_docum , string nro_docum)
+        public Boolean ValidarNroDocumERP(string cod_emp, string usuario, string serie_docum, string nro_docum)
         {
             try
             {

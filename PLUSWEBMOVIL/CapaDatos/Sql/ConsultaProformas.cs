@@ -318,6 +318,31 @@ namespace CapaDatos.Sql
 
         }
 
+        //INSERTRA CLIENTE DE PROFORMA MASIVA
+        public string EliminarClientesProforma(string cod_emp, string usuario, string nro_trans)
+        {
+            try
+            {
+                cn = conexion.genearConexion();
+
+                string insert = "Update  wmt_proformas_tit set estado ='E'  where nro_trans =@nro_trans and cod_emp =@cod_emp and estado = 'A'";
+                SqlCommand conmand = new SqlCommand(insert, cn);
+
+                conmand.Parameters.Add("@nro_trans", SqlDbType.VarChar).Value = nro_trans;
+                conmand.Parameters.Add("@cod_emp", SqlDbType.VarChar).Value = cod_emp;
+                int dr = conmand.ExecuteNonQuery();
+                cn.Close();
+                return "";
+            }
+            catch (Exception e)
+            {
+
+                guardarExcepcion.ClaseInsertarExcepcion(cod_emp, metodo, "EliminarClientesProforma", e.ToString(), DateTime.Now, usuario);
+                return "No se pudo completar la acción." + "EliminarClientesProforma." + " Por favor notificar al administrador.";
+            }
+
+        }
+
         //Trae cliente sucursal activo para facturar proforma
         public modelowmspctitulares ClienteProformasAFacturar(string usuario, string cod_emp, string nro_trans)
         {

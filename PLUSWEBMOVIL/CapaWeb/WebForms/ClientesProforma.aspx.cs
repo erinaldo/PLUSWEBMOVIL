@@ -129,7 +129,8 @@ namespace CapaWeb.WebForms
                 {
                     List<modeloClientesproforma> ListaClientesP = null;
                     modeloClientesproforma modeloClientesP = new modeloClientesproforma();
-                    //string Path;
+                    ConsultaProformas.EliminarClienteProformasAFacturar(ComPwm, AmUsrLog, nro_trans.Trim());
+                   //string Path;
                     string pathtmpfac = Modelowmspclogo.pathtmpfac;  //Traemos el path, la ruta 
                     string fileName = pathtmpfac + Path.GetFileName(FileUpload1.FileName);
                     FileUpload1.PostedFile.SaveAs(fileName);

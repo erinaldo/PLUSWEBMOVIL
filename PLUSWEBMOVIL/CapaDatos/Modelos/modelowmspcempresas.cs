@@ -31,5 +31,6 @@ namespace CapaDatos.Modelos
         public string personeria { get; set; }
         public string tributacion { get; set; }
         public string tipo_ide { get; set; }
+        public string sigla_ide { get; set; }
     }
 }

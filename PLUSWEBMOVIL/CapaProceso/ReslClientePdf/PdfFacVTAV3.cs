@@ -86,6 +86,8 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
         Articulos consulta_uni = new Articulos();
         Documento buscarCliente = new Documento();
         modelowmspctitulares cliente_valido = new modelowmspctitulares();
+        public string nit_empresa = null;
+        public string tipo_ide_empresa = null;
         string metodo = "PdfFacVTAV3.cs";
         //Buscar cantidad de decimales q se va ausar x tipo de moneda
         public modelowmspcmonedas BuscarDecimales(string usuario, string empresa, string cod_moneda)
@@ -215,7 +217,11 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
                 //FECHA GENERACION 10-07-20
                 string fecha_gene = null;
-                fecha_gene = conscabcera.fec_doc_str + " " + DateTime.Now.ToShortTimeString();
+                string fec_gen = conscabcera.fec_doc.ToString("dd/MM/yyyy");
+                fecha_gene = fec_gen + " " + DateTime.Now.ToShortTimeString();
+                //Fechas formato dd-mm-aaaa 25-05-21
+                string fecha_femision = null;
+                fecha_femision = conscabcera.fec_doc.ToString("dd/MM/yyyy");
 
                 consdetalle = null;
                 consdetalle = buscarDetalleFactura(Ccf_nro_trans);
@@ -229,6 +235,22 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
                 Modeloempresa = null;
                 Modeloempresa = BuscarCabEmpresa(Ccf_usuario, Ccf_cod_emp);
+                //TIPO NIT EMPRESA 22-04-21
+
+                if (Modeloempresa.tipo_ide.Trim() == "31")
+                {
+                    nit_empresa = Modeloempresa.nro_dgi2 + "-" + Modeloempresa.nro_dgi1;
+                    tipo_ide_empresa = Modeloempresa.sigla_ide.Trim() + ": ";
+                }
+                else
+                {
+                    nit_empresa = Modeloempresa.nro_dgi2;
+                    tipo_ide_empresa = Modeloempresa.sigla_ide.Trim() + ": ";
+                }
+                if (Modeloempresa.nro_dgi2.Trim() == "52899703")//empresa DIANE STEPHANIE TAWSE SMITH DIAZ 28-04-21
+                {
+                    formato_nit_cliente = conscabcera.nro_dgi2;
+                }
                 //Datos de la sucursal de la empresa
 
                 ListaModeloSucursalEmpresa = ConsultaSucursal.ConsultaSucursalCiudad(Ccf_cod_emp, conscabcera.cod_sucursal, Ccf_usuario);
@@ -372,7 +394,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase("NIT: " + Modeloempresa.nro_dgi2 + "-" + Modeloempresa.nro_dgi1, fontText3));
+                cell = new PdfPCell(new Phrase(tipo_ide_empresa + nit_empresa, fontText3));
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa.AddCell(cell);
@@ -424,7 +446,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 1;
                 tabladetaEmpresa1.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase("Fecha Emisión: " + conscabcera.fec_doc_str, fontText1));//
+                cell = new PdfPCell(new Phrase("Fecha Emisión: " + fecha_femision, fontText1));//formato 25-05-21 ddmmaa
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 1;
                 cell.BorderWidthLeft = 1;
@@ -1254,22 +1276,25 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 2;
                 detatot.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("BASE DE IVA: ", fontText1));
-                cell.BorderWidthBottom = 1;
-                cell.BorderWidthLeft = 0;
-                cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 1;
-                cell.HorizontalAlignment = 0;
-                detatot.AddCell(cell);
+                if (Modeloempresa.nro_dgi2.Trim() != "900907007") //unicamente para 21-contrumetales 25-04-21
+                {
+                    cell = new PdfPCell(new Paragraph("BASE DE IVA: ", fontText1));
+                    cell.BorderWidthBottom = 1;
+                    cell.BorderWidthLeft = 0;
+                    cell.BorderWidthTop = 0;
+                    cell.BorderWidthRight = 1;
+                    cell.HorizontalAlignment = 0;
+                    detatot.AddCell(cell);
 
-                decimal BaseIva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, conscabcera.monto_imponible);
-                cell = new PdfPCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, BaseIva), fontText1));
-                cell.BorderWidthBottom = 1;
-                cell.BorderWidthLeft = 0;
-                cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 0;
-                cell.HorizontalAlignment = 2;
-                detatot.AddCell(cell);
+                    decimal BaseIva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, conscabcera.monto_imponible);
+                    cell = new PdfPCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, BaseIva), fontText1));
+                    cell.BorderWidthBottom = 1;
+                    cell.BorderWidthLeft = 0;
+                    cell.BorderWidthTop = 0;
+                    cell.BorderWidthRight = 0;
+                    cell.HorizontalAlignment = 2;
+                    detatot.AddCell(cell);
+                }
 
                 cell = new PdfPCell(new Paragraph("(+)IVA: ", fontText1));
                 cell.BorderWidthBottom = 1;
@@ -1481,8 +1506,8 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
                 infotri.AddCell(cell);
-
-                DateTime prueba = DateTime.Now;
+                //Formato dd-mm -aa 25-05-21
+                string prueba = DateTime.Now.ToString("dd/MM/yyyy hh: mm tt");
                 cell = new PdfPCell(new Paragraph("Fecha hora expedición: " + prueba.ToString(), fontText2));
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;

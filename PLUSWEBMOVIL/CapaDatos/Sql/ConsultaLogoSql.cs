@@ -63,6 +63,7 @@ namespace CapaDatos.Sql
                         item.pvp_decimal = Convert.ToInt32(dr["pvp_decimal"]);
                         item.path_adjunto = Convert.ToString(dr["adjunto"]);
                         item.linkestadodoc= Convert.ToString(dr["linkestadodoc"]);
+                        item.linkrestext = Convert.ToString(dr["linkrestext"]);
                         lista.Add(item);
 
 

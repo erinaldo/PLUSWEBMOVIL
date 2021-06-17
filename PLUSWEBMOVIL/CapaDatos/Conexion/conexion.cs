@@ -44,6 +44,23 @@ namespace CapaDatos
 
 
         }
+        public SqlConnection genearConexionEValle(String stringConexion)
+        {
+            try
+            {
+                SqlConnection cn = new SqlConnection(stringConexion);
+                cn.Open();
+                return cn;
+            }
+            catch (IOException e)
+            {
+
+                return null;
+
+            }
+
+
+        }
 
     }
 }

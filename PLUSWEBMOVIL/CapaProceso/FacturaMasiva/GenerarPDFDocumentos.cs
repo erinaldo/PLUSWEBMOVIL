@@ -1,5 +1,7 @@
 ﻿using CapaDatos.Sql;
 using CapaProceso.GenerarPDF.FacturaElectronica;
+using CapaProceso.ReslClientePdf;
+using CapaProceso.RestCliente;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -136,6 +138,10 @@ namespace CapaProceso.FacturaMasiva
                     PdfFacEleV3Default8 pdf6 = new PdfFacEleV3Default8();
                     pathPdf = pdf6.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                     break;
+                case "DEFECTO9": //Utilizado unicamente para EValle 23-03-21
+                    GenerarPdfValle pdf7 = new GenerarPdfValle();
+                    pathPdf = pdf7.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    break;
             }
             return pathPdf;
         }
@@ -175,6 +181,10 @@ namespace CapaProceso.FacturaMasiva
                 case "DEFECTO8":
                     PdfFacVTAV8 pdf6 = new PdfFacVTAV8();
                     pathPdf = pdf6.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                    break;
+                case "DEFECTO9": //Utilizado unicamente para EValle 23-03-21
+                    GenerarPdfVTAValle pdf7 = new GenerarPdfVTAValle();
+                    pathPdf = pdf7.generarPdf(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
                     break;
             }
             return pathPdf;

@@ -72,6 +72,8 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
         public List<modeloSucuralempresa> ListaModeloSucursalEmpresa = new List<modeloSucuralempresa>();
         public ConsultaSucursalempresa ConsultaSucEmpresa = new ConsultaSucursalempresa();
         public Consultawmsucempresa ConsultaSucursal = new Consultawmsucempresa();
+        Documento buscarCliente = new Documento();
+        modelowmspctitulares cliente_valido = new modelowmspctitulares();
 
         public string Ccf_estado = null;
         public string Ccf_cliente = null;
@@ -85,6 +87,8 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
         public string Ccf_mesf = null;
         public string Ccf_aniof = null;
         public string nro_trans = null;
+        public string nit_empresa = null;
+        public string tipo_ide_empresa = null;
         ExepcionesPW guardarExcepcion = new ExepcionesPW();
         Articulos consulta_uni = new Articulos();
         FacturaDescuento consultaDesc = new FacturaDescuento();
@@ -235,10 +239,21 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
         {
             try
             {
+                string formato_nit_cliente = null;
                 string Tipo = null;
                 //Buscar cab NC
                 conscabcera = null;
                 conscabcera = buscarCabezeraFactura(Ccf_cod_emp, Ccf_usuario, Ccf_tipo1, Ccf_tipo2, Ccf_nro_trans);
+                //VALIDAR NIT OARA EXTRANJEROS ---18-2-21
+                cliente_valido = buscarCliente.ListaBuscaCliente(Ccf_usuario, Ccf_cod_emp, "C", conscabcera.cod_cliente, null);
+                if (cliente_valido.cod_dgi.Trim() == "42" || cliente_valido.cod_dgi.Trim() == "22" || cliente_valido.cod_dgi.Trim() == "43" || cliente_valido.cod_dgi.Trim() == "14")
+                {
+                    formato_nit_cliente = conscabcera.nro_dgi2.Trim();
+                }
+                else
+                {
+                    formato_nit_cliente = conscabcera.nro_dgi2 + "-" + conscabcera.nro_dgi1;
+                }
                 //Obtener nro factura
                 consdetalle = null;
                 consdetalle = buscarDetalleFactura(Ccf_nro_trans);
@@ -280,7 +295,26 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
 
                 Modeloempresa = null;
                 Modeloempresa = BuscarCabEmpresa(Ccf_usuario, Ccf_cod_emp);
+                //TIPO NIT EMPRESA 22-04-21
 
+                if (Modeloempresa.tipo_ide.Trim() == "31")
+                {
+                    nit_empresa = Modeloempresa.nro_dgi2 + "-" + Modeloempresa.nro_dgi1;
+                    tipo_ide_empresa = Modeloempresa.sigla_ide.Trim() + ": ";
+                }
+                else
+                {
+                    nit_empresa = Modeloempresa.nro_dgi2;
+                    tipo_ide_empresa = Modeloempresa.sigla_ide.Trim() + ": ";
+                }
+                if (Modeloempresa.nro_dgi2.Trim() == "52899703")
+                {
+                    formato_nit_cliente = conscabcera.nro_dgi2;
+                }
+                if (Modeloempresa.nro_dgi2.Trim() == "52899703")//empresa DIANE STEPHANIE TAWSE SMITH DIAZ 28-04-21
+                {
+                    formato_nit_cliente = conscabcera.nro_dgi2;
+                }
                 //Datos de la sucursal de la empresa
 
                 ListaModeloSucursalEmpresa = ConsultaSucursal.ConsultaSucursalCiudad(Ccf_cod_emp, conscabcera.cod_sucursal, Ccf_usuario);
@@ -329,6 +363,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                     }
                 }
                 string fecha_gene = null;
+                string fecha_femision = null;
                 string pathtmpfac = Modelowmspclogo.pathtmpfac;  //Traemos el path, la ruta 
                 string qrPath = pathtmpfac + Ccf_cod_emp.Trim() + Ccf_nro_trans.Trim() + "qrcode.png";
                 string bpathPdfGenrado = pathtmpfac + Ccf_cod_emp.Trim() + Ccf_nro_trans.Trim() + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + "ncredito.pdf";
@@ -337,12 +372,16 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 //FECHA GENERACION 10-07-20
                 if (!string.IsNullOrEmpty(ModeloResQr.fecha_mod))
                 {
-                    fecha_gene = ModeloResQr.fecha_mod;
+                    DateTime fec_gen1 = Convert.ToDateTime(ModeloResQr.fecha_mod);
+                    fecha_gene = fec_gen1.ToString("dd/MM/yyyy hh: mm tt");
                 }
                 else
                 {
-                    fecha_gene = conscabcera.fec_doc_str + " " + DateTime.Now.ToShortTimeString();
+                    string fec_gen = conscabcera.fec_doc.ToString("dd/MM/yyyy");
+                    fecha_gene = fec_gen + " " + DateTime.Now.ToShortTimeString();
                 }
+                //Fechas formato dd-mm-aaaa 25-05-21
+                fecha_femision = conscabcera.fec_doc.ToString("dd/MM/yyyy");
 
 
                 FileStream fs = new FileStream(bpathPdfGenrado, FileMode.Create);
@@ -428,7 +467,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase("NIT: " + Modeloempresa.nro_dgi2 + "-" + Modeloempresa.nro_dgi1, fontText3));
+                cell = new PdfPCell(new Phrase(tipo_ide_empresa + nit_empresa, fontText3));
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
                 tabladetaEmpresa.AddCell(cell);
@@ -480,7 +519,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 1;
                 tabladetaEmpresa1.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase("Fecha Emisión: " + conscabcera.fec_doc_str, fontText1));
+                cell = new PdfPCell(new Phrase("Fecha Emisión: " + fecha_femision, fontText1)); //formato 25-05-21 ddmmaa
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 1;
                 cell.BorderWidthLeft = 1;
@@ -610,7 +649,7 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 0;
                 tablaCab3.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph(conscabcera.nro_dgi2 + "-" + conscabcera.nro_dgi1, fontText3));
+                cell = new PdfPCell(new Paragraph(formato_nit_cliente, fontText3));
                 cell.BorderWidthTop = 0;
                 cell.BorderWidthRight = 0;
                 cell.BorderWidthLeft = 0;
@@ -1247,22 +1286,25 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 2;
                 detatot.AddCell(cell);
 
-                cell = new PdfPCell(new Paragraph("BASE DE IVA: ", fontText1));
-                cell.BorderWidthBottom = 1;
-                cell.BorderWidthLeft = 0;
-                cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 1;
-                cell.HorizontalAlignment = 0;
-                detatot.AddCell(cell);
+                if (Modeloempresa.nro_dgi2.Trim() != "900907007") //unicamente para 21-contrumetales 25-04-21
+                {
+                    cell = new PdfPCell(new Paragraph("BASE DE IVA: ", fontText1));
+                    cell.BorderWidthBottom = 1;
+                    cell.BorderWidthLeft = 0;
+                    cell.BorderWidthTop = 0;
+                    cell.BorderWidthRight = 1;
+                    cell.HorizontalAlignment = 0;
+                    detatot.AddCell(cell);
 
-                decimal BaseIva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, conscabcera.monto_imponible);
-                cell = new PdfPCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, BaseIva), fontText1));
-                cell.BorderWidthBottom = 1;
-                cell.BorderWidthLeft = 0;
-                cell.BorderWidthTop = 0;
-                cell.BorderWidthRight = 0;
-                cell.HorizontalAlignment = 2;
-                detatot.AddCell(cell);
+                    decimal BaseIva = ConsultaCMonedas.RedondearNumero(DecimalesMoneda.redondeo, conscabcera.monto_imponible);
+                    cell = new PdfPCell(new Paragraph(ConsultaCMonedas.FormatorNumero(DecimalesMoneda.redondeo, BaseIva), fontText1));
+                    cell.BorderWidthBottom = 1;
+                    cell.BorderWidthLeft = 0;
+                    cell.BorderWidthTop = 0;
+                    cell.BorderWidthRight = 0;
+                    cell.HorizontalAlignment = 2;
+                    detatot.AddCell(cell);
+                }
 
                 cell = new PdfPCell(new Paragraph("(+)IVA: ", fontText1));
                 cell.BorderWidthBottom = 1;
@@ -1488,8 +1530,9 @@ namespace CapaProceso.GenerarPDF.FacturaElectronica
                 cell.HorizontalAlignment = 0;
                 infotri1.AddCell(cell);
 
-                DateTime prueba = DateTime.Now;
-                cell = new PdfPCell(new Paragraph("Fecha hora expedición: " + prueba.ToString(), fontText2));
+                //Formato dd-mm -aa 25-05-21
+                string prueba = DateTime.Now.ToString("dd/MM/yyyy hh: mm tt");
+                cell = new PdfPCell(new Paragraph("Fecha hora expedición: " + prueba, fontText2));
                 cell.Border = 0;
                 cell.HorizontalAlignment = 0;
                 infotri1.AddCell(cell);

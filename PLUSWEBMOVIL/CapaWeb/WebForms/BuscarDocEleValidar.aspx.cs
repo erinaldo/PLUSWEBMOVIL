@@ -1,4 +1,5 @@
 ﻿using System;
+using System;
 using System.Collections.Generic;
 using CapaProceso.Consultas;
 using CapaProceso.Modelos;
@@ -6,27 +7,24 @@ using System.Web.UI.WebControls;
 using CapaWeb.Urlencriptacion;
 using CapaProceso.RestCliente;
 using CapaDatos.Modelos;
-using CapaProceso.FacturaMasiva;
-using System.IO;
+using CapaDatos.Modelos.ModelosNC;
+using System.Web;
 
 namespace CapaWeb.WebForms
 {
-    public partial class CargaMasivaCliente : System.Web.UI.Page
+    public partial class BuscarDocEleValidar : System.Web.UI.Page
     {
-        ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
-        modeloExepciones ModeloExcepcion = new modeloExepciones();
         public modelowmspclogo Modelowmspclogo = new modelowmspclogo();
         public ConsultaLogo consultaLogo = new ConsultaLogo();
         public List<modelowmspclogo> ListaModelowmspclogo = new List<modelowmspclogo>();
-        CargaFacturaMasiva carga = new CargaFacturaMasiva();
-        List<modeloFacturaEMasiva> lista = new List<modeloFacturaEMasiva>();
-        modeloFacturaEMasiva modeloFacturas = new modeloFacturaEMasiva();
-
+        ConsultaExcepciones consultaExcepcion = new ConsultaExcepciones();
+        modeloExepciones ModeloExcepcion = new modeloExepciones();
         public string ComPwm;
+        public string empresa_codigo;
         public string socio;
         public string AmUsrLog;
         public string cod_proceso;
-        public string sesion;
+        public string UsuarioId;
         public string AmComCod;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -65,10 +63,7 @@ namespace CapaWeb.WebForms
                 {
                     socio = Request.Cookies["AmScNCod"].Value;
                 }
-                if (Request.Cookies["AmSesId"] != null)
-                {
-                    sesion = Request.Cookies["AmSesId"].Value;
-                }
+
 
                 if (Request.Cookies["AmComCod"] != null)
                 {
@@ -92,8 +87,6 @@ namespace CapaWeb.WebForms
                         Response.Cookies["ProcAud"].Value = cod_proceso;
                     }
                 }
-                //Buscar tipo de archivo que va a cargar(excel-01, 02(EValle 24-03-21))
-                string formato = consultaLogo.BuscarFormatoCargaMasiva(ComPwm, AmComCod);
                 //Codigo empresa
                 string empresa_codigo = ComPwm;
                 string empresa_canorus = AmComCod;
@@ -101,8 +94,7 @@ namespace CapaWeb.WebForms
                 Response.Cookies["empresa_canorus"].Value = empresa_canorus;
                 Response.Cookies["socio_codigo"].Value = socio;
                 Response.Cookies["usuario"].Value = AmUsrLog;
-                Response.Cookies["sesion"].Value = sesion;
-                Response.Cookies["formato"].Value = formato.Trim();
+
             }
             catch (Exception ex)
             {
@@ -115,7 +107,7 @@ namespace CapaWeb.WebForms
         {
 
             ModeloExcepcion.cod_emp = ComPwm;
-            ModeloExcepcion.proceso = "CargaMasivaCliente.aspx";
+            ModeloExcepcion.proceso = "BuscarDocEleValidar.aspx";
             ModeloExcepcion.metodo = metodo;
             ModeloExcepcion.error = error;
             ModeloExcepcion.fecha_hora = DateTime.Now;
@@ -126,6 +118,5 @@ namespace CapaWeb.WebForms
             // lbl_error.Text = "No se pudo completar la acción" + metodo + "." + " Por favor notificar al administrador.";
 
         }
-
     }
 }

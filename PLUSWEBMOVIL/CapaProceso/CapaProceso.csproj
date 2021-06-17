@@ -165,6 +165,8 @@
     <Compile Include="GenerarPDF\FacturaElectronica\JsonPdfNCV2.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonPdfNCElectronica.cs" />
     <Compile Include="GenerarPDF\FacturaElectronica\JsonFacturaElecVer2.cs" />
+    <Compile Include="ReslClientePdf\GenerarPdfValle.cs" />
+    <Compile Include="ReslClientePdf\GenerarPdfVTAValle.cs" />
     <Compile Include="ReslClientePdf\JsonFacElecVer3PDF.cs" />
     <Compile Include="ReslClientePdf\JsonFacElecVer2PDF.cs" />
     <Compile Include="ReslClientePdf\JsonNCPDF V2.cs" />
@@ -223,6 +225,7 @@
     <Compile Include="RestCliente\ConsumoRestNCFinV2.cs" />
     <Compile Include="RestCliente\ConsumoRestNCFin.cs" />
     <Compile Include="RestCliente\ConsumoRest.cs" />
+    <Compile Include="RestCliente\EstructuraValle.cs" />
     <Compile Include="RestCliente\JsonFacturacionElectronicaV3.cs" />
     <Compile Include="RestCliente\JsonFacturacionElectronicaV2.cs" />
     <Compile Include="RestCliente\JsonNotaDebitoElectronicaV3.cs" />

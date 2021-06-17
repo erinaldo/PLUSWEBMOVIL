@@ -640,19 +640,21 @@ namespace CapaProceso.FacturaMasiva
                 //Cargar cargos y descuentos globales de canorus 
                 ListaCarDscG = null;
                 ListaCarDscG = ListaCargosDsctosGFacturas(AmUsrLog, ComPwm, nro_docum);
+                int contarLinea = 0;
                 if (ListaCarDscG.Count > 0)
                 {
                     ModeloDescCargoFac modeloDesCargo = new ModeloDescCargoFac();
 
                     foreach (var desc in ListaCarDscG)
                     {
+                        contarLinea++;
                         modeloCarDscG = desc;
                         ModeloDescuento = null;
                         ModeloDescuento = BuscarDescuento.ConceptoUnico(AmUsrLog, ComPwm, modeloCarDscG.cod_concepto.Trim());
                         //Insertar pago en wmt_facturas_descto
 
                         modeloDesCargo.nro_trans = valor_asignado;
-                        modeloDesCargo.linea = modeloCarDscG.linea_dsc.ToString();
+                        modeloDesCargo.linea = contarLinea.ToString();
                         modeloDesCargo.cod_emp = ComPwm;
                         modeloDesCargo.cod_concepto = ModeloDescuento.cod_concepto;
                         modeloDesCargo.nom_concepto = ModeloDescuento.nom_concepto;

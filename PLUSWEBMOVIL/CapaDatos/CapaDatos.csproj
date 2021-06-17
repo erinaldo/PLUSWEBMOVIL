@@ -65,6 +65,7 @@
     <Compile Include="Modelos\modeloFacturaEMasiva.cs" />
     <Compile Include="Modelos\modeloFacturaPgs.cs" />
     <Compile Include="Modelos\modeloFacturasPagos.cs" />
+    <Compile Include="Modelos\modeloFormato.cs" />
     <Compile Include="Modelos\modeloFPagosF.cs" />
     <Compile Include="Modelos\ModeloHost\modeloHostmail.cs" />
     <Compile Include="Modelos\ModeloHost\modelowmm_correo.cs" />
@@ -74,7 +75,9 @@
     <Compile Include="Modelos\modeloMediosPago.cs" />
     <Compile Include="Modelos\modeloPagoProveedores.cs" />
     <Compile Include="Modelos\modeloPagosEfectivoFacturas.cs" />
+    <Compile Include="Modelos\modeloParametrosComerciales.cs" />
     <Compile Include="Modelos\modeloParametrosPWM.cs" />
+    <Compile Include="Modelos\modeloParFacElec.cs" />
     <Compile Include="Modelos\modeloproformadetalle.cs" />
     <Compile Include="Modelos\modeloRemisionesFactura.cs" />
     <Compile Include="Modelos\modeloRolesFacturacion.cs" />
@@ -91,6 +94,7 @@
     <Compile Include="Modelos\modeloUsuarioSistema.cs" />
     <Compile Include="Modelos\modeloUsuariosucursal.cs" />
     <Compile Include="Modelos\modeloValidarFactura.cs" />
+    <Compile Include="Modelos\modeloValleDian.cs" />
     <Compile Include="Modelos\modelowmtproformascab.cs" />
     <Compile Include="Modelos\modelobancos.cs" />
     <Compile Include="Modelos\modeloDetalleProforma.cs" />
@@ -135,7 +139,9 @@
     <Compile Include="Sql\CodigosPaiPrvCiu.cs" />
     <Compile Include="Sql\CodProcesoFactura.cs" />
     <Compile Include="Sql\ConfirmarFactura.cs" />
+    <Compile Include="Sql\ConsultaEValle.cs" />
     <Compile Include="Sql\ConsultaLogoSql.cs" />
+    <Compile Include="Sql\ConsultaParComerciales.cs" />
     <Compile Include="Sql\ConsultaProformas.cs" />
     <Compile Include="Sql\CotizacionMonedaTrm.cs" />
     <Compile Include="Sql\CuentasBanco.cs" />

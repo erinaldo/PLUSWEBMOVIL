@@ -214,7 +214,7 @@ namespace CapaWeb.WebForms
                     }
                 }
                 //Buscar tipo de archivo que va a cargar(excel-01, txt-02)
-               // string formato = consultaLogo.BuscarFormatoCargaMasiva(ComPwm, AmComCod);
+                string formato = consultaLogo.BuscarFormatoCargaMasiva(ComPwm, AmComCod);
                 //Codigo empresa
                 string empresa_codigo = ComPwm;
                 string empresa_canorus = AmComCod;
@@ -223,7 +223,7 @@ namespace CapaWeb.WebForms
                 Response.Cookies["socio_codigo"].Value = socio;
                 Response.Cookies["usuario"].Value = AmUsrLog;
                 Response.Cookies["sesion"].Value = sesion;
-                //Response.Cookies["formato"].Value = formato.Trim();
+                Response.Cookies["formato"].Value = formato.Trim();
             }
             catch (Exception ex)
             {
